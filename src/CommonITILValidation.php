@@ -1119,17 +1119,16 @@ abstract class CommonITILValidation extends CommonDBChild
             ];
 
             $itil_edit_js_identifier = 'itilvalidation_edit_' . $itils_validationsteps_id;
-            $validations[$itils_validationsteps_id]['edit_link_js']['js'] = Ajax::createModalWindow(
+            $url = $itil::getValidationStepClassName()::getFormURLWithId($itils_validationsteps_id); // @todoseb changer in id surement
+            $validations[$itils_validationsteps_id]['edit_link_js']['js'] = Ajax::createIframeModalWindow(
                 $itil_edit_js_identifier,
-                $CFG_GLPI['root_doc'] . "/ajax/itilvalidationstep.php?itils_validationsteps_id=$itils_validationsteps_id" . '&itils_validation_type=' . $itil::getValidationStepClassName(),
+                $url,
                 [
                     'title'           => __('Update validation step'),
                     'reloadonclose'   => true,
                     'display'         => false,
-                    'modal_class'     => "modal-lg",
                 ]
             );
-            $validations[$itils_validationsteps_id]['edit_link_js']['onclick'] = 'onclick="' . $itil_edit_js_identifier . '.show();"';
             $validations[$itils_validationsteps_id]['edit_link_js']['target'] = "$itil_edit_js_identifier";
 
             if ($itils_validationsteps_id !== $validationstep_id_inloop) {

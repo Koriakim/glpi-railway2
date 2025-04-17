@@ -284,4 +284,16 @@ abstract class ITIL_ValidationStep extends CommonDBTM
             $itils_validationstep_ids
         );
     }
+
+    public function getFormFields(): array
+    {
+        return ['minimal_required_validation_percent'];
+    }
+
+    public function showForm($ID, array $options = [])
+    {
+        $_GET['_in_modal'] = 0; // hack to get the <form> tag
+
+        return parent::showForm($ID, $options);
+    }
 }
