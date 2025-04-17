@@ -49,15 +49,6 @@
     __('Global approval status')
 ) }}
 
-{% set validation_stats = validation.getValidationStats(tID) %}
-{% if validation_stats is not empty %}
-    {{ fields.htmlField(
-        '',
-        validation_stats,
-        __('Approval status details')
-    ) }}
-{% endif %}
-
 {% if canadd %}
        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}" />
    </form>

@@ -377,6 +377,7 @@ The present file will list all changes made to the project; according to the
 - `CommonITILObject::showActorAddFormOnCreate()`
 - `CommonITILValidation::alreadyExists()`
 - `CommonITILValidation::getTicketStatusNumber()`
+- `CommonITILValidation::getValidationStats()`
 - `CommonTreeDropdown::sanitizeSeparatorInCompletename()`
 - `CommonTreeDropdown::unsanitizeSeparatorInCompletename()`
 - `Computer_Item::countForAll()`
