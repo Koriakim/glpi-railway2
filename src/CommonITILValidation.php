@@ -1011,10 +1011,8 @@ abstract class CommonITILValidation extends CommonDBChild
 
     /**
      * Print validations summary (list of validations of the ITIL object)
-     *
-     * @return false|void
      */
-    public function showSummary(CommonITILObject $itil)
+    private function showSummary(CommonITILObject $itil): void
     {
         /**
          * @var array $CFG_GLPI
@@ -1032,7 +1030,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 )
             )
         ) {
-            return false;
+            return;
         }
 
         $tID    = $itil->fields['id'];
