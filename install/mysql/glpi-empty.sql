@@ -10191,3 +10191,10 @@ CREATE TABLE `glpi_itemtranslations_itemtranslations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS=1;
+#
+#
+#
+#
+#
+#
+#

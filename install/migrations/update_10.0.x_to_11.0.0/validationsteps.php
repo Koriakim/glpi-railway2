@@ -9,8 +9,6 @@
  *
  * @copyright 2015-2025 Teclib' and contributors.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
- * @var       \DBmysql $DB
- * @var       \Migration $migration
  *
  * ---------------------------------------------------------------------
  *
@@ -34,9 +32,21 @@
  * ---------------------------------------------------------------------
  */
 
-$migration->log('Preparing ValidationSteps migration', false);
+/**
+ * @var \DBmysql $DB
+ * @var \Migration $migration
+ **/
+
 $validation_tables = ['glpi_ticketvalidations', 'glpi_changevalidations'];
 $itil_tables = ['glpi_tickets', 'glpi_changes'];
+
+if (is_validationstep_migration_done($itil_tables, $DB, $migration)) {
+    $migration->log('ValidationSteps migration already done', true);
+
+    return;
+}
+
+$migration->log('Preparing ValidationSteps migration', false);
 
 // new object : ValidationStep
 create_validation_steps_table($migration);
@@ -87,13 +97,13 @@ function create_validation_steps_table(Migration $migration): void
 
 function insert_validation_steps_defaults(Migration $migration, \DBmysql $DB): void
 {
-    if (!$DB->tableExists(ValidationStep::getTable())) {
+    if (!$DB->tableExists('glpi_validationsteps')) {
         $migration->log('ValidationSteps table does not exist, skipping defaults insertion', true);
 
         return;
     }
 
-    $table_empty = (new DbUtils())->countElementsInTable(ValidationStep::getTable()) === 0;
+    $table_empty = (new DbUtils())->countElementsInTable('glpi_validationsteps') === 0;
     if (!$table_empty) {
         $migration->log('ValidationSteps table already filled, skipping defaults insertion', true);
 
@@ -139,7 +149,7 @@ function create_itils_validationsteps_table(Migration $migration): void
  */
 function add_validation_steps_in_validations_tables(Migration $migration, array $validation_tables): void
 {
-    $itils_validationsteps_foreign_key = ITIL_ValidationStep::getForeignKeyField();
+    $itils_validationsteps_foreign_key = 'itils_validationsteps_id';
     foreach ($validation_tables as $table) {
         $migration->addField(
             $table,
@@ -180,7 +190,7 @@ function add_approval_status_to_ticket_templates(Migration $migration): void
  */
 function add_validation_steps_in_itilvalidationtemplates(Migration $migration): void
 {
-    $validationsteps_foreign_key = ValidationStep::getForeignKeyField();
+    $validationsteps_foreign_key = 'validationsteps_id';
     $migration->addField(
         'glpi_itilvalidationtemplates',
         $validationsteps_foreign_key,
@@ -201,11 +211,22 @@ function add_validation_steps_in_itilvalidationtemplates(Migration $migration): 
  */
 function add_itils_validationstep_to_existings_itils(Migration $migration, array $validation_tables): void
 {
-    foreach ($validation_tables as $validation_table) {
-        /** @var \CommonITILValidation $change_class */
-        $change_class = getItemTypeForTable($validation_table);
-        $itil_class = $change_class::$itemtype;
-        $itil_fk = getForeignKeyFieldForItemType($itil_class);
+    foreach ($validation_tables as $validation_table)
+    {
+        /** @var class-string<\CommonITILValidation> $validation_classname */
+        $validation_classname = match($validation_table) {
+            'glpi_ticketvalidations' => \TicketValidation::class,
+            'glpi_changevalidations' => \ChangeValidation::class,
+            default => throw new \RuntimeException('Unexpected validation table: ' . $validation_table),
+        };
+
+        $itil_class = $validation_classname::$itemtype;
+        $itil_fk = match($itil_class) {
+            'Ticket' => 'tickets_id',
+            'Change' => 'changes_id',
+            default => throw new \RuntimeException('Unexpected itil class: ' . $itil_class),
+        };
+
         $default_validation_step = ValidationStep::getDefault(); // previous sql needs to be processed before
         $validations = getAllDataFromTable($validation_table, ['GROUPBY' => $itil_fk]); // TicketValidation or ChangeValidation data
         foreach ($validations as $validation) {
@@ -216,14 +237,14 @@ function add_itils_validationstep_to_existings_itils(Migration $migration, array
 
             // create itils_validationsteps
             $itils_validationstep_id = $migration->insertInTable(
-                ITIL_ValidationStep::getTable(),
+                'glpi_itils_validationsteps',
                 [
-                    ValidationStep::getForeignKeyField() => $default_validation_step->getID(),
+                    'validationsteps_id' => $default_validation_step->getID(),
                     'minimal_required_validation_percent' => $required_percent,
                 ]
             );
             // update itils validations (ticket, change) with the created itils_validationsteps
-            $update_validation_query = 'UPDATE ' . $validation_table . ' SET ' . ITIL_ValidationStep::getForeignKeyField() . ' = ' . $itils_validationstep_id . ' WHERE ' . $itil_fk . ' = ' . $validation[$itil_fk];
+            $update_validation_query = 'UPDATE ' . $validation_table . ' SET ' . 'itils_validationsteps_id' . ' = ' . $itils_validationstep_id . ' WHERE ' . $itil_fk . ' = ' . $validation[$itil_fk];
             $migration->addPostQuery($update_validation_query);
         }
     }
@@ -234,4 +255,12 @@ function remove_validation_percent_on_itils(Migration $migration, array $itil_ta
     foreach ($itil_tables as $table) {
         $migration->dropField($table, 'validation_percent');
     }
+}
+
+/**
+ * Check if the migration is already done by checking if validation_percent field is removed on first itil table
+ */
+function is_validationstep_migration_done($itil_tables, \DBmysql $DB, Migration $migration): bool
+{
+    return !$DB->fieldExists($itil_tables[0], 'validation_percent', false);
 }
