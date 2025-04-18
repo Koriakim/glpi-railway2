@@ -89,58 +89,61 @@ abstract class CommonITILValidationTest extends DbTestCase
     {
         $this->login();
         $default_validation_step_id = $this->getInitialDefaultValidationStep()->getID();
-
         $itil_class = $this->getITILClassname();
-        $itil_item = new $itil_class();
-        $itil_items_id = $itil_item->add([
+        $validation_class = $this->getValidationClassname();
+
+        // Create fist ITIL item
+        $itil_1 = $this->createItem($this->getITILClassname(), [
             'name'      => __FUNCTION__,
             'content'   => __FUNCTION__,
         ]);
-        $this->assertGreaterThan(0, $itil_items_id);
-
-        $validation_class = $this->getValidationClassname();
+        $itil_1_id = $itil_1->getID();
 
         // Test the current user cannot approve since there are no approvals
-        $this->assertFalse($validation_class::canValidate($itil_items_id));
+        $this->assertFalse($validation_class::canValidate($itil_1_id));
 
-        // Add user approval for current user
+        // 1 --- User can validate its own approval
+
         // create itil_validationstep
         $validationstep_classname = $itil_class::getValidationStepClassName();
         $itils_validationsteps = $this->createItem($validationstep_classname, ['validationsteps_id' => $default_validation_step_id, 'minimal_required_validation_percent' => 100]);
-        $validations_id_1_data = [
-            $itil_class::getForeignKeyField()   => $itil_items_id,
+
+        $validation_1 = $this->createItem($validation_class, [
+            $itil_class::getForeignKeyField()   => $itil_1_id,
             'itemtype_target'                   => 'User',
             'items_id_target'                   => $_SESSION['glpiID'],
             'comment_submission'                => __FUNCTION__,
             'itils_validationsteps_id' => $itils_validationsteps->getID(),
-        ];
+        ]);
 
-        $validation_1 = $this->createItem($validation_class, $validations_id_1_data);
-        $validations_id_1 = $validation_1->getID();
-        $this->assertTrue($validation_class::canValidate($itil_items_id));
+        $this->assertTrue($validation_class::canValidate($itil_1_id));
+
+        // 2 --- User cannot validate other user approval
 
         // Add user approval for other user
         $validation_2 = new $validation_class();
-        // additionnal data for TicketValidation (validationsteps)
-        $validations_id_2_data = [
-            $itil_class::getForeignKeyField()   => $itil_items_id,
+        $this->createItem($validation_class, [
+            $itil_class::getForeignKeyField()   => $itil_1_id,
             'itemtype_target'                   => 'User',
-            'items_id_target'                   => User::getIdByName('normal'), // Other user.
+            'items_id_target'                   => User::getIdByName('normal'), // Other user, not the logged in one
             'comment_submission'                => __FUNCTION__,
             'itils_validationsteps_id'          => $itils_validationsteps->getID()
-        ];
-        $this->createItem($validation_class, $validations_id_2_data)->getID();
+        ]);
 
-        // Test the current user can still approve since they still have an approval
-        $this->assertTrue($validation_class::canValidate($itil_items_id));
-        // Test the current user can specifically approve their own approval
+        // - Test the current user can still approve fist approval
+        $this->assertTrue($validation_class::canValidate($itil_1_id));
+
+        // Test the current user can answer approve their own approval
         $this->assertTrue($validation_1->canAnswer());
+
         // Test the current user cannot approve the other user's approval
         $this->assertFalse($validation_2->canAnswer());
+
         // Remove user approval for current user
-        $this->assertTrue($validation_1->delete(['id' => $validations_id_1]));
+        $this->assertTrue($validation_1->delete(['id' => $validation_1->getID()]));
+
         // Test the current user cannot still approve since the remaining approval isn't for them
-        $this->assertFalse($validation_class::canValidate($itil_items_id));
+        $this->assertFalse($validation_class::canValidate($itil_1_id));
 
         // Test the current user, as a substitute of the validator, can approve
         // without substitution period
@@ -157,7 +160,7 @@ abstract class CommonITILValidationTest extends DbTestCase
             'substitution_start_date' => 'NULL',
             'substitution_end_date' => 'NULL',
         ]);
-        $this->assertTrue($validation_class::canValidate($itil_items_id));
+        $this->assertTrue($validation_class::canValidate($itil_1_id));
 
         // Test the current user, as a substitute of the validator, can approve
         // with substitution period start date only
@@ -167,7 +170,7 @@ abstract class CommonITILValidationTest extends DbTestCase
             'substitution_start_date' => '2021-01-01 00:00:00',
             'substitution_end_date' => 'NULL',
         ]);
-        $this->assertTrue($validation_class::canValidate($itil_items_id));
+        $this->assertTrue($validation_class::canValidate($itil_1_id));
 
         // Test the current user, as a substitute of the validator, can approve
         // with substitution period start date only excluding now
@@ -177,7 +180,7 @@ abstract class CommonITILValidationTest extends DbTestCase
             'substitution_start_date' => (new \DateTime())->modify("+1 month")->format("Y-m-d h:i:s"),
             'substitution_end_date' => 'NULL',
         ]);
-        $this->assertFalse($validation_class::canValidate($itil_items_id));
+        $this->assertFalse($validation_class::canValidate($itil_1_id));
 
         // Test the current user, as a substitute of the validator, can approve
         // with substitution period end date only
@@ -187,7 +190,7 @@ abstract class CommonITILValidationTest extends DbTestCase
             'substitution_start_date' => 'NULL',
             'substitution_end_date' => (new \DateTime())->modify("+1 month")->format("Y-m-d h:i:s"),
         ]);
-        $this->assertTrue($validation_class::canValidate($itil_items_id));
+        $this->assertTrue($validation_class::canValidate($itil_1_id));
 
         // Test the current user, as a substitute of the validator, can approve
         // with substitution period end date only excluding now
@@ -197,7 +200,7 @@ abstract class CommonITILValidationTest extends DbTestCase
             'substitution_start_date' => 'NULL',
             'substitution_end_date' => '2021-01-01 00:00:00',
         ]);
-        $this->assertFalse($validation_class::canValidate($itil_items_id));
+        $this->assertFalse($validation_class::canValidate($itil_1_id));
 
         // Test the current user, as a substitute of the validator, can approve
         // with substitution period
@@ -207,7 +210,7 @@ abstract class CommonITILValidationTest extends DbTestCase
             'substitution_start_date' => '2021-01-01 00:00:00',
             'substitution_end_date' => (new \DateTime())->modify("+1 month")->format("Y-m-d h:i:s"),
         ]);
-        $this->assertTrue($validation_class::canValidate($itil_items_id));
+        $this->assertTrue($validation_class::canValidate($itil_1_id));
 
         // Test the current user, as a substitute of the validator, can approve
         // with substitution period
@@ -217,7 +220,7 @@ abstract class CommonITILValidationTest extends DbTestCase
             'substitution_start_date' => '2021-01-01 00:00:00',
             'substitution_end_date' => (new \DateTime())->modify("-1 month")->format("Y-m-d h:i:s"),
         ]);
-        $this->assertFalse($validation_class::canValidate($itil_items_id));
+        $this->assertFalse($validation_class::canValidate($itil_1_id));
     }
 
     public function testCanValidateGroup()
@@ -529,7 +532,6 @@ abstract class CommonITILValidationTest extends DbTestCase
         $this->login();
 
         $validation_class = $this->getValidationClassname();
-        /** @var \CommonITILValidation $validation */
         $validation = new $validation_class();
         //$validation::$mustBeAttached = false;
 
@@ -798,56 +800,49 @@ abstract class CommonITILValidationTest extends DbTestCase
     {
         $this->login();
 
-        /** Create a group with two users */
-        $group = new \Group();
-        $gid = (int)$group->add([
-            'name'   => 'Test group'
-        ]);
-        $this->assertGreaterThan(0, $gid);
+        // --- Arrange
 
-        $uid1 = getItemByTypeName('User', 'glpi', true);
-        $user = new User();
-        $uid2 = (int)$user->add([
+        /** Create a group with two users (existing one () and new ($user_approval) */
+        $group_1 = $this->createItem('Group', [            'name'   => 'Test group'        ]);
+        $group_1_id = (int)$group_1->getID();
+
+        $user_approval = $this->createItem(User::class, [
             'name'      => 'approval',
             'password'  => 'approval',
             'password2' => 'approval'
+        ], ['password', 'password2']);
+
+        // set new user with admin profile
+        $this->createItem(\Profile_User::class, [
+            'users_id'     => $user_approval->getID(),
+            'profiles_id'  => getItemByTypeName('Profile', 'admin', true),
+            'entities_id'  => 0
         ]);
-        $this->assertGreaterThan(0, $uid2);
-        $profile = new \Profile_User();
-        $this->assertGreaterThan(
-            0,
-            (int)$profile->add([
-                'users_id'     => $uid2,
-                'profiles_id'  => getItemByTypeName('Profile', 'admin', true),
-                'entities_id'  => 0
-            ])
-        );
 
-        $guser = new \Group_User();
-        $this->assertGreaterThan(
-            0,
-            (int)$guser->add([
-                'groups_id' => $gid,
-                'users_id'  => $uid1
-            ])
-        );
+        // set new user in group 1
+        $this->createItem('Group_User', [
+            'groups_id' => $group_1->getID(),
+            'users_id'  => $user_approval->getID(),
+        ]);
 
-        $guser = new \Group_User();
-        $this->assertGreaterThan(
-            0,
-            (int)$guser->add([
-                'groups_id' => $gid,
-                'users_id'  => $uid2
-            ])
-        );
+        // set existing user in group 1
+        $user_glpi = getItemByTypeName('User', 'glpi');
+        $this->createItem('Group_User', [
+            'groups_id' => $group_1->getID(),
+            'users_id'  => $user_glpi->getID(),
+        ]);
 
-        /** Create a rule on ticket creation and update that will
-         * request an approval from previously created group */
+        /** Create a rule on ticket
+         * - on creation and update
+         * - condition : ticket is assigned to group 1
+         * - action : add a validation request for group 1
+         */
         $ruleticket = new \RuleTicket();
         $rulecrit = new \RuleCriteria();
         $condition = \RuleTicket::ONUPDATE + \RuleTicket::ONADD;
         $ruleaction = new \RuleAction();
 
+        // create rule
         $ruletid = $ruleticket->add($ruletinput = [
             'name' => "test rule add",
             'match' => 'AND',
@@ -858,145 +853,144 @@ abstract class CommonITILValidationTest extends DbTestCase
         ]);
         $this->checkInput($ruleticket, $ruletid, $ruletinput);
 
+        // add criteria to rule
         $crit_id = $rulecrit->add($crit_input = [
             'rules_id' => $ruletid,
             'criteria' => '_groups_id_assign',
             'condition' => Rule::PATTERN_IS,
-            'pattern' => $gid
+            'pattern' => $group_1_id
         ]);
         $this->checkInput($rulecrit, $crit_id, $crit_input);
 
+        // add action to rule
         $act_id = $ruleaction->add($act_input = [
             'rules_id' => $ruletid,
             'action_type' => 'add_validation',
             'field' => 'groups_id_validate',
-            'value' => $gid
+            'value' => $group_1_id
         ]);
         $this->checkInput($ruleaction, $act_id, $act_input);
 
-        /** Create a ticket, no approval requested */
-        $ticket = new Ticket();
-        $tickets_id = $ticket->add($ticket_input = [
+        // --- Act
+
+        // --- Test 1 : Create a ticket that will not trigger the rule : test that no approval requested created
+        $ticket_1 = $this->createItem(Ticket::class,  [
             'name' => "test ticket, will not trigger on rule",
             'content' => "test",
         ]);
-        $tid = $tickets_id; //keep trace of this one
-        $this->checkInput($ticket, $tickets_id, $ticket_input);
-        $this->assertEquals(CommonITILValidation::NONE, (int)$ticket->fields['global_validation']);
 
+        $this->assertEquals(CommonITILValidation::NONE, (int)$ticket_1->fields['global_validation']);
         $this->assertEquals(
             0,
             countElementsInTable(
                 TicketValidation::getTable(),
-                ['tickets_id' => $tickets_id]
+                ['tickets_id' => $ticket_1->getID()]
             )
         );
 
-        /** Create a ticket, approval requested */
-        $ticket = new Ticket();
-        $tickets_id = $ticket->add($ticket_input = [
+        // --- Test 2 : Create a ticket that will trigger the rule : test that an approval request is created */
+        $ticket_2 = $this->createItem(Ticket::class,  [
             'name' => "test ticket, approval will be added",
             'content' => "test",
-            '_groups_id_assign' => $gid
+            '_groups_id_assign' => $group_1->getID()
         ]);
-        unset($ticket_input['_groups_id_assign']);
-        $this->checkInput($ticket, $tickets_id, $ticket_input);
+
+        // one validation for each user in group 1 (user_glpi and user_approval)
+        $this->assertEquals(
+            2,
+            countElementsInTable(
+                TicketValidation::getTable(),
+                ['tickets_id' => $ticket_2->getID()]
+            )
+        );
+
+        $this->assertEquals(CommonITILValidation::WAITING, (int)$ticket_2->fields['global_validation']);
+
+        // --- Test 3 : update ticket_1 trigger rule : test that 2 approval request are created */
+        $ticket_1 = $this->updateItem(Ticket::class, $ticket_1->getID(), [
+            'name' => 'test ticket, approval will be also added',
+            '_itil_assign' => ['_type' => 'group', 'groups_id' => $group_1->getID()],
+        ]);
 
         $this->assertEquals(
             2,
             countElementsInTable(
                 TicketValidation::getTable(),
-                ['tickets_id' => $tickets_id]
+                ['tickets_id' => $ticket_1->getID()]
             )
         );
 
-        $this->assertEquals(CommonITILValidation::WAITING, (int)$ticket->fields['global_validation']);
-
-        $ticket->getFromDB($tid);
-        $this->assertEquals(CommonITILValidation::NONE, (int)$ticket->fields['global_validation']);
-
-        // update ticket title and trigger rule on title updating
-        $this->assertTrue(
-            $ticket->update([
-                'id' => $tid,
-                'name' => 'test ticket, approval will be also added',
-                '_itil_assign' => ['_type' => 'group', 'groups_id' => $gid],
-                'global_validation' => CommonITILValidation::NONE
-            ])
-        );
-
-        $this->assertEquals(
-            2,
-            countElementsInTable(
-                TicketValidation::getTable(),
-                ['tickets_id' => $tid]
-            )
-        );
-
-        $this->assertTrue($ticket->getFromDB($tid));
-        $this->assertValidationStatusEquals(CommonITILValidation::WAITING, (int)$ticket->fields['global_validation']);
-
-        $this->assertTrue($ticket->getFromDB($tid));
+        $this->assertValidationStatusEquals(CommonITILValidation::WAITING, (int)$ticket_1->fields['global_validation']);
 
         // accept first validation - implies that validation required is at 0%
         $this->login('glpi', 'glpi');
 
-        $validation = new TicketValidation();
+        $validation_glpi = new TicketValidation();
         $this->assertTrue(
-            $validation->getFromDBByCrit([
-                'tickets_id' => $tid,
+            $validation_glpi->getFromDBByCrit([
+                'tickets_id' => $ticket_1->getID(),
                 'itemtype_target' => 'User',
-                'items_id_target' => $uid1,
+                'items_id_target' => $user_glpi->getID(),
             ])
         );
 
         // update itil_validation step to require 0%, so the first validation ACCEPTED will cause the ticket global_validation to be ACCEPTED
+        // update validation step of ticket 1 validation to require 0% for the first validation
         $this->updateItem(
             TicketValidationStep::class,
-            $validation->fields['itils_validationsteps_id'],
+            $validation_glpi->fields['itils_validationsteps_id'],
             ['minimal_required_validation_percent' => 0]
         );
 
         // update created validation status to ACCEPTED
         $this->assertTrue(
-            $validation->update([
-                'id' => $validation->fields['id'],
+            $validation_glpi->update([
+                'id' => $validation_glpi->fields['id'],
                 'status' => CommonITILValidation::ACCEPTED
             ])
         );
 
-        $this->assertTrue($ticket->getFromDB($tid));
-        $this->assertValidationStatusEquals(CommonITILValidation::ACCEPTED, (int)$ticket->fields['global_validation']);
+        $this->assertTrue($ticket_1->getFromDB($ticket_1->getID()));
+        $this->assertValidationStatusEquals(CommonITILValidation::ACCEPTED, (int)$ticket_1->fields['global_validation']);
 
-        // refuse other one
+        // --- Test : refuse other one fails because of missing comment
         $this->login('approval', 'approval');
-        $validation = new TicketValidation();
+
+        $validation_approval = new TicketValidation();
         $this->assertTrue(
-            $validation->getFromDBByCrit([
-                'tickets_id' => $tickets_id,
+            $validation_approval->getFromDBByCrit([
+                'tickets_id' => $ticket_1->getID(),
                 'itemtype_target' => 'User',
-                'items_id_target' => $uid2,
+                'items_id_target' => $user_approval->getID(),
             ])
         );
 
-        $res = $validation->update([
-            'id' => $validation->fields['id'],
+        $res = $validation_approval->update([
+            'id' => $validation_approval->fields['id'],
             'status' => CommonITILValidation::REFUSED
         ]);
-        $this->hasSessionMessages(ERROR, ['If approval is denied, specify a reason.']);
         $this->assertFalse($res);
+        $this->hasSessionMessages(ERROR, ['If approval is denied, specify a reason.']);
 
-        //retry with comment / img paste and doc upload
+        // retry with comment / img paste and doc upload on ticket 2
+        // Test : document upload and status change
+
+        // update ticket 2 validation step to require 100%
+        $this->updateItem(
+            TicketValidationStep::class,
+            $validation_approval->fields['itils_validationsteps_id'],
+            ['minimal_required_validation_percent' => 100]
+        );
+
         $base64Image = base64_encode(file_get_contents(FIXTURE_DIR . '/uploads/foo.png'));
         $filename_img = '5e5e92ffd9bd91.11111111image_paste22222222.png';
         $filename_txt = '5e5e92ffd9bd91.11111111' . 'foo.txt';
         copy(FIXTURE_DIR . '/uploads/foo.png', GLPI_TMP_DIR . '/' . $filename_img);
         copy(FIXTURE_DIR . '/uploads/foo.txt', GLPI_TMP_DIR . '/' . $filename_txt);
-
-        $this->assertTrue(
-            $validation->update([
-                'id' => $validation->fields['id'],
-                'tickets_id' => $tickets_id,
+        $this->updateItem(TicketValidation::class, $validation_approval->getID(),
+            [
+                'id' => $validation_approval->fields['id'],
+                'tickets_id' => $ticket_1->getID(),
                 'status' => CommonITILValidation::REFUSED,
                 'comment_validation' => 'Meh &lt;p&gt; &lt;/p&gt;&lt;p&gt;&lt;img id="3e29dffe-0237ea21-5e5e7034b1d1a1.00000000"'
                     . ' src="data:image/png;base64,' . $base64Image . '" width="12" height="12" /&gt;&lt;/p&gt;',
@@ -1012,10 +1006,11 @@ abstract class CommonITILValidationTest extends DbTestCase
                     '5e5e92ffd9bd91.11111111',
                     '5e5e92ffd9bd91.11111111',
                 ]
-            ])
+            ],
+            ['comment_validation'] // contents are changed before db update
         );
 
-        //check document upload
+        // check document upload
         $this->assertEquals(
             2,
             countElementsInTable(
@@ -1024,18 +1019,19 @@ abstract class CommonITILValidationTest extends DbTestCase
             )
         );
 
-        $this->assertTrue($ticket->getFromDB($tickets_id));
-        $this->assertValidationStatusEquals(CommonITILValidation::REFUSED, (int)$ticket->fields['global_validation']);
+        $this->assertTrue($ticket_1->getFromDB($ticket_1->getID()));
 
-        //require 100% for global status to be changed
+        // there is now one refused validation and a waiting one, validation_step requirement is 0%, so ticket global_validation is REFUSED
+        $this->assertValidationStatusEquals(CommonITILValidation::REFUSED, (int)$ticket_1->fields['global_validation']);
+
+        // require 100% for global status to be changed
         assert(100 === $this->getInitialDefaultValidationStep()->fields['minimal_required_validation_percent']);
         /** Create a ticket, approval requested */
         $ticket = new Ticket();
         $tickets_id_2 = $ticket->add($ticket_input = [
             'name' => "test ticket, approval will be added",
             'content' => "test",
-            '_groups_id_assign' => $gid,
-//            'validation_percent' => 100 // now ignored, defined in itil validation step
+            '_groups_id_assign' => $group_1_id,
         ]);
         unset($ticket_input['_groups_id_assign']);
         $this->checkInput($ticket, $tickets_id_2, $ticket_input);
@@ -1058,7 +1054,7 @@ abstract class CommonITILValidationTest extends DbTestCase
             $validation->getFromDBByCrit([
                 'tickets_id' => $tickets_id_2,
                 'itemtype_target' => 'User',
-                'items_id_target' => $uid1,
+                'items_id_target' => $user_glpi->getID(),
             ])
         );
 
@@ -1068,7 +1064,7 @@ abstract class CommonITILValidationTest extends DbTestCase
         $validation->getFromDBByCrit([
             'tickets_id' => $tickets_id_2,
             'itemtype_target' => 'User',
-            'items_id_target' => $uid1,
+            'items_id_target' => $user_glpi->getID(),
         ]);
         $this->updateItem(
             TicketValidationStep::class,
@@ -1094,11 +1090,11 @@ abstract class CommonITILValidationTest extends DbTestCase
             $validation->getFromDBByCrit([
                 'tickets_id' => $tickets_id_2,
                 'itemtype_target' => 'User',
-                'items_id_target' => $uid2,
+                'items_id_target' => $user_approval->getID(),
             ])
         );
 
-        $res = $validation->update([
+        $validation->update([
             'id' => $validation->fields['id'],
             'status' => CommonITILValidation::ACCEPTED
         ]);
@@ -1106,6 +1102,7 @@ abstract class CommonITILValidationTest extends DbTestCase
         $this->assertTrue($ticket->getFromDB($tickets_id_2));
         $this->assertValidationStatusEquals(CommonITILValidation::ACCEPTED, (int)$ticket->fields['global_validation']);
     }
+
     public function testCreateValidationCreateAnAssociatedITILValidationStep(): void
     {
         $this->login();
