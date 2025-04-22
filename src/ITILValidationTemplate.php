@@ -51,7 +51,7 @@ class ITILValidationTemplate extends AbstractITILChildTemplate
 
     public static function getTypeName($nb = 0)
     {
-        return _n('Validation template', 'Validation templates', $nb);
+        return _n('Approval template', 'Approval templates', $nb);
     }
 
     public function getAdditionalFields()
@@ -59,7 +59,7 @@ class ITILValidationTemplate extends AbstractITILChildTemplate
         return [
             [
                 'name' => 'validationsteps_id',
-                'label' => __('Validation step'),
+                'label' => __('Approval step'),
                 'type' => 'dropdownValue',
                 'required' => true,
             ],

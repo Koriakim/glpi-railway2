@@ -7438,8 +7438,8 @@ abstract class CommonITILObject extends CommonDBTM
                 'type'          => 'ITILValidation',
                 'class'         => $validation::getType(),
                 'icon'          => CommonITILValidation::getIcon(),
-                'label'         => _x('button', 'Ask for validation'),
-                'short_label'   => _x('button', 'Validation'),
+                'label'         => _x('button', 'Ask for approval'),
+                'short_label'   => _x('button', 'Approval'),
                 'template'      => 'components/itilobject/timeline/form_validation.html.twig',
                 'item'          => $validation,
                 'hide_in_menu'  => !$canadd_validation

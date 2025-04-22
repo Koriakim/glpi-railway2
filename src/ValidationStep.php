@@ -150,7 +150,7 @@ class ValidationStep extends \CommonDropdown
             ],
             [
                 'name'  => 'minimal_required_validation_percent',
-                'label' => __('Minimal required validation percent'),
+                'label' => __('Minimal required approval percent'),
                 'type'  => 'integer',
                 'min'   => 0,
                 'max'   => 100
@@ -164,7 +164,7 @@ class ValidationStep extends \CommonDropdown
     {
         $vs = new self();
         if (!$vs->getFromDBByCrit(['is_default' => 1])) {
-            throw new LogicException('No default validation step found');
+            throw new LogicException('No default approval step found');
         };
 
         return $vs;
@@ -181,7 +181,7 @@ class ValidationStep extends \CommonDropdown
         return [
             [
                 'id' => 1,
-                'name' => 'Validation',
+                'name' => 'Approval',
                 'minimal_required_validation_percent' => 100,
                 'is_default' => 1,
                 'date_creation' => date('Y-m-d H:i:s'),
@@ -207,7 +207,7 @@ class ValidationStep extends \CommonDropdown
     {
         $all_except_this = $this->find([['NOT' => ['id' => $this->getID()]]]);
         if (empty($all_except_this)) {
-            throw new LogicException('no other validation to set as default but there should always remain a validation step - this should not happen, review the code');
+            throw new LogicException('no other approval to set as default but there should always remain a approval step - this should not happen, review the code');
         }
         $first = array_shift($all_except_this);
         (new self())->update([

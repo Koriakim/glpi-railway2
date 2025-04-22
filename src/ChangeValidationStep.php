@@ -39,6 +39,6 @@ final class ChangeValidationStep extends ITIL_ValidationStep
 
     public static function getTypeName($nb = 0)
     {
-        return _n('Change Validation step', 'Change Validation steps', $nb);
+        return _n('Change Approval step', 'Change Approval steps', $nb);
     }
 }

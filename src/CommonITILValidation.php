@@ -491,7 +491,7 @@ abstract class CommonITILValidation extends CommonDBChild
 
         $itil = $this->getItem();
         if (false === $itil) {
-            throw new \LogicException('Trying to update a validation not linked to an ITIL object.');
+            throw new \LogicException('Trying to update an approval not linked to an ITIL object.');
         }
         /** @var \CommonITILObject $itil */
 
@@ -642,7 +642,7 @@ abstract class CommonITILValidation extends CommonDBChild
 
         $tab = [
             self::WAITING  => __('Waiting for approval'),
-            self::REFUSED  => _x('validation', 'Refused'),
+            self::REFUSED  => _x('Approval', 'Refused'),
             self::ACCEPTED => __('Granted')
         ];
         if ($global) {
@@ -1124,7 +1124,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 $itil_edit_js_identifier,
                 $url,
                 [
-                    'title'           => __('Update validation step'),
+                    'title'           => __('Update approval step'),
                     'reloadonclose'   => true,
                     'display'         => false,
                     'height'          => 120,
@@ -1136,7 +1136,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 $itils_validationsteps = $itil::getValidationStepInstance();
                 $itils_validationsteps->getFromDB($itils_validationsteps_id);
                 if (!$itils_validationsteps->getFromDB($itils_validationsteps_id)) {
-                    throw new Exception("itil Validation step not found " . $itils_validationsteps_id);
+                    throw new Exception("itil Approval step not found " . $itils_validationsteps_id);
                 }
 
                 $validation_step_status = $itils_validationsteps::getITILValidationStepStatus($itils_validationsteps_id);
@@ -2047,7 +2047,7 @@ HTML;
             $itils_validationsteps_id = $ivs->fields['id'];
             $_validation = new static();
             if (!$_validation->update(['id' => $this->getID(), 'itils_validationsteps_id' => $itils_validationsteps_id])) {
-                Session::addMessageAfterRedirect('Failed to update associated validation step while adding validation.');
+                Session::addMessageAfterRedirect('Failed to update associated approval step while adding approval.');
             };
             unset($_validation);
         } else {
@@ -2055,13 +2055,13 @@ HTML;
             // load referenced ValidationStep
             $vs = new ValidationStep();
             if (!$vs->getFromDB($validationsteps_id)) {
-                Session::addMessageAfterRedirect('Failed to load validation step while adding validation step.');
+                Session::addMessageAfterRedirect('Failed to load approval step while adding approval step.');
             };
 
             // create ITIL_ValidationStep
             $itil = $this->getItem();
             if (!($itil instanceof CommonITILObject)) {
-                throw new \LogicException('Trying to add a validation step to an unexisting linked ITIL object.');
+                throw new \LogicException('Trying to add a approval step to an unexisting linked ITIL object.');
             }
             $itil_validationstep = $itil::getValidationStepInstance();
             $itil_validationstep->add([
@@ -2096,7 +2096,7 @@ HTML;
         }
 
         if (!$itil::getValidationStepInstance()->delete(['id' => $itils_validationsteps_id])) {
-            Session::addMessageAfterRedirect('Failed to delete unused validation step.');
+            Session::addMessageAfterRedirect('Failed to delete unused approval step.');
         };
     }
 
@@ -2111,7 +2111,7 @@ HTML;
                 '_from_itilvalidation' => true
             ])
         ) {
-            Session::addMessageAfterRedirect('Failed to update Itil global validation status.');
+            Session::addMessageAfterRedirect('Failed to update Itil global approval status.');
         }
     }
 }
