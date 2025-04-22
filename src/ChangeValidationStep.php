@@ -32,7 +32,7 @@
  * ---------------------------------------------------------------------
  */
 
-class ChangeValidationStep extends ITIL_ValidationStep
+final class ChangeValidationStep extends ITIL_ValidationStep
 {
     public static $rightname = 'changevalidation';
     public static string $validation_classname = ChangeValidation::class;

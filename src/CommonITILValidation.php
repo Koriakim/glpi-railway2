@@ -1119,7 +1119,7 @@ abstract class CommonITILValidation extends CommonDBChild
             ];
 
             $itil_edit_js_identifier = 'itilvalidation_edit_' . $itils_validationsteps_id;
-            $url = $itil::getValidationStepClassName()::getFormURLWithId($itils_validationsteps_id); // @todoseb changer in id surement
+            $url = $itil::getValidationStepClassName()::getFormURLWithId($itils_validationsteps_id);
             $validations[$itils_validationsteps_id]['edit_link_js']['js'] = Ajax::createIframeModalWindow(
                 $itil_edit_js_identifier,
                 $url,

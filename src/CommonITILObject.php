@@ -10429,6 +10429,10 @@ abstract class CommonITILObject extends CommonDBTM
         return null;
     }
 
+
+    /**
+     * @return class-string<\ITIL_ValidationStep>|null
+     */
     public static function getValidationStepClassName(): ?string
     {
         $validation_class = static::class . 'ValidationStep';

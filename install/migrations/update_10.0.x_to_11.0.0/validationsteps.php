@@ -87,7 +87,7 @@ function create_validation_steps_table(Migration $migration): void
 
     $migration->addPreQuery($query);
     // $migration needs to be executed before adding keys
-    // because addKey() ckecks if key exists, so the table must exists
+    // because addKey() checks if key exists, so the table must exists
     $migration->executeMigration();
 
     $migration->addKey('glpi_validationsteps', 'name');
@@ -97,10 +97,10 @@ function create_validation_steps_table(Migration $migration): void
 
 function insert_validation_steps_defaults(Migration $migration, \DBmysql $DB): void
 {
-    if (!$DB->tableExists('glpi_validationsteps')) {
-        $migration->log('ValidationSteps table does not exist, skipping defaults insertion', true);
-
-        return;
+    if (!$DB->tableExists(ValidationStep::getTable())) {
+        $message = 'ValidationSteps table does not exist, skipping defaults insertion';
+        $migration->log($message, true);
+        throw new \LogicException($message);
     }
 
     $table_empty = (new DbUtils())->countElementsInTable('glpi_validationsteps') === 0;
@@ -114,14 +114,7 @@ function insert_validation_steps_defaults(Migration $migration, \DBmysql $DB): v
     foreach ($defaults as $values) {
         $values = array_map([$DB, 'escape'], $values);
         $migration->addPostQuery(
-            sprintf(
-                'INSERT INTO `glpi_validationsteps` (`name`, `minimal_required_validation_percent`, `is_default`, `date_mod`, `date_creation`) VALUES ("%s", "%s", "%s", "%s", "%s")',
-                $values['name'],
-                $values['minimal_required_validation_percent'],
-                $values['is_default'],
-                $values['date_mod'],
-                $values['date_creation']
-            )
+            $DB->buildInsert('glpi_validationsteps', $values)
         );
     }
 }
@@ -211,17 +204,16 @@ function add_validation_steps_in_itilvalidationtemplates(Migration $migration): 
  */
 function add_itils_validationstep_to_existings_itils(Migration $migration, array $validation_tables): void
 {
-    foreach ($validation_tables as $validation_table)
-    {
+    foreach ($validation_tables as $validation_table) {
         /** @var class-string<\CommonITILValidation> $validation_classname */
-        $validation_classname = match($validation_table) {
+        $validation_classname = match ($validation_table) {
             'glpi_ticketvalidations' => \TicketValidation::class,
             'glpi_changevalidations' => \ChangeValidation::class,
             default => throw new \RuntimeException('Unexpected validation table: ' . $validation_table),
         };
 
         $itil_class = $validation_classname::$itemtype;
-        $itil_fk = match($itil_class) {
+        $itil_fk = match ($itil_class) {
             'Ticket' => 'tickets_id',
             'Change' => 'changes_id',
             default => throw new \RuntimeException('Unexpected itil class: ' . $itil_class),
