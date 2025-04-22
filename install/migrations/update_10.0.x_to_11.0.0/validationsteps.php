@@ -105,9 +105,9 @@ function insert_validation_steps_defaults(Migration $migration, \DBmysql $DB): v
 
     $table_empty = (new DbUtils())->countElementsInTable('glpi_validationsteps') === 0;
     if (!$table_empty) {
-        $migration->log('ValidationSteps table already filled, skipping defaults insertion', true);
-
-        return;
+        $message = 'ValidationSteps table already filled, skipping defaults insertion';
+        $migration->log($message, true);
+        throw new \LogicException($message);
     }
 
     $defaults = ValidationStep::getDefaults();

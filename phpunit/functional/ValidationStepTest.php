@@ -384,6 +384,6 @@ class ValidationStepTest extends \DbTestCase
     // --- helpers
     private function getInitialDefault(): \ValidationStep
     {
-        return getItemByTypeName(\ValidationStep::class, 'Validation');
+        return getItemByTypeName(\ValidationStep::class, 'Approval');
     }
 }

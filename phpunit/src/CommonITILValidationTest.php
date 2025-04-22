@@ -874,7 +874,7 @@ abstract class CommonITILValidationTest extends DbTestCase
         // --- Act
 
         // --- Test 1 : Create a ticket that will not trigger the rule : test that no approval requested created
-        $ticket_1 = $this->createItem(Ticket::class,  [
+        $ticket_1 = $this->createItem(Ticket::class, [
             'name' => "test ticket, will not trigger on rule",
             'content' => "test",
         ]);
@@ -889,7 +889,7 @@ abstract class CommonITILValidationTest extends DbTestCase
         );
 
         // --- Test 2 : Create a ticket that will trigger the rule : test that an approval request is created */
-        $ticket_2 = $this->createItem(Ticket::class,  [
+        $ticket_2 = $this->createItem(Ticket::class, [
             'name' => "test ticket, approval will be added",
             'content' => "test",
             '_groups_id_assign' => $group_1->getID()
@@ -987,7 +987,9 @@ abstract class CommonITILValidationTest extends DbTestCase
         $filename_txt = '5e5e92ffd9bd91.11111111' . 'foo.txt';
         copy(FIXTURE_DIR . '/uploads/foo.png', GLPI_TMP_DIR . '/' . $filename_img);
         copy(FIXTURE_DIR . '/uploads/foo.txt', GLPI_TMP_DIR . '/' . $filename_txt);
-        $this->updateItem(TicketValidation::class, $validation_approval->getID(),
+        $this->updateItem(
+            TicketValidation::class,
+            $validation_approval->getID(),
             [
                 'id' => $validation_approval->fields['id'],
                 'tickets_id' => $ticket_1->getID(),
