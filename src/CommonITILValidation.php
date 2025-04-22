@@ -1127,6 +1127,7 @@ abstract class CommonITILValidation extends CommonDBChild
                     'title'           => __('Update validation step'),
                     'reloadonclose'   => true,
                     'display'         => false,
+                    'height'          => 120,
                 ]
             );
             $validations[$itils_validationsteps_id]['edit_link_js']['target'] = "$itil_edit_js_identifier";
