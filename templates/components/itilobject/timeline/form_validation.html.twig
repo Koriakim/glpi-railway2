@@ -178,20 +178,21 @@
             <input type="hidden" name="{{ item.getForeignKeyField() }}" value="{{ item.fields['id'] }}" />
 
             <div class="card-body">
-                {% if item.isNewItem() %}
-                   {# Validation template #}
-                   {{ fields.dropdownField(
-                      'ITILValidationTemplate',
-                      'itilvalidationtemplates_id',
-                      '',
-                      _n('Template', 'Templates', 1),
-                      {
-                         'full_width': true,
-                         'on_change': 'itilvalidationtemplate_update' ~ rand ~ '(this.value);',
-                         'entity': item.fields['entities_id'],
-                         'rand': rand,
-                      },
-                    ) }}
+               {% if item.isNewItem() %}
+                  {# Validation template #}
+                  {{ fields.dropdownField(
+                     'ITILValidationTemplate',
+                     'itilvalidationtemplates_id',
+                     '',
+                     _n('Template', 'Templates', 1),
+                     {
+                        'full_width': true,
+                        'on_change': 'itilvalidationtemplate_update' ~ rand ~ '(this.value);',
+                        'entity': item.fields['entities_id'],
+                        'rand': rand,
+                     },
+                  ) }}
+               {% endif %}
 
                {# Validation step #}
                {{ fields.dropdownField(
@@ -202,9 +203,9 @@
                   {
                      'full_width': true,
                      'rand': rand,
+                     'required': true,
                   }
                ) }}
-                {% endif %}
 
                 {# Requester #}
                 {{ fields.readOnlyField(
