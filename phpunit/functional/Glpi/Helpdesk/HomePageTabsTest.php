@@ -128,7 +128,7 @@ final class HomePageTabsTest extends DbTestCase
         $this->assertEquals([
             'Ongoing tickets',
             'Solved tickets',
-            'RSS feed',
+            'RSS feeds',
         ], $tabs);
     }
 
