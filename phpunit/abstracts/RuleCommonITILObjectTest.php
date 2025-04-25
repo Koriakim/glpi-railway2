@@ -1675,8 +1675,6 @@ abstract class RuleCommonITILObjectTest extends DbTestCase
     {
         $this->login();
         // arrange : create a rule (criterion, approval action creation, validation step creation action)
-        // @todoseb voir si l'ordre des actions est important
-        // @todoseb tester avec action en plus : users_id_validate
         $validationstep = $this->createValidationStep(100);
         assert(false == $validationstep->fields['is_default'], 'test ValidationStep must not be the default to unsure rule is applied.');
         $rule_classname = $this->getTestedClass();

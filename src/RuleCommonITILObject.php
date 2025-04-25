@@ -180,22 +180,15 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
                                 $output['_add_validation']['group_any'][] = $action->fields["value"];
                                 break;
 
-                            case 'users_id_validate':
-                                $output['_add_validation'][] = $action->fields["value"];
-                                break;
-
                             case 'responsible_id_validate':
                                 $output['_add_validation'][] = 'requester_responsible';
                                 break;
 
-//                            case 'validation_percent':
-//                                $output[$action->fields["field"]] = $action->fields["value"];
-//                                break;
-
                             case 'validationsteps_id':
-                                $output['validationsteps_id'] = $action->fields["value"];
+                                $output['_validationsteps_id'] = $action->fields["value"];
                                 break;
 
+                            case 'users_id_validate':
                             default:
                                 $output['_add_validation'][] = $action->fields["value"];
                                 break;
@@ -967,10 +960,10 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
             $actions['users_id_validate_assign_supervisor']['force_actions'] = ['add_validation'];
 
             // choose validation step (template) for approval
-            $actions['validationsteps_id']['name']                      = __('Approval request to validation step');
+            $actions['validationsteps_id']['name']                      = __('Set approval request step');
             $actions['validationsteps_id']['type']                      = 'dropdown';
             $actions['validationsteps_id']['table']                     = 'glpi_validationsteps';
-            $actions['validationsteps_id']['force_actions']             = ['assign'];
+            $actions['validationsteps_id']['force_actions']             = ['add_validation'];
         }
 
         // set request source
