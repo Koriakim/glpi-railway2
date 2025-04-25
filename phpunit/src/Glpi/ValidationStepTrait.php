@@ -74,7 +74,8 @@ trait ValidationStepTrait
         array $validations_statuses,
         CommonITILObject $itil,
         ?int $expected_status = null
-    ): TicketValidationStep|ChangeValidationStep {
+    ): \ITIL_ValidationStep
+    {
         assert(!empty($validations_statuses), '$validations_statuses must not be empty');
 
         $itil_validationstep_id = null;

@@ -49,7 +49,7 @@ use User;
 
 /* Test for inc/commonitilvalidation.class.php */
 
-abstract class CommonITILValidationTest extends DbTestCase
+abstract class CommonITILApprovalTest extends DbTestCase
 {
     use ValidationStepTrait;
 
@@ -59,7 +59,8 @@ abstract class CommonITILValidationTest extends DbTestCase
      */
     protected function getValidationClassname(): string
     {
-        $test_class = static::class;
+        $test_class = str_replace('Approval', 'Validation', static::class);
+
         // Rule class has the same name as the test class but in the global namespace
         return preg_replace('/Test$/', '', substr(strrchr($test_class, '\\'), 1));
     }
@@ -1320,7 +1321,6 @@ abstract class CommonITILValidationTest extends DbTestCase
         /** Create a itil, approval requested */
         $itil = $this->createItem($this->getITILClassname(), $input);
 
-//        $itils_validationsteps_id = ;
         $this->createItem($this->getValidationClassname(), [
             $itil::getForeignKeyField()      => $itil->getID(),
             'itemtype_target' => 'User',

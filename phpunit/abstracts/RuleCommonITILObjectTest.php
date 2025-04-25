@@ -39,6 +39,7 @@ use CommonITILValidation;
 use DbTestCase;
 use Entity;
 use Generator;
+use Glpi\PHPUnit\Tests\Glpi\ValidationStepTrait;
 use Group;
 use Group_Ticket;
 use Group_User;
@@ -55,11 +56,14 @@ use TaskTemplate;
 use Ticket;
 use User;
 
-abstract class RuleCommonITILObject extends DbTestCase
+abstract class RuleCommonITILObjectTest extends DbTestCase
 {
+    use ValidationStepTrait;
+
     /**
-     * Return the name of the Rule class this test class tests
-     * @return string
+     * Return the name of the Rule class this test class tests (RuleTicket, ChangeTicket, ...)
+     *
+     * @return class-string<\RuleCommonITILObject>
      */
     protected function getTestedClass(): string
     {
@@ -69,7 +73,8 @@ abstract class RuleCommonITILObject extends DbTestCase
     }
 
     /**
-     * Get an instance of the tested Rule class
+     * Get an instance of the tested Rule class, TicketRule, ChangeRule, ...
+     *
      * @return \RuleCommonITILObject
      */
     protected function getRuleInstance(): \RuleCommonITILObject
@@ -1659,6 +1664,60 @@ abstract class RuleCommonITILObject extends DbTestCase
         // Check that the rule was executed
         $this->assertEquals($action_value, $itil->fields['global_validation']);
     }
+
+    /**
+     * Test Rule Action that set a choosen validation step for the created approval
+     *
+     * - Rule to create an approval
+     * - Rule to assigne the validation step
+     */
+    public function testAssignValidationStep(): void
+    {
+        $this->login();
+        // arrange : create a rule (criterion, approval action creation, validation step creation action)
+        // @todoseb voir si l'ordre des actions est important
+        // @todoseb tester avec action en plus : users_id_validate
+        $validationstep = $this->createValidationStep(100);
+        assert(false == $validationstep->fields['is_default'], 'test ValidationStep must not be the default to unsure rule is applied.');
+        $rule_classname = $this->getTestedClass();
+        $rule_builder = new RuleBuilder(__FUNCTION__, $rule_classname);
+        $rule_builder->setEntity(0);
+        $rule_builder->addCriteria('priority', Rule::PATTERN_IS, '6');
+        $rule_builder->addAction('add_validation', 'users_id_validate', getItemByTypeName(User::class, TU_USER, true));
+        $rule_builder->addAction('add_validation', 'validationsteps_id', $validationstep->getID());
+        $rule = $this->createRule($rule_builder);
+
+        // instantiate new ITILRule (TicketRule, etc)
+        /** @var \RuleCommonITILObject $itil_rule */
+        $itil_rule = new ($rule_classname);
+        $itil_rule->getFromDB($rule->getID());
+
+        // act : create ITILObject matching the rule
+        /** @var $itil \CommonITILObject */
+        $itil = $this->createItem($this->getITILObjectClass(), [
+            'name'     => 'itil created on '.__METHOD__,
+            'content' => 'itil description content',
+            'priority' => 6,
+        ]);
+
+        // assert Validation is created - (tested elsewhere)
+        $_itil_validation = $this->getITILObjectInstance()::getValidationClassInstance(); // TicketValidation, ChangeValidation, ...
+        $foreign_key = getForeignKeyFieldForItemType($this->getITILObjectClass());
+        assert(true === $_itil_validation->getFromDBByCrit([$foreign_key => $itil->getID()]), 'Validation not created by rule');
+
+        // assert the itil_validationstep has the validation step defined by the rule
+        $itil_validation_step_id = $_itil_validation->fields['itils_validationsteps_id'];
+        $itil_validation_step_class = match($_itil_validation::class) {
+            \ChangeValidation::class => \ChangeValidationStep::class,
+            \TicketValidation::class => \TicketValidationStep::class,
+            default => throw new \RuntimeException('Unknown validation class'),
+        };
+
+        $itil_validation_step_instance = new $itil_validation_step_class();
+
+        $this->assertTrue($itil_validation_step_instance->getFromDBByCrit(['id' => $itil_validation_step_id, 'validationsteps_id' => $validationstep->getID()]));
+    }
+
 
     public function testITILCategoryCode()
     {
