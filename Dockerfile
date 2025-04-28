@@ -1,38 +1,45 @@
-FROM php:8.2-apache
+FROM php:8.1-apache
 
-# Instalar dependências necessárias
+# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     libxml2-dev \
-    mariadb-client \
-    unzip \
+    libzip-dev \
+    libcurl4-openssl-dev \
     libicu-dev \
     libldap2-dev \
-    libsasl2-dev \
     libbz2-dev \
-    zlib1g-dev \
-    libzip-dev \
-    libssl-dev \
+    unzip \
+    wget \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mysqli pdo pdo_mysql xml zip intl exif ldap bz2 \
-    && docker-php-ext-enable opcache
+    && docker-php-ext-install \
+    gd \
+    mysqli \
+    pdo \
+    pdo_mysql \
+    xml \
+    zip \
+    curl \
+    intl \
+    ldap \
+    exif \
+    bz2 \
+    opcache
 
-# Copiar o GLPI para o Apache
-COPY . /var/www/html
+# Habilitar módulo rewrite do Apache
+RUN a2enmod rewrite
+
+# Baixar e configurar GLPI
+RUN wget https://github.com/glpi-project/glpi/releases/download/10.0.14/glpi-10.0.14.tgz && \
+    tar -xvzf glpi-10.0.14.tgz && \
+    mkdir /var/www/html/public && \
+    mv glpi/* /var/www/html/public/ && \
+    rm -rf glpi glpi-10.0.14.tgz
 
 # Corrigir permissões
 RUN chown -R www-data:www-data /var/www/html
 
-# Habilitar configurações de sessão seguras no PHP
-RUN echo "session.cookie_httponly = 1" >> /usr/local/etc/php/php.ini
-
-# Configurar Apache para rodar na porta 8080
-RUN sed -i 's/80/8080/g' /etc/apache2/ports.conf /etc/apache2/sites-enabled/000-default.conf
-
-# Expor a porta
-EXPOSE 8080
-
-# Iniciar Apache
-CMD ["apache2-foreground"]
+# Definir diretório de trabalho
+WORKDIR /var/www/html/public
