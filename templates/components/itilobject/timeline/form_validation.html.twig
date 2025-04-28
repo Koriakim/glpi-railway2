@@ -178,7 +178,7 @@
             <input type="hidden" name="{{ item.getForeignKeyField() }}" value="{{ item.fields['id'] }}" />
 
             <div class="card-body">
-               {% if item.isNewItem() %}
+               {% if subitem.isNewItem() %}
                   {# Validation template #}
                   {{ fields.dropdownField(
                      'ITILValidationTemplate',
