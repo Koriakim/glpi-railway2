@@ -332,6 +332,10 @@ abstract class CommonITILValidation extends CommonDBChild
         global $CFG_GLPI;
 
         $this->addITILValidationStep($this->input['_validationsteps_id']);
+        if (isset($this->input['_validationsteps_threshold'])) {
+            $this->updateITILValidationStepThreshold((int) $this->input['_validationsteps_threshold']);
+            unset($this->input['_validationsteps_threshold']); // important to avoid infinite loop because of the update // @todoseb verif si obligatoire
+        }
 
         $itilobject_type = new static::$itemtype();
         $itilobject_id = $this->fields[static::$items_id];
@@ -499,6 +503,10 @@ abstract class CommonITILValidation extends CommonDBChild
             $this->addITILValidationStep($this->input['_validationsteps_id']);
             $this->removeUnsedITILValidationStep($this->fields['itils_validationsteps_id']);
             unset($this->input['_validationsteps_id']); // important to avoid infinite loop because of the update
+        }
+        if (isset($this->input['_validationsteps_threshold'])) {
+            $this->updateITILValidationStepThreshold((int) $this->input['_validationsteps_threshold']);
+            unset($this->input['_validationsteps_threshold']); // important to avoid infinite loop because of the update
         }
 
         $this->recomputeItilStatus();
@@ -2017,13 +2025,13 @@ HTML;
      * Associate the validation with an "itil validation step" created from an exiting "validation step"
      *
      * If no itils_validationsteps is defined for the itilobject, create it
-     * else, refererence it
+     * else, refererence it.
      *
-     * @param int $validationsteps_id
+     * If threshold is set, use it to create/update the itil_validationstep
      */
     private function addITILValidationStep(int $validationsteps_id): void
     {
-        // find validations, then find if an itil_validationsteps referencing the validationstep exists
+        // find itil validations, then find if an itil_validationsteps referencing the validationstep exists
         /** @var \CommonITILObject $itilobject_type */
         $itilobject_type = new static::$itemtype(); // Change | Ticket
         $itilobject_foreignkey = $itilobject_type::getForeignKeyField(); // tickets_id | changes_id
@@ -2037,7 +2045,7 @@ HTML;
         // find an itils_validationsteps related to the ticket and the validationstep
         $itils_validationsteps_ids = array_column($itil_validations, 'itils_validationsteps_id');
         $ivs = $itilobject_type::getValidationStepInstance();
-        $itils_validationsteps_id = $itils_validationsteps_ids[0] ?? null;
+        $itils_validationsteps_id = $itils_validationsteps_ids[0] ?? null; // there can be only one itil_validationsteps_id related to the validationstep (or none)
         // check if the itils_validationsteps_id is referencing the validationstep
         $itils_validationstep_id_with_validationstep_id_exists =
             !is_null($itils_validationsteps_id)
@@ -2049,6 +2057,8 @@ HTML;
             if (!$_validation->update(['id' => $this->getID(), 'itils_validationsteps_id' => $itils_validationsteps_id])) {
                 Session::addMessageAfterRedirect('Failed to update associated approval step while adding approval.');
             };
+            // update current validation to avoid reloading (eg in updateITILValidationStepThreshold())
+            $this->fields['itils_validationsteps_id'] = $itils_validationsteps_id;
             unset($_validation);
         } else {
             // addValidationStep also update the current Validation
@@ -2071,10 +2081,16 @@ HTML;
 
             // update ITILValidation
             $validation = new static();
-            $validation->update([
-                'id' => $this->getID(),
-                'itils_validationsteps_id' => $itil_validationstep->getID(),
-            ]);
+            if (
+                !$validation->update([
+                    'id' => $this->getID(),
+                    'itils_validationsteps_id' => $itil_validationstep->getID(),
+                ])
+            ) {
+                Session::addMessageAfterRedirect('Failed to update associated approval step while adding approval.');
+            };
+
+            $this->fields['itils_validationsteps_id'] = $itil_validationstep->getID();
         }
     }
 
@@ -2112,6 +2128,22 @@ HTML;
             ])
         ) {
             Session::addMessageAfterRedirect('Failed to update Itil global approval status.');
+        }
+    }
+
+    /**
+     * Update minimal required validation percent of ITILValidationStep
+     */
+    private function updateITILValidationStepThreshold(int $threshold): void
+    {
+        $itil_validationstep = new (static::$itemtype::getValidationStepClassName());
+        if (!$itil_validationstep->getFromDB($this->fields['itils_validationsteps_id'])) {
+            throw new \RuntimeException('Invalid ITIL validation step. ' . $this->fields['itils_validationsteps_id']);
+        };
+        if ((int) $itil_validationstep->fields['minimal_required_validation_percent'] != $threshold) {
+            if (!$itil_validationstep->update(['id' => $this->fields['itils_validationsteps_id'], 'minimal_required_validation_percent' => $threshold])) {
+                Session::addMessageAfterRedirect('Failed to update approval step threshold.');
+            };
         }
     }
 }

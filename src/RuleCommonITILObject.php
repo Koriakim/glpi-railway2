@@ -188,6 +188,10 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
                                 $output['_validationsteps_id'] = $action->fields["value"];
                                 break;
 
+                            case 'validationsteps_threshold':
+                                $output['_validationsteps_threshold'] = $action->fields["value"];
+                                break;
+
                             case 'users_id_validate':
                             default:
                                 $output['_add_validation'][] = $action->fields["value"];
@@ -959,11 +963,16 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
             $actions['users_id_validate_assign_supervisor']['type']     = 'yesno';
             $actions['users_id_validate_assign_supervisor']['force_actions'] = ['add_validation'];
 
-            // choose validation step (template) for approval
+            // choose approval (validation) step
             $actions['validationsteps_id']['name']                      = __('Set approval request step');
             $actions['validationsteps_id']['type']                      = 'dropdown';
             $actions['validationsteps_id']['table']                     = 'glpi_validationsteps';
             $actions['validationsteps_id']['force_actions']             = ['add_validation'];
+
+            // choose approval (validation) threshold
+            $actions['validationsteps_threshold']['name']               = __('Set approval threshold');
+            $actions['validationsteps_threshold']['type']               = 'dropdown_percent';
+            $actions['validationsteps_threshold']['force_actions']      = ['add_validation'];
         }
 
         // set request source
@@ -997,10 +1006,6 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
         $actions['itilfollowup_template']['force_actions']          = ['append'];
         $actions['itilfollowup_template']['permitseveral']          = ['append'];
         $actions['itilfollowup_template']['appendto']               = '_itilfollowuptemplates_id';
-
-        // set global validation status - supprimer, on en choisi plus ça à la main
-        $actions['global_validation']['name']                       = _n('Validation', 'Validations', 1);
-        $actions['global_validation']['type']                       = 'dropdown_validation_status';
 
         return $actions;
     }

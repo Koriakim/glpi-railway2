@@ -9053,6 +9053,11 @@ abstract class CommonITILObject extends CommonDBTM
                         if (isset($input['_validationsteps_id'])) {
                             $values['_validationsteps_id'] = $input['_validationsteps_id'];
                         }
+                        // change validation step threshold
+                        if (isset($input['_validationsteps_threshold'])) {
+                            $values['_validationsteps_threshold'] = $input['_validationsteps_threshold'];
+                        }
+
                         $values['itemtype_target'] = $validation_to_send['itemtype_target'];
                         $values['items_id_target'] = $validation_to_send['items_id_target'];
                         if ($validation->add($values)) {

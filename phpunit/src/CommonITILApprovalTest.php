@@ -114,7 +114,7 @@ abstract class CommonITILApprovalTest extends DbTestCase
             'itemtype_target'                   => 'User',
             'items_id_target'                   => $_SESSION['glpiID'],
             'comment_submission'                => __FUNCTION__,
-            'itils_validationsteps_id' => $itils_validationsteps->getID(),
+            'itils_validationsteps_id'          => $itils_validationsteps->getID(),
         ]);
 
         $this->assertTrue($validation_class::canValidate($itil_1_id));
@@ -1106,33 +1106,166 @@ abstract class CommonITILApprovalTest extends DbTestCase
         $this->assertValidationStatusEquals(CommonITILValidation::ACCEPTED, (int)$ticket->fields['global_validation']);
     }
 
-    public function testCreateValidationCreateAnAssociatedITILValidationStep(): void
+    public function testCreateValidationCreateAnAssociatedITILValidationStepWithDefaultValidationStep(): void
     {
+        // arrange : create an itil object
+        $validation_classname = $this->getValidationClassname();
         $this->login();
-        $itil_classname = $this->getITILClassname();
-        $itil_validation_classname = $this->getValidationClassname();
-        $itil = new $itil_classname();
-
-        $itil->add([
+        /** @var CommonITILObject $itil */
+        $itil = $this->createItem($this->getITILClassname(),  [
             'name' => __FUNCTION__,
             'content' => __FUNCTION__,
         ]);
-        $validation = $this->addValidation($itil);
 
-        // validation has an associated itil_validationstep
-        self::assertGreaterThan(0, $validation->fields['itils_validationsteps_id']);
+        $validationstep = $this->getInitialDefaultValidationStep();
 
-        // the itil_validationstep is created
-        $itil_validationstep = $itil::getValidationStepInstance();
-        $this->assertTrue(
-            $itil_validationstep->getFromDBByCrit(
-                [
-                    'id' => $validation->fields['itils_validationsteps_id'],
-                    'validationsteps_id' => $this->getInitialDefaultValidationStep()->getID(),
-                ]
-            ),
-            'Validation step association should be created while creating a Validation'
-        );
+        // act : create validation
+        $validation = $this->createItem($validation_classname, [
+            $itil::getForeignKeyField() => $itil->getID(),
+            'itemtype_target' => 'User',
+            'items_id_target' => $_SESSION['glpiID'],
+        ]);
+
+        // assert
+        // - validation has an associated itil_validationstep
+        $this->assertGreaterThan(0, $validation->fields['itils_validationsteps_id']);
+
+        // - the itil_validationstep is created with the default validation step reference and threshold
+        $itil_validationstep = new ($this->getITILValidationStepClassname());
+        $itil_validationstep->getFromDB($validation->fields['itils_validationsteps_id']);
+
+        $this->assertEquals($validationstep->getID(), $itil_validationstep->fields['validationsteps_id']);
+        $this->assertEquals($validationstep->fields['minimal_required_validation_percent'], $itil_validationstep->fields['minimal_required_validation_percent']);
+    }
+
+    /**
+     * Same test as above but with a different validation step
+     */
+    public function testCreateValidationCreateAnAssociatedITILValidationStepWithNewValidationStep(): void
+    {
+        // arrange : create an itil object
+        $this->login();
+        $validation_classname = $this->getValidationClassname();
+
+        /** @var CommonITILObject $itil */
+        $itil = $this->createItem($this->getITILClassname(),  [
+            'name' => __FUNCTION__,
+            'content' => __FUNCTION__,
+        ]);
+
+        $validationstep = $this->createValidationStep(77);
+
+        // act : create validation
+        $validation = $this->createItem($validation_classname, [
+            $itil::getForeignKeyField() => $itil->getID(),
+            'itemtype_target' => 'User',
+            'items_id_target' => $_SESSION['glpiID'],
+            '_validationsteps_id' => $validationstep->getID(),
+        ]);
+
+        // assert
+        // - validation has an associated itil_validationstep
+        $this->assertGreaterThan(0, $validation->fields['itils_validationsteps_id']);
+
+        // - the itil_validationstep is created with the default validation step reference and threshold
+        $itil_validationstep = new ($this->getITILValidationStepClassname());
+        $itil_validationstep->getFromDB($validation->fields['itils_validationsteps_id']);
+
+        $this->assertEquals($validationstep->getID(), $itil_validationstep->fields['validationsteps_id'], 'Validationstep not correctly set using _validationsteps_id');
+        $this->assertEquals($validationstep->fields['minimal_required_validation_percent'], $itil_validationstep->fields['minimal_required_validation_percent']);
+    }
+
+    /**
+     * Same test as above but with a different threshold
+     */
+    public function testCreateValidationCreateAnAssociatedITILValidationStepWithSpecifiedThreshold(): void
+    {
+        // arrange : create an itil object
+        $this->login();
+        $threshold = 88;
+        $validation_classname = $this->getValidationClassname();
+
+        /** @var CommonITILObject $itil */
+        $itil = $this->createItem($this->getITILClassname(),  [
+            'name' => __FUNCTION__,
+            'content' => __FUNCTION__,
+        ]);
+        $validationstep = $this->getInitialDefaultValidationStep();
+        assert($validationstep->fields['minimal_required_validation_percent'] !== $threshold, 'can not test with the same threshold');
+
+        // act : create validation
+        $validation = $this->createItem($validation_classname, [
+            $itil::getForeignKeyField() => $itil->getID(),
+            'itemtype_target' => 'User',
+            'items_id_target' => $_SESSION['glpiID'],
+            '_validationsteps_threshold' => $threshold,
+        ]);
+
+        // assert
+        // - validation has an associated itil_validationstep
+        $this->assertGreaterThan(0, $validation->fields['itils_validationsteps_id']);
+
+        // - the itil_validationstep is created with the default validation step reference and threshold
+        $itil_validationstep = new ($this->getITILValidationStepClassname());
+        $itil_validationstep->getFromDB($validation->fields['itils_validationsteps_id']);
+
+        $this->assertEquals($validationstep->getID(), $itil_validationstep->fields['validationsteps_id'], 'Validationstep not correctly set using _validationsteps_id');
+        $this->assertEquals($threshold, $itil_validationstep->fields['minimal_required_validation_percent']);
+    }
+
+    /**
+     * validationstep and threshold are changed
+     */
+    public function testUpdateValidationUpdateAnAssociatedITILValidationStep(): void
+    {
+        // arrange : create an itil object
+        $this->login();
+        $threshold = 88;
+        $validation_classname = $this->getValidationClassname();
+
+        /** @var CommonITILObject $itil */
+        $itil = $this->createItem($this->getITILClassname(),  [
+            'name' => __FUNCTION__,
+            'content' => __FUNCTION__,
+        ]);
+        $validationstep = $this->getInitialDefaultValidationStep();
+        assert($validationstep->fields['minimal_required_validation_percent'] !== $threshold, 'can not test with the same threshold');
+
+        // act + check: create validation (tested aboved)
+        $validation = $this->createItem($validation_classname, [
+            $itil::getForeignKeyField() => $itil->getID(),
+            'itemtype_target' => 'User',
+            'items_id_target' => $_SESSION['glpiID'],
+//            '_validationsteps_threshold' => $threshold,
+        ]);
+
+        $this->assertGreaterThan(0, $validation->fields['itils_validationsteps_id']);
+
+        // - the itil_validationstep is created with the default validation step reference and threshold
+        $itil_validationstep = new ($this->getITILValidationStepClassname());
+        $itil_validationstep->getFromDB($validation->fields['itils_validationsteps_id']);
+
+        $this->assertEquals($validationstep->getID(), $itil_validationstep->fields['validationsteps_id'], 'Validationstep not correctly set using _validationsteps_id');
+        $this->assertEquals($validationstep->fields['minimal_required_validation_percent'], $itil_validationstep->fields['minimal_required_validation_percent']);
+
+        // act 2 : update validation step & threshold
+        $new_validationstep = $this->createValidationStep(100);
+        assert($new_validationstep->fields['minimal_required_validation_percent'] !== $threshold, 'can not test with the same threshold');
+
+        $validation = $this->updateItem(
+            $validation::class,
+            $validation->getID(),
+            [
+                '_validationsteps_threshold' => $threshold,
+                '_validationsteps_id' => $new_validationstep->getID(),
+
+            ]);
+
+        // assert
+        $itil_validationstep->getFromDB($validation->fields['itils_validationsteps_id']);
+
+        $this->assertEquals($new_validationstep->getID(), $itil_validationstep->fields['validationsteps_id'], 'Validationstep not correctly set using _validationsteps_id');
+        $this->assertEquals($threshold, $itil_validationstep->fields['minimal_required_validation_percent']);
     }
 
     public function testGlobalValidationUpdate(): void
@@ -1331,6 +1464,38 @@ abstract class CommonITILApprovalTest extends DbTestCase
         $this->assertEquals($expected ? ($initial_count + 1) : $initial_count, $this->getValidationClassname()::getNumberToValidate($user_id));
     }
 
+    // @todoseb quel interet de ce test, déjà tester dans testCreateValidationCreateAnAssociatedITILValidationStep3
+//    public function testThresholdIsSetWhenCreatingValidation(): void
+//    {
+//        // arrange - create a validation step + an itil
+//        $this->login();
+//        $vs_100 = $this->createValidationStep(100);
+//
+//        /** @var CommonITILObject $itil */
+//        $itil = $this->createItem($this->getITILClassname(),  [
+//            'name' => __FUNCTION__,
+//            'content' => __FUNCTION__,
+////            '_validationstep_id' => $vs_100->getID(), // @todoseb pas ajouter ici, on le testera indirectement par la Rule, sans le spécifier, ce'st la rule qui le fera
+////            '_validationsteps_threshold' => 50,
+//        ]);
+//
+//        // act : create a validation for the itil
+//        $validation = $this->createItem($this->getValidationClassname(), [
+//            $itil::getForeignKeyField() => $itil->getID(),
+//            'itemtype_target' => User::class,
+//            'items_id_target' => getItemByTypeName('User', 'glpi', true),
+//            '_validationsteps_id' => $vs_100->getID(),
+//            '_validationsteps_threshold' => 50,
+//        ]);
+//
+//        // assert : itil_validationstep is created as expected : association with the validation step + threshold
+//        $itil_validationstep_id = $validation->fields['itils_validationsteps_id'];
+//        $itil_validationstep = $itil::getValidationStepInstance();
+//        $itil_validationstep->getFromDB($itil_validationstep_id);
+//
+//        $this->assertEquals($itil_validationstep->fields['validationsteps_id'], $vs_100->getID());
+//        $this->assertEquals($itil_validationstep->fields['minimal_required_validation_percent'], $vs_100->fields['minimal_required_validation_percent']);
+//    }
 
     public function testcomputeValidationStatusReturnNone(): void
     {
@@ -1451,27 +1616,25 @@ abstract class CommonITILApprovalTest extends DbTestCase
     /**
      * Add a validation to the given ITIL object
      */
-    private function addValidation(CommonITILObject $itil, ?int $validationstep_id = null): CommonITILValidation
+    private function addValidation(CommonITILObject $itil, ?int $validationstep_id = null, ?int $threshold = null): CommonITILValidation
     {
         $validation_classname = $this->getValidationClassname();
         $validationstep_id ??= $this->getInitialDefaultValidationStep()->getID();
+        $threshold ??= $this->getInitialDefaultValidationStep()->fields['minimal_required_validation_percent'];
 
         if (!isset($_SESSION['glpiID'])) {
             throw new RuntimeException('$_SESSION["glpiID"] is not set, did you forget to call $this->login() ?');
         }
 
-        // create itil_validationstep
-        $validationstep_classname = $itil::getValidationStepClassName();
-        $itils_validationsteps = $this->createItem(
-            $validationstep_classname,
-            ['validationsteps_id' => $this->getInitialDefaultValidationStep()->getID(), 'minimal_required_validation_percent' => 100]
-        );
-
+        // create validation
+        // @todoseb faire une test qui reproduit ça
         return $this->createItem($validation_classname, [
             $itil::getForeignKeyField() => $itil->getID(),
-            'itils_validationsteps_id' => $itils_validationsteps->getID(),
+//            'itils_validationsteps_id' => $itils_validationsteps->getID(),
             'itemtype_target' => 'User',
             'items_id_target' => $_SESSION['glpiID'],
+            '_validationstep_id' => $validationstep_id,
+            '_validationsteps_threshold' => $threshold,
         ]);
     }
 }
