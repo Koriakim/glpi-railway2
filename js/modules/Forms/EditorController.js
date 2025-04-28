@@ -2330,7 +2330,7 @@ export class GlpiFormEditorController
             // Read selected item uuid and type
             const uuid = this.#getItemInput(
                 container.closest(
-                    '[data-glpi-form-editor-block], [data-glpi-form-editor-section-details]'
+                    '[data-glpi-form-editor-block], [data-glpi-form-editor-section-details], [data-glpi-form-editor-container]'
                 ),
                 'uuid',
             );
