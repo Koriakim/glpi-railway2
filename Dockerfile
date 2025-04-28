@@ -1,31 +1,34 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
-# Instalar dependências do sistema
+# Instala dependências necessárias
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     libxml2-dev \
-    libzip-dev \
+    mariadb-client \
     unzip \
-    wget \
+    libicu-dev \
+    libldap2-dev \
+    libsasl2-dev \
+    libbz2-dev \
+    zlib1g-dev \
+    libzip-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mysqli pdo pdo_mysql xml zip
+    && docker-php-ext-install gd mysqli pdo pdo_mysql xml zip intl exif ldap bz2 \
+    && docker-php-ext-enable opcache
 
-# Ativar o módulo rewrite do Apache
-RUN a2enmod rewrite
+# Copia os arquivos do GLPI
+COPY . /var/www/html
 
-# Baixar e instalar o GLPI
-RUN wget https://github.com/glpi-project/glpi/releases/download/10.0.14/glpi-10.0.14.tgz && \
-    tar -xvzf glpi-10.0.14.tgz && \
-    mv glpi/* /var/www/html/ && \
-    rm -rf glpi glpi-10.0.14.tgz
-
-# Ajustar permissões
+# Corrige permissões
 RUN chown -R www-data:www-data /var/www/html
 
-# Definir o diretório de trabalho
-WORKDIR /var/www/html
+# Configura Apache para a porta 8080
+RUN sed -i 's/80/8080/g' /etc/apache2/ports.conf /etc/apache2/sites-enabled/000-default.conf
 
-# Expor a porta 80
-EXPOSE 80
+# Expõe a porta 8080
+EXPOSE 8080
+
+# Inicializa o Apache
+CMD ["apache2-foreground"]
