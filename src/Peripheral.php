@@ -49,7 +49,7 @@ class Peripheral extends CommonDBTM
         prepareInputForAdd as prepareInputForAddAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     protected static $forward_entity_to = ['Infocom', 'NetworkPort', 'ReservationItem',
@@ -422,11 +422,11 @@ class Peripheral extends CommonDBTM
         return $tab;
     }
 
-   /**
-    * @param $itemtype
-    *
-    * @return array
-    */
+    /**
+     * @param $itemtype
+     *
+     * @return array
+     */
     public static function rawSearchOptionsToAdd($itemtype = null)
     {
         $tab = [];

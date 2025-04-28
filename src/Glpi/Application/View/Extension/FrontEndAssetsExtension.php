@@ -205,7 +205,7 @@ class FrontEndAssetsExtension extends AbstractExtension
                 // Apply active entity styles
                 $entity->getFromDB($_SESSION['glpiactive_entity']);
             } else {
-               // Apply root entity styles
+                // Apply root entity styles
                 $entity->getFromDB('0');
             }
             $css = $entity->getCustomCssTag();
@@ -228,7 +228,7 @@ class FrontEndAssetsExtension extends AbstractExtension
             return '';
         }
 
-       // Compute available translation domains
+        // Compute available translation domains
         $locales_domains = ['glpi' => GLPI_VERSION];
         $plugins = Plugin::getPlugins();
         foreach ($plugins as $plugin) {
@@ -236,15 +236,15 @@ class FrontEndAssetsExtension extends AbstractExtension
         }
 
         $script = <<<JAVASCRIPT
-         $(function() {
-            i18n.setLocale('{$_SESSION['glpilanguage']}');
-         });
+                     $(function() {
+                        i18n.setLocale('{$_SESSION['glpilanguage']}');
+                     });
 
-         $.fn.select2.defaults.set(
-            'language',
-            '{$CFG_GLPI['languages'][$_SESSION['glpilanguage']][2]}',
-         );
-JAVASCRIPT;
+                     $.fn.select2.defaults.set(
+                        'language',
+                        '{$CFG_GLPI['languages'][$_SESSION['glpilanguage']][2]}',
+                     );
+            JAVASCRIPT;
 
         foreach ($locales_domains as $locale_domain => $locale_version) {
             $locales_path = Html::getPrefixedUrl(
@@ -253,16 +253,16 @@ JAVASCRIPT;
                 . '&v=' . FrontEnd::getVersionCacheKey($locale_version)
             );
             $script .= <<<JAVASCRIPT
-            $(function() {
-               $.ajax({
-                  type: 'GET',
-                  url: '{$locales_path}',
-                  success: function(json) {
-                     i18n.loadJSON(json, '{$locale_domain}');
-                  }
-               });
-            });
-JAVASCRIPT;
+                            $(function() {
+                               $.ajax({
+                                  type: 'GET',
+                                  url: '{$locales_path}',
+                                  success: function(json) {
+                                     i18n.loadJSON(json, '{$locale_domain}');
+                                  }
+                               });
+                            });
+                JAVASCRIPT;
         }
 
         return Html::scriptBlock($script);

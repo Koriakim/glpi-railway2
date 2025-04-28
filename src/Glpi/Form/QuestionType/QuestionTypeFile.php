@@ -65,20 +65,20 @@ final class QuestionTypeFile extends AbstractQuestionType
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.fileField(
-                'default_value',
-                '',
-                '',
-                {
-                    'init'           : question is not null ? true: false,
-                    'no_label'       : true,
-                    'full_width'     : true,
-                    'mb'             : '',
-                }
-            ) }}
-TWIG;
+                        {{ fields.fileField(
+                            'default_value',
+                            '',
+                            '',
+                            {
+                                'init'           : question is not null ? true: false,
+                                'no_label'       : true,
+                                'full_width'     : true,
+                                'mb'             : '',
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -96,20 +96,20 @@ TWIG;
     public function renderEndUserTemplate(Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.fileField(
-                question.getEndUserInputName(),
-                "",
-                "",
-                {
-                    'init'                 : true,
-                    'no_label'             : true,
-                    'full_width'           : true,
-                    'mb'                   : '',
-                }
-            ) }}
-TWIG;
+                        {{ fields.fileField(
+                            question.getEndUserInputName(),
+                            "",
+                            "",
+                            {
+                                'init'                 : true,
+                                'no_label'             : true,
+                                'full_width'           : true,
+                                'mb'                   : '',
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

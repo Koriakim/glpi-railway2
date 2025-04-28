@@ -98,7 +98,7 @@ class Manufacturer extends CommonDropdown
                 } else {
                     $input['device_type'] = '';
                 }
-               //$input['device_type'] = '';
+                //$input['device_type'] = '';
                 if ($id < 0) {
                     if (!empty($registered_id)) {
                         $id_object->add($input);
@@ -162,7 +162,7 @@ class Manufacturer extends CommonDropdown
 
     public function cleanDBonPurge()
     {
-       // Rules use manufacturer intread of manufacturers_id
+        // Rules use manufacturer intread of manufacturers_id
         Rule::cleanForItemAction($this, 'manufacturer');
     }
 

@@ -34,7 +34,6 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
-use Glpi\DBAL\QueryUnion;
 use Glpi\Socket;
 use Glpi\Toolbox\ArrayPathAccessor;
 
@@ -56,15 +55,15 @@ use Glpi\Toolbox\ArrayPathAccessor;
  **/
 class NetworkPortInstantiation extends CommonDBChild
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $auto_message_on_action   = false;
 
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype       = 'NetworkPort';
     public static $items_id       = 'networkports_id';
     public $dohistory             = false;
 
-   // Instantiation properties
+    // Instantiation properties
     public $canHaveVLAN           = true;
     public $canHaveVirtualPort    = true;
     public $haveMAC               = true;
@@ -216,7 +215,7 @@ class NetworkPortInstantiation extends CommonDBChild
         }
 
         if (count($macs_with_items)) {
-           // Get the first item that is matching entity
+            // Get the first item that is matching entity
             foreach ($macs_with_items as $items) {
                 foreach ($items as $item) {
                     if ($item->getEntityID() == $entity) {
@@ -304,8 +303,8 @@ class NetworkPortInstantiation extends CommonDBChild
                 $iterator = $DB->request($criteria);
 
                 foreach ($iterator as $available_device) {
-                     $linkid               = $available_device['link_id'];
-                     $device_names[$linkid] = $available_device['name'];
+                    $linkid               = $available_device['link_id'];
+                    $device_names[$linkid] = $available_device['name'];
                     if (isset($available_device['mac'])) {
                         $device_names[$linkid] = sprintf(
                             __('%1$s - %2$s'),
@@ -333,36 +332,36 @@ class NetworkPortInstantiation extends CommonDBChild
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% if alert is not empty %}
-                {% set alert_field %}
-                    <div class="alert alert-info mb-0">{{ alert }}</div>
-                {% endset %}
-                {{ fields.htmlField('', alert_field, 'DeviceNetworkCard'|itemtype_name) }}
-            {% else %}
-                {{ fields.dropdownArrayField(
-                    'items_devicenetworkcards_id',
-                    item.fields['items_devicenetworkcards_id'],
-                    device_names,
-                    'DeviceNetworkCard'|itemtype_name,
-                    {
-                        display_emptychoice: true,
-                    }
-                ) }}
-                <script>
-                    $(`select[name="items_devicenetworkcards_id"]`).on('change', (e) => {
-                        const val = e.target.value;
-                        const fields = {{ device_attributes|json_encode|raw }};
-                        Object.keys(fields[val]).forEach((fieldName) => {
-                            const field = document.getElementsByName(fieldName)[0];
-                            if (field && fields[val][fieldName]) {
-                                field.value = fields[val][fieldName];
-                            }
-                        });
-                    });
-                </script>
-            {% endif %}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% if alert is not empty %}
+                            {% set alert_field %}
+                                <div class="alert alert-info mb-0">{{ alert }}</div>
+                            {% endset %}
+                            {{ fields.htmlField('', alert_field, 'DeviceNetworkCard'|itemtype_name) }}
+                        {% else %}
+                            {{ fields.dropdownArrayField(
+                                'items_devicenetworkcards_id',
+                                item.fields['items_devicenetworkcards_id'],
+                                device_names,
+                                'DeviceNetworkCard'|itemtype_name,
+                                {
+                                    display_emptychoice: true,
+                                }
+                            ) }}
+                            <script>
+                                $(`select[name="items_devicenetworkcards_id"]`).on('change', (e) => {
+                                    const val = e.target.value;
+                                    const fields = {{ device_attributes|json_encode|raw }};
+                                    Object.keys(fields[val]).forEach((fieldName) => {
+                                        const field = document.getElementsByName(fieldName)[0];
+                                        if (field && fields[val][fieldName]) {
+                                            field.value = fields[val][fieldName];
+                                        }
+                                    });
+                                });
+                            </script>
+                        {% endif %}
+            TWIG, $twig_params);
     }
 
     /**
@@ -376,9 +375,9 @@ TWIG, $twig_params);
     {
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.textField('mac', mac, label) }}
-TWIG, ['label' => __('MAC'), 'mac' => $netport->fields['mac']]);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {{ fields.textField('mac', mac, label) }}
+            TWIG, ['label' => __('MAC'), 'mac' => $netport->fields['mac']]);
     }
 
     /**
@@ -407,13 +406,13 @@ TWIG, ['label' => __('MAC'), 'mac' => $netport->fields['mac']]);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% if recursive_items|length > 0 %}
-                {{ fields.dropdownField('Glpi\\\\Socket', 'sockets_id', socket_id, label) }}
-            {% else %}
-                <div class="alert alert-info">{{ no_link_label }}</div>
-            {% endif %}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% if recursive_items|length > 0 %}
+                            {{ fields.dropdownField('Glpi\\\\Socket', 'sockets_id', socket_id, label) }}
+                        {% else %}
+                            <div class="alert alert-info">{{ no_link_label }}</div>
+                        {% endif %}
+            TWIG, $twig_params);
     }
 
     /**
@@ -497,10 +496,10 @@ TWIG, $twig_params);
                     [$netport_type, 'getTypeName'],
                     count($iterator)
                 );
-                 $possible_ports[$array_element_name] = [];
+                $possible_ports[$array_element_name] = [];
 
                 foreach ($iterator as $portEntry) {
-                     $macAddresses[$portEntry['id']] = $portEntry['mac'];
+                    $macAddresses[$portEntry['id']] = $portEntry['mac'];
                     if (!empty($portEntry['mac'])) {
                         $portEntry['name'] = sprintf(
                             __('%1$s - %2$s'),
@@ -508,7 +507,7 @@ TWIG, $twig_params);
                             $portEntry['mac']
                         );
                     }
-                     $possible_ports[$array_element_name][$portEntry['id']] = $portEntry['name'];
+                    $possible_ports[$array_element_name][$portEntry['id']] = $portEntry['name'];
                 }
             }
         }
@@ -597,13 +596,13 @@ TWIG, $twig_params);
             if ($device2->can($device2->fields["id"], READ)) {
                 echo $oppositePort->getLink();
                 if ($device1->fields["entities_id"] !== $device2->fields["entities_id"]) {
-                     echo "<br>(" . htmlescape(Dropdown::getDropdownName(
-                         "glpi_entities",
-                         $device2->getEntityID()
-                     )) . ")";
+                    echo "<br>(" . htmlescape(Dropdown::getDropdownName(
+                        "glpi_entities",
+                        $device2->getEntityID()
+                    )) . ")";
                 }
 
-               // write rights on dev1 + READ on dev2 OR READ on dev1 + write rights on dev2
+                // write rights on dev1 + READ on dev2 OR READ on dev1 + write rights on dev2
                 if (
                     $canedit
                     || $device2->canEdit($device2->fields["id"])
@@ -688,7 +687,7 @@ TWIG, $twig_params);
             }
         }
 
-       // Manage entity_sons
+        // Manage entity_sons
         if (!($p['entity'] < 0) && $p['entity_sons']) {
             if (is_array($p['entity'])) {
                 echo "entity_sons options is not available with entity option as array";

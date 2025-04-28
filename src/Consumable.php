@@ -284,8 +284,8 @@ class Consumable extends CommonDBChild
                                 $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
                             }
                         } else {
-                             $ma->itemDone($item::class, $key, MassiveAction::ACTION_NORIGHT);
-                             $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                            $ma->itemDone($item::class, $key, MassiveAction::ACTION_NORIGHT);
+                            $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
                         }
                     }
                     Event::log(
@@ -441,7 +441,7 @@ class Consumable extends CommonDBChild
             if ($unused <= $alarm_threshold) {
                 $highlight = "class='tab_bg_1_2'";
             }
-           //TRANS: For consumable. %1$d is total number, %2$d is unused number, %3$d is old number
+            //TRANS: For consumable. %1$d is total number, %2$d is unused number, %3$d is old number
             $tmptxt = sprintf(__('Total: %1$d, New: %2$d, Used: %3$d'), $total, $unused, $old);
             if ($nohtml) {
                 $out = $tmptxt;
@@ -515,7 +515,7 @@ class Consumable extends CommonDBChild
     {
         if (self::isNew($cID)) {
             return _nx('consumable', 'New', 'New', 1);
-        } else if (self::isOld($cID)) {
+        } elseif (self::isOld($cID)) {
             return _nx('consumable', 'Used', 'Used', 1);
         }
         return '';

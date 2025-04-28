@@ -48,7 +48,7 @@ class Enclosure extends CommonDBTM
         prepareInputForAdd as prepareInputForAddAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'datacenter';
 

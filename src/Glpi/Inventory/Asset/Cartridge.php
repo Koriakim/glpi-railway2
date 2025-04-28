@@ -87,7 +87,7 @@ class Cartridge extends InventoryAsset
         ];
 
         foreach ($types as $type => $label) {
-           //not a colored type, add an entry for type only, and type + state
+            //not a colored type, add an entry for type only, and type + state
             if (!in_array($type, $colored_types)) {
                 $tags[$type] = [
                     'name'   => $label
@@ -95,7 +95,7 @@ class Cartridge extends InventoryAsset
 
                 foreach ($states as $state => $slabel) {
                     $tags[$type . $state] = [
-                    //TRANS first argument is a type, second a state
+                        //TRANS first argument is a type, second a state
                         'name'   => sprintf(
                             '%1$s %2$s',
                             $label,
@@ -109,10 +109,10 @@ class Cartridge extends InventoryAsset
                     }
                 }
             } else {
-               //types colored: add an entry with type + color and type + color + state
+                //types colored: add an entry with type + color and type + color + state
                 foreach ($colors as $color => $clabel) {
                     $tags[$type . $color] = [
-                    //TRANS first argument is a type, second a color
+                        //TRANS first argument is a type, second a color
                         'name'   => sprintf(
                             '%1$s %2$s',
                             $label,
@@ -128,7 +128,7 @@ class Cartridge extends InventoryAsset
 
                     foreach ($states as $state => $slabel) {
                         $tags[$type . $color . $state] = [
-                        //TRANS first argument is a type, second a color and third a state
+                            //TRANS first argument is a type, second a color and third a state
                             'name'   => sprintf(
                                 '%1$s %2$s %3$s',
                                 $label,
@@ -151,7 +151,7 @@ class Cartridge extends InventoryAsset
                         foreach ($extras as $extra => $elabel) {
                             $tags[$type . $color . $extra] = [
                                 'name' => sprintf(
-                            //TRANS first argument is a type, second a color and third an extra (matte or photo)
+                                    //TRANS first argument is a type, second a color and third an extra (matte or photo)
                                     '%1$s %2$s %3$s',
                                     $label,
                                     $clabel,
@@ -166,7 +166,7 @@ class Cartridge extends InventoryAsset
 
                             $tags[$type . $extra . $color] = [
                                 'name' => sprintf(
-                           //TRANS first argument is a type, second an extra (matte or photo) and third a color
+                                    //TRANS first argument is a type, second an extra (matte or photo) and third a color
                                     '%1$s %2$s %3$s',
                                     $label,
                                     $elabel,

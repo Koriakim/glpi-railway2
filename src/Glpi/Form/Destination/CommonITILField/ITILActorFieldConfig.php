@@ -65,7 +65,7 @@ abstract class ITILActorFieldConfig implements
     {
         return [
             self::STRATEGIES              => array_map(
-                fn (ITILActorFieldStrategy $strategy) => $strategy->value,
+                fn(ITILActorFieldStrategy $strategy) => $strategy->value,
                 $this->strategies
             ),
             self::SPECIFIC_ITILACTORS_IDS => $this->specific_itilactors_ids,

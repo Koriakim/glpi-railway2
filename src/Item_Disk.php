@@ -48,9 +48,9 @@ class Item_Disk extends CommonDBChild
     public $dohistory       = true;
 
     // Encryption status
-    const ENCRYPTION_STATUS_NO = 0;
-    const ENCRYPTION_STATUS_YES = 1;
-    const ENCRYPTION_STATUS_PARTIALLY = 2;
+    public const ENCRYPTION_STATUS_NO = 0;
+    public const ENCRYPTION_STATUS_YES = 1;
+    public const ENCRYPTION_STATUS_PARTIALLY = 2;
 
     public static function getTypeName($nb = 0)
     {
@@ -133,7 +133,7 @@ class Item_Disk extends CommonDBChild
         $itemtype = null;
         if (isset($options['itemtype']) && !empty($options['itemtype'])) {
             $itemtype = $options['itemtype'];
-        } else if (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
+        } elseif (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
             $itemtype = $this->fields['itemtype'];
         } else {
             throw new \RuntimeException('Unable to retrieve itemtype');
@@ -259,11 +259,11 @@ class Item_Disk extends CommonDBChild
                     'encryption_type_value'      => $data['encryption_type'],
                 ];
                 $encryptionTooltip = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                    <strong>{{ encryption_status_label }}</strong> : {{ encryption_status_value }}<br/>
-                    <strong>{{ encryption_tool_label }}</strong> : {{ encryption_tool_value }}</br>
-                    <strong>{{ encryption_algorithm_label }}</strong> : {{ encryption_algorithm_value }}<br/>
-                    <strong>{{ encryption_type_label }}</strong> : {{ encryption_type_value }}
-TWIG, $twig_params);
+                                        <strong>{{ encryption_status_label }}</strong> : {{ encryption_status_value }}<br/>
+                                        <strong>{{ encryption_tool_label }}</strong> : {{ encryption_tool_value }}</br>
+                                        <strong>{{ encryption_algorithm_label }}</strong> : {{ encryption_algorithm_value }}<br/>
+                                        <strong>{{ encryption_type_label }}</strong> : {{ encryption_type_value }}
+                    TWIG, $twig_params);
 
                 $encryption_label = Html::showTooltip($encryptionTooltip, [
                     'awesome-class' => "fas fa-lock",
@@ -443,7 +443,7 @@ TWIG, $twig_params);
             'forcegroupby'       => true,
             'datatype'           => 'progressbar',
             'width'              => 2,
-         // NULLIF -> avoid divizion by zero by replacing it by null (division by null return null without warning)
+            // NULLIF -> avoid divizion by zero by replacing it by null (division by null return null without warning)
             'computation'        => QueryFunction::lpad(
                 expression: QueryFunction::round(new QueryExpression('100*TABLE.freesize/' . QueryFunction::nullif('TABLE.totalsize', new QueryExpression('0')))),
                 length: 3,

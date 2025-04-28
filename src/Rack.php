@@ -49,26 +49,26 @@ class Rack extends CommonDBTM
         getEmpty as getEmptyAssignableItem;
     }
 
-    const FRONT    = 0;
-    const REAR     = 1;
+    public const FRONT    = 0;
+    public const REAR     = 1;
 
-    const POS_NONE = 0;
-    const POS_LEFT = 1;
-    const POS_RIGHT = 2;
+    public const POS_NONE = 0;
+    public const POS_LEFT = 1;
+    public const POS_RIGHT = 2;
 
-   // orientation in room
-    const ROOM_O_NORTH = 1;
-    const ROOM_O_EAST  = 2;
-    const ROOM_O_SOUTH = 3;
-    const ROOM_O_WEST  = 4;
+    // orientation in room
+    public const ROOM_O_NORTH = 1;
+    public const ROOM_O_EAST  = 2;
+    public const ROOM_O_SOUTH = 3;
+    public const ROOM_O_WEST  = 4;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'datacenter';
 
     public static function getTypeName($nb = 0)
     {
-       //TRANS: Test of comment for translation (mark : //TRANS)
+        //TRANS: Test of comment for translation (mark : //TRANS)
         return _n('Rack', 'Racks', $nb);
     }
 
@@ -520,7 +520,7 @@ class Rack extends CommonDBTM
             $x = $y = 0;
             $coord = explode(',', $item['position']);
             if (is_array($coord) && count($coord) == 2) {
-                list($x, $y) = $coord;
+                [$x, $y] = $coord;
                 $item['_x'] = (int)$x - 1;
                 $item['_y'] = (int)$y - 1;
             } else {
@@ -618,157 +618,157 @@ class Rack extends CommonDBTM
 
         $rack_add_tip = __s('Insert a rack here');
         $js = <<<JAVASCRIPT
-      $(function() {
-         $(document)
-            .on('click', '#sviewlist', function() {
-               $('#viewlist').show();
-               $('#viewgraph').hide();
-               $(this).addClass('selected');
-               $('#sviewgraph').removeClass('selected');
-            })
-            .on('click', '#sviewgraph', function() {
-               $('#viewlist').hide();
-               $('#viewgraph').show();
-               $(this).addClass('selected');
-               $('#sviewlist').removeClass('selected');
-            })
-            .on("click", "#toggle_blueprint", function() {
-               $(this).toggleClass('active');
-               $('#viewgraph').toggleClass('clear_blueprint');
-            })
-            .on("click", "#toggle_grid", function() {
-               $(this).toggleClass('active');
-               $('#viewgraph').toggleClass('clear_grid');
-            })
+                  $(function() {
+                     $(document)
+                        .on('click', '#sviewlist', function() {
+                           $('#viewlist').show();
+                           $('#viewgraph').hide();
+                           $(this).addClass('selected');
+                           $('#sviewgraph').removeClass('selected');
+                        })
+                        .on('click', '#sviewgraph', function() {
+                           $('#viewlist').hide();
+                           $('#viewgraph').show();
+                           $(this).addClass('selected');
+                           $('#sviewlist').removeClass('selected');
+                        })
+                        .on("click", "#toggle_blueprint", function() {
+                           $(this).toggleClass('active');
+                           $('#viewgraph').toggleClass('clear_blueprint');
+                        })
+                        .on("click", "#toggle_grid", function() {
+                           $(this).toggleClass('active');
+                           $('#viewgraph').toggleClass('clear_grid');
+                        })
 
-         window.dcroom_grid = GridStack.init({
-            column: $cols,
-            maxRow: ($rows + 1),
-            cellHeight: {$cell_h},
-            margin: 0,
-            float: true,
-            disableOneColumnMode: true,
-            animate: true,
-            removeTimeout: 100,
-            disableResize: true,
-         });
+                     window.dcroom_grid = GridStack.init({
+                        column: $cols,
+                        maxRow: ($rows + 1),
+                        cellHeight: {$cell_h},
+                        margin: 0,
+                        float: true,
+                        disableOneColumnMode: true,
+                        animate: true,
+                        removeTimeout: 100,
+                        disableResize: true,
+                     });
 
-         // add indexes
-         for (var x = 1; x <= $cols; x++) {
-            $('.indexes-x').append('<li>' + getBijectiveIndex(x) + '</li>');
-         }
-         for (var y = 1; y <= $rows; y++) {
-            $('.indexes-y').append('<li>' + y + '</li>');
-         }
-         // append cells for adding racks
-         for (var y = 1; y <= $rows; y++) {
-            for (var x = 1; x <= $cols; x++) {
-               $('.racks_add')
-                  .append('<div class=\"cell_add\" data-x='+x+' data-y='+y+'><span class="tipcontent">{$rack_add_tip}</span></div>');
-            }
-         }
+                     // add indexes
+                     for (var x = 1; x <= $cols; x++) {
+                        $('.indexes-x').append('<li>' + getBijectiveIndex(x) + '</li>');
+                     }
+                     for (var y = 1; y <= $rows; y++) {
+                        $('.indexes-y').append('<li>' + y + '</li>');
+                     }
+                     // append cells for adding racks
+                     for (var y = 1; y <= $rows; y++) {
+                        for (var x = 1; x <= $cols; x++) {
+                           $('.racks_add')
+                              .append('<div class=\"cell_add\" data-x='+x+' data-y='+y+'><span class="tipcontent">{$rack_add_tip}</span></div>');
+                        }
+                     }
 
-         var x_before_drag = 0;
-         var y_before_drag = 0;
-         var dirty = false;
-         var is_dragged = false;
+                     var x_before_drag = 0;
+                     var y_before_drag = 0;
+                     var dirty = false;
+                     var is_dragged = false;
 
-         window.dcroom_grid.on('change', function(event, items) {
-           if (dirty) {
-              return;
-           }
-           var grid = $(event.target).data('gridstack');
+                     window.dcroom_grid.on('change', function(event, items) {
+                       if (dirty) {
+                          return;
+                       }
+                       var grid = $(event.target).data('gridstack');
 
-           $.each(items, function(index, item) {
-              $.post('{$ajax_url}', {
-                 id: item.id,
-                 dcrooms_id: $room_id,
-                 action: 'move_rack',
-                 x: item.x + 1,
-                 y: item.y + 1,
-              }, function(answer) {
-                 // revert to old position
-                 if (!answer.status) {
-                    dirty = true;
-                    grid.update(item.el, {
-                       'x': x_before_drag,
-                       'y': y_before_drag
-                    });
-                    dirty = false;
-                    displayAjaxMessageAfterRedirect();
-                 }
-              });
-           });
-         })
-        .on('dragstart', function(event, ui) {
-            is_dragged = true;
-            var element = $(event.target);
-            var node    = element[0].gridstackNode;
+                       $.each(items, function(index, item) {
+                          $.post('{$ajax_url}', {
+                             id: item.id,
+                             dcrooms_id: $room_id,
+                             action: 'move_rack',
+                             x: item.x + 1,
+                             y: item.y + 1,
+                          }, function(answer) {
+                             // revert to old position
+                             if (!answer.status) {
+                                dirty = true;
+                                grid.update(item.el, {
+                                   'x': x_before_drag,
+                                   'y': y_before_drag
+                                });
+                                dirty = false;
+                                displayAjaxMessageAfterRedirect();
+                             }
+                          });
+                       });
+                     })
+                    .on('dragstart', function(event, ui) {
+                        is_dragged = true;
+                        var element = $(event.target);
+                        var node    = element[0].gridstackNode;
 
-            // store position before drag
-            x_before_drag = Number(node.x);
-            y_before_drag = Number(node.y);
+                        // store position before drag
+                        x_before_drag = Number(node.x);
+                        y_before_drag = Number(node.y);
 
-            // disable qtip
-            element.qtip('hide', true);
-        })
-        .on('dragstop', function(event, ui) {
-            setTimeout(() => { // prevent unwanted click (cannot find another way)
-                is_dragged = false;
-            }, 50);
-        })
-
-
-        $('.grid-stack')
-            .on('click', function(event, ui) {
-                var grid    = this;
-                var element = $(event.target);
-                var el_url  = element.find('a').attr('href');
-
-                if (el_url && !is_dragged) {
-                    window.location = el_url;
-                }
-            });
+                        // disable qtip
+                        element.qtip('hide', true);
+                    })
+                    .on('dragstop', function(event, ui) {
+                        setTimeout(() => { // prevent unwanted click (cannot find another way)
+                            is_dragged = false;
+                        }, 50);
+                    })
 
 
-         $('#viewgraph .cell_add').on('click', function(){
-            var _this = $(this);
-            if (_this.find('div').length == 0) {
-               var _x = _this.data('x');
-               var _y = _this.data('y');
+                    $('.grid-stack')
+                        .on('click', function(event, ui) {
+                            var grid    = this;
+                            var element = $(event.target);
+                            var el_url  = element.find('a').attr('href');
 
-               glpi_ajax_dialog({
-                  url : "{$rack->getFormURL()}",
-                  method: 'GET',
-                  dialogclass: 'modal-xl',
-                  params: {
-                     room: $room_id,
-                     position: _x + ',' + _y,
-                     ajax: true
-                  }
-               });
-            }
-         });
+                            if (el_url && !is_dragged) {
+                                window.location = el_url;
+                            }
+                        });
 
-         $('#viewgraph .cell_add, #viewgraph .grid-stack-item').each(function() {
-            var tipcontent = $(this).find('.tipcontent');
-            if (tipcontent.length) {
-               $(this).qtip({
-                  position: {
-                     my: 'left center',
-                     at: 'right center',
-                  },
-                  content: {
-                     text: tipcontent
-                  },
-                  style: {
-                     classes: 'qtip-shadow qtip-bootstrap rack_tipcontent'
-                  }
-               });
-            }
-         });
-      });
-JAVASCRIPT;
+
+                     $('#viewgraph .cell_add').on('click', function(){
+                        var _this = $(this);
+                        if (_this.find('div').length == 0) {
+                           var _x = _this.data('x');
+                           var _y = _this.data('y');
+
+                           glpi_ajax_dialog({
+                              url : "{$rack->getFormURL()}",
+                              method: 'GET',
+                              dialogclass: 'modal-xl',
+                              params: {
+                                 room: $room_id,
+                                 position: _x + ',' + _y,
+                                 ajax: true
+                              }
+                           });
+                        }
+                     });
+
+                     $('#viewgraph .cell_add, #viewgraph .grid-stack-item').each(function() {
+                        var tipcontent = $(this).find('.tipcontent');
+                        if (tipcontent.length) {
+                           $(this).qtip({
+                              position: {
+                                 my: 'left center',
+                                 at: 'right center',
+                              },
+                              content: {
+                                 text: tipcontent
+                              },
+                              style: {
+                                 classes: 'qtip-shadow qtip-bootstrap rack_tipcontent'
+                              }
+                           });
+                        }
+                     });
+                  });
+            JAVASCRIPT;
 
         echo Html::scriptBlock($js);
     }
@@ -821,7 +821,7 @@ JAVASCRIPT;
     private function prepareInput($input)
     {
         if (!array_key_exists('dcrooms_id', $input) || $input['dcrooms_id'] == 0) {
-           // Position is not set if room not selected
+            // Position is not set if room not selected
             return $input;
         }
 

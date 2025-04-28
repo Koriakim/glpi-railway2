@@ -41,7 +41,7 @@ use Glpi\Inventory\Inventory;
  */
 class SNMPCredential extends CommonDBTM
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname = 'snmpcredential';
 

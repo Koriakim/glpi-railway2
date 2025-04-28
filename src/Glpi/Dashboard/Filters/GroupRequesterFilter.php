@@ -70,7 +70,7 @@ class GroupRequesterFilter extends AbstractFilter
         $groups_id = null;
         if ((int)$value > 0) {
             $groups_id = (int) $value;
-        } else if ($value == 'mygroups') {
+        } elseif ($value == 'mygroups') {
             $groups_id = $_SESSION['glpigroups'];
         }
 
@@ -114,7 +114,7 @@ class GroupRequesterFilter extends AbstractFilter
         $groups_id = null;
         if ((int) $value > 0) {
             $groups_id =  (int) $value;
-        } else if ($value == 'mygroups') {
+        } elseif ($value == 'mygroups') {
             $groups_id =  'mygroups';
         }
 
@@ -126,7 +126,7 @@ class GroupRequesterFilter extends AbstractFilter
                     'searchtype' => 'equals',
                     'value'      => $groups_id
                 ];
-            } else if (in_array($table, [Ticket::getTable(), Change::getTable(),Problem::getTable()])) {
+            } elseif (in_array($table, [Ticket::getTable(), Change::getTable(),Problem::getTable()])) {
                 $criteria[] = [
                     'link'       => 'AND',
                     'field'      => 71, // requester group

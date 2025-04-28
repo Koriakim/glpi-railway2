@@ -44,7 +44,7 @@ class Blacklist extends CommonDropdown
 {
     use Clonable;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory = true;
 
     public static $rightname = 'config';
@@ -58,14 +58,14 @@ class Blacklist extends CommonDropdown
      */
     private $blacklists;
 
-    const IP             = 1;
-    const MAC            = 2;
-    const SERIAL         = 3;
-    const UUID           = 4;
-    const EMAIL          = 5;
-    const MODEL          = 6;
-    const NAME           = 7;
-    const MANUFACTURER   = 8;
+    public const IP             = 1;
+    public const MAC            = 2;
+    public const SERIAL         = 3;
+    public const UUID           = 4;
+    public const EMAIL          = 5;
+    public const MODEL          = 6;
+    public const NAME           = 7;
+    public const MANUFACTURER   = 8;
 
     public function maxActionsCount()
     {
@@ -249,7 +249,7 @@ class Blacklist extends CommonDropdown
             self::SERIAL           => __('Serial number'),
             self::UUID             => __('UUID'),
             self::EMAIL            => _n('Email', 'Emails', 1),
-         //'Windows product key' => 'winProdKey',
+            //'Windows product key' => 'winProdKey',
             self::MODEL            => _n('Model', 'Models', 1),
             self::NAME             => __('Name'),
             self::MANUFACTURER     => _n('Manufacturer', 'Manufacturers', 1)
@@ -488,7 +488,7 @@ class Blacklist extends CommonDropdown
         foreach ($criteria as $criterion) {
             if (preg_match('|/.+/(a-zZ-a)?|', $criterion['value']) && preg_match($criterion['value'], $value)) {
                 return '';
-            } else if (strcasecmp($value, $criterion['value']) === 0) {
+            } elseif (strcasecmp($value, $criterion['value']) === 0) {
                 return '';
             }
         }
@@ -545,7 +545,7 @@ class Blacklist extends CommonDropdown
                         unset($ips[$k]);
                     }
                 }
-            } else if ('' == $this->process(self::IP, $ips)) {
+            } elseif ('' == $this->process(self::IP, $ips)) {
                 unset($value->$property);
             }
         }

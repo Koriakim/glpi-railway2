@@ -169,7 +169,7 @@ final class AssetDefinition extends AbstractDefinition
         $capacities = AssetDefinitionManager::getInstance()->getAvailableCapacities();
         usort(
             $capacities,
-            static fn (CapacityInterface $a, CapacityInterface $b) => strnatcasecmp($a->getLabel(), $b->getLabel())
+            static fn(CapacityInterface $a, CapacityInterface $b) => strnatcasecmp($a->getLabel(), $b->getLabel())
         );
 
         TemplateRenderer::getInstance()->display(
@@ -221,7 +221,7 @@ final class AssetDefinition extends AbstractDefinition
     {
         $all_fields = $this->getAllFields();
         $field_display = $this->getDecodedFieldsField();
-        $field_match = array_filter($field_display, static fn ($field) => $field['key'] === $field_key);
+        $field_match = array_filter($field_display, static fn($field) => $field['key'] === $field_key);
         $field_options = [];
         if (!empty($field_match)) {
             $field_options = reset($field_match)['field_options'] ?? [];
@@ -240,21 +240,21 @@ final class AssetDefinition extends AbstractDefinition
         $options_allowlist = ['required', 'readonly', 'full_width', 'hidden'];
 
         $twig_params = [
-            'options' => array_filter($custom_field->getFieldType()->getOptions(), static fn ($option) => in_array($option->getKey(), $options_allowlist, true)),
+            'options' => array_filter($custom_field->getFieldType()->getOptions(), static fn($option) => in_array($option->getKey(), $options_allowlist, true)),
             'key' => $field_key,
         ];
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <form>
-                <input type="hidden" name="key" value="{{ key }}">
-                <div class="d-flex flex-wrap">
-                    {% for option in options %}
-                        {{ option.getFormInput()|raw }}
-                    {% endfor %}
-                </div>
-            </form>
-TWIG, $twig_params);
+                        <form>
+                            <input type="hidden" name="key" value="{{ key }}">
+                            <div class="d-flex flex-wrap">
+                                {% for option in options %}
+                                    {{ option.getFormInput()|raw }}
+                                {% endfor %}
+                            </div>
+                        </form>
+            TWIG, $twig_params);
     }
 
     public function prepareInputForAdd($input)
@@ -309,7 +309,7 @@ TWIG, $twig_params);
             } else {
                 // Add the config key if not present in the input.
                 $capacities = \array_map(
-                    fn (array $capacity_specs) => new Capacity(
+                    fn(array $capacity_specs) => new Capacity(
                         $capacity_specs['name'],
                         new CapacityConfig($capacity_specs['config'] ?? [])
                     ),
@@ -799,7 +799,7 @@ TWIG, $twig_params);
         $fields_display = $this->getDecodedFieldsField();
         usort(
             $fields_display,
-            static fn ($a, $b) => $a['order'] <=> $b['order']
+            static fn($a, $b) => $a['order'] <=> $b['order']
         );
         return array_column($fields_display, 'key');
     }
@@ -820,7 +820,7 @@ TWIG, $twig_params);
         $is_valid = true;
 
         $available_capacities = array_map(
-            fn ($capacity) => $capacity::class,
+            fn($capacity) => $capacity::class,
             AssetDefinitionManager::getInstance()->getAvailableCapacities()
         );
         foreach ($capacities as $capacity_specs) {
@@ -899,11 +899,11 @@ TWIG, $twig_params);
         ];
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.dropdownField('Profile', '_profiles_extra[helpdesk_item_type]', enabled_profiles, label, {
-                multiple: true
-            }) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {{ fields.dropdownField('Profile', '_profiles_extra[helpdesk_item_type]', enabled_profiles, label, {
+                            multiple: true
+                        }) }}
+            TWIG, $twig_params);
     }
 
     protected function syncProfilesRights(): void
@@ -946,7 +946,7 @@ TWIG, $twig_params);
             $current_allowed = in_array($profile_id, $helpdesk_item_type, false);
             if ($current_allowed && !in_array($this->getCustomObjectClassName(), $itemtype_allowed, true)) {
                 $changes['helpdesk_item_type'] = [...$itemtype_allowed, $this->getCustomObjectClassName()];
-            } else if (!$current_allowed && in_array($this->getCustomObjectClassName(), $itemtype_allowed, true)) {
+            } elseif (!$current_allowed && in_array($this->getCustomObjectClassName(), $itemtype_allowed, true)) {
                 $changes['helpdesk_item_type'] = array_diff($itemtype_allowed, [$this->getCustomObjectClassName()]);
             }
             if (count($changes) > 0) {

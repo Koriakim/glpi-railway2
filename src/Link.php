@@ -44,7 +44,7 @@ use Glpi\Toolbox\URL;
  */
 class Link extends CommonDBTM
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     public static $rightname = 'link';
@@ -455,7 +455,7 @@ class Link extends CommonDBTM
         ];
 
         if (Toolbox::hasTrait($item::class, AssignableItem::class)) {
-            $group_names = array_map(static fn ($group_id) => Dropdown::getDropdownName('glpi_groups', $group_id), $item->fields['groups_id']);
+            $group_names = array_map(static fn($group_id) => Dropdown::getDropdownName('glpi_groups', $group_id), $item->fields['groups_id']);
             $vars['GROUPS'] = $group_names;
             // GROUP - BC for < GLPI 11
             $vars['GROUP'] = count($group_names) > 0 ? array_shift($group_names) : '';
@@ -542,7 +542,7 @@ class Link extends CommonDBTM
         }
 
         if ($safe_url) {
-            $links = array_map(static fn ($l) => URL::sanitizeURL($l) ?: '#', $links);
+            $links = array_map(static fn($l) => URL::sanitizeURL($l) ?: '#', $links);
         }
 
         return $links;
@@ -569,21 +569,21 @@ class Link extends CommonDBTM
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="text-center my-3">
-                    {% if show_add %}
-                        <a class="btn btn-primary" href="{{ 'ManualLink'|itemtype_form_path ~ '?itemtype=' ~ item.getType() ~ '&items_id=' ~ item.fields[item.getIndexName()] }}">
-                            <i class="ti ti-plus me-2"></i>
-                            {{ add_msg }}
-                        </a>
-                    {% endif %}
-                    {% if show_configure %}
-                        <a class="btn btn-primary" href="{{ 'Link'|itemtype_search_path }}">
-                            <i class="ti ti-settings me-2"></i>
-                            {{ configure_msg }}
-                        </a>
-                    {% endif %}
-                </div>
-TWIG, $buttons_params);
+                            <div class="text-center my-3">
+                                {% if show_add %}
+                                    <a class="btn btn-primary" href="{{ 'ManualLink'|itemtype_form_path ~ '?itemtype=' ~ item.getType() ~ '&items_id=' ~ item.fields[item.getIndexName()] }}">
+                                        <i class="ti ti-plus me-2"></i>
+                                        {{ add_msg }}
+                                    </a>
+                                {% endif %}
+                                {% if show_configure %}
+                                    <a class="btn btn-primary" href="{{ 'Link'|itemtype_search_path }}">
+                                        <i class="ti ti-settings me-2"></i>
+                                        {{ configure_msg }}
+                                    </a>
+                                {% endif %}
+                            </div>
+            TWIG, $buttons_params);
 
         $entries = [];
 
@@ -707,7 +707,7 @@ TWIG, $buttons_params);
                 $i++;
             }
         } else {
-           // Generate files
+            // Generate files
             $files = $item->generateLinkContents($params['link'], $item, false);
             $links = $item->generateLinkContents($params['data'], $item, false);
             $i     = 1;
@@ -717,7 +717,7 @@ TWIG, $buttons_params);
                     // a different name for each file, ex name = foo-[IP].txt
                     $file = $files[$key];
                 } else {
-                   // same name for all files, ex name = foo.txt
+                    // same name for all files, ex name = foo.txt
                     $file = reset($files);
                 }
                 $url             = $CFG_GLPI["root_doc"] . "/front/link.send.php?lID=" . $params['id'] .
@@ -740,7 +740,7 @@ TWIG, $buttons_params);
     {
         $tab = [];
 
-       // "Fake" search options, processing is done in Search::giveItem() for glpi_links._virtual
+        // "Fake" search options, processing is done in Search::giveItem() for glpi_links._virtual
         $newtab = [
             'id'                 => '145',
             'table'              => 'glpi_links',

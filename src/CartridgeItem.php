@@ -33,7 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\DBAL\QueryExpression;
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\QueryFunction;
 use Glpi\Features\AssetImage;
@@ -53,7 +52,7 @@ class CartridgeItem extends CommonDBTM
     }
     use Glpi\Features\Clonable;
 
-   // From CommonDBTM
+    // From CommonDBTM
     protected static $forward_entity_to = ['Cartridge', 'Infocom'];
     public $dohistory                   = true;
     protected $usenotepad               = true;
@@ -155,7 +154,7 @@ class CartridgeItem extends CommonDBTM
         return $ong;
     }
 
-   ///// SPECIFIC FUNCTIONS
+    ///// SPECIFIC FUNCTIONS
 
     /**
      * Count cartridge of the cartridge type
@@ -465,20 +464,20 @@ class CartridgeItem extends CommonDBTM
 
                 foreach ($result as $cartridge) {
                     if (($unused = Cartridge::getUnusedNumber($cartridge["cartID"])) <= $cartridge["threshold"]) {
-                       //TRANS: %1$s is the cartridge name, %2$s its reference, %3$d the remaining number
+                        //TRANS: %1$s is the cartridge name, %2$s its reference, %3$d the remaining number
                         $message .= sprintf(
                             __('Threshold of alarm reached for the type of cartridge: %1$s - Reference %2$s - Remaining %3$d'),
                             $cartridge["name"],
                             $cartridge["ref"],
                             $unused
                         );
-                         $message .= '<br>';
+                        $message .= '<br>';
 
-                         $items[$cartridge["cartID"]] = $cartridge;
+                        $items[$cartridge["cartID"]] = $cartridge;
 
-                       // if alert exists -> delete
+                        // if alert exists -> delete
                         if (!empty($cartridge["alertID"])) {
-                                $alert->delete(["id" => $cartridge["alertID"]]);
+                            $alert->delete(["id" => $cartridge["alertID"]]);
                         }
                     }
                 }
@@ -492,14 +491,14 @@ class CartridgeItem extends CommonDBTM
                     $entityname = Dropdown::getDropdownName("glpi_entities", $entity);
                     if (NotificationEvent::raiseEvent('alert', new CartridgeItem(), $options)) {
                         if ($task) {
-                             $task->log(sprintf(__('%1$s: %2$s') . "\n", $entityname, $message));
-                             $task->addVolume(1);
+                            $task->log(sprintf(__('%1$s: %2$s') . "\n", $entityname, $message));
+                            $task->addVolume(1);
                         } else {
-                             Session::addMessageAfterRedirect(htmlescape(sprintf(
-                                 __('%1$s: %2$s'),
-                                 $entityname,
-                                 $message
-                             )));
+                            Session::addMessageAfterRedirect(htmlescape(sprintf(
+                                __('%1$s: %2$s'),
+                                $entityname,
+                                $message
+                            )));
                         }
 
                         $input = [
@@ -507,19 +506,19 @@ class CartridgeItem extends CommonDBTM
                             'itemtype' => 'CartridgeItem',
                         ];
 
-                      // add alerts
+                        // add alerts
                         foreach (array_keys($items) as $ID) {
                             $input["items_id"] = $ID;
                             $alert->add($input);
                             unset($alert->fields['id']);
                         }
                     } else {
-                     //TRANS: %s is entity name
+                        //TRANS: %s is entity name
                         $msg = sprintf(__('%s: send cartridge alert failed'), $entityname);
                         if ($task) {
                             $task->log($msg);
                         } else {
-                           //TRANS: %s is the entity
+                            //TRANS: %s is the entity
                             Session::addMessageAfterRedirect(htmlescape($msg), false, ERROR);
                         }
                     }

@@ -46,7 +46,7 @@ class Document extends CommonDBTM
     use Glpi\Features\TreeBrowse;
     use Glpi\Features\ParentStatus;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     protected static $forward_entity_to = ['Document_Item'];
@@ -124,7 +124,7 @@ class Document extends CommonDBTM
             }
         }
 
-       // From Ticket Document Tab => check right to add followup.
+        // From Ticket Document Tab => check right to add followup.
         if (
             isset($this->fields['tickets_id'])
             && ($this->fields['tickets_id'] > 0)
@@ -149,7 +149,7 @@ class Document extends CommonDBTM
             ]
         );
 
-       // Unlink/delete the file
+        // Unlink/delete the file
         if (!empty($this->fields["filepath"])) {
             if (
                 is_file(GLPI_DOC_DIR . "/" . $this->fields["filepath"])
@@ -222,10 +222,10 @@ class Document extends CommonDBTM
         $upload_ok = false;
         if (!empty($input["_filename"])) {
             $upload_ok = self::moveDocument($input, array_shift($input["_filename"]));
-        } else if (!empty($input["upload_file"])) {
+        } elseif (!empty($input["upload_file"])) {
             // Move doc from upload dir
             $upload_ok = $this->moveUploadedDocument($input, $input["upload_file"]);
-        } else if (isset($input['filepath']) && file_exists(GLPI_DOC_DIR . '/' . $input['filepath'])) {
+        } elseif (isset($input['filepath']) && file_exists(GLPI_DOC_DIR . '/' . $input['filepath'])) {
             // Document is created using an existing document file
             $upload_ok = true;
         }
@@ -321,7 +321,7 @@ class Document extends CommonDBTM
         if (isset($input['current_filepath'])) {
             if (!empty($input["_filename"])) {
                 self::moveDocument($input, array_shift($input["_filename"]));
-            } else if (!empty($input["upload_file"])) {
+            } elseif (!empty($input["upload_file"])) {
                 // Move doc from upload dir
                 $this->moveUploadedDocument($input, $input["upload_file"]);
             }
@@ -425,10 +425,10 @@ class Document extends CommonDBTM
         $splitter = $this->fields['filename'] !== null ? explode("/", $this->fields['filename']) : [];
 
         if (count($splitter) === 2) {
-           // Old documents in EXT/filename
+            // Old documents in EXT/filename
             $fileout = $splitter[1];
         } else {
-           // New document
+            // New document
             $fileout = $this->fields['filename'];
         }
 
@@ -739,7 +739,7 @@ class Document extends CommonDBTM
             return false;
         }
 
-       /* @var CommonITILObject $itil */
+        /* @var CommonITILObject $itil */
         $itil = new $itemtype();
 
         if (!$itil->can($items_id, READ)) {
@@ -966,7 +966,7 @@ class Document extends CommonDBTM
             ]
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
 
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
@@ -1044,7 +1044,7 @@ class Document extends CommonDBTM
             return false;
         }
 
-       // Delete old file (if not used by another doc)
+        // Delete old file (if not used by another doc)
         if (
             isset($input['current_filepath'])
             && !empty($input['current_filepath'])
@@ -1062,7 +1062,7 @@ class Document extends CommonDBTM
                     $input['current_filename']
                 )));
             } else {
-               // TRANS: %1$s is the curent filename, %2$s is its directory
+                // TRANS: %1$s is the curent filename, %2$s is its directory
                 trigger_error(
                     sprintf(
                         'Failed to delete the file %1$s (%2$s)',
@@ -1082,7 +1082,7 @@ class Document extends CommonDBTM
             }
         }
 
-       // Local file : try to detect mime type
+        // Local file : try to detect mime type
         $input['mime'] = Toolbox::getMime($fullpath);
 
         if (
@@ -1104,11 +1104,11 @@ class Document extends CommonDBTM
             }
         }
 
-       // For display
+        // For display
         $input['filename'] = $filename;
-       // Storage path
+        // Storage path
         $input['filepath'] = $new_path;
-       // Checksum
+        // Checksum
         $input['sha1sum']  = $sha1sum;
         return true;
     }
@@ -1179,7 +1179,7 @@ class Document extends CommonDBTM
                     $input['current_filename']
                 ));
             } else {
-               // TRANS: %1$s is the curent filename, %2$s is its directory
+                // TRANS: %1$s is the curent filename, %2$s is its directory
                 trigger_error(
                     sprintf(
                         'Failed to delete the file %1$s (%2$s)',
@@ -1235,7 +1235,7 @@ class Document extends CommonDBTM
 
             if (Session::haveRight('dropdown', READ)) {
                 $message .= " <a target='_blank' href='" . DocumentType::getSearchURL() . "' class='pointer'>
-                         <i class='fa fa-info'</i><span class='sr-only'>" . __s('Manage document types')  . "</span></a>";
+                         <i class='fa fa-info'</i><span class='sr-only'>" . __s('Manage document types') . "</span></a>";
             }
             Session::addMessageAfterRedirect($message, false, ERROR);
             return '';
@@ -1260,7 +1260,7 @@ class Document extends CommonDBTM
 
         if (
             !is_dir(GLPI_DOC_DIR . "/" . $subdir)
-            && @mkdir(GLPI_DOC_DIR . "/" . $subdir, 0777, true)
+            && @mkdir(GLPI_DOC_DIR . "/" . $subdir, 0o777, true)
         ) {
             Session::addMessageAfterRedirect(sprintf(
                 __s('Create the directory %s'),

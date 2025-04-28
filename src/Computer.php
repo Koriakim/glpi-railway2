@@ -50,7 +50,7 @@ class Computer extends CommonDBTM
         post_updateItem as post_updateItemAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     protected static $forward_entity_to = ['Item_Disk','ItemVirtualMachine',
@@ -58,8 +58,8 @@ class Computer extends CommonDBTM
         'NetworkPort', 'ReservationItem',
         'Item_OperatingSystem'
     ];
-   // Specific ones
-   ///Device container - format $device = array(ID,"device type","ID in device table","specificity value")
+    // Specific ones
+    ///Device container - format $device = array(ID,"device type","ID in device table","specificity value")
     public $devices                     = [];
 
     public static $rightname                   = 'computer';
@@ -195,28 +195,28 @@ class Computer extends CommonDBTM
         $update_count = count($this->updates ?? []);
         $input = $this->fields;
         for ($i = 0; $i < $update_count; $i++) {
-           // Update contact of attached items
+            // Update contact of attached items
             if ($this->updates[$i] == 'contact_num' && Entity::getUsedConfig('is_contact_autoupdate', $this->getEntityID())) {
                 $changes['contact_num'] = $input['contact_num'];
             }
             if ($this->updates[$i] == 'contact' && Entity::getUsedConfig('is_contact_autoupdate', $this->getEntityID())) {
                 $changes['contact'] = $input['contact'];
             }
-           // Update users and groups of attached items
+            // Update users and groups of attached items
             if (
                 $this->updates[$i] == 'users_id'
                 && Entity::getUsedConfig('is_user_autoupdate', $this->getEntityID())
             ) {
                 $changes['users_id'] = $input['users_id'];
             }
-           // Update state of attached items
+            // Update state of attached items
             if (
                 ($this->updates[$i] == 'states_id')
                 && (Entity::getUsedConfig('state_autoupdate_mode', $this->getEntityID()) < 0)
             ) {
                 $changes['states_id'] = $input['states_id'];
             }
-           // Update location of attached items
+            // Update location of attached items
             if (
                 $this->updates[$i] == 'locations_id'
                 && Entity::getUsedConfig('is_location_autoupdate', $this->getEntityID())
@@ -250,8 +250,8 @@ class Computer extends CommonDBTM
                 );
                 $item      = new $type();
                 foreach ($items_result as $data) {
-                     $tID = $data['items_id_peripheral'];
-                     $item->getFromDB($tID);
+                    $tID = $data['items_id_peripheral'];
+                    $item->getFromDB($tID);
                     if (!$item->getField('is_global')) {
                         $item_input = $changes;
                         $item_input['id'] = $item->getID();
@@ -266,14 +266,14 @@ class Computer extends CommonDBTM
                 }
             }
 
-           //fields that are not present for devices
+            //fields that are not present for devices
             unset($changes['groups_id']);
             unset($changes['users_id']);
             unset($changes['contact_num']);
             unset($changes['contact']);
 
             if (count($changes) > 0) {
-               // Propagates the changes to linked devices
+                // Propagates the changes to linked devices
                 foreach (Item_Devices::getDeviceTypes() as $device) {
                     $item = new $device();
                     $devices_result = $DB->request(
@@ -644,7 +644,7 @@ class Computer extends CommonDBTM
             'datatype'           => 'dropdown'
         ];
 
-       // add operating system search options
+        // add operating system search options
         $tab = array_merge($tab, Item_OperatingSystem::rawSearchOptionsToAdd(get_class($this)));
 
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());

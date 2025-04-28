@@ -660,7 +660,7 @@ class DatabaseSchemaIntegrityChecker
                         // Opening backtick, ensure there is a space before
                         $sql = substr($sql, 0, $i) . ' ' . substr($sql, $i);
                         $i++;
-                    } else if ($is_protected && preg_match('/\s/', $sql[$i + 1]) !== 1) {
+                    } elseif ($is_protected && preg_match('/\s/', $sql[$i + 1]) !== 1) {
                         // Closing backtick, ensure there is a space before
                         $sql = substr($sql, 0, $i + 1) . ' ' . substr($sql, $i + 1);
                         $i++;
@@ -669,7 +669,7 @@ class DatabaseSchemaIntegrityChecker
 
                 $is_protected = !$is_protected;
                 continue;
-            } else if ($is_protected) {
+            } elseif ($is_protected) {
                 continue;
             }
 
@@ -677,13 +677,13 @@ class DatabaseSchemaIntegrityChecker
             if ($sql[$i] === '\'') {
                 $is_quoted = !$is_quoted;
                 continue;
-            } else if ($is_quoted) {
+            } elseif ($is_quoted) {
                 continue;
             }
 
             if ($sql[$i] === '(') {
                 $parenthesis_level++;
-            } else if ($sql[$i] === ')') {
+            } elseif ($sql[$i] === ')') {
                 $parenthesis_level--;
             }
 
@@ -699,10 +699,10 @@ class DatabaseSchemaIntegrityChecker
             if ($parenthesis_level === 1 && $sql[$i] === '(') {
                 $sql = substr($sql, 0, $i + 1) . "\n" . substr($sql, $i + 1);
                 $i++;
-            } else if ($parenthesis_level === 0 && $sql[$i] === ')') {
+            } elseif ($parenthesis_level === 0 && $sql[$i] === ')') {
                 $sql = substr($sql, 0, $i) . "\n" . substr($sql, $i);
                 $i++;
-            } else if ($parenthesis_level === 1 && $sql[$i] === ',') {
+            } elseif ($parenthesis_level === 1 && $sql[$i] === ',') {
                 $sql = substr($sql, 0, $i + 1) . "\n" . substr($sql, $i + 1);
                 $i++;
             }

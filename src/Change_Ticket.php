@@ -42,7 +42,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class Change_Ticket extends CommonITILObject_CommonITILObject
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1   = 'Change';
     public static $items_id_1   = 'changes_id';
 
@@ -142,22 +142,22 @@ class Change_Ticket extends CommonITILObject_CommonITILObject
                 foreach ($ids as $id) {
                     if ($item->can($id, READ)) {
                         if ($ticket->getFromDB($item->fields['tickets_id'])) {
-                              $input2 = [$field              => $item->fields['tickets_id'],
-                                  'taskcategories_id' => $input['taskcategories_id'],
-                                  'actiontime'        => $input['actiontime'],
-                                  'content'           => $input['content']
-                              ];
-                              if ($task->can(-1, CREATE, $input2)) {
-                                  if ($task->add($input2)) {
-                                      $ma->itemDone($item::class, $id, MassiveAction::ACTION_OK);
-                                  } else {
-                                      $ma->itemDone($item::class, $id, MassiveAction::ACTION_KO);
-                                      $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
-                                  }
-                              } else {
-                                  $ma->itemDone($item::class, $id, MassiveAction::ACTION_NORIGHT);
-                                  $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
-                              }
+                            $input2 = [$field              => $item->fields['tickets_id'],
+                                'taskcategories_id' => $input['taskcategories_id'],
+                                'actiontime'        => $input['actiontime'],
+                                'content'           => $input['content']
+                            ];
+                            if ($task->can(-1, CREATE, $input2)) {
+                                if ($task->add($input2)) {
+                                    $ma->itemDone($item::class, $id, MassiveAction::ACTION_OK);
+                                } else {
+                                    $ma->itemDone($item::class, $id, MassiveAction::ACTION_KO);
+                                    $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
+                                }
+                            } else {
+                                $ma->itemDone($item::class, $id, MassiveAction::ACTION_NORIGHT);
+                                $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                            }
                         } else {
                             $ma->itemDone($item::class, $id, MassiveAction::ACTION_NORIGHT);
                             $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));

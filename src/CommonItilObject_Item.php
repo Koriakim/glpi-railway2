@@ -224,7 +224,7 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                 if (isset($tt->fields['id'])) {
                     $twig_params['opt']['templates_id'] = $tt->fields['id'];
                 }
-            } else if (isset($options['templates_id'])) {
+            } elseif (isset($options['templates_id'])) {
                 $tt->getFromDBWithData($options['templates_id']);
                 if (isset($tt->fields['id'])) {
                     $twig_params['opt']['templates_id'] = $tt->fields['id'];
@@ -483,7 +483,7 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                     echo "<td class='center" .
                             (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'");
                     echo ">" . $namelink . "</td>";
-                    echo "<td class='center'>" . (isset($data["serial"]) ?  htmlescape($data["serial"]) : "-") .
+                    echo "<td class='center'>" . (isset($data["serial"]) ? htmlescape($data["serial"]) : "-") .
                         "</td>";
                     echo "<td class='center'>" .
                         (isset($data["otherserial"]) ? htmlescape($data["otherserial"]) : "-") . "</td>";
@@ -1446,7 +1446,7 @@ abstract class CommonItilObject_Item extends CommonDBRelation
             $item->getFromDB($this->fields['items_id']);
 
             if (($name = $item->getName()) == NOT_AVAILABLE) {
-               //TRANS: %1$s is the itemtype, %2$d is the id of the item
+                //TRANS: %1$s is the itemtype, %2$d is the id of the item
                 $item->fields['name'] = sprintf(
                     __('%1$s - ID %2$d'),
                     $item->getTypeName(1),
@@ -1457,7 +1457,7 @@ abstract class CommonItilObject_Item extends CommonDBRelation
             $display = (isset($this->input['_no_message_link']) ? htmlescape($item->getNameID())
                                                             : $item->getLink());
 
-           //TRANS : %s is the description of the added item
+            //TRANS : %s is the description of the added item
             Session::addMessageAfterRedirect(sprintf(
                 __s('%1$s: %2$s'),
                 __s('Item successfully added'),
@@ -1522,11 +1522,11 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                     $name = Dropdown::getDropdownName($table, $value);
                     if (isset($options['comments']) && $options['comments']) {
                         $comments = Dropdown::getDropdownComments($table, $value);
-                         return sprintf(
-                             __('%1$s %2$s'),
-                             htmlescape($name),
-                             Html::showToolTip($comments, ['display' => false])
-                         );
+                        return sprintf(
+                            __('%1$s %2$s'),
+                            htmlescape($name),
+                            Html::showToolTip($comments, ['display' => false])
+                        );
                     }
                     return htmlescape($name);
                 }
@@ -1591,7 +1591,7 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                     Ticket::HELPDESK_ALL_HARDWARE
                 )
             ) {
-               // Display a message if view my hardware
+                // Display a message if view my hardware
                 if (
                     $users_id
                     && ($_SESSION["glpiactiveprofile"]["helpdesk_hardware"] & pow(
@@ -1603,7 +1603,7 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                 }
 
                 $types = static::$itemtype_1::getAllTypesForHelpdesk();
-                $types = array_filter($types, static fn ($k) => $k::canView(), ARRAY_FILTER_USE_KEY);
+                $types = array_filter($types, static fn($k) => $k::canView(), ARRAY_FILTER_USE_KEY);
                 $emptylabel = __('General');
                 if ($params[static::$items_id_1] > 0) {
                     $emptylabel = Dropdown::EMPTY_VALUE;
@@ -1643,7 +1643,7 @@ abstract class CommonItilObject_Item extends CommonDBRelation
                 );
                 echo "<span id='" . Html::cleanId("results_" . htmlescape($myname) . "$rand") . "'>\n";
 
-               // Display default value if itemtype is displayed
+                // Display default value if itemtype is displayed
                 if (
                     $found_type
                     && $itemtype

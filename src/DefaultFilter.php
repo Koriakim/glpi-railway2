@@ -33,8 +33,8 @@
  * ---------------------------------------------------------------------
  */
 
- use Glpi\Search\FilterableInterface;
- use Glpi\Search\FilterableTrait;
+use Glpi\Search\FilterableInterface;
+use Glpi\Search\FilterableTrait;
 
 class DefaultFilter extends CommonDBTM implements FilterableInterface
 {

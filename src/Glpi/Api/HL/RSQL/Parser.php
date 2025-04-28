@@ -92,28 +92,28 @@ final class Parser
                 [
                     'operator' => '==',
                     'description' => 'equivalent to',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [$this->db::quoteName($a) => $b]
                     ],
                 ],
                 [
                     'operator' => '!=',
                     'description' => 'not equivalent to',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [$this->db::quoteName($a) => ['<>', $b]]
                     ],
                 ],
                 [
                     'operator' => '=in=',
                     'description' => 'in',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [$this->db::quoteName($a) => $this->rsqlGroupToArray($b)]
                     ],
                 ],
                 [
                     'operator' => '=out=',
                     'description' => 'not in',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         ['NOT' => [$this->db::quoteName($a) => $this->rsqlGroupToArray($b)]]
                     ],
                 ],
@@ -127,21 +127,21 @@ final class Parser
                 [
                     'operator' => '=le=',
                     'description' => 'less than or equal to',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [$this->db::quoteName($a) => ['<=', $b]]
                     ],
                 ],
                 [
                     'operator' => '=gt=',
                     'description' => 'greater than',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [$this->db::quoteName($a) => ['>', $b]]
                     ],
                 ],
                 [
                     'operator' => '=ge=',
                     'description' => 'greater than or equal to',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [$this->db::quoteName($a) => ['>=', $b]]
                     ],
                 ],
@@ -170,14 +170,14 @@ final class Parser
                 [
                     'operator' => '=isnull=',
                     'description' => 'is null',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [$this->db::quoteName($a) => null]
                     ],
                 ],
                 [
                     'operator' => '=notnull=',
                     'description' => 'is not null',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         ['NOT' => [$this->db::quoteName($a) => null]]
                     ],
                 ],
@@ -185,7 +185,7 @@ final class Parser
                     // Empty string or null
                     'operator' => '=empty=',
                     'description' => 'is empty',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [
                             'OR' => [
                                 [$this->db::quoteName($a) => ''],
@@ -197,7 +197,7 @@ final class Parser
                 [
                     'operator' => '=notempty=',
                     'description' => 'is not empty',
-                    'sql_where_callable' => fn ($a, $b) => [
+                    'sql_where_callable' => fn($a, $b) => [
                         [
                             'AND' => [
                                 [$this->db::quoteName($a) => ['<>', '']],
@@ -244,7 +244,7 @@ final class Parser
                         'property' => null,
                         'field' => null,
                     ];
-                } else if (isset($flat_props[$value]['x-mapped-from'])) {
+                } elseif (isset($flat_props[$value]['x-mapped-from'])) {
                     // Mapped properties cannot be used in RSQL currently since they are calculated after the query is executed
                     $invalid_filters[$value] = Error::MAPPED_PROPERTY;
                     $buffer = [
@@ -257,7 +257,7 @@ final class Parser
                         'field' => $this->search->getSQLFieldForProperty($value),
                     ];
                 }
-            } else if ($type === Lexer::T_OPERATOR) {
+            } elseif ($type === Lexer::T_OPERATOR) {
                 if (!isset($operators[$value])) {
                     if ($buffer['property'] !== null) {
                         $invalid_filters[$buffer['property']] = Error::UNKNOWN_OPERATOR;
@@ -266,7 +266,7 @@ final class Parser
                 } else {
                     $buffer['operator'] = $operators[$value]['sql_where_callable'];
                 }
-            } else if ($type === Lexer::T_VALUE) {
+            } elseif ($type === Lexer::T_VALUE) {
                 if ($buffer['property'] !== null && $buffer['operator'] !== null && $buffer['field'] !== null) {
                     // Unquote value if it is quoted
                     if (preg_match('/^".*"$/', $value) || preg_match("/^'.*'$/", $value)) {
@@ -283,11 +283,11 @@ final class Parser
                     $sql_string .= $it->analyseCrit($criteria_array);
                 }
                 $buffer = [];
-            } else if ($sql_string !== '' && ($type === Lexer::T_AND || $type === Lexer::T_OR)) {
+            } elseif ($sql_string !== '' && ($type === Lexer::T_AND || $type === Lexer::T_OR)) {
                 $sql_string .= $type === Lexer::T_AND ? ' AND ' : ' OR ';
-            } else if ($type === Lexer::T_GROUP_OPEN) {
+            } elseif ($type === Lexer::T_GROUP_OPEN) {
                 $sql_string .= '(';
-            } else if ($type === Lexer::T_GROUP_CLOSE) {
+            } elseif ($type === Lexer::T_GROUP_CLOSE) {
                 $sql_string .= ')';
             }
             $position++;

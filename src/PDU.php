@@ -45,7 +45,7 @@ class PDU extends CommonDBTM
     use Glpi\Features\Clonable;
     use Glpi\Features\State;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'datacenter';
 

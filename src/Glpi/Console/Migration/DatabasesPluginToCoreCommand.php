@@ -50,7 +50,6 @@ use Profile;
 use Session;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
-use Toolbox;
 
 class DatabasesPluginToCoreCommand extends AbstractPluginToCoreCommand
 {
@@ -251,8 +250,8 @@ class DatabasesPluginToCoreCommand extends AbstractPluginToCoreCommand
                 );
 
                 if ($core_relation_id !== null) {
-                     // If relation already exist in DB, there is nothing to change
-                     continue;
+                    // If relation already exist in DB, there is nothing to change
+                    continue;
                 }
 
                 $relation_input = $relation_data;
@@ -426,11 +425,11 @@ class DatabasesPluginToCoreCommand extends AbstractPluginToCoreCommand
         $this->output->write(PHP_EOL);
     }
 
-   /**
-    * Import databases instances.
-    *
-    * @return void
-    */
+    /**
+     * Import databases instances.
+     *
+     * @return void
+     */
     private function importDatabaseInstances(): void
     {
         $this->output->writeln(
@@ -521,7 +520,7 @@ class DatabasesPluginToCoreCommand extends AbstractPluginToCoreCommand
                     $databaseinstance_data['itemtype'] = $row['itemtype'];
                     $databaseinstance_data['items_id'] = $row['items_id'];
                 }
-            } else if ($related_item_iterator->count() > 1) {
+            } elseif ($related_item_iterator->count() > 1) {
                 $this->handleImportError(
                     sprintf(
                         __('More than one Computer linked to %s #%s.'),

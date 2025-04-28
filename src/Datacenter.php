@@ -42,13 +42,13 @@ class Datacenter extends CommonDBTM
 {
     use AssetImage;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'datacenter';
 
     public static function getTypeName($nb = 0)
     {
-       //TRANS: Test of comment for translation (mark : //TRANS)
+        //TRANS: Test of comment for translation (mark : //TRANS)
         return _n('Data center', 'Data centers', $nb);
     }
 

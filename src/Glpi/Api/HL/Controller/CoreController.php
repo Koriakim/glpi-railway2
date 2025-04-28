@@ -158,32 +158,32 @@ final class CoreController extends AbstractController
         $favicon = \Html::getPrefixedUrl('/pics/favicon.ico');
         $doc_json_path = $CFG_GLPI['root_doc'] . '/api.php/doc.json';
         $swagger_content .= <<<HTML
-        <link rel="shortcut icon" type="images/x-icon" href="$favicon" />
-        </head>
-        <body>
-            <div id="swagger-ui"></div>
-            <script>
-                const ui = window.SwaggerUIBundle({
-                    url: '{$doc_json_path}',
-                    dom_id: '#swagger-ui',
-                    docExpansion: 'none',
-                    validatorUrl: 'none',
-                    filter: true,
-                    showExtensions: true,
-                    oauth2RedirectUrl: '{$CFG_GLPI['root_doc']}/api.php/swagger-oauth-redirect',
-                    // Sort operations by name and then by method
-                    operationsSorter: (a, b) => {
-                        const method_order = ['get', 'post', 'put', 'patch', 'delete'];
-                        if (a.get('path') === b.get('path')) {
-                            return method_order.indexOf(a.get('method')) - method_order.indexOf(b.get('method'));
-                        }
-                        return a.get('path').localeCompare(b.get('path'));
-                    },
-                    tagsSorter: (a, b) => a.localeCompare(b),
-                });
-            </script>
-        </body>
-HTML;
+                    <link rel="shortcut icon" type="images/x-icon" href="$favicon" />
+                    </head>
+                    <body>
+                        <div id="swagger-ui"></div>
+                        <script>
+                            const ui = window.SwaggerUIBundle({
+                                url: '{$doc_json_path}',
+                                dom_id: '#swagger-ui',
+                                docExpansion: 'none',
+                                validatorUrl: 'none',
+                                filter: true,
+                                showExtensions: true,
+                                oauth2RedirectUrl: '{$CFG_GLPI['root_doc']}/api.php/swagger-oauth-redirect',
+                                // Sort operations by name and then by method
+                                operationsSorter: (a, b) => {
+                                    const method_order = ['get', 'post', 'put', 'patch', 'delete'];
+                                    if (a.get('path') === b.get('path')) {
+                                        return method_order.indexOf(a.get('method')) - method_order.indexOf(b.get('method'));
+                                    }
+                                    return a.get('path').localeCompare(b.get('path'));
+                                },
+                                tagsSorter: (a, b) => a.localeCompare(b),
+                            });
+                        </script>
+                    </body>
+            HTML;
 
         // Must allow caching since it is a large script, and the documentation won't update often (possibly when plugins change)
         return new Response(200, [
@@ -402,7 +402,7 @@ HTML;
             if ($user_id === false) {
                 // Redirect to login page
                 $redirect_params = [
-                    'scope'         => implode(' ', array_map(static fn ($s) => $s->getIdentifier(), $auth_request->getScopes())),
+                    'scope'         => implode(' ', array_map(static fn($s) => $s->getIdentifier(), $auth_request->getScopes())),
                     'client_id'     => $auth_request->getClient()->getIdentifier(),
                     'response_type' => 'code',
                     'redirect_uri'  => $auth_request->getRedirectUri(),

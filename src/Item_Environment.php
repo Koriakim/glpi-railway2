@@ -40,7 +40,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 final class Item_Environment extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
     public $dohistory       = true;

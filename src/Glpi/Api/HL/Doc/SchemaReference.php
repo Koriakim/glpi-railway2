@@ -86,7 +86,7 @@ final class SchemaReference implements \ArrayAccess
                 }
             }
 
-            $controller_matches = array_filter($matches, static fn ($schema) => $schema['x-controller'] === $controller);
+            $controller_matches = array_filter($matches, static fn($schema) => $schema['x-controller'] === $controller);
             if (count($controller_matches) > 0) {
                 $match = reset($controller_matches);
             }

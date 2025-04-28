@@ -42,7 +42,7 @@ class ITILCategory extends CommonTreeDropdown
 {
     use Clonable;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory          = true;
     public $can_be_translated  = true;
 

@@ -134,7 +134,7 @@ final class CustomFieldDefinition extends CommonDBChild
 
         $adm = AssetDefinitionManager::getInstance();
         $field_types = $adm->getCustomFieldTypes();
-        $field_types = array_combine($field_types, array_map(static fn ($t) => $t::getName(), $field_types));
+        $field_types = array_combine($field_types, array_map(static fn($t) => $t::getName(), $field_types));
         TemplateRenderer::getInstance()->display('pages/assets/customfield.html.twig', [
             'no_header' => true,
             'item' => $this,
@@ -379,21 +379,21 @@ final class CustomFieldDefinition extends CommonDBChild
             $twig_params = ['translations' => $translations];
             // language=Twig
             return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% if translations is not empty %}
-                    <ul>
-                        {% for language, translation in translations %}
-                            <li>
-                                {{ config('languages')[language][0] }}:
-                                {% include "pages/admin/customobjects/plurals.html.twig" with {
-                                    'plurals': {
-                                        'one': translation
-                                    },
-                                } only %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-TWIG, $twig_params);
+                                {% if translations is not empty %}
+                                    <ul>
+                                        {% for language, translation in translations %}
+                                            <li>
+                                                {{ config('languages')[language][0] }}:
+                                                {% include "pages/admin/customobjects/plurals.html.twig" with {
+                                                    'plurals': {
+                                                        'one': translation
+                                                    },
+                                                } only %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                TWIG, $twig_params);
         }
         return parent::getSpecificValueToDisplay($field, $values, $options);
     }

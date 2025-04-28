@@ -269,7 +269,7 @@ class RequestType extends CommonDropdown
         parent::cleanRelationData();
 
         if ($this->isUsedAsDefaultRequestType()) {
-            $newval = (isset($this->input['_replace_by']) ? $this->input['_replace_by'] : 0);
+            $newval = ($this->input['_replace_by'] ?? 0);
 
             Config::setConfigurationValues(
                 'core',

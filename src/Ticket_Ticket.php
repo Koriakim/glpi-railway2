@@ -38,7 +38,7 @@ use Glpi\DBAL\QueryExpression;
 /// Class Ticket links
 class Ticket_Ticket extends CommonITILObject_CommonITILObject
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1     = 'Ticket';
     public static $items_id_1     = 'tickets_id_1';
     public static $itemtype_2     = 'Ticket';
@@ -85,11 +85,11 @@ class Ticket_Ticket extends CommonITILObject_CommonITILObject
                 ) {
                     if ($item->getFromDB($input['tickets_id_1'])) {
                         foreach ($ids as $id) {
-                              $input2                          = [];
-                              $input2['id']                    = $input['tickets_id_1'];
-                              $input2['_link']['tickets_id_1'] = $id;
-                              $input2['_link']['link']         = $input['link'];
-                              $input2['_link']['tickets_id_2'] = $input['tickets_id_1'];
+                            $input2                          = [];
+                            $input2['id']                    = $input['tickets_id_1'];
+                            $input2['_link']['tickets_id_1'] = $id;
+                            $input2['_link']['link']         = $input['link'];
+                            $input2['_link']['tickets_id_2'] = $input['tickets_id_1'];
                             if ($item->can($input['tickets_id_1'], UPDATE)) {
                                 if ($ticket->update($input2)) {
                                     $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
@@ -126,7 +126,7 @@ class Ticket_Ticket extends CommonITILObject_CommonITILObject
         /** @var \DBmysql $DB */
         global $DB;
 
-       // Make new database object and fill variables
+        // Make new database object and fill variables
         if (empty($ID)) {
             return [];
         }

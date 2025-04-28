@@ -37,7 +37,6 @@ namespace Glpi\Form\QuestionType;
 
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\JsonFieldInterface;
-use Glpi\Form\Condition\ConditionHandler\ConditionHandlerInterface;
 use Glpi\Form\Condition\ConditionHandler\RequestTypeConditionHandler;
 use Glpi\Form\Condition\UsedAsCriteriaInterface;
 use Glpi\Form\Migration\FormQuestionDataConverterInterface;
@@ -73,21 +72,21 @@ final class QuestionTypeRequestType extends AbstractQuestionType implements Used
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.dropdownArrayField(
-                'default_value',
-                value,
-                request_types,
-                '',
-                {
-                    'init'               : init,
-                    'no_label'           : true,
-                    'display_emptychoice': true,
-                    'mb'                 : '',
-                }
-            ) }}
-TWIG;
+                        {{ fields.dropdownArrayField(
+                            'default_value',
+                            value,
+                            request_types,
+                            '',
+                            {
+                                'init'               : init,
+                                'no_label'           : true,
+                                'display_emptychoice': true,
+                                'mb'                 : '',
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -101,21 +100,21 @@ TWIG;
     public function renderEndUserTemplate(Question $question): string
     {
         $template = <<<TWIG
-        {% import 'components/form/fields_macros.html.twig' as fields %}
+                    {% import 'components/form/fields_macros.html.twig' as fields %}
 
-        {{ fields.dropdownArrayField(
-            question.getEndUserInputName(),
-            value,
-            request_types,
-            '',
-            {
-                'no_label'           : true,
-                'display_emptychoice': false,
-                'aria_label'         : label,
-                'mb'                 : '',
-            }
-        ) }}
-TWIG;
+                    {{ fields.dropdownArrayField(
+                        question.getEndUserInputName(),
+                        value,
+                        request_types,
+                        '',
+                        {
+                            'no_label'           : true,
+                            'display_emptychoice': false,
+                            'aria_label'         : label,
+                            'mb'                 : '',
+                        }
+                    ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

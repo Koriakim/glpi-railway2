@@ -35,9 +35,9 @@
 
 class DomainRelation extends CommonDropdown
 {
-    const BELONGS = 1;
-    const MANAGE = 2;
-   // From CommonDBTM
+    public const BELONGS = 1;
+    public const MANAGE = 2;
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'dropdown';
 
@@ -83,7 +83,7 @@ class DomainRelation extends CommonDropdown
     public function pre_deleteItem()
     {
         if (in_array($this->fields['id'], [self::BELONGS, self::MANAGE])) {
-           //keep defaults
+            //keep defaults
             return false;
         }
         return true;

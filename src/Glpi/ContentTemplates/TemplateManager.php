@@ -136,21 +136,21 @@ class TemplateManager
         $twig->addExtension(new SandboxExtension(self::getSecurityPolicy(), true));
 
         try {
-           // Test if template is valid
+            // Test if template is valid
             $twig->parse($twig->tokenize(new Source($content, 'template')));
 
-           // Security policies are not valided with the previous step so we
-           // need to actually try to render the template to validate them
+            // Security policies are not valided with the previous step so we
+            // need to actually try to render the template to validate them
             $twig->render('template', []);
         } catch (\Twig\Sandbox\SecurityError $e) {
-           // Security policy error: the template use a forbidden tag/function/...
+            // Security policy error: the template use a forbidden tag/function/...
             $err_msg = sprintf(__("Invalid twig template (%s)"), $e->getMessage());
 
             return false;
         } catch (\Twig\Error\SyntaxError $e) {
-           // Syntax error, note that we do not show the exception message in the
-           // error sent to the users as it not really helpful and is more likely
-           // to confuse them that to help them fix the issue
+            // Syntax error, note that we do not show the exception message in the
+            // error sent to the users as it not really helpful and is more likely
+            // to confuse them that to help them fix the issue
             $err_msg = __("Invalid twig template syntax");
 
             return false;

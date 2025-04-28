@@ -75,38 +75,38 @@ final class TitleField extends AbstractConfigField implements DestinationFieldCo
         }
 
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.textareaField(
-                input_name,
-                value,
-                '',
-                options|merge({
-                    'field_class'      : '',
-                    'no_label'         : true,
-                    'enable_richtext'  : true,
-                    'enable_images'    : false,
-                    'enable_form_tags' : true,
-                    'form_tags_form_id': form_id,
-                    'toolbar'          : false,
-                    'editor_height'    : 0,
-                    'statusbar'        : false,
-                    'mb'               : '',
-                })
-            ) }}
+                        {{ fields.textareaField(
+                            input_name,
+                            value,
+                            '',
+                            options|merge({
+                                'field_class'      : '',
+                                'no_label'         : true,
+                                'enable_richtext'  : true,
+                                'enable_images'    : false,
+                                'enable_form_tags' : true,
+                                'form_tags_form_id': form_id,
+                                'toolbar'          : false,
+                                'editor_height'    : 0,
+                                'statusbar'        : false,
+                                'mb'               : '',
+                            })
+                        ) }}
 
-            <script>
-                tinymce.on('AddEditor', (e) => {
-                    if (e.editor.id === '{{ input_name ~ '_' ~ options.rand }}') {
-                        e.editor.on('keydown', (e) => {
-                            if (e.keyCode === 13) {
-                                e.preventDefault();
-                            }
-                        });
-                    }
-                });
-            </script>
-TWIG;
+                        <script>
+                            tinymce.on('AddEditor', (e) => {
+                                if (e.editor.id === '{{ input_name ~ '_' ~ options.rand }}') {
+                                    e.editor.on('keydown', (e) => {
+                                        if (e.keyCode === 13) {
+                                            e.preventDefault();
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

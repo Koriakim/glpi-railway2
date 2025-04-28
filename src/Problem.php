@@ -42,11 +42,11 @@ use Glpi\RichText\RichText;
  **/
 class Problem extends CommonITILObject
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory = true;
     protected static $forward_entity_to = ['ProblemCost'];
 
-   // From CommonITIL
+    // From CommonITIL
     public $userlinkclass        = 'Problem_User';
     public $grouplinkclass       = 'Group_Problem';
     public $supplierlinkclass    = 'Problem_Supplier';
@@ -55,13 +55,13 @@ class Problem extends CommonITILObject
     protected $usenotepad        = true;
 
 
-    const MATRIX_FIELD         = 'priority_matrix';
-    const URGENCY_MASK_FIELD   = 'urgency_mask';
-    const IMPACT_MASK_FIELD    = 'impact_mask';
-    const STATUS_MATRIX_FIELD  = 'problem_status';
+    public const MATRIX_FIELD         = 'priority_matrix';
+    public const URGENCY_MASK_FIELD   = 'urgency_mask';
+    public const IMPACT_MASK_FIELD    = 'impact_mask';
+    public const STATUS_MATRIX_FIELD  = 'problem_status';
 
-    const READMY               = 1;
-    const READALL              = 1024;
+    public const READMY               = 1;
+    public const READALL              = 1024;
 
 
     /**
@@ -231,7 +231,7 @@ class Problem extends CommonITILObject
 
     public function cleanDBonPurge()
     {
-       // CommonITILTask does not extends CommonDBConnexity
+        // CommonITILTask does not extends CommonDBConnexity
         $pt = new ProblemTask();
         $pt->deleteByCriteria(['problems_id' => $this->fields['id']]);
 
@@ -289,7 +289,7 @@ class Problem extends CommonITILObject
                 $mailtype = "closed";
             }
 
-           // Read again problem to be sure that all data are up to date
+            // Read again problem to be sure that all data are up to date
             $this->getFromDB($this->fields['id']);
             NotificationEvent::raiseEvent($mailtype, $this);
         }
@@ -306,7 +306,7 @@ class Problem extends CommonITILObject
         $this->processRules(RuleCommonITILObject::ONADD, $input);
 
         if (!isset($input['_skip_auto_assign']) || $input['_skip_auto_assign'] === false) {
-           // Manage auto assign
+            // Manage auto assign
             $auto_assign_mode = Entity::getUsedConfig('auto_assign_mode', $input['entities_id']);
 
             switch ($auto_assign_mode) {
@@ -315,8 +315,8 @@ class Problem extends CommonITILObject
 
                 case Entity::AUTO_ASSIGN_HARDWARE_CATEGORY:
                 case Entity::AUTO_ASSIGN_CATEGORY_HARDWARE:
-                   // Auto assign tech/group from Category
-                   // Problems are not associated to a hardware then both settings behave the same way
+                    // Auto assign tech/group from Category
+                    // Problems are not associated to a hardware then both settings behave the same way
                     $input = $this->setTechAndGroupFromItilCategory($input);
                     break;
             }
@@ -356,11 +356,11 @@ class Problem extends CommonITILObject
                     !empty($ticket->fields['itemtype'])
                     && ($ticket->fields['items_id'] > 0)
                 ) {
-                     $it = new Item_Problem();
-                     $it->add(['problems_id' => $this->fields['id'],
-                         'itemtype'    => $ticket->fields['itemtype'],
-                         'items_id'    => $ticket->fields['items_id'],
-                     ]);
+                    $it = new Item_Problem();
+                    $it->add(['problems_id' => $this->fields['id'],
+                        'itemtype'    => $ticket->fields['itemtype'],
+                        'items_id'    => $ticket->fields['items_id'],
+                    ]);
                 }
 
                 //Copy associated elements
@@ -372,10 +372,10 @@ class Problem extends CommonITILObject
                 ]);
                 $assoc = new Item_Problem();
                 foreach ($iterator as $row) {
-                     unset($row['tickets_id']);
-                     unset($row['id']);
-                     $row['problems_id'] = $this->fields['id'];
-                     $assoc->add($row);
+                    unset($row['tickets_id']);
+                    unset($row['id']);
+                    $row['problems_id'] = $this->fields['id'];
+                    $assoc->add($row);
                 }
             }
         }
@@ -720,7 +720,7 @@ class Problem extends CommonITILObject
     public static function getClosedStatusArray()
     {
 
-       // To be overridden by class
+        // To be overridden by class
         $tab = [self::CLOSED];
         return $tab;
     }
@@ -735,7 +735,7 @@ class Problem extends CommonITILObject
      **/
     public static function getSolvedStatusArray()
     {
-       // To be overridden by class
+        // To be overridden by class
         $tab = [self::OBSERVED, self::SOLVED];
         return $tab;
     }
@@ -762,7 +762,7 @@ class Problem extends CommonITILObject
     public static function getProcessStatusArray()
     {
 
-       // To be overridden by class
+        // To be overridden by class
         $tab = [self::ACCEPTED, self::ASSIGNED, self::PLANNED];
 
         return $tab;
@@ -1108,7 +1108,7 @@ class Problem extends CommonITILObject
          */
         global $CFG_GLPI, $DB;
 
-       // show a tab with count of jobs in the central and give link
+        // show a tab with count of jobs in the central and give link
         if (!static::canView()) {
             return false;
         }
@@ -1233,10 +1233,10 @@ class Problem extends CommonITILObject
      **/
     public static function showVeryShort($ID, $forcetab = '')
     {
-       // Prints a job in short form
-       // Should be called in a <table>-segment
-       // Print links or not in case of user view
-       // Make new job object and fill it from database, if success, print it
+        // Prints a job in short form
+        // Should be called in a <table>-segment
+        // Print links or not in case of user view
+        // Make new job object and fill it from database, if success, print it
         $viewusers = User::canView();
 
         $problem   = new self();
@@ -1273,7 +1273,7 @@ class Problem extends CommonITILObject
                                 )
                             );
                         }
-                         echo $name;
+                        echo $name;
                     } else {
                         echo $d['alternative_email'] . "&nbsp;";
                     }
@@ -1314,7 +1314,7 @@ class Problem extends CommonITILObject
 
             echo "</td>";
 
-           // Finish Line
+            // Finish Line
             echo "</tr>";
         } else {
             echo "<tr class='tab_bg_2'>";

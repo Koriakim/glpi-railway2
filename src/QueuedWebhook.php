@@ -59,7 +59,7 @@ class QueuedWebhook extends CommonDBChild
 
     public static function canCreate(): bool
     {
-       // Everybody can create : human and cron
+        // Everybody can create : human and cron
         return Session::getLoginUserID(false);
     }
 
@@ -418,7 +418,7 @@ class QueuedWebhook extends CommonDBChild
         $badge_class = 'badge bg-orange';
         if (empty($display_value)) {
             $display_value = __s('Not sent/no response');
-        } else if ($display_value < 300) {
+        } elseif ($display_value < 300) {
             $badge_class = 'badge bg-green';
         } else {
             $badge_class = 'badge bg-red';
@@ -432,34 +432,34 @@ class QueuedWebhook extends CommonDBChild
         $btn_id = "resend-webhook-{$id}";
         $badge .= "<button id='{$btn_id}' type='button' class='btn btn-outline-secondary btn-sm ms-1' data-id='{$id}'><i class='ti ti-send'></i>" . __('Send') . "</button>";
         $badge .= Html::scriptBlock(<<<JS
-            $("#{$btn_id}").click(function() {
-                var id = $(this).data('id');
-                $.ajax({
-                    url: '/ajax/webhook.php',
-                    type: 'POST',
-                    data: {
-                        'action': 'resend',
-                        'id': id
-                    },
-                    beforeSend: () => {
-                        $("#{$btn_id}").prop('disabled', true);
-                    },
-                    success: () => {
-                        glpi_toast_info(__('Retried to send webhook'));
-                    },
-                    error: () => {
-                        glpi_toast_error(__('Failed to send webhook'));
-                    },
-                    complete: () => {
-                        $("#{$btn_id}").prop('disabled', false);
-                        const search_class = $('table.search-results').closest('div.ajax-container.search-display-data').data('js_class');
-                        if (search_class !== undefined) {
-                            search_class.view.refreshResults();
-                        }
-                    }
-                });
-            });
-JS);
+                        $("#{$btn_id}").click(function() {
+                            var id = $(this).data('id');
+                            $.ajax({
+                                url: '/ajax/webhook.php',
+                                type: 'POST',
+                                data: {
+                                    'action': 'resend',
+                                    'id': id
+                                },
+                                beforeSend: () => {
+                                    $("#{$btn_id}").prop('disabled', true);
+                                },
+                                success: () => {
+                                    glpi_toast_info(__('Retried to send webhook'));
+                                },
+                                error: () => {
+                                    glpi_toast_error(__('Failed to send webhook'));
+                                },
+                                complete: () => {
+                                    $("#{$btn_id}").prop('disabled', false);
+                                    const search_class = $('table.search-results').closest('div.ajax-container.search-display-data').data('js_class');
+                                    if (search_class !== undefined) {
+                                        search_class.view.refreshResults();
+                                    }
+                                }
+                            });
+                        });
+            JS);
         return $badge;
     }
 

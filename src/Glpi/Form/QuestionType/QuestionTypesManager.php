@@ -183,14 +183,14 @@ final class QuestionTypesManager
         $js_icons = json_encode($icons);
 
         return <<<JS
-            function(item) {
-                const icons = {$js_icons};
-                return $('<span class="d-flex flex-row-reverse align-items-center gap-2">'
-                    + '<i class="' + _.escape(icons[item.id]) + '"></i>'
-                    + _.escape(item.text)
-                    + '</span>');
-            }
-JS;
+                        function(item) {
+                            const icons = {$js_icons};
+                            return $('<span class="d-flex flex-row-reverse align-items-center gap-2">'
+                                + '<i class="' + _.escape(icons[item.id]) + '"></i>'
+                                + _.escape(item.text)
+                                + '</span>');
+                        }
+            JS;
     }
 
     public function getTemplateResultForCategories(): string
@@ -202,14 +202,14 @@ JS;
         $js_icons = json_encode($icons);
 
         return <<<JS
-            function(item) {
-                const icons = {$js_icons};
-                return $('<span class="d-flex align-items-center gap-2">'
-                    + '<i class="' + _.escape(icons[item.id]) + '"></i>'
-                    + _.escape(item.text)
-                    + '</span>');
-            }
-JS;
+                        function(item) {
+                            const icons = {$js_icons};
+                            return $('<span class="d-flex align-items-center gap-2">'
+                                + '<i class="' + _.escape(icons[item.id]) + '"></i>'
+                                + _.escape(item.text)
+                                + '</span>');
+                        }
+            JS;
     }
 
     public function getTemplateSelectionForQuestionTypes(): string
@@ -221,14 +221,14 @@ JS;
         $js_icons = json_encode($icons);
 
         return <<<JS
-            function(item) {
-                const icons = {$js_icons};
-                return $('<span class="d-flex flex-row-reverse align-items-center gap-2">'
-                    + '<i class="' + _.escape(icons[item.id]) + '"></i>'
-                    + _.escape(item.text)
-                    + '</span>');
-            }
-JS;
+                        function(item) {
+                            const icons = {$js_icons};
+                            return $('<span class="d-flex flex-row-reverse align-items-center gap-2">'
+                                + '<i class="' + _.escape(icons[item.id]) + '"></i>'
+                                + _.escape(item.text)
+                                + '</span>');
+                        }
+            JS;
     }
 
     public function getTemplateResultForQuestionTypes(): string
@@ -240,14 +240,14 @@ JS;
         $js_icons = json_encode($icons);
 
         return <<<JS
-            function(item) {
-                const icons = {$js_icons};
-                return $('<span class="d-flex align-items-center gap-1">'
-                    + '<i class="' + _.escape(icons[item.id]) + '"></i>'
-                    + _.escape(item.text)
-                    + '</span>');
-            }
-JS;
+                        function(item) {
+                            const icons = {$js_icons};
+                            return $('<span class="d-flex align-items-center gap-1">'
+                                + '<i class="' + _.escape(icons[item.id]) + '"></i>'
+                                + _.escape(item.text)
+                                + '</span>');
+                        }
+            JS;
     }
 
     public function getCategoryKey(QuestionTypeCategoryInterface $category): string

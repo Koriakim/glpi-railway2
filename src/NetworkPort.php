@@ -51,7 +51,7 @@ use Glpi\Socket;
  **/
 class NetworkPort extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype             = 'itemtype';
     public static $items_id             = 'items_id';
     public $dohistory                   = true;
@@ -277,10 +277,10 @@ class NetworkPort extends CommonDBChild
                             ]
                         ]) as $data
                     ) {
-                         $ip->update(['id'           => $data['id'],
-                             'mainitemtype' => $this->fields['itemtype'],
-                             'mainitems_id' => $this->fields['items_id']
-                         ]);
+                        $ip->update(['id'           => $data['id'],
+                            'mainitemtype' => $this->fields['itemtype'],
+                            'mainitems_id' => $this->fields['items_id']
+                        ]);
                     }
                 }
             }
@@ -350,7 +350,7 @@ class NetworkPort extends CommonDBChild
             if (str_starts_with($field, "NetworkName_")) {
                 $networkName_field = preg_replace('/^NetworkName_/', '', $field);
                 $this->input_for_NetworkName[$networkName_field] = $value;
-            } else if (str_starts_with($field, "NetworkPortConnect_")) {
+            } elseif (str_starts_with($field, "NetworkPortConnect_")) {
                 $networkName_field = preg_replace('/^NetworkPortConnect_/', '', $field);
                 $this->input_for_NetworkPortConnect[$networkName_field] = $value;
             } else {
@@ -398,7 +398,7 @@ class NetworkPort extends CommonDBChild
             && count($this->input_for_NetworkName) > 0
             && !isset($_POST['several'])
         ) {
-           // Check to see if the NetworkName is empty
+            // Check to see if the NetworkName is empty
             $empty_networkName = empty($this->input_for_NetworkName['name'])
                               && empty($this->input_for_NetworkName['fqdns_id']);
             if (($empty_networkName) && is_array($this->input_for_NetworkName['_ipaddresses'])) {
@@ -413,14 +413,14 @@ class NetworkPort extends CommonDBChild
             $network_name = new NetworkName();
             if (isset($this->input_for_NetworkName['id'])) {
                 if ($empty_networkName) {
-                   // If the NetworkName is empty, then delete it !
+                    // If the NetworkName is empty, then delete it !
                     $network_name->delete($this->input_for_NetworkName, true, $history);
                 } else {
-                   // Else, update it
+                    // Else, update it
                     $this->input_for_NetworkName['entities_id'] = $this->fields['entities_id'];
                     $network_name->update($this->input_for_NetworkName, $history);
                 }
-            } else if (!$empty_networkName) { // Only create a NetworkName if it is not empty
+            } elseif (!$empty_networkName) { // Only create a NetworkName if it is not empty
                 $this->input_for_NetworkName['itemtype']    = 'NetworkPort';
                 $this->input_for_NetworkName['items_id']    = $this->getID();
                 $this->input_for_NetworkName['entities_id'] = $this->fields['entities_id'];
@@ -619,10 +619,10 @@ class NetworkPort extends CommonDBChild
             ]);
 
             foreach ($port_iterator as $prow) {
-                 $aggregated_ports = array_merge(
-                     $aggregated_ports,
-                     importArrayFromDB($prow['networkports_id_list'])
-                 );
+                $aggregated_ports = array_merge(
+                    $aggregated_ports,
+                    importArrayFromDB($prow['networkports_id_list'])
+                );
             }
         }
 
@@ -711,7 +711,7 @@ class NetworkPort extends CommonDBChild
         ) {
             $search_config_top .= "<span class='ti ti-table-row cursor-pointer' title='" .
             __s('Select default items to show') . "' data-bs-toggle='modal' data-bs-target='#search_config_top'>
-            <span class='sr-only'>" .  __s('Select default items to show') . "</span></span>";
+            <span class='sr-only'>" . __s('Select default items to show') . "</span></span>";
 
             $pref_url = $CFG_GLPI["root_doc"] . "/front/displaypreference.form.php?itemtype=" .
                      self::getType();
@@ -773,7 +773,7 @@ class NetworkPort extends CommonDBChild
         echo ' ' . $search_config_top;
         echo "</td></tr></thead>";
 
-       //display table headers
+        //display table headers
         echo "<tr>";
         if ($canedit) {
             echo "<td>" . Html::getCheckAllAsCheckbox('mass' . __CLASS__ . $rand, '__RAND__') . "</td>";
@@ -899,7 +899,7 @@ class NetworkPort extends CommonDBChild
         if ((int) $port['ifstatus'] === 1) {
             if ((int) $port['trunk'] === 1) {
                 $css_class .= ' trunk'; // port_trunk.png
-            } else if ($this->isHubConnected($port['id'])) {
+            } elseif ($this->isHubConnected($port['id'])) {
                 $css_class .= ' hub'; //multiple_mac_addresses.png
             } else {
                 $css_class .= ' cotrunk'; //connected_trunk.png
@@ -1039,10 +1039,10 @@ class NetworkPort extends CommonDBChild
                             ]);
 
                             if (count($vlans) > 10) {
-                                 $output .= sprintf(
-                                     __('%s linked VLANs'),
-                                     count($vlans)
-                                 );
+                                $output .= sprintf(
+                                    __('%s linked VLANs'),
+                                    count($vlans)
+                                );
                             } else {
                                 foreach ($vlans as $row) {
                                     $output .= $row['name'];
@@ -1089,8 +1089,8 @@ class NetworkPort extends CommonDBChild
 
                                     $list_ports = [];
                                     foreach ($hub_ports as $hrow) {
-                                         $npo = $this->getContact($hrow['id']);
-                                         $list_ports[] = $npo;
+                                        $npo = $this->getContact($hrow['id']);
+                                        $list_ports[] = $npo;
                                     }
 
                                     $hub_equipments = $DB->request([
@@ -1115,10 +1115,10 @@ class NetworkPort extends CommonDBChild
                                     ]);
 
                                     if (count($hub_equipments) > 10) {
-                                         $houtput .= '<div>' . sprintf(
-                                             __s('%s equipments connected to the hub'),
-                                             count($hub_equipments)
-                                         ) . '</div>';
+                                        $houtput .= '<div>' . sprintf(
+                                            __s('%s equipments connected to the hub'),
+                                            count($hub_equipments)
+                                        ) . '</div>';
                                     } else {
                                         foreach ($hub_equipments as $hrow) {
                                             $hub = new Unmanaged();
@@ -1168,7 +1168,7 @@ class NetworkPort extends CommonDBChild
                         case 41:
                             if ($port['ifstatus'] == 1) {
                                 $output .= sprintf("<i class='ti ti-circle-filled text-green' title='%s'></i>", __s('Connected'));
-                            } else if (!empty($port['lastup'])) {
+                            } elseif (!empty($port['lastup'])) {
                                 $time = strtotime(date('Y-m-d H:i:s')) - strtotime($port['lastup']);
                                 $output .= Html::timestampToString($time, false);
                             }
@@ -1191,9 +1191,9 @@ class NetworkPort extends CommonDBChild
                             ]);
                             $network_names = [];
                             foreach ($names_iterator as $namerow) {
-                                 $netname = new NetworkName();
-                                 $netname->getFromDB($namerow['id']);
-                                 $network_names[] = $netname->getLink();
+                                $netname = new NetworkName();
+                                $netname->getFromDB($namerow['id']);
+                                $network_names[] = $netname->getLink();
                             }
                             $output .= implode('<br />', $network_names);
                             break;

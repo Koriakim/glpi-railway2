@@ -59,7 +59,7 @@ class NotificationEventMailing extends NotificationEventAbstract
             !isset($data[$field])
             && isset($data['users_id'])
         ) {
-           // No email set : get default for user
+            // No email set : get default for user
             $data[$field] = UserEmail::getDefaultForUser($data['users_id']);
         }
 
@@ -250,7 +250,7 @@ class NotificationEventMailing extends NotificationEventAbstract
                             ]
                         );
                         foreach ($doc_items_iterator as $doc_item) {
-                             $documents_ids[] = $doc_item['documents_id'];
+                            $documents_ids[] = $doc_item['documents_id'];
                         }
                     }
                 }
@@ -474,18 +474,18 @@ class NotificationEventMailing extends NotificationEventAbstract
         );
 
         if ($retries <= 0) {
-             Toolbox::logInFile(
-                 "mail-error",
-                 sprintf(
-                     __('%1$s: %2$s'),
-                     sprintf(
-                         __('Fatal error: giving up delivery of email to %s'),
-                         $notification->fields['recipient']
-                     ),
-                     $notification->fields['name'] . "\n"
-                 )
-             );
-             $notification->delete(['id' => $notification->fields['id']]);
+            Toolbox::logInFile(
+                "mail-error",
+                sprintf(
+                    __('%1$s: %2$s'),
+                    sprintf(
+                        __('Fatal error: giving up delivery of email to %s'),
+                        $notification->fields['recipient']
+                    ),
+                    $notification->fields['name'] . "\n"
+                )
+            );
+            $notification->delete(['id' => $notification->fields['id']]);
         }
 
         $input = [
@@ -523,7 +523,7 @@ class NotificationEventMailing extends NotificationEventAbstract
 
     protected static function extraRaise($params)
     {
-       //Set notification's signature (the one which corresponds to the entity)
+        //Set notification's signature (the one which corresponds to the entity)
         $entity = $params['notificationtarget']->getEntity();
         $params['template']->setSignature(Notification::getMailingSignature($entity));
     }

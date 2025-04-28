@@ -45,7 +45,7 @@ class PlanningExternalEventTemplate extends CommonDropdown
         rawSearchOptions as protected trait_rawSearchOptions;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory          = true;
     public $can_be_translated  = true;
 

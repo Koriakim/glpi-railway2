@@ -35,10 +35,8 @@
 
 namespace Glpi\Api\HL\Controller;
 
-use Appliance;
 use AutoUpdateSystem;
 use Budget;
-use Certificate;
 use Cluster;
 use Contact;
 use Contract;

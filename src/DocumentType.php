@@ -181,7 +181,7 @@ class DocumentType extends CommonDropdown
             'rand'    => mt_rand(),
         ];
 
-       //merge default options with options parameter
+        //merge default options with options parameter
         $p = array_merge($p, $options);
 
         $display = "&nbsp;";
@@ -230,7 +230,7 @@ class DocumentType extends CommonDropdown
                 // and protect by surrounding parenthesis to prevent conflict with other patterns
                 $valid_ext_patterns[] = '(' . substr($valid_ext, 1, -1) . ')';
             } else {
-               // Filename ends with allowed ext
+                // Filename ends with allowed ext
                 $valid_ext_patterns[] = '\.' . preg_quote($valid_type['ext'], '/') . '$';
             }
         }

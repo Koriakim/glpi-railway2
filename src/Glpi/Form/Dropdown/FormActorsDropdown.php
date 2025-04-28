@@ -74,30 +74,30 @@ final class FormActorsDropdown extends AbstractRightsDropdown
     {
         $params['width'] = '100%';
         $params['templateSelection'] = <<<JS
-            function (data) {
-                let icon = '';
-                let text = data.text;
-                let title = data.title;
-                if (
-                    (data.itemtype && data.itemtype === 'User')
-                    || (data.id && data.id.startsWith('users_id-'))
-                ) {
-                    icon = '<i class="ti ti-user mx-1" title="' + title + '"></i>';
-                } else if (
-                    (data.itemtype && data.itemtype === 'Group')
-                    || (data.id && data.id.startsWith('groups_id-'))
-                ) {
-                    icon = '<i class="ti ti-users mx-1" title="' + title + '"></i>';
-                } else if (
-                    (data.itemtype && data.itemtype === 'Supplier')
-                    || (data.id && data.id.startsWith('suppliers_id-'))
-                ) {
-                    icon = '<i class="ti ti-package mx-1" title="' + title + '"></i>';
-                }
+                function (data) {
+                    let icon = '';
+                    let text = data.text;
+                    let title = data.title;
+                    if (
+                        (data.itemtype && data.itemtype === 'User')
+                        || (data.id && data.id.startsWith('users_id-'))
+                    ) {
+                        icon = '<i class="ti ti-user mx-1" title="' + title + '"></i>';
+                    } else if (
+                        (data.itemtype && data.itemtype === 'Group')
+                        || (data.id && data.id.startsWith('groups_id-'))
+                    ) {
+                        icon = '<i class="ti ti-users mx-1" title="' + title + '"></i>';
+                    } else if (
+                        (data.itemtype && data.itemtype === 'Supplier')
+                        || (data.id && data.id.startsWith('suppliers_id-'))
+                    ) {
+                        icon = '<i class="ti ti-package mx-1" title="' + title + '"></i>';
+                    }
 
-                return $('<span class="actor_entry">' + icon + text + '</span>');
-            }
-        JS;
+                    return $('<span class="actor_entry">' + icon + text + '</span>');
+                }
+            JS;
         $params['templateResult'] = $params['templateSelection'];
 
         return parent::show($name, $values, $params);

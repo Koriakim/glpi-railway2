@@ -80,16 +80,16 @@ class FQDN extends CommonDropdown
             isset($input['fqdn'])
             || $this->isNewID($this->getID())
         ) {
-           // Check that FQDN is not empty
+            // Check that FQDN is not empty
             if (empty($input['fqdn'])) {
                 Session::addMessageAfterRedirect(__s('FQDN must not be empty'), false, ERROR);
                 return false;
             }
 
-           // Transform it to lower case
+            // Transform it to lower case
             $input["fqdn"] = strtolower($input['fqdn']);
 
-           // Then check its validity
+            // Then check its validity
             if (!self::checkFQDN($input["fqdn"])) {
                 Session::addMessageAfterRedirect(__s('FQDN is not valid'), false, ERROR);
                 return false;
@@ -231,7 +231,7 @@ class FQDN extends CommonDropdown
     public static function checkFQDN($fqdn)
     {
 
-       // The FQDN must be compose of several labels separated by dots '.'
+        // The FQDN must be compose of several labels separated by dots '.'
         $labels = explode(".", $fqdn);
         foreach ($labels as $label) {
             if (($label == "") || (!FQDNLabel::checkFQDNLabel($label))) {

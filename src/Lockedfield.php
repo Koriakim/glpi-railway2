@@ -45,7 +45,7 @@ class Lockedfield extends CommonDBTM
     /** @var CommonDBTM */
     private $item;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = false;
 
     public static $rightname                   = 'locked_field';
@@ -381,7 +381,7 @@ class Lockedfield extends CommonDBTM
     protected function prepareInput($input)
     {
         if (isset($input['item'])) {
-            list($itemtype, $field) = explode(' - ', $input['item']);
+            [$itemtype, $field] = explode(' - ', $input['item']);
             $input['itemtype'] = $itemtype;
             $input['items_id'] = 0;
             $input['field'] = $field;
@@ -470,7 +470,7 @@ class Lockedfield extends CommonDBTM
                         if (isset($search_option['linkfield']) && $search_option['linkfield'] == $field) {
                             $field_name = $search_option['name'];
                             break;
-                        } else if (isset($search_option['field']) && $search_option['field'] == $field) {
+                        } elseif (isset($search_option['field']) && $search_option['field'] == $field) {
                             $field_name = $search_option['name'];
                             break;
                         }

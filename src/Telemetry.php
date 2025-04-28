@@ -257,19 +257,19 @@ class Telemetry extends CommonGLPI
 
         if ($count <= 500) {
             return '0-500';
-        } else if ($count <= 1000) {
+        } elseif ($count <= 1000) {
             return '500-1000';
-        } else if ($count <= 2500) {
+        } elseif ($count <= 2500) {
             return '1000-2500';
-        } else if ($count <= 5000) {
+        } elseif ($count <= 5000) {
             return '2500-5000';
-        } else if ($count <= 10000) {
+        } elseif ($count <= 10000) {
             return '5000-10000';
-        } else if ($count <= 50000) {
+        } elseif ($count <= 50000) {
             return '10000-50000';
-        } else if ($count <= 100000) {
+        } elseif ($count <= 100000) {
             return '50000-100000';
-        } else if ($count <= 500000) {
+        } elseif ($count <= 500000) {
             return '100000-500000';
         }
         return '500000+';
@@ -306,7 +306,7 @@ class Telemetry extends CommonGLPI
         $content = json_decode(Toolbox::callCurl($url, $opts, $errstr));
 
         if ($content && property_exists($content, 'message')) {
-           //all is OK!
+            //all is OK!
             return 1;
         } else {
             $message = 'Something went wrong sending telemetry information';

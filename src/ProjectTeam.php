@@ -47,11 +47,11 @@ use Glpi\Team\Team;
  **/
 class ProjectTeam extends CommonDBRelation
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                  = true;
     public $no_form_page               = true;
 
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1          = 'Project';
     public static $items_id_1          = 'projects_id';
 
@@ -232,7 +232,7 @@ class ProjectTeam extends CommonDBRelation
 
         $team = [];
 
-       // Define empty types
+        // Define empty types
         foreach (static::$available_types as $type) {
             if (!isset($team[$type])) {
                 $team[$type] = [];

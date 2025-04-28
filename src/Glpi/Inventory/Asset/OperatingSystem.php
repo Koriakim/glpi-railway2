@@ -107,7 +107,7 @@ class OperatingSystem extends InventoryAsset
                 "main_value" => $val->operatingsystemservicepacks_id ?? ''
             ],
             'operatingsystemarchitectures_id'   => [
-                "collection_class" => RuleDictionnaryOperatingSystemArchitectureCollection::class ,
+                "collection_class" => RuleDictionnaryOperatingSystemArchitectureCollection::class,
                 "main_value" => $val->operatingsystemarchitectures_id ?? ''
             ],
             'operatingsystemeditions_id'        => [

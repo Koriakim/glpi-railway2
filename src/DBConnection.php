@@ -197,11 +197,11 @@ class DBConnection extends CommonDBTM
 
                 $matches = [];
                 if (preg_match($pattern, $config_str, $matches)) {
-                   // Property declaration is located in config file, we have to update it.
+                    // Property declaration is located in config file, we have to update it.
                     $updated_line = str_replace($matches['value'], var_export($value, true), $matches['line']);
                     $config_str = str_replace($matches['line'], $updated_line, $config_str);
                 } else {
-                   // Property declaration is not located in config file, we have to add it.
+                    // Property declaration is not located in config file, we have to add it.
                     $ending_bracket_pos = mb_strrpos($config_str, '}');
                     $config_str = mb_substr($config_str, 0, $ending_bracket_pos)
                     . sprintf('   public $%s = %s;', $name, var_export($value, true)) . "\n"
@@ -247,7 +247,7 @@ class DBConnection extends CommonDBTM
         string $config_dir = GLPI_CONFIG_DIR
     ): bool {
 
-       // Explode host into array (multiple values separated by a space char)
+        // Explode host into array (multiple values separated by a space char)
         $host = trim($host);
         if (strpos($host, ' ')) {
             $host = explode(' ', $host);
@@ -431,10 +431,11 @@ class DBConnection extends CommonDBTM
                 switch ($CFG_GLPI['use_slave_for_search']) {
                     case 3: // If synced or read-only account
                         if (Session::isReadOnlyAccount()) {
-                             return $DBread;
+                            return $DBread;
                         }
-                      // nobreak;
+                        // nobreak;
 
+                        // no break
                     case 1: // If synced (all changes)
                         $slave  = $DBread->request($sql)->current();
                         $master = $DB->request($sql)->current();
@@ -442,14 +443,14 @@ class DBConnection extends CommonDBTM
                             isset($slave['maxid']) && isset($master['maxid'])
                             && ($slave['maxid'] == $master['maxid'])
                         ) {
-                        // Latest Master change available on Slave
+                            // Latest Master change available on Slave
                             return $DBread;
                         }
                         break;
 
                     case 2: // If synced (current user changes or profile in read only)
                         if (!isset($_SESSION['glpi_maxhistory'])) {
-                          // No change yet
+                            // No change yet
                             return $DBread;
                         }
                         $slave  = $DBread->request($sql)->current();
@@ -457,7 +458,7 @@ class DBConnection extends CommonDBTM
                             isset($slave['maxid'])
                             && ($slave['maxid'] >= $_SESSION['glpi_maxhistory'])
                         ) {
-                         // Latest current user change avaiable on Slave
+                            // Latest current user change avaiable on Slave
                             return $DBread;
                         }
                         break;
@@ -490,29 +491,29 @@ class DBConnection extends CommonDBTM
         $DB  = null;
         $res = false;
 
-       // First standard config : no use slave : try to connect to master
+        // First standard config : no use slave : try to connect to master
         if (!$use_slave) {
             $res = self::switchToMaster();
         }
 
-       // If not already connected to master due to config or error
+        // If not already connected to master due to config or error
         if (!$res) {
-           // No DB slave : first connection to master give error
+            // No DB slave : first connection to master give error
             if (!self::isDBSlaveActive()) {
-               // Slave wanted but not defined -> use master
-               // Ignore $required when no slave configured
+                // Slave wanted but not defined -> use master
+                // Ignore $required when no slave configured
                 if ($use_slave) {
                     $res = self::switchToMaster();
                 }
             } else { // Slave DB configured
-               // Try to connect to slave if wanted
+                // Try to connect to slave if wanted
                 if ($use_slave) {
                     $res = self::switchToSlave();
                 }
 
-               // No connection to 'mandatory' server
+                // No connection to 'mandatory' server
                 if (!$res && !$required) {
-                   //Try to establish the connection to the other mysql server
+                    //Try to establish the connection to the other mysql server
                     if ($use_slave) {
                         $res = self::switchToMaster();
                     } else {
@@ -639,7 +640,7 @@ class DBConnection extends CommonDBTM
             $result = $DBconnection->doQuery("SELECT UNIX_TIMESTAMP(MAX(`date_mod`)) AS max_date
                                          FROM `glpi_logs`");
             if ($DBconnection->numrows($result) > 0) {
-                 return $DBconnection->result($result, 0, "max_date");
+                return $DBconnection->result($result, 0, "max_date");
             }
         }
         return 0;
@@ -670,9 +671,9 @@ class DBConnection extends CommonDBTM
         /** @var \DBmysql $DB */
         global $DB;
 
-       //Lauch cron only is :
-       // 1 the master database is avalaible
-       // 2 the slave database is configurated
+        //Lauch cron only is :
+        // 1 the master database is avalaible
+        // 2 the slave database is configurated
         if (!$DB->isSlave() && self::isDBSlaveActive()) {
             $DBslave = self::getDBSlaveConf();
             if (is_array($DBslave->dbhost)) {
@@ -684,12 +685,12 @@ class DBConnection extends CommonDBTM
             foreach ($hosts as $num => $name) {
                 $diff = self::getReplicateDelay($num);
 
-               // Quite strange, but allow simple stat
+                // Quite strange, but allow simple stat
                 $task->addVolume($diff);
                 if ($diff > 1000000000) { // very large means slave is disconnect
                     $task->log(sprintf(__s("SQL server: %s can't connect to the database"), $name));
                 } else {
-                                  //TRANS: %1$s is the server name, %2$s is the time
+                    //TRANS: %1$s is the server name, %2$s is the time
                     $task->log(sprintf(
                         __('SQL server: %1$s, difference between main and replica: %2$s'),
                         $name,
@@ -698,7 +699,7 @@ class DBConnection extends CommonDBTM
                 }
 
                 if ($diff > ($task->fields['param'] * 60)) {
-                   //Raise event if replicate is not synchronized
+                    //Raise event if replicate is not synchronized
                     $options = ['diff'        => $diff,
                         'name'        => $name,
                         'entities_id' => 0
@@ -732,7 +733,7 @@ class DBConnection extends CommonDBTM
             $output .= " - ";
             if ($diff > 1000000000) {
                 $output .= __("can't connect to the database") . "<br>";
-            } else if ($diff) {
+            } elseif ($diff) {
                 $output .= sprintf(
                     __('%1$s: %2$s') . "<br>",
                     __('Difference between main and replica'),
@@ -807,8 +808,8 @@ class DBConnection extends CommonDBTM
 
         $dbh->set_charset($charset);
 
-       // The mysqli::set_charset function will make COLLATE to be defined to the default one for used charset.
-       // As we are not using the default COLLATE, we have to define it using `SET NAMES` query.
+        // The mysqli::set_charset function will make COLLATE to be defined to the default one for used charset.
+        // As we are not using the default COLLATE, we have to define it using `SET NAMES` query.
         switch ($charset) {
             case 'utf8':
                 // Legacy charset, should be deprecated in next major version.
@@ -894,11 +895,11 @@ class DBConnection extends CommonDBTM
         return new class ($host, $user, $password, $dbname) extends DBmysql {
             public function __construct($host, $user, $password, $dbname)
             {
-                  $this->dbhost     = $host;
-                  $this->dbuser     = $user;
-                  $this->dbpassword = $password;
-                  $this->dbdefault  = $dbname;
-                  parent::__construct();
+                $this->dbhost     = $host;
+                $this->dbuser     = $user;
+                $this->dbpassword = $password;
+                $this->dbdefault  = $dbname;
+                parent::__construct();
             }
         };
     }

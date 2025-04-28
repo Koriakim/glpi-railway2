@@ -71,7 +71,7 @@ class ExtensionConstant extends AbstractRequirement
             $this->validation_messages = [
                 sprintf(__('The constant %s is present.'), $this->name)
             ];
-        } else if ($this->optional) {
+        } elseif ($this->optional) {
             $this->validation_messages = [
                 sprintf(__('The constant %s is not present.'), $this->name)
             ];

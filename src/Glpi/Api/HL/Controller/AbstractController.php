@@ -37,16 +37,11 @@ namespace Glpi\Api\HL\Controller;
 
 use CommonDBTM;
 use Glpi\Api\HL\Doc as Doc;
-use Glpi\Api\HL\Route;
 use Glpi\Api\HL\RoutePath;
 use Glpi\Api\HL\Router;
-use Glpi\Api\HL\RSQLInput;
 use Glpi\Http\JSONResponse;
 use Glpi\Http\Request;
 use Glpi\Http\Response;
-use Glpi\DBAL\QueryExpression;
-use Glpi\DBAL\QueryUnion;
-use Search;
 
 /**
  * @phpstan-type AdditionalErrorMessage array{priority: string, message: string}

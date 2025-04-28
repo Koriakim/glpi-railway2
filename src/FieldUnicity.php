@@ -40,7 +40,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class FieldUnicity extends CommonDropdown
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory          = true;
 
     public $can_be_translated  = false;
@@ -153,7 +153,7 @@ class FieldUnicity extends CommonDropdown
         /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
-       //Criteria already added : only display the selected itemtype
+        //Criteria already added : only display the selected itemtype
         if ($ID > 0) {
             if ($item = getItemForItemtype($this->fields['itemtype'])) {
                 echo $item::getTypeName();
@@ -161,7 +161,7 @@ class FieldUnicity extends CommonDropdown
             echo "<input type='hidden' name='itemtype' value='" . htmlescape($this->fields['itemtype']) . "'>";
         } else {
             $options = [];
-           //Add criteria : display dropdown
+            //Add criteria : display dropdown
             foreach ($CFG_GLPI['unicity_types'] as $itemtype) {
                 if ($item = getItemForItemtype($itemtype)) {
                     if ($item::canCreate()) {
@@ -283,9 +283,9 @@ class FieldUnicity extends CommonDropdown
             }
         }
 
-       //Search option for this type
+        //Search option for this type
         if ($target = getItemForItemtype($itemtype)) {
-           //Construct list
+            //Construct list
             $values = [];
             foreach ($DB->listFields(getTableForItemType($itemtype)) as $field) {
                 $searchOption = $target->getSearchOptionByField('field', $field['Field']);

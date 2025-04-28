@@ -44,7 +44,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class Item_Project extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1          = 'Project';
     public static $items_id_1          = 'projects_id';
 
@@ -69,7 +69,7 @@ class Item_Project extends CommonDBRelation
     public function prepareInputForAdd($input)
     {
 
-       // Avoid duplicate entry
+        // Avoid duplicate entry
         if (
             countElementsInTable($this->getTable(), ['projects_id' => $input['projects_id'],
                 'itemtype'    => $input['itemtype'],
@@ -243,11 +243,11 @@ class Item_Project extends CommonDBRelation
                         && in_array($item->getType(), $CFG_GLPI["project_asset_types"])
                     ) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
-                              // Direct one
-                              $nb = self::countForItem($item);
+                            // Direct one
+                            $nb = self::countForItem($item);
 
-                              // Linked items
-                              $linkeditems = $item->getLinkedItems();
+                            // Linked items
+                            $linkeditems = $item->getLinkedItems();
 
                             if (count($linkeditems)) {
                                 foreach ($linkeditems as $type => $tab) {

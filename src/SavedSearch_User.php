@@ -108,9 +108,9 @@ class SavedSearch_User extends CommonDBRelation
         ]);
         if (count($iter)) {
             $row = $iter->current();
-           // Load default bookmark for this $itemtype
+            // Load default bookmark for this $itemtype
             $bookmark = new SavedSearch();
-           // Only get data for bookmarks
+            // Only get data for bookmarks
             return $bookmark->getParameters($row['savedsearches_id']);
         }
         return false;

@@ -310,7 +310,7 @@ class Inventory
             foreach ($properties as $property) {
                 if (property_exists($contents, $property)) {
                     $data[$property] = $contents->$property;
-                } else if (in_array($property, $empty_props)) {
+                } elseif (in_array($property, $empty_props)) {
                     $data[$property] = [];
                 }
             }
@@ -472,7 +472,7 @@ class Inventory
                 $filename = GLPI_INVENTORY_DIR . '/' . $this->conf->buildInventoryFileName($itemtype, $id, $ext);
                 $subdir = dirname($filename);
                 if (!is_dir($subdir)) {
-                    mkdir($subdir, 0755, true);
+                    mkdir($subdir, 0o755, true);
                 }
                 if ($this->inventory_tmpfile !== false) {
                     copy($this->inventory_tmpfile, $filename);
@@ -732,7 +732,7 @@ class Inventory
                         $assettype = $this->processExtraInventoryData($key);
                     }
                     if ($assettype === false) {
-                     //unhandled
+                        //unhandled
                         throw new \RuntimeException("Unhandled schema entry $key");
                     }
                     break;
@@ -830,10 +830,10 @@ class Inventory
                             $output .= "\t\tMemory usage:        ";
                             break;
                         case 'mem_real':
-                             $output .= "\t\tMemory usage (real): ";
+                            $output .= "\t\tMemory usage (real): ";
                             break;
                         case 'mem_peak':
-                             $output .= "\t\tMemory peak:         ";
+                            $output .= "\t\tMemory peak:         ";
                             break;
                     }
 
@@ -842,7 +842,7 @@ class Inventory
                             _n('%s second', '%s seconds', $value),
                             $value
                         );
-                    } else if ($key != 'extra') {
+                    } elseif ($key != 'extra') {
                         $output .= Toolbox::getSize($value);
                     }
                     $output .= "\n";
@@ -916,7 +916,7 @@ class Inventory
 
         $time_limit = 60 * 60 * 12;//12 hours
         foreach ($temp_files as $temp_file) {
-           //drop only inventory files that have been created more than 12 hours ago
+            //drop only inventory files that have been created more than 12 hours ago
             if (time() - filemtime($temp_file) >= $time_limit) {
                 unlink($temp_file);
                 $message = sprintf(__('File %1$s has been removed'), $temp_file);
@@ -965,7 +965,7 @@ class Inventory
 
             $ids = [];
             foreach ($inventory_files as $inventory_file) {
-                 $ids[preg_replace("/\\.(" . implode('|', $conf->knownInventoryExtensions()) . ")\$/i", '', $inventory_file->getFileName())] = $inventory_file;
+                $ids[preg_replace("/\\.(" . implode('|', $conf->knownInventoryExtensions()) . ")\$/i", '', $inventory_file->getFileName())] = $inventory_file;
             }
 
             if (!count($ids)) {
@@ -980,8 +980,8 @@ class Inventory
             ]);
 
             if (count($iterator) === count($ids)) {
-                 //all assets are still present, we're done
-                 return;
+                //all assets are still present, we're done
+                return;
             }
 
             //find missing assets

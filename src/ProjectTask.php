@@ -55,10 +55,10 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
     use VobjectConverterTrait;
     use Glpi\Features\Teamwork;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory = true;
 
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype     = 'Project';
     public static $items_id     = 'projects_id';
 
@@ -68,8 +68,8 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
 
     public $can_be_translated   = true;
 
-    const READMY      = 1;
-    const UPDATEMY    = 1024;
+    public const READMY      = 1;
+    public const UPDATEMY    = 1024;
 
 
     public function getCloneRelations(): array
@@ -254,11 +254,11 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
                         break;
                     case Group::getType():
                         foreach ($actors as $actor) {
-                             $group_iterator = $DB->request([
-                                 'SELECT' => 'users_id',
-                                 'FROM'   => Group_User::getTable(),
-                                 'WHERE'  => ['groups_id' => $actor['items_id']]
-                             ]);
+                            $group_iterator = $DB->request([
+                                'SELECT' => 'users_id',
+                                'FROM'   => Group_User::getTable(),
+                                'WHERE'  => ['groups_id' => $actor['items_id']]
+                            ]);
                             foreach ($group_iterator as $row) {
                                 $users[$row['users_id']] = $row['users_id'];
                             }
@@ -395,7 +395,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
             }
         }
 
-         // Restore all sub-tasks
+        // Restore all sub-tasks
         foreach (self::getAllForProjectTask($this->getID()) as $task) {
             self::getById($task['id'])->restore($task);
         }
@@ -487,7 +487,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         }
 
         if (isset($input['is_milestone']) && $input['is_milestone']) {
-           // Milestone are a precise moment, start date and end dates should have same values.
+            // Milestone are a precise moment, start date and end dates should have same values.
             if (array_key_exists('plan_start_date', $input)) {
                 $input['plan_end_date'] = $input['plan_start_date'];
             }
@@ -556,7 +556,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         }
 
         if (isset($input['is_milestone']) && $input['is_milestone']) {
-           // Milestone are a precise moment, start date and end dates should have same values.
+            // Milestone are a precise moment, start date and end dates should have same values.
             if (array_key_exists('plan_start_date', $input)) {
                 $input['plan_end_date'] = $input['plan_start_date'];
             }
@@ -943,7 +943,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
             'name'               => __('Father'),
             'datatype'           => 'dropdown',
             'massiveaction'      => true,
-         // Add virtual condition to relink table
+            // Add virtual condition to relink table
             'joinparams'         => [
                 'condition'          => 'AND 1=1'
             ]
@@ -1288,10 +1288,10 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         if ($canedit) {
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="mb-3">
-                    <a class="btn btn-primary" href="{{ 'ProjectTask'|itemtype_form_path() }}?projects_id={{ projects_id }}">{{ btn_label }}</a>
-                </div>
-TWIG, ['projects_id' => $ID, 'btn_label' => _x('button', 'Add a task')]);
+                                <div class="mb-3">
+                                    <a class="btn btn-primary" href="{{ 'ProjectTask'|itemtype_form_path() }}?projects_id={{ projects_id }}">{{ btn_label }}</a>
+                                </div>
+                TWIG, ['projects_id' => $ID, 'btn_label' => _x('button', 'Add a task')]);
         }
 
         if ($item::class === self::class && $item->can($ID, UPDATE)) {
@@ -1302,10 +1302,10 @@ TWIG, ['projects_id' => $ID, 'btn_label' => _x('button', 'Add a task')]);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="mb-3">
-                    <a class="btn btn-primary" href="{{ 'ProjectTask'|itemtype_form_path }}?projecttasks_id={{ projecttasks_id }}&projects_id={{ projects_id }}">{{ btn_label }}</a>
-                </div>
-TWIG, $twig_params);
+                                <div class="mb-3">
+                                    <a class="btn btn-primary" href="{{ 'ProjectTask'|itemtype_form_path }}?projecttasks_id={{ projecttasks_id }}&projects_id={{ projects_id }}">{{ btn_label }}</a>
+                                </div>
+                TWIG, $twig_params);
         }
 
         if (Session::haveTranslations('ProjectTaskType', 'name')) {
@@ -1480,20 +1480,20 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'ProjectTaskTeam'|itemtype_form_path }}">
-                        <div class="d-flex">
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="projecttasks_id" value="{{ id }}">
-                            {{ fields.dropdownItemsFromItemtypes('items_id', label, dropdown_params) }}
-                        </div>
-                        <div class="d-flex flex-row-reverse">
-                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'ProjectTaskTeam'|itemtype_form_path }}">
+                                        <div class="d-flex">
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="projecttasks_id" value="{{ id }}">
+                                            {{ fields.dropdownItemsFromItemtypes('items_id', label, dropdown_params) }}
+                                        </div>
+                                        <div class="d-flex flex-row-reverse">
+                                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -1834,13 +1834,13 @@ TWIG, $twig_params);
         $begin     = $options['begin'];
         $end       = $options['end'];
 
-       // Get items to print
+        // Get items to print
         $ADDWHERE = [];
 
         if ($whogroup === "mine") {
             if (isset($_SESSION['glpigroups'])) {
                 $whogroup = $_SESSION['glpigroups'];
-            } else if ($who > 0) {
+            } elseif ($who > 0) {
                 $whogroup = array_column(Group_User::getUserGroups($who), 'id');
             }
         }
@@ -1914,7 +1914,7 @@ TWIG, $twig_params);
                 new QueryExpression($bdate . " <= '" . $end . "'")
             ]);
         } else {
-           //std case: get tasks for current view dates
+            //std case: get tasks for current view dates
             $WHERE[$ttask_table . '.plan_end_date'] = ['>=', $begin];
             $WHERE[$ttask_table . '.plan_start_date'] = ['<=', $end];
         }
@@ -1982,7 +1982,7 @@ TWIG, $twig_params);
                     }
 
                     if (strcmp($end, $data["plan_end_date"]) < 0) {
-                           $interv[$key]["end"]   = $end;
+                        $interv[$key]["end"]   = $end;
                     } else {
                         $interv[$key]["end"]   = $data["plan_end_date"];
                     }
@@ -2096,17 +2096,17 @@ TWIG, $twig_params);
 
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <img src="{{ img }}" role="presentation" alt='' title="{{ 'ProjectTask'|itemtype_name(1) }}"/>
-            <a href="{{ 'ProjectTask'|itemtype_form_path(planning['id']) }}">
-                {{ label }}
-                {{ users_id }}
-            </a>
-            <div class="fw-bold">{{ percent_done }}</div>
-            <div class="event-description rich_text_container">{{ planning['content'] }}</div>
-            {{ get_item_link(parent) }}
-            <br>
-            <span>{{ parent_entity|raw }}</span>
-TWIG, $twig_params);
+                        <img src="{{ img }}" role="presentation" alt='' title="{{ 'ProjectTask'|itemtype_name(1) }}"/>
+                        <a href="{{ 'ProjectTask'|itemtype_form_path(planning['id']) }}">
+                            {{ label }}
+                            {{ users_id }}
+                        </a>
+                        <div class="fw-bold">{{ percent_done }}</div>
+                        <div class="event-description rich_text_container">{{ planning['content'] }}</div>
+                        {{ get_item_link(parent) }}
+                        <br>
+                        <span>{{ parent_entity|raw }}</span>
+            TWIG, $twig_params);
     }
 
     /**
@@ -2281,7 +2281,7 @@ TWIG, $twig_params);
             }
             $vcomp->STATUS = 100 === (int) $fields['percent_done'] ? 'COMPLETED' : 'NEEDS-ACTION';
             $vcomp->{'PERCENT-COMPLETE'} = $fields['percent_done'];
-        } else if ('VEVENT' === $target_component) {
+        } elseif ('VEVENT' === $target_component) {
             if ($is_planned) {
                 $vcomp->DTSTART = (new \DateTime($fields['plan_start_date']))->setTimeZone($utc_tz);
                 $vcomp->DTEND   = (new \DateTime($fields['plan_end_date']))->setTimeZone($utc_tz);
@@ -2304,14 +2304,14 @@ TWIG, $twig_params);
         $input = $this->getCommonInputFromVcomponent($vtodo, $this->isNewItem());
 
         if ($vtodo->DESCRIPTION instanceof FlatText) {
-           // Description is not in HTML format
+            // Description is not in HTML format
             $input['content'] = $vtodo->DESCRIPTION->getValue();
         }
 
         if ($vtodo->{'PERCENT-COMPLETE'} instanceof IntegerValue) {
             $input['percent_done'] = $vtodo->{'PERCENT-COMPLETE'}->getValue();
-        } else if (array_key_exists('state', $input) && $input['state'] == \Planning::DONE) {
-           // Consider task as done if status is DONE
+        } elseif (array_key_exists('state', $input) && $input['state'] == \Planning::DONE) {
+            // Consider task as done if status is DONE
             $input['percent_done'] = 100;
         }
 

@@ -33,7 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\Search\SearchOption;
 
 /**
  * ITILTemplatePredefinedField Class
@@ -66,8 +65,8 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
 
     public function prepareInputForAdd($input)
     {
-       // Use massiveaction system to manage add system.
-       // Need to update data : value not set but
+        // Use massiveaction system to manage add system.
+        // Need to update data : value not set but
         if (!isset($input['value'])) {
             if (isset($input['field']) && isset($input[$input['field']])) {
                 $input['value'] = $input[$input['field']];
@@ -103,7 +102,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
         $itemtype_id = $itil_object->getSearchOptionIDByField('field', 'itemtype', $itil_object->getTable());
         $items_id_id = $itil_object->getSearchOptionIDByField('field', 'items_id', $itil_object->getTable());
 
-       // Try to delete itemtype -> delete items_id
+        // Try to delete itemtype -> delete items_id
         if ($this->fields['num'] == $itemtype_id) {
             $iterator = $DB->request([
                 'SELECT' => 'id',
@@ -115,9 +114,9 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
             ]);
 
             if (count($iterator)) {
-                 $result = $iterator->current();
-                 $a = new static();
-                 $a->delete(['id' => $result['id']]);
+                $result = $iterator->current();
+                $a = new static();
+                $a->delete(['id' => $result['id']]);
             }
         }
     }
@@ -126,7 +125,7 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-       // can exists for template
+        // can exists for template
         if (
             $item instanceof ITILTemplate
             && Session::haveRight("itiltemplate", READ)

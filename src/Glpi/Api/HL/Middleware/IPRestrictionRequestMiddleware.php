@@ -85,7 +85,7 @@ class IPRestrictionRequestMiddleware extends AbstractMiddleware implements Reque
                 if ($this->isCidrMatch($ip, $allowed_ip)) {
                     return true;
                 }
-            } else if ($ip === $allowed_ip) {
+            } elseif ($ip === $allowed_ip) {
                 return true;
             }
         }

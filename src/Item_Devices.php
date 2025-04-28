@@ -53,7 +53,7 @@ class Item_Devices extends CommonDBRelation
     public static $items_id_1            = 'items_id';
     public static $mustBeAttached_1      = false;
     public static $take_entity_1         = false;
-   // static public $checkItem_1_Rights    = self::DONT_CHECK_ITEM_RIGHTS;
+    // static public $checkItem_1_Rights    = self::DONT_CHECK_ITEM_RIGHTS;
 
     protected static $notable            = true;
 
@@ -66,7 +66,7 @@ class Item_Devices extends CommonDBRelation
     public static $log_history_1_lock    = Log::HISTORY_LOCK_DEVICE;
     public static $log_history_1_unlock  = Log::HISTORY_UNLOCK_DEVICE;
 
-   // This var is defined by CommonDBRelation ...
+    // This var is defined by CommonDBRelation ...
     public $no_form_page                 = false;
 
     public $dohistory = true;
@@ -122,7 +122,7 @@ class Item_Devices extends CommonDBRelation
     public static function getDeviceTypeName($nb = 0)
     {
         $device_type = static::getDeviceType();
-       //TRANS: %s is the type of the component
+        //TRANS: %s is the type of the component
         return sprintf(__('Item - %s link'), $device_type::getTypeName($nb));
     }
 
@@ -280,8 +280,8 @@ class Item_Devices extends CommonDBRelation
         foreach ($device_types as $device_type) {
             $cfg_key = 'item' . strtolower($device_type) . '_types';
             if ($plug = isPluginItemType($device_type)) {
-               // For plugins, 'item' prefix should be placed between plugin name and class name.
-               // Nota: 'self::itemAffinity()' and 'self::getConcernedItems()' also expect this order in config key.
+                // For plugins, 'item' prefix should be placed between plugin name and class name.
+                // Nota: 'self::itemAffinity()' and 'self::getConcernedItems()' also expect this order in config key.
                 $cfg_key = strtolower('plugin' . $plug['plugin'] . 'item' . $plug['class']) . '_types';
             }
 
@@ -303,7 +303,7 @@ class Item_Devices extends CommonDBRelation
         }
 
         if (count($options)) {
-           //add title if there are options
+            //add title if there are options
             $options = array_merge(
                 [[
                     'id'                => 'devices',
@@ -331,11 +331,11 @@ class Item_Devices extends CommonDBRelation
                     $name = Dropdown::getDropdownName($table, $value);
                     if (isset($options['comments']) && $options['comments']) {
                         $comments = Dropdown::getDropdownComments($table, $value);
-                         return sprintf(
-                             __('%1$s %2$s'),
-                             htmlescape($name),
-                             Html::showToolTip($comments, ['display' => false])
-                         );
+                        return sprintf(
+                            __('%1$s %2$s'),
+                            htmlescape($name),
+                            Html::showToolTip($comments, ['display' => false])
+                        );
                     }
                     return htmlescape($name);
                 }
@@ -569,10 +569,10 @@ class Item_Devices extends CommonDBRelation
             ]);
 
             foreach ($iterator as $row) {
-                 $input = $row;
-                 $item = new $link_type();
-                 $item->getFromDB($input['id']);
-                 $res[] = $item;
+                $input = $row;
+                $item = new $link_type();
+                $item->getFromDB($input['id']);
+                $res[] = $item;
             }
         }
         return $res;
@@ -795,7 +795,7 @@ class Item_Devices extends CommonDBRelation
         }
 
         echo "</div>";
-       // Force disable selected items
+        // Force disable selected items
         $_SESSION['glpimassiveactionselected'] = [];
     }
 
@@ -816,7 +816,7 @@ class Item_Devices extends CommonDBRelation
         if ($is_device) {
             $fk = 'items_id';
 
-           // Entity restrict
+            // Entity restrict
             $criteria['WHERE'] = [
                 $this->getDeviceForeignKey()  => $item->getID(),
                 "$ctable.itemtype"            => $peer_type,
@@ -908,9 +908,9 @@ class Item_Devices extends CommonDBRelation
             $peer_column = $table_group->addHeader('item', $column_label, $common_column, null);
 
             if (!empty($peer_type)) {
-               //TRANS : %1$s is the type of the device
-               //        %2$s is the type of the item
-               //        %3$s is the name of the item (used for headings of a list),
+                //TRANS : %1$s is the type of the device
+                //        %2$s is the type of the item
+                //        %3$s is the name of the item (used for headings of a list),
                 $itemtype_nav_title = sprintf(
                     __('%1$s of %2$s: %3$s'),
                     $peer_type::getTypeName(Session::getPluralNumber()),
@@ -924,9 +924,9 @@ class Item_Devices extends CommonDBRelation
 
             $table_group = $table->createGroup($peer_type, '');
 
-           //TRANS : %1$s is the type of the device
-           //        %2$s is the type of the item
-           //        %3$s is the name of the item (used for headings of a list),
+            //TRANS : %1$s is the type of the device
+            //        %2$s is the type of the item
+            //        %3$s is the name of the item (used for headings of a list),
             $options['itemtype_title'] = sprintf(
                 __('%1$s of %2$s: %3$s'),
                 $peer_type::getTypeName(Session::getPluralNumber()),
@@ -1038,7 +1038,7 @@ class Item_Devices extends CommonDBRelation
                         $peer
                     );
                     if (is_null($peer)) {
-                          $cell->setHTMLClass('center');
+                        $cell->setHTMLClass('center');
                     }
                 } else {
                     $peer->getHTMLTableCellForItem($current_row, $item, null, $options);
@@ -1059,20 +1059,20 @@ class Item_Devices extends CommonDBRelation
                 $content = '';
 
                 if (!empty($link[$field])) {
-                  // Check the user can view the field
+                    // Check the user can view the field
                     if (!isset($attributs['right'])) {
                         $canRead = true;
                     } else {
                         $canRead = (Session::haveRightsOr($attributs['right'], [READ, UPDATE]));
                     }
 
-                  // Don't show if the field shall not display in the list
+                    // Don't show if the field shall not display in the list
                     if (isset($attributs['nodisplay']) && $attributs['nodisplay']) {
                         $canRead = false;
                     }
 
                     if (!isset($attributs['datatype'])) {
-                          $attributs['datatype'] = 'text';
+                        $attributs['datatype'] = 'text';
                     }
                     if ($canRead) {
                         switch ($attributs['datatype']) {
@@ -1119,7 +1119,7 @@ class Item_Devices extends CommonDBRelation
             $current_row->addCell($infocom_column, $content, $spec_cell);
 
             $content = [];
-           // The order is to be sure that specific documents appear first
+            // The order is to be sure that specific documents appear first
             $doc_iterator = $DB->request([
                 'SELECT' => 'documents_id',
                 'FROM'   => 'glpi_documents_items',
@@ -1219,7 +1219,7 @@ class Item_Devices extends CommonDBRelation
                 ERROR
             );
             return;
-        } else if (isset($_POST['devices_id']) && !$_POST['devices_id']) {
+        } elseif (isset($_POST['devices_id']) && !$_POST['devices_id']) {
             Session::addMessageAfterRedirect(
                 __s('Please select a device'),
                 false,
@@ -1241,7 +1241,7 @@ class Item_Devices extends CommonDBRelation
                         false,
                         ERROR
                     );
-                     return;
+                    return;
                 }
 
                 if (
@@ -1302,7 +1302,7 @@ class Item_Devices extends CommonDBRelation
         $link_type = $is_device ? $itemtype::getItem_DeviceType() : '';
 
         $links   = [];
-       // Update quantity or values
+        // Update quantity or values
         $device_type = '';
         foreach ($input as $key => $val) {
             $data = explode("_", $key);
@@ -1312,7 +1312,7 @@ class Item_Devices extends CommonDBRelation
                 continue;
             }
             if (($command != 'quantity') && ($command != 'value')) {
-               // items_id, itemtype, devicetype ...
+                // items_id, itemtype, devicetype ...
                 continue;
             }
             if (!$is_device) {
@@ -1466,7 +1466,7 @@ class Item_Devices extends CommonDBRelation
         if (!$this->isNewID($ID)) {
             $this->check($ID, READ);
         } else {
-           // Create item
+            // Create item
             $this->check(-1, CREATE);
         }
 

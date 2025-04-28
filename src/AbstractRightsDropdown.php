@@ -130,22 +130,22 @@ abstract class AbstractRightsDropdown
     {
         $possible_rights = [];
 
-       // Add profiles if enabled
+        // Add profiles if enabled
         if (self::isTypeEnabled(Profile::getType())) {
             $possible_rights[Profile::getType()] = self::getProfiles($text);
         }
 
-       // Add entities if enabled
+        // Add entities if enabled
         if (self::isTypeEnabled(Entity::getType())) {
             $possible_rights[Entity::getType()] = self::getEntities($text);
         }
 
-       // Add users if enabled
+        // Add users if enabled
         if (self::isTypeEnabled(User::getType(), $options)) {
             $possible_rights[User::getType()] = self::getUsers($text, $options);
         }
 
-       // Add groups if enabled
+        // Add groups if enabled
         if (self::isTypeEnabled(Group::getType(), $options)) {
             $possible_rights[Group::getType()] = self::getGroups($text, $options);
         }

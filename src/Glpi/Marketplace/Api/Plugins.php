@@ -36,7 +36,6 @@
 namespace Glpi\Marketplace\Api;
 
 use GLPINetwork;
-use GuzzleHttp\Client as Guzzle_Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Message;
@@ -157,9 +156,9 @@ class Plugins
             $response = $this->request($endpoint, $request_options, $method);
 
             if ($response === false || !is_array($current = json_decode($response->getBody(), true))) {
-                 // retry on error or unexpected response
-                 $attempt_no++;
-                 continue;
+                // retry on error or unexpected response
+                $attempt_no++;
+                continue;
             }
 
             if (count($current) === 0) {
@@ -466,7 +465,7 @@ class Plugins
                 // calculate percent based on the size and store it in session
                 $percent = 0;
                 if ($downloadTotal > 0) {
-                      $percent = round($downloadedBytes * 100 / $downloadTotal);
+                    $percent = round($downloadedBytes * 100 / $downloadTotal);
                 }
                 $_SESSION['marketplace_dl_progress'][$plugin_key] = $percent;
 

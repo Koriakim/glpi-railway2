@@ -39,11 +39,11 @@ class Appliance_Item_Relation extends CommonDBRelation
 {
     public static $itemtype_1 = 'Appliance_Item';
     public static $items_id_1 = 'appliances_items_id';
-   //static public $take_entity_1 = false;
+    //static public $take_entity_1 = false;
 
     public static $itemtype_2 = 'itemtype';
     public static $items_id_2 = 'items_id';
-   //static public $take_entity_2 = true;
+    //static public $take_entity_2 = true;
 
     public static function getTypeName($nb = 0)
     {
@@ -111,7 +111,7 @@ class Appliance_Item_Relation extends CommonDBRelation
     {
         $error_detected = [];
 
-       //check for requirements
+        //check for requirements
         if (
             ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
             || (isset($input['itemtype']) && empty($input['itemtype']))
@@ -272,33 +272,33 @@ class Appliance_Item_Relation extends CommonDBRelation
             $add_button = json_encode(_x('button', "Add an item"));
 
             $js = <<<JAVASCRIPT
-         $(function() {
-            $(document).on('click', '.add_relation', function() {
-               var appliances_items_id = $(this).data('appliances-items-id');
+                         $(function() {
+                            $(document).on('click', '.add_relation', function() {
+                               var appliances_items_id = $(this).data('appliances-items-id');
 
-               glpi_html_dialog({
-                  title: {$add_button},
-                  body: {$modal_html},
-                  id: 'add_relation_dialog',
-                  show: function() {
-                     $('#add_relation_dialog input[name=appliances_items_id]').val(appliances_items_id);
-                  },
-               })
-            });
+                               glpi_html_dialog({
+                                  title: {$add_button},
+                                  body: {$modal_html},
+                                  id: 'add_relation_dialog',
+                                  show: function() {
+                                     $('#add_relation_dialog input[name=appliances_items_id]').val(appliances_items_id);
+                                  },
+                               })
+                            });
 
-            $(document).on('click', '.delete_relation', function() {
-               var relations_id = $(this).data('relations-id');
+                            $(document).on('click', '.delete_relation', function() {
+                               var relations_id = $(this).data('relations-id');
 
-               $.post('{$form_url}', {
-                  'id': relations_id,
-                  '_glpi_csrf_token': '$crsf_token',
-                  'purge': 1,
-               }, function() {
-                  location.reload();
-               })
-            });
-         });
-JAVASCRIPT;
+                               $.post('{$form_url}', {
+                                  'id': relations_id,
+                                  '_glpi_csrf_token': '$crsf_token',
+                                  'purge': 1,
+                               }, function() {
+                                  location.reload();
+                               })
+                            });
+                         });
+                JAVASCRIPT;
             return Html::scriptBlock($js);
         }
 

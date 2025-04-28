@@ -77,24 +77,24 @@ final class ContentField extends AbstractConfigField implements DestinationField
         }
 
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.textareaField(
-                input_name,
-                value,
-                '',
-                options|merge({
-                    'field_class'      : '',
-                    'no_label'         : true,
-                    'enable_richtext'  : true,
-                    'enable_images'    : false,
-                    'enable_form_tags' : true,
-                    'form_tags_form_id': form_id,
-                    'content_style'    : 'body { line-height: 2.3; }',
-                    'mb'               : '',
-                })
-            ) }}
-TWIG;
+                        {{ fields.textareaField(
+                            input_name,
+                            value,
+                            '',
+                            options|merge({
+                                'field_class'      : '',
+                                'no_label'         : true,
+                                'enable_richtext'  : true,
+                                'enable_images'    : false,
+                                'enable_form_tags' : true,
+                                'form_tags_form_id': form_id,
+                                'content_style'    : 'body { line-height: 2.3; }',
+                                'mb'               : '',
+                            })
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

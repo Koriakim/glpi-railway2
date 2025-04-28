@@ -39,11 +39,11 @@ use Glpi\Search\SearchOption;
 
 class DisplayPreference extends CommonDBTM
 {
-   // From CommonGLPI
+    // From CommonGLPI
     public $taborientation          = 'horizontal';
     public $get_item_to_display_tab = false;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $auto_message_on_action  = false;
 
     protected $displaylist          = false;
@@ -51,8 +51,8 @@ class DisplayPreference extends CommonDBTM
 
     public static $rightname = 'search_config';
 
-    const PERSONAL = 1024;
-    const GENERAL  = 2048;
+    public const PERSONAL = 1024;
+    public const GENERAL  = 2048;
 
     public static function getTypeName($nb = 0)
     {
@@ -108,7 +108,7 @@ class DisplayPreference extends CommonDBTM
                                     'itemtype' => $id
                                 ])
                             ) {
-                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                                $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                                 $ma->addMessage($user->getErrorMessage(ERROR_ON_ACTION));
@@ -210,7 +210,7 @@ class DisplayPreference extends CommonDBTM
                 $this->addToDB();
             }
         } else {
-           // No items in the global config
+            // No items in the global config
             $searchopt = SearchOption::getOptionsForItemtype($input["itemtype"]);
             if (count($searchopt) > 1) {
                 $done = false;
@@ -291,7 +291,7 @@ class DisplayPreference extends CommonDBTM
         /** @var \DBmysql $DB */
         global $DB;
 
-       // Get current item
+        // Get current item
         $criteria = [];
         if (isset($input['num'])) {
             $criteria = [
@@ -313,7 +313,7 @@ class DisplayPreference extends CommonDBTM
         $rank1  = $result['rank'];
         $input['id'] = $result['id'];
 
-       // Get previous or next item
+        // Get previous or next item
         $where = [];
         $order = 'rank ';
         switch ($action) {
@@ -345,7 +345,7 @@ class DisplayPreference extends CommonDBTM
         $rank2  = $result['rank'];
         $ID2    = $result['id'];
 
-       // Update items
+        // Update items
         $DB->update(
             $this->getTable(),
             ['rank' => $rank2],
@@ -689,11 +689,11 @@ class DisplayPreference extends CommonDBTM
 
     public function getRights($interface = 'central')
     {
-       //TRANS: short for : Search result user display
+        //TRANS: short for : Search result user display
         $values[self::PERSONAL]  = ['short' => __('User display'),
             'long'  => __('Search result user display')
         ];
-       //TRANS: short for : Search result default display
+        //TRANS: short for : Search result default display
         $values[self::GENERAL]  =  ['short' => __('Default display'),
             'long'  => __('Search result default display')
         ];

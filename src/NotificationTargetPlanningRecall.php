@@ -66,7 +66,7 @@ class NotificationTargetPlanningRecall extends NotificationTarget
         switch ($data['type']) {
             case Notification::USER_TYPE:
                 switch ($data['items_id']) {
-                   //Send to the ITIL object task author
+                    //Send to the ITIL object task author
                     case Notification::TASK_ASSIGN_TECH:
                         $this->addTaskAssignUser();
                         break;
@@ -75,7 +75,7 @@ class NotificationTargetPlanningRecall extends NotificationTarget
                         $this->addGuests();
                         break;
 
-                   //Send to the ITIL object task group assigned
+                        //Send to the ITIL object task group assigned
                     case Notification::TASK_ASSIGN_GROUP:
                         $this->addTaskAssignGroup();
                         break;
@@ -111,7 +111,7 @@ class NotificationTargetPlanningRecall extends NotificationTarget
             $field = '';
             if ($item->isField('users_id_tech')) {
                 $field = 'users_id_tech';
-            } else if (
+            } elseif (
                 in_array($item->getType(), ['PlanningExternalEvent', 'Reminder'])
                     && $item->isField('users_id')
             ) {
@@ -160,7 +160,7 @@ class NotificationTargetPlanningRecall extends NotificationTarget
         $this->data['##recall.action##']   = $events[$event];
         $this->data['##recall.itemtype##'] = $target_object->getTypeName(1);
         $this->data['##recall.item.URL##'] = '';
-       // For task show parent link
+        // For task show parent link
         if (
             ($target_object instanceof CommonDBChild)
             || ($target_object instanceof CommonITILTask)

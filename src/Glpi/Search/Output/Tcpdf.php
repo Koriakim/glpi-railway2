@@ -35,8 +35,6 @@
 
 namespace Glpi\Search\Output;
 
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
-
 class Tcpdf extends \PhpOffice\PhpSpreadsheet\Writer\Pdf\Tcpdf
 {
     protected function createExternalWriterInstance($orientation, $unit, $paperSize): \TCPDF

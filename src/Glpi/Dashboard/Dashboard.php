@@ -127,7 +127,7 @@ class Dashboard extends \CommonDBTM
             $this->key    = $ID;
             $this->post_getFromDB();
             return true;
-        } else if (count($iterator) > 1) {
+        } elseif (count($iterator) > 1) {
             trigger_error(
                 sprintf('getFromDB expects to get one result, %1$s found!', count($iterator)),
                 E_USER_WARNING
@@ -272,15 +272,15 @@ class Dashboard extends \CommonDBTM
             ]
         );
 
-       // reload dashboard
+        // reload dashboard
         $this->getFromDB($this->key);
 
-       //save items
+        //save items
         if (!$skip_child && count($this->items) > 0) {
             $this->saveItems($this->items);
         }
 
-       //save rights
+        //save rights
         if (!$skip_child && count($this->rights) > 0) {
             $this->saveRights($this->rights);
         }
@@ -405,14 +405,14 @@ class Dashboard extends \CommonDBTM
         $this->fields['users_id'] = Session::getLoginUserID();
         $this->key = \Toolbox::slugify($this->fields['name']) . '-' . Uuid::uuid4()->toString();
 
-       // replace gridstack_id (with uuid V4) in the copy, to avoid cache issue
+        // replace gridstack_id (with uuid V4) in the copy, to avoid cache issue
         $this->items = array_map(function (array $item) {
             $item['gridstack_id'] = $item['card_id'] . Uuid::uuid4();
 
             return $item;
         }, $this->items);
 
-       // convert right to the good format
+        // convert right to the good format
         $this->rights = self::convertRights($this->rights);
 
         $this->save();
@@ -545,7 +545,7 @@ class Dashboard extends \CommonDBTM
             return false;
         }
 
-       // check specific rights
+        // check specific rights
         if (
             count(array_intersect($rights['entities_id'], $_SESSION['glpiactiveentities']))
             || in_array($_SESSION["glpiactiveprofile"]['id'], $rights['profiles_id'])

@@ -54,19 +54,19 @@ use Session;
 /// Socket class
 class Socket extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
     public static $checkParentRights  = self::DONT_CHECK_ITEM_RIGHTS;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory          = true;
     public static $rightname          = 'cable_management';
     public $can_be_translated  = false;
 
-    const REAR    = 1;
-    const FRONT   = 2;
-    const BOTH    = 3;
+    public const REAR    = 1;
+    public const FRONT   = 2;
+    public const BOTH    = 3;
 
     public static function getIcon()
     {
@@ -119,7 +119,7 @@ class Socket extends CommonDBChild
         $itemtype = null;
         if (!empty($options['_add_fromitem'])) {
             $itemtype = $options['_add_fromitem']['_from_itemtype'];
-        } else if (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
+        } elseif (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
             $itemtype = $this->fields['itemtype'];
         }
 
@@ -168,14 +168,14 @@ class Socket extends CommonDBChild
     public function retrievedataFromNetworkPort($input)
     {
         // get position from networkport if needed
-        if ((isset($input["networkports_id"]) && $input["networkports_id"] > 0 ) && $input["position"] == 'auto') {
+        if ((isset($input["networkports_id"]) && $input["networkports_id"] > 0) && $input["position"] == 'auto') {
             $networkport = new NetworkPort();
             $networkport->getFromDB($input["networkports_id"]);
             $input['position'] = $networkport->fields['logical_number'];
         }
 
         // get name from networkport if needed
-        if ((isset($input["networkports_id"]) && $input["networkports_id"] > 0 ) && empty($input["name"])) {
+        if ((isset($input["networkports_id"]) && $input["networkports_id"] > 0) && empty($input["name"])) {
             $networkport = new NetworkPort();
             $networkport->getFromDB($input["networkports_id"]);
             $input['name'] = $networkport->fields['name'];
@@ -537,10 +537,10 @@ class Socket extends CommonDBChild
                 ]
             ]);
 
-           // Check twin :
+            // Check twin :
             if (count($iterator)) {
-                 $result = $iterator->current();
-                 return $result['id'];
+                $result = $iterator->current();
+                return $result['id'];
             }
         }
         return -1;
@@ -580,8 +580,8 @@ class Socket extends CommonDBChild
             ]);
 
             foreach (self::getFromIter($iter) as $socket) {
-                 $socket->fields['networkports_id'] = 0;
-                 $socket->update($socket->fields);
+                $socket->fields['networkports_id'] = 0;
+                $socket->update($socket->fields);
             }
         }
     }
@@ -616,12 +616,12 @@ class Socket extends CommonDBChild
                     /** @var CommonDBTM $item */
                     if (in_array($item->getType(), $CFG_GLPI['socket_types'])) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
-                              $nb =  countElementsInTable(
-                                  $this->getTable(),
-                                  ['itemtype' => $item->getType(),
-                                      'items_id' => $item->getID()
-                                  ]
-                              );
+                            $nb =  countElementsInTable(
+                                $this->getTable(),
+                                ['itemtype' => $item->getType(),
+                                    'items_id' => $item->getID()
+                                ]
+                            );
                         }
                         return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb, $item::getType());
                     }
@@ -636,7 +636,7 @@ class Socket extends CommonDBChild
         global $CFG_GLPI;
         if ($item->getType() == 'Location') {
             self::showForLocation($item);
-        } else if (in_array($item->getType(), $CFG_GLPI['socket_types'])) {
+        } elseif (in_array($item->getType(), $CFG_GLPI['socket_types'])) {
             self::showListForItem($item);
         }
         return true;
@@ -666,7 +666,7 @@ class Socket extends CommonDBChild
         }
         $rand = mt_rand();
 
-       // Link to open a new socket
+        // Link to open a new socket
         if ($item->getID() && self::canCreate()) {
             $twig_params = [
                 'socket_itemtypes' => self::getSocketLinkTypes(),

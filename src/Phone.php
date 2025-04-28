@@ -49,7 +49,7 @@ class Phone extends CommonDBTM
         prepareInputForAdd as prepareInputForAddAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     protected static $forward_entity_to = ['Infocom', 'NetworkPort', 'ReservationItem',
@@ -88,7 +88,7 @@ class Phone extends CommonDBTM
 
     public static function getTypeName($nb = 0)
     {
-       //TRANS: Test of comment for translation (mark : //TRANS)
+        //TRANS: Test of comment for translation (mark : //TRANS)
         return _n('Phone', 'Phones', $nb);
     }
 
@@ -534,11 +534,11 @@ class Phone extends CommonDBTM
     }
 
 
-   /**
-    * @param $itemtype
-    *
-    * @return array
-    */
+    /**
+     * @param $itemtype
+     *
+     * @return array
+     */
     public static function rawSearchOptionsToAdd($itemtype = null)
     {
         $tab = [];

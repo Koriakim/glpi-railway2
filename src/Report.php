@@ -151,7 +151,7 @@ class Report extends CommonGLPI
                     if ($file = $fn_find_selected($data)) {
                         return $file;
                     }
-                } else if (stripos($_SERVER['REQUEST_URI'], $data['file']) !== false) {
+                } elseif (stripos($_SERVER['REQUEST_URI'], $data['file']) !== false) {
                     return $data['file'];
                 }
             }
@@ -176,19 +176,19 @@ class Report extends CommonGLPI
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            <div class="card mb-3">
-                <div class="card-header">
-                    <div class="card-title">{{ title }}</div>
-                </div>
-                <div class="card-body">
-                    {{ fields.dropdownArrayField('statmenu', selected, values, null, {
-                        no_label: true,
-                        on_change: "window.location=this.options[this.selectedIndex].value"
-                    }) }}
-                </div>
-            </div>
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <div class="card-title">{{ title }}</div>
+                            </div>
+                            <div class="card-body">
+                                {{ fields.dropdownArrayField('statmenu', selected, values, null, {
+                                    no_label: true,
+                                    on_change: "window.location=this.options[this.selectedIndex].value"
+                                }) }}
+                            </div>
+                        </div>
+            TWIG, $twig_params);
     }
 
     /**
@@ -359,7 +359,7 @@ TWIG, $twig_params);
             $iterator = $DB->request($criteria);
             foreach ($iterator as $data) {
                 if (empty($data['name'])) {
-                    $data['name'] = Dropdown:: EMPTY_VALUE;
+                    $data['name'] = Dropdown::EMPTY_VALUE;
                 }
                 if (!array_key_exists($itemtype, $result)) {
                     $result[$itemtype] = [
@@ -442,22 +442,22 @@ TWIG, $twig_params);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">{{ title }}</div>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped">
-                        {% for label, count in counts %}
-                            <tr>
-                                <th>{{ label }}</th>
-                                <td>{{ count }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
-TWIG, ['title' => $report['title'], 'counts' => $counts]);
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ title }}</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    {% for label, count in counts %}
+                                        <tr>
+                                            <th>{{ label }}</th>
+                                            <td>{{ count }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+            TWIG, ['title' => $report['title'], 'counts' => $counts]);
     }
 
     /**
@@ -834,17 +834,17 @@ TWIG, ['title' => $report['title'], 'counts' => $counts]);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">{{ report['title'] }}</div>
-                </div>
-                <div class="card-body">
-                    {{ call('Report::showNetworkReportCriteria', [true]) }}
-                    <br>
-                    {{ include('components/datatable.html.twig', datatable_params, with_context = false) }}
-                </div>
-            </div>
-TWIG, ['report' => $report, 'datatable_params' => $datatable_params]);
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ report['title'] }}</div>
+                            </div>
+                            <div class="card-body">
+                                {{ call('Report::showNetworkReportCriteria', [true]) }}
+                                <br>
+                                {{ include('components/datatable.html.twig', datatable_params, with_context = false) }}
+                            </div>
+                        </div>
+            TWIG, ['report' => $report, 'datatable_params' => $datatable_params]);
     }
 
     /**
@@ -880,16 +880,16 @@ TWIG, ['report' => $report, 'datatable_params' => $datatable_params]);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">{{ report['title'] }}</div>
-                </div>
-                <div class="card-body">
-                    {{ call('Reservation::showReservationsAsList', [report['data']['in_progress'], current_label]) }}
-                    {{ call('Reservation::showReservationsAsList', [report['data']['old'], old_label]) }}
-                </div>
-            </div>
-TWIG, $twig_params);
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ report['title'] }}</div>
+                            </div>
+                            <div class="card-body">
+                                {{ call('Reservation::showReservationsAsList', [report['data']['in_progress'], current_label]) }}
+                                {{ call('Reservation::showReservationsAsList', [report['data']['old'], old_label]) }}
+                            </div>
+                        </div>
+            TWIG, $twig_params);
     }
 
     /**
@@ -1133,20 +1133,20 @@ TWIG, $twig_params);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">{{ title }}</div>
-                </div>
-                <div class="card-body">
-                    {{ call('Report::showYearlyAssetsReportCriteria', [true]) }}
-                    <br>
-                    {% for itemtype, datatable in datatable_params %}
-                        {{ include('components/datatable.html.twig', datatable, with_context = false) }}
-                        <br>
-                    {% endfor %}
-                </div>
-            </div>
-TWIG, $twig_params);
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ title }}</div>
+                            </div>
+                            <div class="card-body">
+                                {{ call('Report::showYearlyAssetsReportCriteria', [true]) }}
+                                <br>
+                                {% for itemtype, datatable in datatable_params %}
+                                    {{ include('components/datatable.html.twig', datatable, with_context = false) }}
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+            TWIG, $twig_params);
     }
 
     /**
@@ -1413,20 +1413,20 @@ TWIG, $twig_params);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">{{ title }}</div>
-                </div>
-                <div class="card-body">
-                    {{ call('Report::showContractAssetsReportCriteria', [true]) }}
-                    <br>
-                    {% for itemtype, datatable in datatable_params %}
-                        {{ include('components/datatable.html.twig', datatable, with_context = false) }}
-                        <br>
-                    {% endfor %}
-                </div>
-            </div>
-TWIG, $twig_params);
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ title }}</div>
+                            </div>
+                            <div class="card-body">
+                                {{ call('Report::showContractAssetsReportCriteria', [true]) }}
+                                <br>
+                                {% for itemtype, datatable in datatable_params %}
+                                    {{ include('components/datatable.html.twig', datatable, with_context = false) }}
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+            TWIG, $twig_params);
     }
 
     /**
@@ -1725,24 +1725,24 @@ TWIG, $twig_params);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">{{ title }}</div>
-                </div>
-                <div class="card-body">
-                    {{ call('Report::showInfocomReportCriteria', [true, true]) }}
-                    <br>
-                    {% for itemtype, datatable in datatable_params %}
-                        {{ include('components/datatable.html.twig', datatable, with_context = false) }}
-                        <br>
-                    {% endfor %}
-                    {% for graph in graphs %}
-                        {{ graph|raw }}
-                        <br>
-                    {% endfor %}
-                </div>
-            </div>
-TWIG, $twig_params);
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ title }}</div>
+                            </div>
+                            <div class="card-body">
+                                {{ call('Report::showInfocomReportCriteria', [true, true]) }}
+                                <br>
+                                {% for itemtype, datatable in datatable_params %}
+                                    {{ include('components/datatable.html.twig', datatable, with_context = false) }}
+                                    <br>
+                                {% endfor %}
+                                {% for graph in graphs %}
+                                    {{ graph|raw }}
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+            TWIG, $twig_params);
     }
 
     /**
@@ -1884,20 +1884,20 @@ TWIG, $twig_params);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">{{ title }}</div>
-                </div>
-                <div class="card-body">
-                    {{ call('Report::showInfocomReportCriteria', [true, false]) }}
-                    <br>
-                    {% for graph in graphs %}
-                        {{ graph|raw }}
-                        <br>
-                    {% endfor %}
-                </div>
-            </div>
-TWIG, $twig_params);
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ title }}</div>
+                            </div>
+                            <div class="card-body">
+                                {{ call('Report::showInfocomReportCriteria', [true, false]) }}
+                                <br>
+                                {% for graph in graphs %}
+                                    {{ graph|raw }}
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+            TWIG, $twig_params);
     }
 
     public function getRights($interface = 'central')
@@ -1918,29 +1918,29 @@ TWIG, $twig_params);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">{{ title }}</div>
-                </div>
-                <div class="card-body">
-                    <form method="get" action="report.reservation.php" class="d-flex mt-n3">
-                        {{ fields.dropdownField('User', 'id', _get['id']|default(0), 'User'|itemtype_name, {
-                            right: 'reservation',
-                            mb: '',
-                        }) }}
-                        {% set btn_el %}
-                            <button type="submit" class="btn btn-primary" name="submit">{{ btn_label }}</button>
-                        {% endset %}
-                        {{ fields.htmlField('', btn_el, null, {
-                            no_label: true,
-                            mb: '',
-                            add_field_class: 'ms-3'
-                        }) }}
-                    </form>
-                </div>
-            </div>
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">{{ title }}</div>
+                            </div>
+                            <div class="card-body">
+                                <form method="get" action="report.reservation.php" class="d-flex mt-n3">
+                                    {{ fields.dropdownField('User', 'id', _get['id']|default(0), 'User'|itemtype_name, {
+                                        right: 'reservation',
+                                        mb: '',
+                                    }) }}
+                                    {% set btn_el %}
+                                        <button type="submit" class="btn btn-primary" name="submit">{{ btn_label }}</button>
+                                    {% endset %}
+                                    {{ fields.htmlField('', btn_el, null, {
+                                        no_label: true,
+                                        mb: '',
+                                        add_field_class: 'ms-3'
+                                    }) }}
+                                </form>
+                            </div>
+                        </div>
+            TWIG, $twig_params);
     }
 
     /**
@@ -1966,40 +1966,40 @@ TWIG, $twig_params);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% if not embeded %}
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">{{ title }}</div>
-                    </div>
-                    <div class="card-body">
-            {% endif %}
-            <form method="get" action="{{ is_assets ? 'report.infocom.php' : 'report.infocom.conso.php' }}" class="d-flex mt-n3">
-                {{ fields.dateField('date1', begin, start_label, {
-                    field_class: 'col-12 col-sm-4',
-                    clearable: true,
-                    mb: '',
-                }) }}
-                {{ fields.dateField('date2', end, end_label, {
-                    field_class: 'col-12 col-sm-4',
-                    clearable: true,
-                    mb: '',
-                }) }}
-                {% set btn_el %}
-                    <button type="submit" class="btn btn-primary" name="submit">{{ btn_label }}</button>
-                {% endset %}
-                {{ fields.htmlField('', btn_el, null, {
-                    field_class: 'col-12 col-sm-4',
-                    no_label: true,
-                    mb: '',
-                    add_field_class: 'ms-3'
-                }) }}
-            </form>
-            {% if not embeded %}
-                    </div>
-                </div>
-            {% endif %}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% if not embeded %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">{{ title }}</div>
+                                </div>
+                                <div class="card-body">
+                        {% endif %}
+                        <form method="get" action="{{ is_assets ? 'report.infocom.php' : 'report.infocom.conso.php' }}" class="d-flex mt-n3">
+                            {{ fields.dateField('date1', begin, start_label, {
+                                field_class: 'col-12 col-sm-4',
+                                clearable: true,
+                                mb: '',
+                            }) }}
+                            {{ fields.dateField('date2', end, end_label, {
+                                field_class: 'col-12 col-sm-4',
+                                clearable: true,
+                                mb: '',
+                            }) }}
+                            {% set btn_el %}
+                                <button type="submit" class="btn btn-primary" name="submit">{{ btn_label }}</button>
+                            {% endset %}
+                            {{ fields.htmlField('', btn_el, null, {
+                                field_class: 'col-12 col-sm-4',
+                                no_label: true,
+                                mb: '',
+                                add_field_class: 'ms-3'
+                            }) }}
+                        </form>
+                        {% if not embeded %}
+                                </div>
+                            </div>
+                        {% endif %}
+            TWIG, $twig_params);
     }
 
     public static function showYearlyAssetsReportCriteria(bool $embeded): void
@@ -2021,38 +2021,38 @@ TWIG, $twig_params);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% if not embeded %}
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">{{ title }}</div>
-                    </div>
-                    <div class="card-body">
-            {% endif %}
-            <form method="get" action="report.year.php" class="mt-n3">
-                <div class="d-flex">
-                    {{ fields.dropdownItemTypes('item_type', '', itemtype_label, {
-                        multiple: true,
-                        values: config('report_types'),
-                        types: config('report_types'),
-                        label_class: 'col-12 col-sm-3',
-                        input_class: 'col-12 col-sm-9',
-                    }) }}
-                    {{ fields.dropdownArrayField('year', date()|date('Y'), years, year_label, {
-                        multiple: true,
-                        label_class: 'col-12 col-sm-3',
-                        input_class: 'col-12 col-sm-9',
-                    }) }}
-                </div>
-                <div class="d-flex flex-row-reverse">
-                    <button type="submit" class="btn btn-primary" name="submit">{{ btn_label }}</button>
-                </div>
-            </form>
-            {% if not embeded %}
-                    </div>
-                </div>
-            {% endif %}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% if not embeded %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">{{ title }}</div>
+                                </div>
+                                <div class="card-body">
+                        {% endif %}
+                        <form method="get" action="report.year.php" class="mt-n3">
+                            <div class="d-flex">
+                                {{ fields.dropdownItemTypes('item_type', '', itemtype_label, {
+                                    multiple: true,
+                                    values: config('report_types'),
+                                    types: config('report_types'),
+                                    label_class: 'col-12 col-sm-3',
+                                    input_class: 'col-12 col-sm-9',
+                                }) }}
+                                {{ fields.dropdownArrayField('year', date()|date('Y'), years, year_label, {
+                                    multiple: true,
+                                    label_class: 'col-12 col-sm-3',
+                                    input_class: 'col-12 col-sm-9',
+                                }) }}
+                            </div>
+                            <div class="d-flex flex-row-reverse">
+                                <button type="submit" class="btn btn-primary" name="submit">{{ btn_label }}</button>
+                            </div>
+                        </form>
+                        {% if not embeded %}
+                                </div>
+                            </div>
+                        {% endif %}
+            TWIG, $twig_params);
     }
 
     public static function showContractAssetsReportCriteria(bool $embeded): void
@@ -2074,37 +2074,37 @@ TWIG, $twig_params);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% if not embeded %}
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">{{ title }}</div>
-                    </div>
-                    <div class="card-body">
-            {% endif %}
-            <form method="get" action="report.contract.php" class="mt-n3">
-                <div class="d-flex">
-                    {{ fields.dropdownItemTypes('item_type', '', itemtype_label, {
-                        multiple: true,
-                        values: config('contract_types'),
-                        types: config('contract_types'),
-                        label_class: 'col-12 col-sm-3',
-                        input_class: 'col-12 col-sm-9',
-                    }) }}
-                    {{ fields.dropdownArrayField('year', date()|date('Y'), years, year_label, {
-                        multiple: true,
-                        label_class: 'col-12 col-sm-3',
-                        input_class: 'col-12 col-sm-9',
-                    }) }}
-                </div>
-                <div class="d-flex flex-row-reverse">
-                    <button type="submit" class="btn btn-primary" name="submit">{{ btn_label }}</button>
-                </div>
-            </form>
-            {% if not embeded %}
-                    </div>
-                </div>
-            {% endif %}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% if not embeded %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">{{ title }}</div>
+                                </div>
+                                <div class="card-body">
+                        {% endif %}
+                        <form method="get" action="report.contract.php" class="mt-n3">
+                            <div class="d-flex">
+                                {{ fields.dropdownItemTypes('item_type', '', itemtype_label, {
+                                    multiple: true,
+                                    values: config('contract_types'),
+                                    types: config('contract_types'),
+                                    label_class: 'col-12 col-sm-3',
+                                    input_class: 'col-12 col-sm-9',
+                                }) }}
+                                {{ fields.dropdownArrayField('year', date()|date('Y'), years, year_label, {
+                                    multiple: true,
+                                    label_class: 'col-12 col-sm-3',
+                                    input_class: 'col-12 col-sm-9',
+                                }) }}
+                            </div>
+                            <div class="d-flex flex-row-reverse">
+                                <button type="submit" class="btn btn-primary" name="submit">{{ btn_label }}</button>
+                            </div>
+                        </form>
+                        {% if not embeded %}
+                                </div>
+                            </div>
+                        {% endif %}
+            TWIG, $twig_params);
     }
 }

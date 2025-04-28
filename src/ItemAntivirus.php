@@ -40,7 +40,7 @@ use Glpi\Application\View\TemplateRenderer;
  */
 class ItemAntivirus extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
     public $dohistory       = true;
@@ -56,7 +56,7 @@ class ItemAntivirus extends CommonDBChild
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-       // can exists for template
+        // can exists for template
         if ($item::canView()) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {

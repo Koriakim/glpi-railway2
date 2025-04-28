@@ -48,8 +48,8 @@ use Symfony\Component\HttpFoundation\Request;
  **/
 class Config extends CommonDBTM
 {
-    const DELETE_ALL = -1;
-    const KEEP_ALL = 0;
+    public const DELETE_ALL = -1;
+    public const KEEP_ALL = 0;
 
     public const UNIT_MANAGEMENT = 0;
     public const GLOBAL_MANAGEMENT = 1;
@@ -61,10 +61,10 @@ class Config extends CommonDBTM
     public const TIMELINE_RELATIVE_DATE = 0;
     public const TIMELINE_ABSOLUTE_DATE = 1;
 
-   // From CommonGLPI
+    // From CommonGLPI
     protected $displaylist         = false;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $auto_message_on_action = false;
     public $showdebug              = true;
 
@@ -153,15 +153,15 @@ class Config extends CommonDBTM
         /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
-       // Unset _no_history to not save it as a configuration value
+        // Unset _no_history to not save it as a configuration value
         unset($input['_no_history']);
 
-       // Update only an item
+        // Update only an item
         if (isset($input['context'])) {
             return $input;
         }
 
-       // Process configuration for plugins
+        // Process configuration for plugins
         if (!empty($input['config_context'])) {
             $config_context = $input['config_context'];
             unset($input['id']);
@@ -181,8 +181,8 @@ class Config extends CommonDBTM
             return false;
         }
 
-       // Trim automatically ending slash for url_base config as, for all existing occurrences,
-       // this URL will be prepended to something that starts with a slash.
+        // Trim automatically ending slash for url_base config as, for all existing occurrences,
+        // this URL will be prepended to something that starts with a slash.
         if (isset($input["url_base"]) && !empty($input["url_base"])) {
             if (Toolbox::isValidWebUrl($input["url_base"])) {
                 $input["url_base"] = rtrim($input["url_base"], '/');
@@ -201,7 +201,7 @@ class Config extends CommonDBTM
             $input['proxy_passwd'] = '';
         }
 
-       // Manage DB Slave process
+        // Manage DB Slave process
         if (isset($input['_dbslave_status'])) {
             $already_active = DBConnection::isDBSlaveActive();
 
@@ -211,8 +211,8 @@ class Config extends CommonDBTM
                 if (!$already_active) {
                     // Activate Slave from the "system" tab
                     DBConnection::createDBSlaveConfig();
-                } else if (isset($input["_dbreplicate_dbhost"])) {
-                   // Change parameter from the "replicate" tab
+                } elseif (isset($input["_dbreplicate_dbhost"])) {
+                    // Change parameter from the "replicate" tab
                     DBConnection::saveDBSlaveConf(
                         $input["_dbreplicate_dbhost"],
                         $input["_dbreplicate_dbuser"],
@@ -228,7 +228,7 @@ class Config extends CommonDBTM
             }
         }
 
-       // Matrix for Impact / Urgence / Priority
+        // Matrix for Impact / Urgence / Priority
         if (isset($input['_matrix'])) {
             $tab = [];
 
@@ -260,7 +260,7 @@ class Config extends CommonDBTM
             );
         }
 
-       // lock mechanism update
+        // lock mechanism update
         if (isset($input['lock_use_lock_item']) && isset($input['lock_item_list'])) {
             $input['lock_item_list'] = exportArrayToDB(
                 ArrayNormalizer::normalizeValues($input['lock_item_list'] ?: [], 'strval')
@@ -279,12 +279,12 @@ class Config extends CommonDBTM
             );
         }
 
-       // Beware : with new management system, we must update each value
+        // Beware : with new management system, we must update each value
         unset($input['id']);
         unset($input['_glpi_csrf_token']);
         unset($input['_update']);
 
-       // Add skipMaintenance if maintenance mode update
+        // Add skipMaintenance if maintenance mode update
         if (isset($input['maintenance_mode']) && $input['maintenance_mode']) {
             $_SESSION['glpiskipMaintenance'] = 1;
             $url = htmlescape($CFG_GLPI['root_doc'] . "/index.php?skipMaintenance=1");
@@ -580,9 +580,9 @@ class Config extends CommonDBTM
 
         // Options just for new API
         $api_versions = \Glpi\Api\HL\Router::getAPIVersions();
-        $legacy_version = array_filter($api_versions, static fn ($version) => $version['api_version'] === '1');
+        $legacy_version = array_filter($api_versions, static fn($version) => $version['api_version'] === '1');
         $legacy_version = reset($legacy_version);
-        $current_version = array_filter($api_versions, static fn ($version) => $version['version'] === \Glpi\Api\HL\Router::API_VERSION);
+        $current_version = array_filter($api_versions, static fn($version) => $version['version'] === \Glpi\Api\HL\Router::API_VERSION);
         $current_version = reset($current_version);
         $getting_started_doc = $current_version['endpoint'] . '/getting-started';
         $endpoint_doc = $current_version['endpoint'] . '/doc';
@@ -797,7 +797,7 @@ class Config extends CommonDBTM
 
         $core_requirements = (new RequirementsManager())->getCoreRequirementList($DB);
         $requirements = [];
-       /* @var \Glpi\System\Requirement\RequirementInterface $requirement */
+        /* @var \Glpi\System\Requirement\RequirementInterface $requirement */
         foreach ($core_requirements as $k => $requirement) {
             if ($requirement->isOutOfContext()) {
                 continue; // skip requirement if not relevant
@@ -871,10 +871,10 @@ class Config extends CommonDBTM
     {
         if (is_object($libstring)) {
             return realpath(dirname((new ReflectionObject($libstring))->getFileName()));
-        } else if (class_exists($libstring) || interface_exists($libstring)) {
+        } elseif (class_exists($libstring) || interface_exists($libstring)) {
             return realpath(dirname((new ReflectionClass($libstring))->getFileName()));
-        } else if (function_exists($libstring)) {
-           // Internal function have no file name
+        } elseif (function_exists($libstring)) {
+            // Internal function have no file name
             $path = (new ReflectionFunction($libstring))->getFileName();
             return ($path ? realpath(dirname($path)) : false);
         }
@@ -892,7 +892,7 @@ class Config extends CommonDBTM
      */
     public static function getLibraries($all = false)
     {
-       // use same name that in composer.json
+        // use same name that in composer.json
         $deps = [
             [ 'name'    => 'symfony/mailer',
                 'check'   => 'Symfony/Mailer'
@@ -1164,12 +1164,12 @@ class Config extends CommonDBTM
         /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
-       // Alternative language code: en-EN --> en_EN
+        // Alternative language code: en-EN --> en_EN
         $altLang = str_replace("-", "_", $lang);
 
-       // Search in order : ID or extjs dico or tinymce dico / native lang / english name
-       //                   / extjs dico / tinymce dico
-       // ID  or extjs dico or tinymce dico
+        // Search in order : ID or extjs dico or tinymce dico / native lang / english name
+        //                   / extjs dico / tinymce dico
+        // ID  or extjs dico or tinymce dico
         foreach ($CFG_GLPI["languages"] as $ID => $language) {
             if (
                 (strcasecmp($lang, $ID) == 0)
@@ -1181,14 +1181,14 @@ class Config extends CommonDBTM
             }
         }
 
-       // native lang
+        // native lang
         foreach ($CFG_GLPI["languages"] as $ID => $language) {
             if (strcasecmp($lang, $language[0]) == 0) {
                 return $ID;
             }
         }
 
-       // english lang name
+        // english lang name
         foreach ($CFG_GLPI["languages"] as $ID => $language) {
             if (strcasecmp($lang, $language[4]) == 0) {
                 return $ID;
@@ -1272,11 +1272,11 @@ class Config extends CommonDBTM
                 $user->computePreferences();
                 $config->showFormUserPrefs($user->fields);
             }
-        } else if ($item instanceof User) {
+        } elseif ($item instanceof User) {
             $config = new self();
             $item->computePreferences();
             $config->showFormUserPrefs($item->fields);
-        } else if ($item instanceof self) {
+        } elseif ($item instanceof self) {
             switch ($tabnum) {
                 case 1:
                     $item->showFormDisplay();
@@ -1454,15 +1454,15 @@ class Config extends CommonDBTM
                 'bcmath' => [
                     'required'  => true,
                 ],
-            //to sync/connect from LDAP
+                //to sync/connect from LDAP
                 'ldap'       => [
                     'required'  => false,
                 ],
-            //to enhance perfs
+                //to enhance perfs
                 'Zend OPcache' => [
                     'required'  => false
                 ],
-            //for CAS lib
+                //for CAS lib
                 'CAS'     => [
                     'required' => false,
                     'class'    => 'phpCAS'
@@ -1488,17 +1488,17 @@ class Config extends CommonDBTM
             'may'       => []
         ];
 
-       //check for PHP extensions
+        //check for PHP extensions
         foreach ($extensions_to_check as $ext => $params) {
             $success = true;
 
             if (isset($params['call'])) {
                 $success = call_user_func($params['call']);
-            } else if (isset($params['function'])) {
+            } elseif (isset($params['function'])) {
                 if (!function_exists($params['function'])) {
                     $success = false;
                 }
-            } else if (isset($params['class'])) {
+            } elseif (isset($params['class'])) {
                 if (!class_exists($params['class'])) {
                     $success = false;
                 }
@@ -1709,7 +1709,7 @@ class Config extends CommonDBTM
 
         $config = new self();
         foreach ($values as $name => $value) {
-           // Encrypt config values according to list declared to GLPIKey service
+            // Encrypt config values according to list declared to GLPIKey service
             if (!empty($value) && $glpikey->isConfigSecured($context, $name)) {
                 $value = $glpikey->encrypt($value);
             }

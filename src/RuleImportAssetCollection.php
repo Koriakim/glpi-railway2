@@ -39,7 +39,7 @@ use Glpi\DBAL\QueryFunction;
 /// Import rules collection class
 class RuleImportAssetCollection extends RuleCollection
 {
-   // From RuleCollection
+    // From RuleCollection
     public $stop_on_first_match = true;
     public static $rightname           = 'rule_import';
     public $menu_option         = 'linkcomputer';

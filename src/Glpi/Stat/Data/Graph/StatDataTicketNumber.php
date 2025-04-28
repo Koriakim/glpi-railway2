@@ -91,6 +91,6 @@ class StatDataTicketNumber extends StatDataAlwaysDisplay
 
     public function getTitle(): string
     {
-        return __('Average time') . " - " .  _n('Hour', 'Hours', Session::getPluralNumber());
+        return __('Average time') . " - " . _n('Hour', 'Hours', Session::getPluralNumber());
     }
 }

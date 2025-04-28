@@ -41,7 +41,7 @@ use Glpi\Event;
  **/
 class Reservation extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype          = 'ReservationItem';
     public static $items_id          = 'reservationitems_id';
 
@@ -84,9 +84,9 @@ class Reservation extends CommonDBChild
             && (($this->fields["users_id"] === Session::getLoginUserID())
               || Session::haveRight("reservation", PURGE))
         ) {
-           // Processing Email
+            // Processing Email
             if (!isset($this->input['_disablenotif']) && $CFG_GLPI["use_notifications"]) {
-               // Only notify for non-completed reservations
+                // Only notify for non-completed reservations
                 if (strtotime($this->fields['end']) > time()) {
                     NotificationEvent::raiseEvent("delete", $this);
                 }
@@ -272,7 +272,7 @@ class Reservation extends CommonDBChild
         parent::post_addItem();
     }
 
-   // SPECIFIC FUNCTIONS
+    // SPECIFIC FUNCTIONS
 
     /**
      * Returns an integer that is not already used as a group for the given reservation item.
@@ -412,7 +412,7 @@ class Reservation extends CommonDBChild
             ]);
             $rr = clone $this;
             foreach ($iterator as $data) {
-                 $rr->delete(['id' => $data['id']]);
+                $rr->delete(['id' => $data['id']]);
             }
         }
     }
@@ -480,18 +480,18 @@ class Reservation extends CommonDBChild
         ) ? "true" : "false";
         $now = date("Y-m-d H:i:s");
         $js = <<<JAVASCRIPT
-      $(function() {
-         var reservation = new Reservations();
-         reservation.init({
-            id: $ID,
-            is_all: $is_all,
-            rand: $rand,
-            can_reserve: $can_reserve,
-            now: '$now',
-         });
-         reservation.displayPlanning();
-      });
-JAVASCRIPT;
+                  $(function() {
+                     var reservation = new Reservations();
+                     reservation.init({
+                        id: $ID,
+                        is_all: $is_all,
+                        rand: $rand,
+                        can_reserve: $can_reserve,
+                        now: '$now',
+                     });
+                     reservation.displayPlanning();
+                  });
+            JAVASCRIPT;
         echo Html::scriptBlock($js);
     }
 
@@ -693,7 +693,7 @@ JAVASCRIPT;
             if (!$resa->can($ID, UPDATE)) {
                 return false;
             }
-           // Set item if not set
+            // Set item if not set
             if (
                 (!isset($options['item']) || (count($options['item']) === 0))
                 && ($itemid = $resa->getField('reservationitems_id'))
@@ -868,17 +868,17 @@ JAVASCRIPT;
                             $calc_end_time   = strtotime("next $dayofweek", $calc_end_time) + $end_hour;
 
                             while ($calc_begin_time < $repeat_end) {
-                                 $toadd[date('Y-m-d H:i:s', $calc_begin_time)] = date(
-                                     'Y-m-d H:i:s',
-                                     $calc_end_time
-                                 );
-                                   $i++;
-                                   $calc_begin_time = strtotime("+$i month", $begin_time);
-                                   $calc_end_time   = strtotime("+$i month", $end_time);
-                                   $calc_begin_time = strtotime("next $dayofweek", $calc_begin_time)
-                                          + $begin_hour;
-                                   $calc_end_time   = strtotime("next $dayofweek", $calc_end_time)
-                                          + $end_hour;
+                                $toadd[date('Y-m-d H:i:s', $calc_begin_time)] = date(
+                                    'Y-m-d H:i:s',
+                                    $calc_end_time
+                                );
+                                $i++;
+                                $calc_begin_time = strtotime("+$i month", $begin_time);
+                                $calc_end_time   = strtotime("+$i month", $end_time);
+                                $calc_begin_time = strtotime("next $dayofweek", $calc_begin_time)
+                                       + $begin_hour;
+                                $calc_end_time   = strtotime("next $dayofweek", $calc_end_time)
+                                       + $end_hour;
                             }
                             break;
                     }
@@ -921,20 +921,20 @@ JAVASCRIPT;
         $defaultDate = htmlescape($_REQUEST['defaultDate'] ?? date('Y-m-d'));
         $now = date("Y-m-d H:i:s");
         $js = <<<JAVASCRIPT
-            $(() => {
-                const reservation = new Reservations();
-                reservation.init({
-                    id: $ID,
-                    is_all: false,
-                    is_tab: true,
-                    rand: $rand,
-                    currentv: 'listFull',
-                    defaultDate: '$defaultDate',
-                    now: '$now',
-                });
-                reservation.displayPlanning();
-            });
-JAVASCRIPT;
+                        $(() => {
+                            const reservation = new Reservations();
+                            reservation.init({
+                                id: $ID,
+                                is_all: false,
+                                is_tab: true,
+                                rand: $rand,
+                                currentv: 'listFull',
+                                defaultDate: '$defaultDate',
+                                now: '$now',
+                            });
+                            reservation.displayPlanning();
+                        });
+            JAVASCRIPT;
         echo Html::scriptBlock($js);
         echo "</div>";
     }
@@ -1068,7 +1068,7 @@ JAVASCRIPT;
                 $entry['planning'] .= "<i class='" . Planning::getIcon() . "'></i>";
                 $entry['planning'] .= "<span class='sr-only'>" . __s('See planning') . "</span>";
                 $entry['planning'] .= "</a>";
-            } else if ($item instanceof CommonDBTM) {
+            } elseif ($item instanceof CommonDBTM) {
                 $href = htmlescape($item::getFormURLWithID($item->getID()) . "&forcetab=Reservation$1&tab_params[defaultDate]={$data["start_date"]}");
                 $entry['planning'] = "<a href='$href' title=\"" . __s('See planning') . "\">";
                 $entry['planning'] .= "<i class='" . Planning::getIcon() . "'></i>";
@@ -1144,7 +1144,7 @@ JAVASCRIPT;
 
         return array_filter(
             $CFG_GLPI['reservation_types'],
-            static fn ($type) => ReservationItem::countAvailableItems($type) > 0
+            static fn($type) => ReservationItem::countAvailableItems($type) > 0
         );
     }
 

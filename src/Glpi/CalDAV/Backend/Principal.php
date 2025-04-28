@@ -54,9 +54,9 @@ class Principal extends AbstractBackend
     use CalDAVPrincipalsTrait;
     use CalDAVUriUtilTrait;
 
-    const PRINCIPALS_ROOT = 'principals';
-    const PREFIX_GROUPS   = self::PRINCIPALS_ROOT . '/groups';
-    const PREFIX_USERS    = self::PRINCIPALS_ROOT . '/users';
+    public const PRINCIPALS_ROOT = 'principals';
+    public const PREFIX_GROUPS   = self::PRINCIPALS_ROOT . '/groups';
+    public const PREFIX_USERS    = self::PRINCIPALS_ROOT . '/users';
 
     public function getPrincipalsByPrefix($prefixPath)
     {

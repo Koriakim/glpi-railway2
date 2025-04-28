@@ -118,9 +118,9 @@ class NotificationTargetContract extends NotificationTarget
                 case 'periodicity':
                 case 'periodicitynotice':
                     if (isset($contract["alert_date"])) {
-                         $tmp['##contract.time##'] =  Html::convDate($contract["alert_date"]);
-                    } else if (isset($options['_debug'])) {
-                          $tmp['##contract.time##'] =  Html::convDate($_SESSION['glpi_currenttime']);
+                        $tmp['##contract.time##'] =  Html::convDate($contract["alert_date"]);
+                    } elseif (isset($options['_debug'])) {
+                        $tmp['##contract.time##'] =  Html::convDate($_SESSION['glpi_currenttime']);
                     }
                     break;
             }
@@ -132,10 +132,10 @@ class NotificationTargetContract extends NotificationTarget
             $tmp['##contract.items.number##'] = 0;
             $tmp['##contract.items##']        = '';
             if (isset($contract['items']) && count($contract['items'])) {
-                 $toadd = [];
+                $toadd = [];
                 foreach ($contract['items'] as $itemtype => $item) {
                     if ($type = getItemForItemtype($itemtype)) {
-                         $typename = $type->getTypeName();
+                        $typename = $type->getTypeName();
                         foreach ($item as $item_data) {
                             $toadd[] = sprintf(__('%1$s - %2$s'), $typename, $item_data['name']);
                             $tmp['##contract.items.number##']++;
@@ -208,7 +208,7 @@ class NotificationTargetContract extends NotificationTarget
             ]);
         }
 
-       //Tags without lang
+        //Tags without lang
         $tags = ['contract.url' => sprintf(
             __('%1$s: %2$s'),
             _n('Contract', 'Contracts', 1),
@@ -224,7 +224,7 @@ class NotificationTargetContract extends NotificationTarget
             ]);
         }
 
-       //Foreach global tags
+        //Foreach global tags
         $tags = ['contracts' => _n('Contract', 'Contracts', Session::getPluralNumber())];
 
         foreach ($tags as $tag => $label) {

@@ -279,28 +279,28 @@ class Planning extends CommonGLPI
     public static function dropdownState($name, $value = '', $display = true, $options = [])
     {
         $js = <<<JAVASCRIPT
-        templateTaskStatus = function(option) {
-            if (option === false) {
-                // Option is false when element does not match searched terms
-                return null;
-            }
-            var status = option.id;
-            var classes = "";
-            switch (parseInt(status)) {
-                case 0 :
-                    classes = 'planned ti ti-info-square-filled';
-                    break;
-                case 1 :
-                    classes = 'waiting ti ti-alert-square-filled';
-                    break;
-                case 2 :
-                    classes = 'new ti ti-square-check-filled';
-                    break;
+                    templateTaskStatus = function(option) {
+                        if (option === false) {
+                            // Option is false when element does not match searched terms
+                            return null;
+                        }
+                        var status = option.id;
+                        var classes = "";
+                        switch (parseInt(status)) {
+                            case 0 :
+                                classes = 'planned ti ti-info-square-filled';
+                                break;
+                            case 1 :
+                                classes = 'waiting ti ti-alert-square-filled';
+                                break;
+                            case 2 :
+                                classes = 'new ti ti-square-check-filled';
+                                break;
 
-            }
-            return $('<span><i class="itilstatus ' + classes + '"></i> ' + option.text + '</span>');
-        }
-JAVASCRIPT;
+                        }
+                        return $('<span><i class="itilstatus ' + classes + '"></i> ' + option.text + '</span>');
+                    }
+            JAVASCRIPT;
 
         $p = [
             'value'             => $value,
@@ -357,9 +357,9 @@ JAVASCRIPT;
                         !isset($except[$itemtype])
                         || (is_array($except[$itemtype]) && !in_array($val['id'], $except[$itemtype]))
                     ) {
-                         $planned  = true;
-                         $message .= '- ' . $item->getAlreadyPlannedInformation($val);
-                         $message .= '<br/>';
+                        $planned  = true;
+                        $message .= '- ' . $item->getAlreadyPlannedInformation($val);
+                        $message .= '<br/>';
                     }
                 }
             }
@@ -413,7 +413,7 @@ JAVASCRIPT;
             return;
         }
         // No limit by default
-        $params['limitto'] = $params['limitto'] ?? 0;
+        $params['limitto'] ??= 0;
         $begin = $params['begin'] ?? date('Y-m-d');
         $end  = max($params['end'] ?? date('Y-m-d'), $begin);
 
@@ -446,12 +446,12 @@ JAVASCRIPT;
                     $group_id = $task->fields['groups_id_tech'];
                     if ($group_id) {
                         foreach (Group_User::getGroupUsers($group_id) as $data2) {
-                             $users[$data2['id']] = formatUserName(
-                                 $data2["id"],
-                                 $data2["name"],
-                                 $data2["realname"],
-                                 $data2["firstname"]
-                             );
+                            $users[$data2['id']] = formatUserName(
+                                $data2["id"],
+                                $data2["name"],
+                                $data2["realname"],
+                                $data2["firstname"]
+                            );
                         }
                     }
                 }
@@ -649,7 +649,7 @@ JAVASCRIPT;
      */
     public static function initSessionForCurrentUser()
     {
-       // new user in planning, init session
+        // new user in planning, init session
         if (!isset($_SESSION['glpi_plannings']['filters'])) {
             $_SESSION['glpi_plannings']['filters']   = [];
             $_SESSION['glpi_plannings']['plannings'] = ['user_' . $_SESSION['glpiID'] => [
@@ -660,7 +660,7 @@ JAVASCRIPT;
             ];
         }
 
-       // complete missing filters
+        // complete missing filters
         $filters = &$_SESSION['glpi_plannings']['filters'];
         $index_color = 0;
         foreach (self::getPlanningTypes() as $planning_type) {
@@ -676,7 +676,7 @@ JAVASCRIPT;
             }
         }
 
-       // compute color index for plannings
+        // compute color index for plannings
         $_SESSION['glpi_plannings_color_index'] = 0;
         foreach ($_SESSION['glpi_plannings']['plannings'] as $planning) {
             if ($planning['type'] === 'group_users') {
@@ -745,7 +745,7 @@ JAVASCRIPT;
             if ($user_exists) {
                 $caldav_item_url = self::getCaldavBaseCalendarUrl($user);
             }
-        } else if ($filter_data['type'] === 'group_users') {
+        } elseif ($filter_data['type'] === 'group_users') {
             $group = new Group();
             $group_exists = $group->getFromDB($actor[1]);
             $title = $group->getName(); // Will return N/A if it doesn't exist anymore
@@ -764,7 +764,7 @@ JAVASCRIPT;
             if ($enabled > 0 && $disabled > 0) {
                 $expanded = ' expanded';
             }
-        } else if ($filter_data['type'] === 'group') {
+        } elseif ($filter_data['type'] === 'group') {
             $gID = $actor[1];
             $group = new Group();
             $group_exists = $group->getFromDB($actor[1]);
@@ -772,19 +772,19 @@ JAVASCRIPT;
             if ($group_exists) {
                 $caldav_item_url = self::getCaldavBaseCalendarUrl($group);
             }
-        } else if ($filter_data['type'] === 'external') {
+        } elseif ($filter_data['type'] === 'external') {
             $title = $filter_data['name'];
-        } else if ($filter_data['type'] === 'event_filter') {
+        } elseif ($filter_data['type'] === 'event_filter') {
             if ($filter_key === 'NotPlanned') {
                 $title = __('Not planned tasks');
-            } else if ($filter_key === 'OnlyBgEvents') {
+            } elseif ($filter_key === 'OnlyBgEvents') {
                 $title = __('Only background events');
-            } else if ($filter_key === 'StateDone') {
+            } elseif ($filter_key === 'StateDone') {
                 $title = __('Done elements');
             } else {
                 if (!getItemForItemtype($filter_key)) {
                     return;
-                } else if (!$filter_key::canView()) {
+                } elseif (!$filter_key::canView()) {
                     return;
                 }
                 $title = $filter_key::getTypeName();
@@ -805,7 +805,7 @@ JAVASCRIPT;
                 $url_port = 80;
                 if (isset($url['port'])) {
                     $url_port = $url['port'];
-                } else if (isset($url['scheme']) && ($url["scheme"] === 'https')) {
+                } elseif (isset($url['scheme']) && ($url["scheme"] === 'https')) {
                     $url_port = 443;
                 }
 
@@ -852,27 +852,27 @@ JAVASCRIPT;
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            <form action="{{ 'Planning'|itemtype_form_path }}">
-                {{ fields.dropdownArrayField('planning_type', 0, planning_types, label, {
-                    display_emptychoice: true,
-                    rand: rand
-                }) }}
-                <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                <script>
-                    $(() => {
-                        $('#dropdown_planning_type{{ rand }}').on('change', function() {
-                            const planning_type = $(this).val();
-                            $('#add_planning_subform{{ rand }}').load('{{ path('ajax/planning.php') }}', {
-                                action: 'add_' + planning_type + '_form'
-                            });
-                        });
-                    });
-                </script>
-                <br><br>
-                <div id="add_planning_subform{{ rand }}"></div>
-            </form>
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        <form action="{{ 'Planning'|itemtype_form_path }}">
+                            {{ fields.dropdownArrayField('planning_type', 0, planning_types, label, {
+                                display_emptychoice: true,
+                                rand: rand
+                            }) }}
+                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                            <script>
+                                $(() => {
+                                    $('#dropdown_planning_type{{ rand }}').on('change', function() {
+                                        const planning_type = $(this).val();
+                                        $('#add_planning_subform{{ rand }}').load('{{ path('ajax/planning.php') }}', {
+                                            action: 'add_' + planning_type + '_form'
+                                        });
+                                    });
+                                });
+                            </script>
+                            <br><br>
+                            <div id="add_planning_subform{{ rand }}"></div>
+                        </form>
+            TWIG, $twig_params);
     }
 
     /**
@@ -912,17 +912,17 @@ TWIG, $twig_params);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-            {{ fields.dropdownField('User', 'users_id', 0, 'User'|itemtype_name, {
-                entity: session('glpiactive_entity'),
-                entity_sons: session('glpiactive_entity_recursive'),
-                right: rights,
-                used: used
-            }) }}
-            <input type="hidden" name="action" value="send_add_user_form">
-            {{ inputs.submit('submit', add_msg, 1) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                        {{ fields.dropdownField('User', 'users_id', 0, 'User'|itemtype_name, {
+                            entity: session('glpiactive_entity'),
+                            entity_sons: session('glpiactive_entity_recursive'),
+                            right: rights,
+                            used: used
+                        }) }}
+                        <input type="hidden" name="action" value="send_add_user_form">
+                        {{ inputs.submit('submit', add_msg, 1) }}
+            TWIG, $twig_params);
     }
 
     /**
@@ -954,7 +954,7 @@ TWIG, $twig_params);
     public static function showAddGroupUsersForm()
     {
         $condition = [];
-       // filter groups
+        // filter groups
         if (!Session::haveRight('planning', self::READALL) && count($_SESSION['glpigroups'])) {
             $condition['id'] = $_SESSION['glpigroups'];
         }
@@ -965,16 +965,16 @@ TWIG, $twig_params);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-            {{ fields.dropdownField('Group', 'groups_id', 0, 'Group'|itemtype_name(1), {
-                entity: session('glpiactive_entity'),
-                entity_sons: session('glpiactive_entity_recursive'),
-                condition: condition
-            }) }}
-            <input type="hidden" name="action" value="send_add_group_users_form">
-            {{ inputs.submit('submit', add_msg, 1) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                        {{ fields.dropdownField('Group', 'groups_id', 0, 'Group'|itemtype_name(1), {
+                            entity: session('glpiactive_entity'),
+                            entity_sons: session('glpiactive_entity_recursive'),
+                            condition: condition
+                        }) }}
+                        <input type="hidden" name="action" value="send_add_group_users_form">
+                        {{ inputs.submit('submit', add_msg, 1) }}
+            TWIG, $twig_params);
     }
 
     /**
@@ -1076,16 +1076,16 @@ TWIG, $twig_params);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-            {{ fields.dropdownField('Group', 'groups_id', 0, 'Group'|itemtype_name(1), {
-                entity: session('glpiactive_entity'),
-                entity_sons: session('glpiactive_entity_recursive'),
-                condition: condition
-            }) }}
-            <input type="hidden" name="action" value="send_add_group_form">
-            {{ inputs.submit('submit', add_msg, 1) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                        {{ fields.dropdownField('Group', 'groups_id', 0, 'Group'|itemtype_name(1), {
+                            entity: session('glpiactive_entity'),
+                            entity_sons: session('glpiactive_entity_recursive'),
+                            condition: condition
+                        }) }}
+                        <input type="hidden" name="action" value="send_add_group_form">
+                        {{ inputs.submit('submit', add_msg, 1) }}
+            TWIG, $twig_params);
     }
 
     /**
@@ -1130,14 +1130,14 @@ TWIG, $twig_params);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-            {% set rand = random() %}
-            {{ fields.textField('name', '', name_label, {id: 'name' ~ rand}) }}
-            {{ fields.urlField('url', '', url_label, {id: 'url' ~ rand}) }}
-            <input type="hidden" name="action" value="send_add_external_form">
-            {{ inputs.submit('submit', add_msg, 1) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                        {% set rand = random() %}
+                        {{ fields.textField('name', '', name_label, {id: 'name' ~ rand}) }}
+                        {{ fields.urlField('url', '', url_label, {id: 'url' ~ rand}) }}
+                        <input type="hidden" name="action" value="send_add_external_form">
+                        {{ inputs.submit('submit', add_msg, 1) }}
+            TWIG, $twig_params);
     }
 
     /**
@@ -1197,28 +1197,28 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-            {% set rand = random() %}
-            {{ fields.dropdownArrayField('itemtype', '', select_options, label, {
-                display_emptychoice: true,
-                rand: rand
-            }) }}
-            <script>
-                $(() => {
-                    $('#dropdown_itemtype{{ rand }}').on('change', function() {
-                        const current_itemtype = $(this).val();
-                        $('#add_planning_subform{{ rand }}').load('{{ path('ajax/planning.php')|e('js') }}', {
-                            action: 'add_event_sub_form',
-                            itemtype: current_itemtype,
-                            begin: '{{ params.begin|e('js') }}',
-                            end: '{{ params.end|e('js') }}'
-                        });
-                    });
-                });
-            </script>
-            <div id="add_planning_subform{{ rand }}"></div>
-TWIG, $twig_params);
+                            {% import 'components/form/fields_macros.html.twig' as fields %}
+                            {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                            {% set rand = random() %}
+                            {{ fields.dropdownArrayField('itemtype', '', select_options, label, {
+                                display_emptychoice: true,
+                                rand: rand
+                            }) }}
+                            <script>
+                                $(() => {
+                                    $('#dropdown_itemtype{{ rand }}').on('change', function() {
+                                        const current_itemtype = $(this).val();
+                                        $('#add_planning_subform{{ rand }}').load('{{ path('ajax/planning.php')|e('js') }}', {
+                                            action: 'add_event_sub_form',
+                                            itemtype: current_itemtype,
+                                            begin: '{{ params.begin|e('js') }}',
+                                            end: '{{ params.end|e('js') }}'
+                                        });
+                                    });
+                                });
+                            </script>
+                            <div id="add_planning_subform{{ rand }}"></div>
+                TWIG, $twig_params);
         }
     }
 
@@ -1240,8 +1240,8 @@ TWIG, $twig_params);
         $rand   = mt_rand();
         $params = self::cleanDates($params);
 
-        $params['res_itemtype'] = $params['res_itemtype'] ?? '';
-        $params['res_items_id'] = $params['res_items_id'] ?? 0;
+        $params['res_itemtype'] ??= '';
+        $params['res_items_id'] ??= 0;
         if ($item = getItemForItemtype($params['itemtype'])) {
             $item->showForm('', [
                 'from_planning_ajax' => true,
@@ -1382,7 +1382,7 @@ TWIG, $twig_params);
             $input['name'] = sprintf(__('Copy of %s'), $item->fields['name']);
         }
 
-       // manage change of assigment for CommonITILTask
+        // manage change of assigment for CommonITILTask
         if (isset($event['actor']['itemtype'], $event['actor']['items_id']) && $item instanceof CommonITILTask) {
             $key = match ($event['actor']['itemtype']) {
                 "group" => "groups_id_tech",
@@ -1402,7 +1402,7 @@ TWIG, $twig_params);
 
         $new_items_id = $item->add($input);
 
-       // manage all assigments for ProjectTask
+        // manage all assigments for ProjectTask
         if (isset($event['actor']['itemtype'], $event['actor']['items_id']) && $item instanceof ProjectTask) {
             $team = new ProjectTaskTeam();
             $team->add([
@@ -1562,9 +1562,9 @@ TWIG, $twig_params);
         $time_begin = strtotime($param['start']) - $timezone->getOffset(new DateTime($param['start']));
         $time_end   = strtotime($param['end']) - $timezone->getOffset(new DateTime($param['end']));
 
-       // if the dates range is greater than a certain amount, and we're not on a list view
-       // we certainly are on this view (as our biggest view apart list is month one).
-       // we must avoid at all cost to calculate rrules events on a big range
+        // if the dates range is greater than a certain amount, and we're not on a list view
+        // we certainly are on this view (as our biggest view apart list is month one).
+        // we must avoid at all cost to calculate rrules events on a big range
         if (
             !$param['force_all_events']
             && $param['view_name'] !== "listFull"
@@ -1605,7 +1605,7 @@ TWIG, $twig_params);
             }
         }
 
-       //handle not planned events
+        //handle not planned events
         $raw_events = array_merge($raw_events, $not_planned);
 
         // get external calendars events (ical)
@@ -1644,8 +1644,8 @@ TWIG, $twig_params);
                 strpos($event['begin'], "00:00:00")
                 && (strtotime($event['end']) - strtotime($event['begin'])) % DAY_TIMESTAMP === 0
             ) {
-                 $begin = date('Y-m-d', strtotime($event['begin']));
-                 $end = date('Y-m-d', strtotime($event['end']));
+                $begin = date('Y-m-d', strtotime($event['begin']));
+                $end = date('Y-m-d', strtotime($event['end']));
             }
 
             // get duration in milliseconds
@@ -1848,7 +1848,7 @@ TWIG, $twig_params);
             $actor = "gu_" . $actor;
         }
 
-       // fill type of planning
+        // fill type of planning
         $raw_events = array_map(static function ($arr) use ($actor) {
             return $arr + ['resourceId' => $actor];
         }, $raw_events);
@@ -1998,89 +1998,89 @@ TWIG, $twig_params);
                 }
 
                 if (!$abort) {
-                     $update = [
-                         'id'   => $params['items_id'],
-                         'plan' => [
-                             'begin' => $params['start'],
-                             'end'   => $params['end']
-                         ]
-                     ];
+                    $update = [
+                        'id'   => $params['items_id'],
+                        'plan' => [
+                            'begin' => $params['start'],
+                            'end'   => $params['end']
+                        ]
+                    ];
 
-                     if (isset($item->fields['users_id_tech'])) {
-                         $update['users_id_tech'] = $item->fields['users_id_tech'];
-                     }
+                    if (isset($item->fields['users_id_tech'])) {
+                        $update['users_id_tech'] = $item->fields['users_id_tech'];
+                    }
 
-                     // manage moving event between resource (actors)
-                     if (!empty($params['new_actor_itemtype']) && !empty($params['new_actor_items_id'])) {
-                         $new_actor_itemtype = strtolower($params['new_actor_itemtype']);
+                    // manage moving event between resource (actors)
+                    if (!empty($params['new_actor_itemtype']) && !empty($params['new_actor_items_id'])) {
+                        $new_actor_itemtype = strtolower($params['new_actor_itemtype']);
 
-                         // reminders don't have group assignement for planning
-                         if (
-                             !($new_actor_itemtype === 'group'
-                             && $item instanceof Reminder)
-                         ) {
-                             switch ($new_actor_itemtype) {
-                                 case "group":
-                                        $update['groups_id_tech'] = $params['new_actor_items_id'];
-                                     if (strtolower($params['old_actor_itemtype']) === "user") {
-                                         $update['users_id_tech']  = 0;
-                                     }
-                                     break;
+                        // reminders don't have group assignement for planning
+                        if (
+                            !($new_actor_itemtype === 'group'
+                            && $item instanceof Reminder)
+                        ) {
+                            switch ($new_actor_itemtype) {
+                                case "group":
+                                    $update['groups_id_tech'] = $params['new_actor_items_id'];
+                                    if (strtolower($params['old_actor_itemtype']) === "user") {
+                                        $update['users_id_tech']  = 0;
+                                    }
+                                    break;
 
-                                 case "user":
-                                     if (isset($item->fields['users_id_tech'])) {
-                                         $update['users_id_tech']  = $params['new_actor_items_id'];
-                                         if (strtolower($params['old_actor_itemtype']) === "group") {
-                                             $update['groups_id_tech']  = 0;
-                                         }
-                                     } else {
-                                         $update['users_id'] = $params['new_actor_items_id'];
-                                     }
-                                     break;
-                             }
-                         }
+                                case "user":
+                                    if (isset($item->fields['users_id_tech'])) {
+                                        $update['users_id_tech']  = $params['new_actor_items_id'];
+                                        if (strtolower($params['old_actor_itemtype']) === "group") {
+                                            $update['groups_id_tech']  = 0;
+                                        }
+                                    } else {
+                                        $update['users_id'] = $params['new_actor_items_id'];
+                                    }
+                                    break;
+                            }
+                        }
 
                         // special case for project tasks
                         // which have a link tables for their relation with groups/users
-                         if ($item instanceof ProjectTask) {
-                             // get actor for finding relation with item
-                             $actor = new $params['old_actor_itemtype']();
-                             $actor->getFromDB((int) $params['old_actor_items_id']);
+                        if ($item instanceof ProjectTask) {
+                            // get actor for finding relation with item
+                            $actor = new $params['old_actor_itemtype']();
+                            $actor->getFromDB((int) $params['old_actor_items_id']);
 
-                             // get current relation
-                             $team_old = new ProjectTaskTeam();
-                             $team_old->getFromDBForItems($item, $actor);
+                            // get current relation
+                            $team_old = new ProjectTaskTeam();
+                            $team_old->getFromDBForItems($item, $actor);
 
-                             // if new relation already exists, delete old relation
-                             $actor_new = new $params['new_actor_itemtype']();
-                             $actor_new->getFromDB((int) $params['new_actor_items_id']);
-                             $team_new  = new ProjectTaskTeam();
-                             if ($team_new->getFromDBForItems($item, $actor_new)) {
-                                 $team_old->delete([
-                                     'id' => $team_old->fields['id']
-                                 ]);
-                             } else {
-                                 // else update relation
-                                 $team_old->update([
-                                     'id'       => $team_old->fields['id'],
-                                     'itemtype' => $params['new_actor_itemtype'],
-                                     'items_id' => $params['new_actor_items_id'],
-                                 ]);
-                             }
-                         }
-                     }
+                            // if new relation already exists, delete old relation
+                            $actor_new = new $params['new_actor_itemtype']();
+                            $actor_new->getFromDB((int) $params['new_actor_items_id']);
+                            $team_new  = new ProjectTaskTeam();
+                            if ($team_new->getFromDBForItems($item, $actor_new)) {
+                                $team_old->delete([
+                                    'id' => $team_old->fields['id']
+                                ]);
+                            } else {
+                                // else update relation
+                                $team_old->update([
+                                    'id'       => $team_old->fields['id'],
+                                    'itemtype' => $params['new_actor_itemtype'],
+                                    'items_id' => $params['new_actor_items_id'],
+                                ]);
+                            }
+                        }
+                    }
 
-                     if (is_subclass_of($item, "CommonITILTask")) {
-                         $parentitemtype = $item::getItilObjectItemType();
-                         if (!$update["_job"] = getItemForItemtype($parentitemtype)) {
-                             return;
-                         }
+                    if (is_subclass_of($item, "CommonITILTask")) {
+                        $parentitemtype = $item::getItilObjectItemType();
+                        if (!$update["_job"] = getItemForItemtype($parentitemtype)) {
+                            return;
+                        }
 
-                         $fkfield = $update["_job"]::getForeignKeyField();
-                         $update[$fkfield] = $item->fields[$fkfield];
-                     }
+                        $fkfield = $update["_job"]::getForeignKeyField();
+                        $update[$fkfield] = $item->fields[$fkfield];
+                    }
 
-                     return $item->update($update);
+                    return $item->update($update);
                 }
             }
         }
@@ -2129,12 +2129,12 @@ TWIG, $twig_params);
     {
         $html = "";
 
-       // bg event shouldn't have content displayed
+        // bg event shouldn't have content displayed
         if (!$complete && $_SESSION['glpi_plannings']['filters']['OnlyBgEvents']['display']) {
             return "";
         }
 
-       // Plugins case
+        // Plugins case
         if (
             !empty($val['itemtype'])
             && $val['itemtype'] !== 'NotPlanned'
@@ -2165,26 +2165,26 @@ TWIG, $twig_params);
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="table-responsive card-table">
-                <table class="table">
-                    <thead>
-                        <tr class="noHover">
-                            <th><a href="{{ path('front/planning.php') }}">{{ msg }}</a></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="noHover">
-                            <td class="planning_on_central">{% do call('Planning::showPlanning', [false]) %}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-TWIG, ['msg' => __('Your planning')]);
+                        <div class="table-responsive card-table">
+                            <table class="table">
+                                <thead>
+                                    <tr class="noHover">
+                                        <th><a href="{{ path('front/planning.php') }}">{{ msg }}</a></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="noHover">
+                                        <td class="planning_on_central">{% do call('Planning::showPlanning', [false]) %}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+            TWIG, ['msg' => __('Your planning')]);
     }
 
-   //*******************************************************************************************************************************
-   // *********************************** Implementation ICAL ***************************************************************
-   //*******************************************************************************************************************************
+    //*******************************************************************************************************************************
+    // *********************************** Implementation ICAL ***************************************************************
+    //*******************************************************************************************************************************
 
     /**
      *  Generate ical file content
@@ -2213,11 +2213,11 @@ TWIG, ['msg' => __('Your planning')]);
             $unique_id = "GLPI-Planning-UnknownVersion";
         }
 
-       // create vcalendar
+        // create vcalendar
         $vcalendar = new VCalendar();
 
-       // $xprops = array( "X-LIC-LOCATION" => $tz );
-       // iCalUtilityFunctions::createTimezone( $v, $tz, $xprops );
+        // $xprops = array( "X-LIC-LOCATION" => $tz );
+        // iCalUtilityFunctions::createTimezone( $v, $tz, $xprops );
 
         $interv = [];
         $begin  = time() - MONTH_TIMESTAMP * 12;
@@ -2266,7 +2266,7 @@ TWIG, ['msg' => __('Your planning')]);
                 $summary = '';
                 if (isset($val["tickets_id"])) {
                     $summary = sprintf(__('Ticket #%1$s %2$s'), $val["tickets_id"], $val["name"]);
-                } else if (isset($val["name"])) {
+                } elseif (isset($val["name"])) {
                     $summary = $val["name"];
                 }
                 $vevent['SUMMARY'] = $summary;
@@ -2274,9 +2274,9 @@ TWIG, ['msg' => __('Your planning')]);
                 $description = '';
                 if (isset($val["content"])) {
                     $description = $val["content"];
-                } else if (isset($val["text"])) {
+                } elseif (isset($val["text"])) {
                     $description = $val["text"];
-                } else if (isset($val["name"])) {
+                } elseif (isset($val["name"])) {
                     $description = $val["name"];
                 }
                 $vevent['DESCRIPTION'] = RichText::getTextFromHtml($description);
@@ -2292,7 +2292,7 @@ TWIG, ['msg' => __('Your planning')]);
         $filename = date('YmdHis') . '.ics';
 
         @header("Content-Disposition: attachment; filename=\"$filename\"");
-       //@header("Content-Length: ".Toolbox::strlen($output));
+        //@header("Content-Length: ".Toolbox::strlen($output));
         @header("Connection: close");
         @header("content-type: text/calendar; charset=utf-8");
 

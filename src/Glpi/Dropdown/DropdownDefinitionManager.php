@@ -35,7 +35,6 @@
 namespace Glpi\Dropdown;
 
 use Glpi\CustomObject\AbstractDefinitionManager;
-use ReflectionClass;
 
 /**
  * @extends AbstractDefinitionManager<DropdownDefinition>
@@ -127,15 +126,15 @@ final class DropdownDefinitionManager extends AbstractDefinitionManager
         // Static properties must be defined in each concrete class otherwise they will be shared
         // accross all concrete classes, and so would be overriden by the values from the last loaded class.
         eval(<<<PHP
-namespace Glpi\\CustomDropdown;
+            namespace Glpi\\CustomDropdown;
 
-use Glpi\\Dropdown\\Dropdown;
+            use Glpi\\Dropdown\\Dropdown;
 
-final class {$definition->getDropdownClassName(false)} extends Dropdown {
-    protected static string \$definition_system_name = '{$definition->fields['system_name']}';
-    public static \$rightname = '{$rightname}';
-}
-PHP
+            final class {$definition->getDropdownClassName(false)} extends Dropdown {
+                protected static string \$definition_system_name = '{$definition->fields['system_name']}';
+                public static \$rightname = '{$rightname}';
+            }
+            PHP
         );
     }
 }

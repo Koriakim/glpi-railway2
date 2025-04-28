@@ -170,9 +170,9 @@ class KnowbaseItem_Revision extends CommonDBTM
                 $is_checked = false;
             }
             $selection_controls = <<<HTML
-                <input type='radio' name='oldid' value='{$revision['id']}' $oldid_checked/>
-                <input type='radio' name='diff' value='{$revision['id']}'/>
-HTML;
+                                <input type='radio' name='oldid' value='{$revision['id']}' $oldid_checked/>
+                                <input type='radio' name='diff' value='{$revision['id']}'/>
+                HTML;
 
             if ($item::class === KnowbaseItem::class) {
                 $form = KnowbaseItem::getFormURLWithID($revision['knowbaseitems_id']);
@@ -180,13 +180,13 @@ HTML;
                 $form = KnowbaseItemTranslation::getFormURLWithID($revision['knowbaseitems_id']);
             }
             $actions = <<<HTML
-                <a href='#' data-rev='{$revision['revision']}' data-revid="{$revision['id']}" class='show_rev'>
-                    {$show_msg}
-                </a>
-                - <a href='{$form}&to_rev={$revision['id']}' class='restore_rev'>
-                    {$restore_msg}
-                </a>
-HTML;
+                                <a href='#' data-rev='{$revision['revision']}' data-revid="{$revision['id']}" class='show_rev'>
+                                    {$show_msg}
+                                </a>
+                                - <a href='{$form}&to_rev={$revision['id']}' class='restore_rev'>
+                                    {$restore_msg}
+                                </a>
+                HTML;
 
             $entries[] = [
                 'number' => $revision['revision'],

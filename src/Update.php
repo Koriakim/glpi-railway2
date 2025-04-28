@@ -101,7 +101,7 @@ class Update
                     'language'  => 'en_GB',
                 ];
             }
-        } else if (!$DB->tableExists("glpi_configs")) {
+        } elseif (!$DB->tableExists("glpi_configs")) {
             // >= 0.31 and < 0.78
             // Get current version
             $result = $DB->request([
@@ -112,7 +112,7 @@ class Update
             $currents['version']    = trim($result['version']);
             $currents['dbversion']  = $currents['version'];
             $currents['language']   = trim($result['language']);
-        } else if ($DB->fieldExists('glpi_configs', 'version')) {
+        } elseif ($DB->fieldExists('glpi_configs', 'version')) {
             // < 0.85
             // Get current version and language
             $result = $DB->request([
@@ -379,7 +379,7 @@ class Update
             );
         }
 
-       // Reset telemetry if its state is running, assuming it remained stuck due to telemetry service issue (see #7492).
+        // Reset telemetry if its state is running, assuming it remained stuck due to telemetry service issue (see #7492).
         $crontask_telemetry = new CronTask();
         $crontask_telemetry->getFromDBbyName("Telemetry", "telemetry");
         if ($crontask_telemetry->fields['state'] === CronTask::STATE_RUNNING) {
@@ -484,9 +484,9 @@ class Update
 
             $force_migration = false;
             if ($current_version === '9.2.2' && $versions_matches['target_version'] === '9.2.2') {
-               //9.2.2 upgrade script was not run from the release, see https://github.com/glpi-project/glpi/issues/3659
+                //9.2.2 upgrade script was not run from the release, see https://github.com/glpi-project/glpi/issues/3659
                 $force_migration = true;
-            } else if ($force_latest && version_compare($versions_matches['target_version'], $current_version, '=')) {
+            } elseif ($force_latest && version_compare($versions_matches['target_version'], $current_version, '=')) {
                 $force_migration = true;
             }
             if (version_compare($versions_matches['target_version'], $current_version, '>') || $force_migration) {

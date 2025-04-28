@@ -327,7 +327,7 @@ abstract class CommonITILCost extends CommonDBChild
             return false;
         }
 
-       // Set actiontime to
+        // Set actiontime to
         $this->fields['actiontime']
                     = max(
                         0,
@@ -415,7 +415,7 @@ abstract class CommonITILCost extends CommonDBChild
         if ($ID > 0) {
             $this->check($ID, READ);
         } else {
-           // Create item
+            // Create item
             $options[static::$items_id] = $options['parent']->fields["id"];
             $this->check(-1, CREATE, $options);
             $this->initBasedOnPrevious();
@@ -516,31 +516,31 @@ abstract class CommonITILCost extends CommonDBChild
                 'add_new_label' => __('Add a new cost'),
             ];
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div id='viewcost{{ id }}_{{ rand }}'></div>
-                <script>
-                    function viewAddCost{{ id }}_{{ rand }} (btn) {
-                        // Hide the triggering button
-                        $(btn).hide();
-                        {% do call('Ajax::updateItemJsCode', [
-                            'viewcost' ~ id ~ '_' ~ rand,
-                            config('root_doc') ~ '/ajax/viewsubitem.php',
-                            {
-                                'type': type,
-                                'parenttype': parenttype,
-                                (items_id): id,
-                                'id': -1
-                            }
-                        ]) %}
-                    }
-                </script>
-                {% if cancreate %}
-                    <div class="text-center mt-1 mb-3">
-                        <button type="button" class="btn btn-primary" onclick="viewAddCost{{ id }}_{{ rand }}(this);">
-                            {{ add_new_label }}
-                        </button>
-                    </div>
-                {% endif %}
-TWIG, $twig_params);
+                                <div id='viewcost{{ id }}_{{ rand }}'></div>
+                                <script>
+                                    function viewAddCost{{ id }}_{{ rand }} (btn) {
+                                        // Hide the triggering button
+                                        $(btn).hide();
+                                        {% do call('Ajax::updateItemJsCode', [
+                                            'viewcost' ~ id ~ '_' ~ rand,
+                                            config('root_doc') ~ '/ajax/viewsubitem.php',
+                                            {
+                                                'type': type,
+                                                'parenttype': parenttype,
+                                                (items_id): id,
+                                                'id': -1
+                                            }
+                                        ]) %}
+                                    }
+                                </script>
+                                {% if cancreate %}
+                                    <div class="text-center mt-1 mb-3">
+                                        <button type="button" class="btn btn-primary" onclick="viewAddCost{{ id }}_{{ rand }}(this);">
+                                            {{ add_new_label }}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                TWIG, $twig_params);
         }
 
         $total          = 0;
@@ -661,24 +661,24 @@ TWIG, $twig_params);
             $parent_class = static::$itemtype;
             $items_id_field = static::$items_id;
             echo Html::scriptBlock(<<<JS
-                $(() => {
-                    $('#datatable_costs{$ID}{$rand}').on('click', 'tbody tr', (e) => {
-                        //ignore click in first column (the massive action checkbox)
-                        if ($(e.target).closest('td').is('td:first-child')) {
-                            return;
-                        }
-                        const cost_id = $(e.currentTarget).data('id');
-                        if (cost_id) {
-                            $('#viewcost{$ID}_{$rand}').load('/ajax/viewsubitem.php',{
-                                type: "{$cost_class}",
-                                parenttype: "{$parent_class}",
-                                {$items_id_field}: $ID,
-                                id: cost_id
-                            });
-                        }
-                    });
-                });
-JS);
+                                $(() => {
+                                    $('#datatable_costs{$ID}{$rand}').on('click', 'tbody tr', (e) => {
+                                        //ignore click in first column (the massive action checkbox)
+                                        if ($(e.target).closest('td').is('td:first-child')) {
+                                            return;
+                                        }
+                                        const cost_id = $(e.currentTarget).data('id');
+                                        if (cost_id) {
+                                            $('#viewcost{$ID}_{$rand}').load('/ajax/viewsubitem.php',{
+                                                type: "{$cost_class}",
+                                                parenttype: "{$parent_class}",
+                                                {$items_id_field}: $ID,
+                                                id: cost_id
+                                            });
+                                        }
+                                    });
+                                });
+                JS);
         }
         return $total;
     }

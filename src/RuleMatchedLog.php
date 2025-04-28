@@ -117,7 +117,7 @@ class RuleMatchedLog extends CommonDBTM
             }
             if (!$continue) {
                 return [];
-            } else if (empty($array_ret)) {
+            } elseif (empty($array_ret)) {
                 $cnt = self::countForItem($item);
                 $array_ret[1] = self::createTabEntry(__('Import information'), $cnt, $item::class);
             }

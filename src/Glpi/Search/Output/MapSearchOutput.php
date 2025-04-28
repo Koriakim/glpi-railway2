@@ -50,7 +50,7 @@ final class MapSearchOutput extends HTMLSearchOutput
         if ($itemtype === 'Location') {
             $latitude = 21;
             $longitude = 20;
-        } else if ($itemtype === 'Entity') {
+        } elseif ($itemtype === 'Entity') {
             $latitude = 67;
             $longitude = 68;
         } else {

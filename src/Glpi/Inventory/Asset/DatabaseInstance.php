@@ -152,14 +152,14 @@ class DatabaseInstance extends InventoryAsset
                     foreach ($existing_databases as $dbkey => $existing_database) {
                         foreach ($databases as $key => $database) {
                             if ($existing_database['name'] == $database->name) {
-                                 $dbinput = (array)$database;
-                                 $dbinput += ['id' => $dbkey, 'is_deleted' => 0, 'is_dynamic' => 1];
-                                 $odatabase->update($dbinput);
-                                 unset(
-                                     $existing_databases[$dbkey],
-                                     $databases[$key]
-                                 );
-                                 break;
+                                $dbinput = (array)$database;
+                                $dbinput += ['id' => $dbkey, 'is_deleted' => 0, 'is_dynamic' => 1];
+                                $odatabase->update($dbinput);
+                                unset(
+                                    $existing_databases[$dbkey],
+                                    $databases[$key]
+                                );
+                                break;
                             }
                         }
                     }
@@ -214,7 +214,7 @@ class DatabaseInstance extends InventoryAsset
         }
 
         if (count($db_instances) != 0) {
-           //remove no longer existing databases
+            //remove no longer existing databases
             foreach ($db_instances as $idtmp => $data) {
                 if ($data['is_dynamic'] == 1) {
                     $instance->delete(['id' => $idtmp]);

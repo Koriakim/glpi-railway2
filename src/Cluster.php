@@ -44,7 +44,7 @@ class Cluster extends CommonDBTM
     use Glpi\Features\State;
     use AssignableItem;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'cluster';
 

@@ -55,7 +55,7 @@ final class EngineInput
         // Get questions that can be used as a criteria
         $questions = array_filter(
             $form->getQuestions(),
-            fn (Question $q): bool => $q->getQuestionType() instanceof UsedAsCriteriaInterface,
+            fn(Question $q): bool => $q->getQuestionType() instanceof UsedAsCriteriaInterface,
         );
 
         foreach ($questions as $question) {

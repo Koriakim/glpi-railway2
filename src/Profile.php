@@ -51,9 +51,9 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
 {
     use \Glpi\Features\Clonable;
 
-   // Specific ones
+    // Specific ones
 
-   /// Helpdesk fields of helpdesk profiles
+    /// Helpdesk fields of helpdesk profiles
     public static $helpdesk_rights = [
         'create_ticket_on_login',
         'changetemplates_id',
@@ -78,7 +78,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
     ];
 
 
-   /// Common fields used for all profiles type
+    /// Common fields used for all profiles type
     public static $common_fields  = ['id', 'interface', 'is_default', 'name'];
 
     public $dohistory             = true;
@@ -251,7 +251,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             );
         }
 
-       // To avoid log out and login when rights change (very useful in debug mode)
+        // To avoid log out and login when rights change (very useful in debug mode)
         if (
             isset($_SESSION['glpiactiveprofile']['id'])
             && $_SESSION['glpiactiveprofile']['id'] === $this->input['id']
@@ -264,7 +264,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
                 $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] = importArrayFromDB($this->input['managed_domainrecordtypes']);
             }
 
-           ///TODO other needed fields
+            ///TODO other needed fields
         }
     }
 
@@ -327,7 +327,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
 
         if (isset($input["managed_domainrecordtypes"])) {
             if (is_array($input["managed_domainrecordtypes"]) && in_array(-1, $input['managed_domainrecordtypes'])) {
-               //when all selected, keep only all
+                //when all selected, keep only all
                 $input['managed_domainrecordtypes'] = [-1];
             }
             $input["managed_domainrecordtypes"] = exportArrayToDB(
@@ -394,7 +394,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             $input["change_status"] = exportArrayToDB($cycle);
         }
 
-       // keep only unnecessary rights when switching from standard to self-service interface
+        // keep only unnecessary rights when switching from standard to self-service interface
         if (!isset($input["_ticket"]) && isset($input['interface']) && $input['interface'] == "helpdesk") {
             $ticket = new Ticket();
             $ss_rights = $ticket->getRights("helpdesk");
@@ -467,7 +467,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
                         $newvalue += $value;
                     }
                 }
-               // Update rights only if changed
+                // Update rights only if changed
                 if (!isset($this->fields[$right]) || ($this->fields[$right] !== $newvalue)) {
                     $this->profileRight[$right] = $newvalue;
                 }
@@ -516,7 +516,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
 
         if (isset($input["managed_domainrecordtypes"])) {
             if (is_array($input["managed_domainrecordtypes"]) && in_array(-1, $input['managed_domainrecordtypes'])) {
-               //when all selected, keep only all
+                //when all selected, keep only all
                 $input['managed_domainrecordtypes'] = [-1];
             }
             $input["managed_domainrecordtypes"] = exportArrayToDB(
@@ -532,7 +532,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             }
         }
 
-       // Set default values, only needed for helpdesk
+        // Set default values, only needed for helpdesk
         $interface = $input['interface'] ?? "";
         if ($interface === "helpdesk" && !isset($input["_cycle_ticket"])) {
             $tab   = array_keys(Ticket::getAllStatusArray());
@@ -616,12 +616,12 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             $this->fields["managed_domainrecordtypes"] = [];
         }
 
-       // Decode status array
+        // Decode status array
         $fields_to_decode = ['ticket_status', 'problem_status', 'change_status'];
         foreach ($fields_to_decode as $val) {
             if (isset($this->fields[$val]) && !is_array($this->fields[$val])) {
                 $this->fields[$val] = importArrayFromDB($this->fields[$val]);
-               // Need to be an array not a null value
+                // Need to be an array not a null value
                 if (is_null($this->fields[$val])) {
                     $this->fields[$val] = [];
                 }
@@ -710,7 +710,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             return true;
         }
         if (count($IDs) === 0) {
-           // Check all profiles (means more right than all possible profiles)
+            // Check all profiles (means more right than all possible profiles)
             return (countElementsInTable('glpi_profiles')
                      === countElementsInTable(
                          'glpi_profiles',
@@ -778,7 +778,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             $rowspan++;
             $this->check($ID, READ);
         } else {
-           // Create item
+            // Create item
             $this->check(-1, CREATE);
             $onfocus = "onfocus=\"if (this.value==" . htmlescape(json_encode($this->fields["name"])) . ") this.value='';\"";
             $new     = true;
@@ -1254,14 +1254,14 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
         echo "<tr>";
         echo "<td>" . __s('Default ticket template') . "</td>";
         echo "<td>";
-       // Only root entity ones and recursive
+        // Only root entity ones and recursive
         $options = ['value'     => $this->fields["tickettemplates_id"],
             'entity'    => 0
         ];
         if (Session::isMultiEntitiesMode()) {
             $options['condition'] = ['is_recursive' => 1];
         }
-       // Only add profile if on root entity
+        // Only add profile if on root entity
         if (!isset($_SESSION['glpiactiveentities'][0])) {
             $options['addicon'] = false;
         }
@@ -1272,14 +1272,14 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
         echo "<tr>";
         echo "<td>" . __s('Default change template') . "</td>";
         echo "<td>";
-       // Only root entity ones and recursive
+        // Only root entity ones and recursive
         $options = ['value'     => $this->fields["changetemplates_id"],
             'entity'    => 0
         ];
         if (Session::isMultiEntitiesMode()) {
             $options['condition'] = ['is_recursive' => 1];
         }
-       // Only add profile if on root entity
+        // Only add profile if on root entity
         if (!isset($_SESSION['glpiactiveentities'][0])) {
             $options['addicon'] = false;
         }
@@ -1290,14 +1290,14 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
         echo "<tr>";
         echo "<td>" . __s('Default problem template') . "</td>";
         echo "<td>";
-       // Only root entity ones and recursive
+        // Only root entity ones and recursive
         $options = ['value'     => $this->fields["problemtemplates_id"],
             'entity'    => 0
         ];
         if (Session::isMultiEntitiesMode()) {
             $options['condition'] = ['is_recursive' => 1];
         }
-       // Only add profile if on root entity
+        // Only add profile if on root entity
         if (!isset($_SESSION['glpiactiveentities'][0])) {
             $options['addicon'] = false;
         }
@@ -1558,7 +1558,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
 
         echo "<div class='mt-n2 mx-n2 mb-4'>";
         echo "<table class='table table-hover card-table'>";
-       // Assistance / Tracking-helpdesk
+        // Assistance / Tracking-helpdesk
         echo "<thead>";
         echo "<tr><th colspan='2'><h4>" . __s('ITIL Templates') . "<h4></th></tr>";
         echo "</thead>";
@@ -1568,7 +1568,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             $object = new $itiltype();
             echo "<tr>";
             echo "<td>" . sprintf(__s('Default %1$s template'), $object->getTypeName()) . "</td><td>";
-           // Only root entity ones and recursive
+            // Only root entity ones and recursive
             $options = [
                 'value'     => $this->fields[strtolower($itiltype) . "templates_id"],
                 'condition' => ['entities_id' => 0]
@@ -1576,7 +1576,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             if (Session::isMultiEntitiesMode()) {
                 $options['condition']['is_recursive'] = 1;
             }
-           // Only add profile if on root entity
+            // Only add profile if on root entity
             if (!isset($_SESSION['glpiactiveentities'][0])) {
                 $options['addicon'] = false;
             }
@@ -2197,7 +2197,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             'datatype'           => 'text'
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
 
         $tab[] = [
@@ -4195,7 +4195,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
             }
         }
 
-       // To be completed before display to avoid non available rights in DB
+        // To be completed before display to avoid non available rights in DB
         $availablerights = ProfileRight::getAllPossibleRights();
 
         $column_labels = [];
@@ -4213,7 +4213,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
                 && (!empty($info['label']))
                 && (!empty($info['field']))
             ) {
-               // Add right if it does not exists : security for update
+                // Add right if it does not exists : security for update
                 if (!isset($availablerights[$info['field']])) {
                     ProfileRight::addProfileRights([$info['field']]);
                 }
@@ -4223,7 +4223,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
                 ];
                 if (!empty($info['row_class'])) {
                     $row['class'] = $info['row_class'];
-                } else if (isset($info['scope'])) {
+                } elseif (isset($info['scope'])) {
                     $default_scope_class = !empty($param['default_class']) ? $param['default_class'] : 'tab_bg_2';
                     $row['class'] = $info['scope'] === 'global' ? 'tab_bg_4' : $default_scope_class;
                 } else {
@@ -4286,7 +4286,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
 
             // For extra right sort by type
             if ($a[1] > $b[1]) {
-                 return 1;
+                return 1;
             }
             if ($a[1] < $b[1]) {
                 return -1;
@@ -4335,7 +4335,7 @@ class Profile extends CommonDBTM implements LinkableToTilesInterface
         $param['rand']          = mt_rand();
         $param['zero_on_empty'] = true;
         $param['display']       = true;
-        $param['check_method']  = static fn ($element, $field) => (($field & $element) === $element);
+        $param['check_method']  = static fn($element, $field) => (($field & $element) === $element);
 
         if (is_array($options) && count($options)) {
             foreach ($options as $key => $val) {

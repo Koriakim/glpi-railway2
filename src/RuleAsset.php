@@ -35,13 +35,13 @@
 
 class RuleAsset extends Rule
 {
-   // From Rule
+    // From Rule
     public static $rightname = 'rule_asset';
 
-    const ONADD    = 1;
-    const ONUPDATE = 2;
+    public const ONADD    = 1;
+    public const ONUPDATE = 2;
 
-    const PARENT  = 1024;
+    public const PARENT  = 1024;
 
     public function getTitle()
     {
@@ -273,8 +273,8 @@ class RuleAsset extends Rule
                             isset($actions[$action->fields["field"]]["appendtoarray"])
                             && isset($actions[$action->fields["field"]]["appendtoarrayfield"])
                         ) {
-                             $value = $actions[$action->fields["field"]]["appendtoarray"];
-                             $value[$actions[$action->fields["field"]]["appendtoarrayfield"]]
+                            $value = $actions[$action->fields["field"]]["appendtoarray"];
+                            $value[$actions[$action->fields["field"]]["appendtoarrayfield"]]
                             = $action->fields["value"];
                         }
                         $output[$actions[$action->fields["field"]]["appendto"]][] = $value;

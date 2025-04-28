@@ -120,16 +120,16 @@ abstract class CommonDBVisible extends CommonDBTM
      **/
     public function haveVisibilityAccess()
     {
-       // Author
+        // Author
         if ($this->fields['users_id'] == Session::getLoginUserID()) {
             return true;
         }
-       // Users
+        // Users
         if (isset($this->users[Session::getLoginUserID()])) {
             return true;
         }
 
-       // Groups
+        // Groups
         if (
             count($this->groups)
             && isset($_SESSION["glpigroups"]) && count($_SESSION["glpigroups"])
@@ -137,11 +137,11 @@ abstract class CommonDBVisible extends CommonDBTM
             foreach ($this->groups as $data) {
                 foreach ($data as $group) {
                     if (in_array($group['groups_id'], $_SESSION["glpigroups"])) {
-                      // All the group
+                        // All the group
                         if ($group['no_entity_restriction']) {
-                             return true;
+                            return true;
                         }
-                      // Restrict to entities
+                        // Restrict to entities
                         if (Session::haveAccessToEntity($group['entities_id'], $group['is_recursive'])) {
                             return true;
                         }
@@ -150,7 +150,7 @@ abstract class CommonDBVisible extends CommonDBTM
             }
         }
 
-       // Entities
+        // Entities
         if (
             count($this->entities)
             && isset($_SESSION["glpiactiveentities"]) && count($_SESSION["glpiactiveentities"])
@@ -164,7 +164,7 @@ abstract class CommonDBVisible extends CommonDBTM
             }
         }
 
-       // Profiles
+        // Profiles
         if (
             count($this->profiles)
             && isset($_SESSION["glpiactiveprofile"])

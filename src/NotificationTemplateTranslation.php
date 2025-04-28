@@ -41,7 +41,7 @@ use Glpi\RichText\RichText;
  **/
 class NotificationTemplateTranslation extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype  = 'NotificationTemplate';
     public static $items_id  = 'notificationtemplates_id';
 
@@ -134,10 +134,10 @@ class NotificationTemplateTranslation extends CommonDBChild
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="text-center mb-3">
-                    <a class="btn btn-primary" href="{{ 'NotificationTemplateTranslation'|itemtype_form_path }}?notificationtemplates_id={{ id }}">{{ add_msg }}</a>
-                </div>
-TWIG, $twig_params);
+                                <div class="text-center mb-3">
+                                    <a class="btn btn-primary" href="{{ 'NotificationTemplateTranslation'|itemtype_form_path }}?notificationtemplates_id={{ id }}">{{ add_msg }}</a>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -193,7 +193,7 @@ TWIG, $twig_params);
         if (!$txt) {
             // No HTML (nothing to display)
             $input['content_html'] = '';
-        } else if (!$input['content_text']) {
+        } elseif (!$input['content_text']) {
             // Use cleaned HTML
             $input['content_text'] = $txt;
         }

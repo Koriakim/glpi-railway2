@@ -42,7 +42,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class RuleRight extends Rule
 {
-   // From Rule
+    // From Rule
     public static $rightname           = 'rule_ldap';
     public $specific_parameters = true;
 
@@ -60,7 +60,7 @@ class RuleRight extends Rule
                     case "assign":
                         switch ($action->fields["field"]) {
                             case "entities_id":
-                                 $entity[] = $action->fields["value"];
+                                $entity[] = $action->fields["value"];
                                 break;
 
                             case "profiles_id":
@@ -163,7 +163,7 @@ class RuleRight extends Rule
                         $output["_ldap_rules"]["rules_entities"][] = [$entID, $is_recursive];
                     }
                 }
-            } else if ($right !== '') {
+            } elseif ($right !== '') {
                 $output["_ldap_rules"]["rules_rights"][] = $right;
             }
 
@@ -227,7 +227,7 @@ class RuleRight extends Rule
             $criterias['_groups_id']['virtual']    = true;
             $criterias['_groups_id']['id']         = 'groups';
 
-           //Dynamically add all the ldap criterias to the current list of rule's criterias
+            //Dynamically add all the ldap criterias to the current list of rule's criterias
             $this->addSpecificCriteriasToArray($criterias);
         }
         return $criterias;

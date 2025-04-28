@@ -102,7 +102,7 @@ class NotificationTargetMailCollector extends NotificationTarget
             ]);
         }
 
-       //Foreach global tags
+        //Foreach global tags
         $tags = ['mailcollectors' => _n('Receiver', 'Receivers', Session::getPluralNumber())];
 
         foreach ($tags as $tag => $label) {

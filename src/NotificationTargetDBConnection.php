@@ -88,7 +88,7 @@ class NotificationTargetDBConnection extends NotificationTarget
             ]);
         }
 
-       //Tags with just lang
+        //Tags with just lang
         $tags = ['dbconnection.title'
                                  => __('Replica database out of sync!'),
             'dbconnection.delay'

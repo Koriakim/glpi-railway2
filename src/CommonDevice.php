@@ -45,7 +45,7 @@ abstract class CommonDevice extends CommonDropdown
 
     public $can_be_translated  = false;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory           = true;
 
     public static function getTypeName($nb = 0)
@@ -209,7 +209,7 @@ abstract class CommonDevice extends CommonDropdown
         $entities = getAncestorsOf("glpi_entities", $this->fields['entities_id']);
         $entities[] = $this->fields['entities_id'];
 
-       // RELATION : device -> item_device -> item
+        // RELATION : device -> item_device -> item
         $linktype  = static::getItem_DeviceType();
         $linktable = getTableForItemType($linktype);
 
@@ -381,7 +381,7 @@ abstract class CommonDevice extends CommonDropdown
             $column = $base->addHeader('device', $content, $super, $father);
             $column->setItemType(
                 static::class,
-                isset($options['itemtype_title']) ? $options['itemtype_title'] : ''
+                $options['itemtype_title'] ?? ''
             );
         } else {
             $column = $father;
@@ -425,7 +425,7 @@ abstract class CommonDevice extends CommonDropdown
             $field_name  = 'quantity_' . static::class . '_' . $this->getID();
             $content .= "&nbsp;<span class='ti ti-plus cursor-pointer' title='" . __s('Add') . "'
                       onClick=\"$('#" . $field_name . "').show();\"
-                      ><span class='sr-only'>" .  __s('Add') . "</span></span>";
+                      ><span class='sr-only'>" . __s('Add') . "</span></span>";
             $content .= "<span id='$field_name' style='display:none'><br>";
             $content .= __s('Add') . "&nbsp;";
 
@@ -570,7 +570,7 @@ abstract class CommonDevice extends CommonDropdown
                 } else {
                     $input['device_type'] = '';
                 }
-               //$input['device_type'] = '';
+                //$input['device_type'] = '';
                 if ($id < 0) {
                     if (!empty($registered_id)) {
                         $id_object->add($input);

@@ -35,7 +35,6 @@
 
 namespace Glpi\Asset;
 
-use Ajax;
 use CommonDBRelation;
 use CommonDBTM;
 use CommonGLPI;
@@ -47,7 +46,6 @@ use Html;
 use MassiveAction;
 use Override;
 use Session;
-use Toolbox;
 
 final class Asset_PeripheralAsset extends CommonDBRelation
 {
@@ -111,12 +109,12 @@ final class Asset_PeripheralAsset extends CommonDBRelation
             || self::isAlreadyConnected($asset, $peripheral)
             || !(in_array($asset::class, self::getPeripheralHostItemtypes(), true))
         ) {
-           // no duplicates
+            // no duplicates
             return false;
         }
 
         if (!$peripheral->isGlobal()) {
-           // Autoupdate some fields - should be in post_addItem (here to avoid more DB access)
+            // Autoupdate some fields - should be in post_addItem (here to avoid more DB access)
             $updates = [];
 
             if (
@@ -350,32 +348,32 @@ final class Asset_PeripheralAsset extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Glpi\\\\Asset\\\\Asset_PeripheralAsset'|itemtype_form_path }}">
-                        {{ fields.hiddenField('items_id_asset', asset.getID()) }}
-                        {{ fields.hiddenField('itemtype_asset', asset.getType()) }}
-                        {{ fields.hiddenField('_glpi_csrf_token', csrf_token()) }}
-                        {{ withtemplate ? fields.hiddenField('_no_history', 1) }}
-                        {{ fields.dropdownItemTypes('itemtype_peripheral', 0, label, {
-                            types: config('directconnect_types'),
-                            checkright: true,
-                        }) }}
-                        <div id="show_items_id_peripheral{{ rand }}"></div>
-                        <script>
-                            $(() => {
-                                $('select[name="itemtype_peripheral"]').on('change', (e) => {
-                                    const params = Object.assign({{ dropdown_params|json_encode|raw }}, { itemtype: e.target.value });
-                                    $('#show_items_id_peripheral{{ rand }}').load(CFG_GLPI.root_doc + '/ajax/dropdownConnect.php', params);
-                                });
-                            });
-                        </script>
-                        <div class="d-flex flex-row-reverse">
-                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Glpi\\\\Asset\\\\Asset_PeripheralAsset'|itemtype_form_path }}">
+                                        {{ fields.hiddenField('items_id_asset', asset.getID()) }}
+                                        {{ fields.hiddenField('itemtype_asset', asset.getType()) }}
+                                        {{ fields.hiddenField('_glpi_csrf_token', csrf_token()) }}
+                                        {{ withtemplate ? fields.hiddenField('_no_history', 1) }}
+                                        {{ fields.dropdownItemTypes('itemtype_peripheral', 0, label, {
+                                            types: config('directconnect_types'),
+                                            checkright: true,
+                                        }) }}
+                                        <div id="show_items_id_peripheral{{ rand }}"></div>
+                                        <script>
+                                            $(() => {
+                                                $('select[name="itemtype_peripheral"]').on('change', (e) => {
+                                                    const params = Object.assign({{ dropdown_params|json_encode|raw }}, { itemtype: e.target.value });
+                                                    $('#show_items_id_peripheral{{ rand }}').load(CFG_GLPI.root_doc + '/ajax/dropdownConnect.php', params);
+                                                });
+                                            });
+                                        </script>
+                                        <div class="d-flex flex-row-reverse">
+                                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -524,20 +522,20 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Glpi\\\\Asset\\\\Asset_PeripheralAsset'|itemtype_form_path }}">
-                        {{ fields.dropdownItemsFromItemtypes('', label, dropdown_params) }}
-                        {{ fields.hiddenField('items_id_peripheral', peripheral.getID()) }}
-                        {{ fields.hiddenField('itemtype_peripheral', peripheral.getType()) }}
-                        {{ fields.hiddenField('_glpi_csrf_token', csrf_token()) }}
-                        {{ withtemplate ? fields.hiddenField('_no_history', 1) }}
-                        <div class="d-flex flex-row-reverse">
-                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Glpi\\\\Asset\\\\Asset_PeripheralAsset'|itemtype_form_path }}">
+                                        {{ fields.dropdownItemsFromItemtypes('', label, dropdown_params) }}
+                                        {{ fields.hiddenField('items_id_peripheral', peripheral.getID()) }}
+                                        {{ fields.hiddenField('itemtype_peripheral', peripheral.getType()) }}
+                                        {{ fields.hiddenField('_glpi_csrf_token', csrf_token()) }}
+                                        {{ withtemplate ? fields.hiddenField('_no_history', 1) }}
+                                        <div class="d-flex flex-row-reverse">
+                                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -749,7 +747,7 @@ TWIG, $twig_params);
         if (in_array($item::class, $CFG_GLPI['directconnect_types'], true)) {
             self::showForPeripheral($item, $withtemplate);
             return true;
-        } else if (self::canViewPeripherals($item)) {
+        } elseif (self::canViewPeripherals($item)) {
             self::showForAsset($item, $withtemplate);
             return true;
         }

@@ -126,8 +126,8 @@ class Item_SoftwareLicense extends CommonDBRelation
                             ],
                             'used'      => $input['options']['move']['used']
                         ]);
-                         echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
-                         return true;
+                        echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
+                        return true;
                     }
                 }
                 return false;
@@ -188,14 +188,14 @@ class Item_SoftwareLicense extends CommonDBRelation
                 if (isset($input['softwarelicenses_id'])) {
                     foreach ($ids as $id) {
                         if ($item->can($id, UPDATE)) {
-                         //Process rules
+                            //Process rules
                             if (
                                 $item->update(['id'  => $id,
                                     'softwarelicenses_id'
                                            => $input['softwarelicenses_id']
                                 ])
                             ) {
-                                  $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                                $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                                 $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
@@ -230,9 +230,9 @@ class Item_SoftwareLicense extends CommonDBRelation
                                     'itemtype'  => $csl->fields['itemtype'],
                                     'softwareversions_id' => $version
                                 ];
-                               //Get software name and manufacturer
+                                //Get software name and manufacturer
                                 if ($csv->can(-1, CREATE, $params)) {
-                              //Process rules
+                                    //Process rules
                                     if ($csv->add($params)) {
                                         $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                                     } else {
@@ -481,7 +481,7 @@ class Item_SoftwareLicense extends CommonDBRelation
 
             $target_types = [];
             foreach ($itemtype_iterator as $type) {
-                 $target_types[] = $type['itemtype'];
+                $target_types[] = $type['itemtype'];
             }
 
             if (count($target_types)) {
@@ -535,21 +535,21 @@ class Item_SoftwareLicense extends CommonDBRelation
         $order = ($_GET['order'] ?? 'ASC') === 'DESC' ? 'DESC' : 'ASC';
 
         if (!empty($_GET["sort"])) {
-           // manage several param like location,compname : order first
+            // manage several param like location,compname : order first
             $tmp  = explode(",", $_GET["sort"]);
             $sort = "`" . implode("` $order,`", $tmp) . "`";
         } else {
             $sort = "`entity` $order, `itemname`";
         }
 
-       //SoftwareLicense ID
+        //SoftwareLicense ID
         $number = self::countForLicense($searchID);
         $number += SoftwareLicense_User::countForLicense($searchID);
 
         echo "<div class='center'>";
 
-       //If the number of linked assets have reached the number defined in the license,
-       //and over-quota is not allowed, do not allow to add more assets
+        //If the number of linked assets have reached the number defined in the license,
+        //and over-quota is not allowed, do not allow to add more assets
         if (
             $canedit
             && ($license->getField('number') == -1 || $number < $license->getField('number')
@@ -593,14 +593,14 @@ class Item_SoftwareLicense extends CommonDBRelation
                 $p
             );
 
-           // We have a preselected value, so we want to trigger the item list to show immediately
+            // We have a preselected value, so we want to trigger the item list to show immediately
             $js = <<<JAVASCRIPT
-$(document).ready(function() {
-   $("#dropdown_itemtype$rand").trigger({
-      type: 'change'
-   });
-});
-JAVASCRIPT;
+                $(document).ready(function() {
+                   $("#dropdown_itemtype$rand").trigger({
+                      type: 'change'
+                   });
+                });
+                JAVASCRIPT;
             echo Html::scriptBlock($js);
 
             echo "<span id='results_itemtype$rand'>\n";
@@ -612,20 +612,20 @@ JAVASCRIPT;
             Html::closeForm();
             $ajax_url = $CFG_GLPI['root_doc'] . '/ajax/dropdownAllItems.php';
             $js = <<<JAVASCRIPT
-function updateItemDropdown(itemtype_el) {
-   $.ajax({
-      method: "POST",
-      url: "$ajax_url",
-      data: {
-         name: 'items_id',
-         idtable: itemtype_el.value
-      },
-      success: function(data) {
-         $("[name='items_id']").select2('destroy').empty().replaceWith(data);
-      }
-   });
-}
-JAVASCRIPT;
+                function updateItemDropdown(itemtype_el) {
+                   $.ajax({
+                      method: "POST",
+                      url: "$ajax_url",
+                      data: {
+                         name: 'items_id',
+                         idtable: itemtype_el.value
+                      },
+                      success: function(data) {
+                         $("[name='items_id']").select2('destroy').empty().replaceWith(data);
+                      }
+                   });
+                }
+                JAVASCRIPT;
             echo Html::scriptBlock($js);
         }
 
@@ -636,7 +636,7 @@ JAVASCRIPT;
             return;
         }
 
-       // Display the pager
+        // Display the pager
         Html::printAjaxPager(__('Affected items'), $start, $number);
 
         $queries = [];
@@ -858,12 +858,12 @@ JAVASCRIPT;
                     'specific_actions' => ['purge' => _x('button', 'Delete permanently')]
                 ];
 
-               // show transfer only if multi licenses for this software
+                // show transfer only if multi licenses for this software
                 if (self::countLicenses($data['softid']) > 1) {
                     $massiveactionparams['specific_actions'][__CLASS__ . MassiveAction::CLASS_ACTION_SEPARATOR . 'move_license'] = _x('button', 'Move');
                 }
 
-               // Options to update license
+                // Options to update license
                 $massiveactionparams['extraparams']['options']['move']['used'] = [$searchID];
                 $massiveactionparams['extraparams']['options']['move']['softwares_id']
                                                                   = $license->fields['softwares_id'];
@@ -914,7 +914,7 @@ JAVASCRIPT;
 
             foreach ($columns as $key => $val) {
                 $val = htmlescape($val);
-               // Non order column
+                // Non order column
                 if ($key[0] == '_') {
                     $header_end .= "<th>$val</th>";
                 } else {

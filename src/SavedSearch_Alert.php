@@ -44,18 +44,18 @@ use Glpi\Plugin\Hooks;
  **/
 class SavedSearch_Alert extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype = 'SavedSearch';
     public static $items_id = 'savedsearches_id';
     public $dohistory       = true;
     protected $displaylist  = false;
 
-    const OP_LESS     = 0;
-    const OP_LESSEQ   = 1;
-    const OP_EQ       = 2;
-    const OP_NOT      = 3;
-    const OP_GREATEQ  = 4;
-    const OP_GREAT    = 5;
+    public const OP_LESS     = 0;
+    public const OP_LESSEQ   = 1;
+    public const OP_EQ       = 2;
+    public const OP_NOT      = 3;
+    public const OP_GREATEQ  = 4;
+    public const OP_GREAT    = 5;
 
     public static function getTypeName($nb = 0)
     {
@@ -357,15 +357,15 @@ class SavedSearch_Alert extends CommonDBChild
                 $_SESSION['glpiname'] = 'crontab';
             }
 
-           // Will save $_SESSION and $CFG_GLPI cron context into an array
+            // Will save $_SESSION and $CFG_GLPI cron context into an array
             $context = self::saveContext();
 
             foreach ($iterator as $row) {
-               //execute saved search to get results
+                //execute saved search to get results
                 try {
                     $savedsearch->getFromDB($row['savedsearches_id']);
                     if (isCommandLine()) {
-                       //search requires a logged in user...
+                        //search requires a logged in user...
                         $user = new User();
                         $user->getFromDB($savedsearch->fields['users_id']);
                         $auth = new Auth();
@@ -395,12 +395,12 @@ class SavedSearch_Alert extends CommonDBChild
                             $tr_op = __('less or equals than');
                             break;
                         case self::OP_EQ:
-                               $notify = $count == $value;
-                               $tr_op = __('equals to');
+                            $notify = $count == $value;
+                            $tr_op = __('equals to');
                             break;
                         case self::OP_NOT:
-                               $notify = $count != $value;
-                               $tr_op = __('not equals to');
+                            $notify = $count != $value;
+                            $tr_op = __('not equals to');
                             break;
                         case self::OP_GREATEQ:
                             $notify = $count >= $value;
@@ -431,23 +431,23 @@ class SavedSearch_Alert extends CommonDBChild
                     self::restoreContext($context);
 
                     if ($notify) {
-                          $event = 'alert' . ($savedsearch->getField('is_private') ? '' : '_' . $savedsearch->getID());
-                          $savedsearch_alert = new self();
-                          $savedsearch_alert->getFromDB($row['id']);
-                          $data['savedsearch'] = $savedsearch;
-                          NotificationEvent::raiseEvent($event, $savedsearch_alert, $data);
-                          $task->addVolume(1);
+                        $event = 'alert' . ($savedsearch->getField('is_private') ? '' : '_' . $savedsearch->getID());
+                        $savedsearch_alert = new self();
+                        $savedsearch_alert->getFromDB($row['id']);
+                        $data['savedsearch'] = $savedsearch;
+                        NotificationEvent::raiseEvent($event, $savedsearch_alert, $data);
+                        $task->addVolume(1);
 
-                          $alert = new Alert();
-                          $alert->deleteByCriteria([
-                              'itemtype' => SavedSearch_Alert::class,
-                              'items_id' => $row['id'],
-                          ], 1);
-                          $alert->add([
-                              'type'     => Alert::PERIODICITY,
-                              'itemtype' => SavedSearch_Alert::class,
-                              'items_id' => $row['id'],
-                          ]);
+                        $alert = new Alert();
+                        $alert->deleteByCriteria([
+                            'itemtype' => SavedSearch_Alert::class,
+                            'items_id' => $row['id'],
+                        ], 1);
+                        $alert->add([
+                            'type'     => Alert::PERIODICITY,
+                            'itemtype' => SavedSearch_Alert::class,
+                            'items_id' => $row['id'],
+                        ]);
                     }
                 } catch (\Throwable $e) {
                     self::restoreContext($context);

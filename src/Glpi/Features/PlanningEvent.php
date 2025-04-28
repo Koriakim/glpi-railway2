@@ -82,7 +82,7 @@ trait PlanningEvent
 
     public function post_addItem()
     {
-       // Add document if needed
+        // Add document if needed
         $this->input = $this->addFiles($this->input, [
             'force_update'  => true,
             'content_field' => 'text'
@@ -150,7 +150,7 @@ trait PlanningEvent
                 $input['is_planned'] = 1;
                 $input["begin"]      = $input['_plan']["begin"];
                 $input["end"]        = $input['_plan']["end"];
-            } else if (
+            } elseif (
                 isset($this->fields['begin'])
                     && isset($this->fields['end'])
             ) {
@@ -162,10 +162,10 @@ trait PlanningEvent
             }
         }
 
-       // set new date.
+        // set new date.
         $input["date"] = $_SESSION["glpi_currenttime"];
 
-       // encode rrule
+        // encode rrule
         if (isset($input['rrule']) && is_array($input['rrule'])) {
             $input['rrule'] = $this->encodeRrule($input['rrule']);
         }
@@ -208,7 +208,7 @@ trait PlanningEvent
                 $input['is_planned'] = 1;
                 $input["begin"]      = $input['_plan']["begin"];
                 $input["end"]        = $input['_plan']["end"];
-            } else if (
+            } elseif (
                 isset($this->fields['begin'])
                     && isset($this->fields['end'])
             ) {
@@ -222,7 +222,7 @@ trait PlanningEvent
 
         $input = $this->addFiles($input, ['content_field' => 'text']);
 
-       // encode rrule
+        // encode rrule
         if (isset($input['rrule']) && is_array($input['rrule'])) {
             $input['rrule'] = $this->encodeRrule($input['rrule']);
         }
@@ -294,7 +294,7 @@ trait PlanningEvent
 
     public function pre_updateInDB()
     {
-       // Set new user if initial user have been deleted
+        // Set new user if initial user have been deleted
         if (
             isset($this->fields['users_id'])
             && $this->fields['users_id'] == 0
@@ -359,7 +359,7 @@ trait PlanningEvent
             'begin' => $fields['begin'],
             'end'   => $fields['end'],
         ];
-       // avoid checking availability, will be done after when updating new dates
+        // avoid checking availability, will be done after when updating new dates
         $fields['_no_check_plan'] = true;
 
         $instance = new static();
@@ -432,7 +432,7 @@ trait PlanningEvent
         $nreadpub  = [];
         $nreadpriv = [];
 
-       // See public event ?
+        // See public event ?
         if (
             !$options['genical']
             && (Session::getLoginUserID() !== false && $who == Session::getLoginUserID())
@@ -446,16 +446,16 @@ trait PlanningEvent
         if ($whogroup === "mine") {
             if (isset($_SESSION['glpigroups'])) {
                 $whogroup = $_SESSION['glpigroups'];
-            } else if ($who > 0) {
+            } elseif ($who > 0) {
                 $whogroup = array_column(Group_User::getUserGroups($who), 'id');
             }
         }
 
-       // See my private event ?
+        // See my private event ?
         if ($who > 0) {
             $nreadpriv = ["$table.users_id" => $who];
 
-           // guests accounts
+            // guests accounts
             if ($DB->fieldExists($table, 'users_id_guests')) {
                 $nreadpriv = ['OR' => [
                     "$table.users_id" => $who,
@@ -485,7 +485,7 @@ trait PlanningEvent
             && count($nreadpriv)
         ) {
             $NASSIGN = ['OR' => [$nreadpub, $nreadpriv]];
-        } else if (count($nreadpub)) {
+        } elseif (count($nreadpub)) {
             $NASSIGN = $nreadpub;
         } else {
             $NASSIGN = $nreadpriv;
@@ -616,18 +616,18 @@ trait PlanningEvent
 
                         $rset = static::getRsetFromRRuleField($event['rrule'], $event['begin']);
 
-                       // - rrule object doesn't any duration property,
-                       //   so we remove the duration from the begin part of the range
-                       //   (minus 1second to avoid mathing precise end date)
-                       //   to check if event started before begin and could be still valid
-                       // - also set begin and end dates like it was as UTC
-                       //   (Rrule lib will always compare with UTC)
+                        // - rrule object doesn't any duration property,
+                        //   so we remove the duration from the begin part of the range
+                        //   (minus 1second to avoid mathing precise end date)
+                        //   to check if event started before begin and could be still valid
+                        // - also set begin and end dates like it was as UTC
+                        //   (Rrule lib will always compare with UTC)
                         $begin_datetime = new DateTime($options['begin'], new DateTimeZone('UTC'));
                         $begin_datetime->sub(new DateInterval("PT" . ($duration - 1) . "S"));
                         $end_datetime   = new DateTime($options['end'], new DateTimeZone('UTC'));
                         $occurences = $rset->getOccurrencesBetween($begin_datetime, $end_datetime);
 
-                       // add the found occurences to the final tab after replacing their dates
+                        // add the found occurences to the final tab after replacing their dates
                         foreach ($occurences as $currentDate) {
                             $occurence_begin = $currentDate;
                             $occurence_end   = (clone $currentDate)->add(new DateInterval("PT" . $duration . "S"));
@@ -638,8 +638,8 @@ trait PlanningEvent
                             ]);
                         }
 
-                       // remove primary event (with rrule)
-                       // as the final array now have all the occurences
+                        // remove primary event (with rrule)
+                        // as the final array now have all the occurences
                         unset($events[$key]);
                     }
                 }
@@ -706,7 +706,7 @@ trait PlanningEvent
             }
         }
 
-       // $val["text"] has already been sanitized and decoded by self::populatePlanning()
+        // $val["text"] has already been sanitized and decoded by self::populatePlanning()
         $content = $val["text"] . $recall;
 
         if ($complete) {
@@ -883,7 +883,7 @@ trait PlanningEvent
         if ($item = getItemForItemtype($itemtype)) {
             $objectitemtype = (method_exists($item, 'getItilObjectItemType') ? $item::getItilObjectItemType() : $itemtype);
 
-           //TRANS: %1$s is a type, %2$$ is a date, %3$s is a date
+            //TRANS: %1$s is a type, %2$$ is a date, %3$s is a date
             $out  = sprintf(
                 __('%1$s: from %2$s to %3$s:'),
                 $item->getTypeName(1),
@@ -892,7 +892,7 @@ trait PlanningEvent
             );
             $out .= "<br/><a href='" . $objectitemtype::getFormURLWithID($val[getForeignKeyFieldForItemType($objectitemtype)]);
             if ($item instanceof CommonITILTask) {
-                 $out .= "&amp;forcetab=" . $itemtype . "$1";
+                $out .= "&amp;forcetab=" . $itemtype . "$1";
             }
             $out .= "'>";
             $out .= Html::resume_text($val["name"], 80) . '</a>';
@@ -915,11 +915,11 @@ trait PlanningEvent
         $dtstart_datetime  = new DateTime($dtstart);
         $rrule['dtstart']  = $dtstart_datetime->format('Y-m-d\TH:i:s\Z');
 
-       // create a ruleset containing dtstart, the rrule, and the exclusions
+        // create a ruleset containing dtstart, the rrule, and the exclusions
         $rset = new RSet();
 
-       // manage date exclusions,
-       // we need to set a top level property for that (not directly in rrule one)
+        // manage date exclusions,
+        // we need to set a top level property for that (not directly in rrule one)
         if (isset($rrule['exceptions'])) {
             foreach ($rrule['exceptions'] as $exception) {
                 $exdate = new DateTime($exception);
@@ -931,11 +931,11 @@ trait PlanningEvent
                 $rset->addExDate($exdate->format('Y-m-d\TH:i:s\Z'));
             }
 
-           // remove exceptions key (as libraries throw exception for unknow keys)
+            // remove exceptions key (as libraries throw exception for unknow keys)
             unset($rrule['exceptions']);
         }
 
-       // remove specific change from js library to match rfc
+        // remove specific change from js library to match rfc
         if (isset($rrule['byweekday']) || isset($rrule['BYWEEKDAY'])) {
             $rrule['byday'] = $rrule['byweekday'] ?? $rrule['BYWEEKDAY'];
             unset($rrule['byweekday'], $rrule['BYWEEKDAY']);

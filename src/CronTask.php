@@ -47,10 +47,10 @@ use Glpi\Event;
  */
 class CronTask extends CommonDBTM
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
-   // Specific ones
+    // Specific ones
     private static $lockname = '';
     private $timer           = 0.0;
     private $startlog        = 0;
@@ -58,16 +58,16 @@ class CronTask extends CommonDBTM
     public static $rightname        = 'config';
 
     /** The automatic action is disabled */
-    const STATE_DISABLE = 0;
+    public const STATE_DISABLE = 0;
     /** The automatic action is enabled and waiting to be run */
-    const STATE_WAITING = 1;
+    public const STATE_WAITING = 1;
     /** The automatic action was started and hasn't returned to the waiting state yet */
-    const STATE_RUNNING = 2;
+    public const STATE_RUNNING = 2;
 
     /** The automatic action is run internally (run by GLPI via a hidden image src) */
-    const MODE_INTERNAL = 1;
+    public const MODE_INTERNAL = 1;
     /** The automatic action is run with an external scheduler like cron or Task Scheduler */
-    const MODE_EXTERNAL = 2;
+    public const MODE_EXTERNAL = 2;
 
     public static function getForbiddenActionsForMenu()
     {
@@ -337,13 +337,13 @@ class CronTask extends CommonDBTM
             if ($log_state === CronTaskLog::STATE_ERROR) {
                 $content = __('Execution error');
                 $content = 'Execution error';
-            } else if (is_null($retcode)) {
+            } elseif (is_null($retcode)) {
                 $content = __('Action aborted');
                 $content = 'Action aborted';
-            } else if ($retcode < 0) {
+            } elseif ($retcode < 0) {
                 $content = __('Action completed, partially processed');
                 $content = 'Action completed, partially processed';
-            } else if ($retcode > 0) {
+            } elseif ($retcode > 0) {
                 $content = __('Action completed, fully processed');
                 $content = 'Action completed, fully processed';
             } else {
@@ -411,7 +411,7 @@ class CronTask extends CommonDBTM
             ]
         ];
         foreach (Plugin::getPlugins() as $plug) {
-           // Activated plugin tasks
+            // Activated plugin tasks
             $itemtype_orwhere[] = [
                 'OR' => [
                     ['itemtype' => ['LIKE', sprintf('Plugin%s', $plug) . '%']],
@@ -428,7 +428,7 @@ class CronTask extends CommonDBTM
             $WHERE['name'] = $name;
         }
 
-       // In force mode
+        // In force mode
         if ($mode < 0) {
             $WHERE['state'] = ['!=', self::STATE_RUNNING];
             $WHERE['allowmode'] = ['&', (int)$mode * -1];
@@ -440,7 +440,7 @@ class CronTask extends CommonDBTM
 
             // Get system lock
             if (is_file(GLPI_CRON_DIR . '/all.lock')) {
-               // Global lock
+                // Global lock
                 return false;
             }
             $locks = [];
@@ -614,7 +614,7 @@ class CronTask extends CommonDBTM
             ) {
                 $next_run_display = date('Y-m-d', $next) . " $deb:00:00";
                 $next = strtotime($next_run_display);
-            } else if (
+            } elseif (
                 ($deb < $fin)
                     && ($h >= $this->fields['hourmax'])
             ) {
@@ -853,7 +853,7 @@ class CronTask extends CommonDBTM
         if (self::get_lock()) {
             for ($i = 1; $i <= $max; $i++) {
                 $msgprefix = sprintf(
-                //TRANS: %1$s is mode (external or internal), %2$s is an order number,
+                    //TRANS: %1$s is mode (external or internal), %2$s is an order number,
                     __('%1$s #%2$s'),
                     abs($mode) === self::MODE_EXTERNAL ? __('External') : __('Internal'),
                     $i
@@ -879,7 +879,7 @@ class CronTask extends CommonDBTM
                                 )
                             );
                             try {
-                                  $retcode = $function($crontask);
+                                $retcode = $function($crontask);
                             } catch (\Throwable $e) {
                                 ErrorHandler::logCaughtException($e);
                                 ErrorHandler::displayCaughtExceptionMessage($e);
@@ -900,7 +900,7 @@ class CronTask extends CommonDBTM
                                 $crontask->sendNotificationOnError();
                                 continue;
                             }
-                             $crontask->end($retcode); // Unlock in DB + log end
+                            $crontask->end($retcode); // Unlock in DB + log end
                         } else {
                             Toolbox::logInFile(
                                 'cron',
@@ -923,7 +923,7 @@ class CronTask extends CommonDBTM
                             ) . "\n" . $undefined_msg
                         );
                     }
-                } else if ($i === 1) {
+                } elseif ($i === 1) {
                     $msgcron = sprintf(__('%1$s: %2$s'), $msgprefix, __('Nothing to launch'));
                     Toolbox::logInFile('cron', $msgcron . "\n");
                 }
@@ -1207,12 +1207,12 @@ class CronTask extends CommonDBTM
         global $DB;
 
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="my-2 text-center">
-                <button class="btn btn-outline-secondary" onclick="reloadTab('crontasklogs_id=0')">
-                    {{ msg }}
-                </button>
-            </div>
-TWIG, ['msg' => __('Last run list')]);
+                        <div class="my-2 text-center">
+                            <button class="btn btn-outline-secondary" onclick="reloadTab('crontasklogs_id=0')">
+                                {{ msg }}
+                            </button>
+                        </div>
+            TWIG, ['msg' => __('Last run list')]);
 
 
         $iterator = $DB->request([
@@ -1237,7 +1237,7 @@ TWIG, ['msg' => __('Last run list')]);
                     // implode (Run mode: XXX)
                     $list = explode(':', $data['content']);
                     if (count($list) === 2) {
-                           $content = sprintf('%1$s: %2$s', __($list[0]), $list[1]);
+                        $content = sprintf('%1$s: %2$s', __($list[0]), $list[1]);
                     }
                     break;
                 case CronTaskLog::STATE_STOP:
@@ -1348,7 +1348,7 @@ TWIG, ['msg' => __('Last run list')]);
                     if (Config::canUpdate()) {
                         if ($item->getFromDB($key)) {
                             if ($item->resetDate()) {
-                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
+                                $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
                                 $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
@@ -1545,7 +1545,7 @@ TWIG, ['msg' => __('Last run list')]);
 
         $task->setVolume($nb);
         if ($nb) {
-           //TRANS: % %1$d is a number, %2$s is a number of seconds
+            //TRANS: % %1$d is a number, %2$s is a number of seconds
             $task->log(sprintf(
                 _n(
                     'Clean %1$d session file created since more than %2$s seconds',
@@ -1956,17 +1956,17 @@ TWIG, ['msg' => __('Last run list')]);
             $msg = __('Automatic actions may not be running as expected');
             $params = [
                 'msg' => $msg,
-                'warnings' => '<ul>' . implode('', array_map(static fn ($warning) => '<li>' . htmlescape($warning) . '</li>', $warnings)) . '</ul>'
+                'warnings' => '<ul>' . implode('', array_map(static fn($warning) => '<li>' . htmlescape($warning) . '</li>', $warnings)) . '</ul>'
             ];
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <span class="alert alert-warning p-1 ps-2">
-                    <i class="ti ti-alert-triangle me-2"></i>
-                    <span>{{ msg }}</span>
-                    <span class="form-help" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="{{ warnings }}">
-                        ?
-                    </span>
-                </span>
-TWIG, $params);
+                                <span class="alert alert-warning p-1 ps-2">
+                                    <i class="ti ti-alert-triangle me-2"></i>
+                                    <span>{{ msg }}</span>
+                                    <span class="form-help" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="{{ warnings }}">
+                                        ?
+                                    </span>
+                                </span>
+                TWIG, $params);
         }
     }
 }

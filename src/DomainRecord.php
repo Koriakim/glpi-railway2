@@ -43,10 +43,10 @@ class DomainRecord extends CommonDBChild
         canUpdateItem as canUpdateItemAssignableItem;
     }
 
-    const DEFAULT_TTL = 3600;
+    public const DEFAULT_TTL = 3600;
 
     public static $rightname              = 'domain';
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype        = 'Domain';
     public static $items_id        = 'domains_id';
     public $dohistory              = true;
@@ -237,7 +237,8 @@ class DomainRecord extends CommonDBChild
             return false;
         }
         return parent::canUpdateItem()
-         && ($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] === [-1]
+         && (
+             $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] === [-1]
          || in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'], true)
          );
     }
@@ -245,7 +246,8 @@ class DomainRecord extends CommonDBChild
     public function canDeleteItem(): bool
     {
         return parent::canDeleteItem()
-         && ($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] === [-1]
+         && (
+             $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] === [-1]
          || in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'], true)
          );
     }
@@ -253,7 +255,8 @@ class DomainRecord extends CommonDBChild
     public function canPurgeItem(): bool
     {
         return parent::canPurgeItem()
-         && ($_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] === [-1]
+         && (
+             $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'] === [-1]
          || in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'], true)
          );
     }
@@ -293,7 +296,7 @@ class DomainRecord extends CommonDBChild
             }
         }
 
-       //search entity
+        //search entity
         if ($add && !isset($input['entities_id'])) {
             $input['entities_id'] = $_SESSION['glpiactive_entity'] ?? 0;
             $input['is_recursive'] = $_SESSION['glpiactive_entity_recursive'] ?? 0;
@@ -316,7 +319,7 @@ class DomainRecord extends CommonDBChild
                     return false;
                 }
                 if ($add === false && !(in_array($this->fields['domainrecordtypes_id'], $_SESSION['glpiactiveprofile']['managed_domainrecordtypes'], true))) {
-                   //no right to change existing type
+                    //no right to change existing type
                     Session::addMessageAfterRedirect(
                         __s('You are not allowed to edit this type of records'),
                         true,
@@ -355,8 +358,8 @@ class DomainRecord extends CommonDBChild
             (in_array('data', $this->updates, true) || in_array('domainrecordtypes_id', $this->updates, true))
             && !array_key_exists('data_obj', $this->input)
         ) {
-           // Remove data stored as obj if "data" or "record type" changed" and "data_obj" is not part of input.
-           // It ensure that updates that "data_obj" will not contains obsolete values.
+            // Remove data stored as obj if "data" or "record type" changed" and "data_obj" is not part of input.
+            // It ensure that updates that "data_obj" will not contains obsolete values.
             $this->fields['data_obj'] = 'NULL';
             $this->updates[]          = 'data_obj';
         }
@@ -428,47 +431,47 @@ class DomainRecord extends CommonDBChild
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-                {% set rand = random() %}
-                <div class="mb-3">
-                    <form name="domain_form{{ rand }}" id="domain_form{{ rand }}" method="post"
-                          action="{{ 'Domain'|itemtype_form_path }}" data-submit-once>
-                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
-                        {{ inputs.hidden('domains_id', domains_id) }}
-                        
-                        <div class="d-flex">
-                            {{ fields.dropdownField('DomainRecord', 'domainrecords_id', 0, label, {
-                                'condition': condition
-                            }) }}
-                            {{ fields.htmlField('', inputs.submit('addrecord', add_btn_msg, 1), null, {
-                                no_label: true,
-                                mb: '',
-                                wrapper_class: 'ms-2'
-                            }) }}
-                        </div>
-                    </form>
-                    <hr class="mt-2 mb-n2">
-                    <div id="new_record_form" class="d-none">
-                        {{ include('pages/management/domainrecord.html.twig', {
-                            item: domain_record,
-                            domains_id: domains_id,
-                            no_header: true,
-                        }, with_context = false) }}
-                    </div>
-                    <div class="mt-4 text-center">
-                        <button type="button" class="btn btn-primary" id="add_new_record_btn{{ rand }}">
-                            {{ add_new_btn_msg }}
-                        </button>
-                        <script>
-                            $('#add_new_record_btn{{ rand }}').on('click', function() {
-                                $('#new_record_form').removeClass('d-none');
-                                $(this).addClass('d-none');
-                            });
-                        </script>
-                    </div>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                                {% set rand = random() %}
+                                <div class="mb-3">
+                                    <form name="domain_form{{ rand }}" id="domain_form{{ rand }}" method="post"
+                                          action="{{ 'Domain'|itemtype_form_path }}" data-submit-once>
+                                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
+                                        {{ inputs.hidden('domains_id', domains_id) }}
+                                        
+                                        <div class="d-flex">
+                                            {{ fields.dropdownField('DomainRecord', 'domainrecords_id', 0, label, {
+                                                'condition': condition
+                                            }) }}
+                                            {{ fields.htmlField('', inputs.submit('addrecord', add_btn_msg, 1), null, {
+                                                no_label: true,
+                                                mb: '',
+                                                wrapper_class: 'ms-2'
+                                            }) }}
+                                        </div>
+                                    </form>
+                                    <hr class="mt-2 mb-n2">
+                                    <div id="new_record_form" class="d-none">
+                                        {{ include('pages/management/domainrecord.html.twig', {
+                                            item: domain_record,
+                                            domains_id: domains_id,
+                                            no_header: true,
+                                        }, with_context = false) }}
+                                    </div>
+                                    <div class="mt-4 text-center">
+                                        <button type="button" class="btn btn-primary" id="add_new_record_btn{{ rand }}">
+                                            {{ add_new_btn_msg }}
+                                        </button>
+                                        <script>
+                                            $('#add_new_record_btn{{ rand }}').on('click', function() {
+                                                $('#new_record_form').removeClass('d-none');
+                                                $(this).addClass('d-none');
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -528,7 +531,7 @@ TWIG, $twig_params);
             '.'
         );
         if (empty($name_txt)) {
-           //dns root
+            //dns root
             $name_txt = '@';
         }
         return $name_txt;

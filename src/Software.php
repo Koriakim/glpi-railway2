@@ -49,7 +49,7 @@ class Software extends CommonDBTM
         getEmpty as getEmptyAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     protected static $forward_entity_to = ['Infocom', 'ReservationItem', 'SoftwareVersion'];
@@ -283,10 +283,10 @@ class Software extends CommonDBTM
                     }
                     if ($item->can($input['item_items_id'], UPDATE)) {
                         if ($item->merge($items)) {
-                             $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_OK);
+                            $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_OK);
                         } else {
-                             $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
-                             $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
+                            $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_KO);
+                            $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
                         }
                     } else {
                         $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_NORIGHT);
@@ -301,7 +301,7 @@ class Software extends CommonDBTM
                 $softcatrule = new RuleSoftwareCategoryCollection();
                 foreach ($ids as $id) {
                     $params = [];
-                   //Get software name and manufacturer
+                    //Get software name and manufacturer
                     if ($item->can($id, UPDATE)) {
                         $params["name"]             = $item->fields["name"];
                         $params["manufacturers_id"] = $item->fields["manufacturers_id"];
@@ -333,7 +333,7 @@ class Software extends CommonDBTM
                 $allowed_ids        = [];
                 foreach ($ids as $id) {
                     if ($item->can($id, UPDATE)) {
-                         $allowed_ids[] = $id;
+                        $allowed_ids[] = $id;
                     } else {
                         $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_NORIGHT);
                         $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
@@ -491,7 +491,7 @@ class Software extends CommonDBTM
             'id'                 => '63',
             'table'              => static::getTable(),
             'field'              => 'is_valid',
-                              //TRANS: Indicator to know is all licenses of the software are valids
+            //TRANS: Indicator to know is all licenses of the software are valids
             'name'               => __('Valid licenses'),
             'datatype'           => 'bool'
         ];
@@ -784,9 +784,9 @@ class Software extends CommonDBTM
 
         if (isset($result['_ignore_import'])) {
             $input["softwarecategories_id"] = 0;
-        } else if (isset($result["softwarecategories_id"])) {
+        } elseif (isset($result["softwarecategories_id"])) {
             $input["softwarecategories_id"] = $result["softwarecategories_id"];
-        } else if (isset($result["_import_category"])) {
+        } elseif (isset($result["_import_category"])) {
             $softCat = new SoftwareCategory();
             $input["softwarecategories_id"] = $softCat->importExternal($input["_system_category"]);
         } else {
@@ -1046,30 +1046,30 @@ class Software extends CommonDBTM
                         ]
                     );
 
-                     $DB->update(
-                         'glpi_softwarelicenses',
-                         [
-                             'softwareversions_id_use' => $dest['id']
-                         ],
-                         [
-                             'softwareversions_id_use' => $from['id']
-                         ]
-                     );
+                    $DB->update(
+                        'glpi_softwarelicenses',
+                        [
+                            'softwareversions_id_use' => $dest['id']
+                        ],
+                        [
+                            'softwareversions_id_use' => $from['id']
+                        ]
+                    );
 
-                     // Move installation to existing version in destination software
-                     $found = $DB->update(
-                         'glpi_items_softwareversions',
-                         [
-                             'softwareversions_id' => $dest['id']
-                         ],
-                         [
-                             'softwareversions_id' => $from['id']
-                         ]
-                     );
+                    // Move installation to existing version in destination software
+                    $found = $DB->update(
+                        'glpi_items_softwareversions',
+                        [
+                            'softwareversions_id' => $dest['id']
+                        ],
+                        [
+                            'softwareversions_id' => $from['id']
+                        ]
+                    );
                 }
 
                 if ($found) {
-                   // Installation has be moved, delete the source version
+                    // Installation has be moved, delete the source version
                     $result = $DB->delete(
                         'glpi_softwareversions',
                         [
@@ -1077,7 +1077,7 @@ class Software extends CommonDBTM
                         ]
                     );
                 } else {
-                   // Move version to destination software
+                    // Move version to destination software
                     $result = $DB->update(
                         'glpi_softwareversions',
                         [
@@ -1142,7 +1142,7 @@ class Software extends CommonDBTM
             if (!isset($result['_ignore_import'])) {
                 if (isset($result["softwarecategories_id"])) {
                     $input["softwarecategories_id"] = $result["softwarecategories_id"];
-                } else if (isset($result["_import_category"], $input['_system_category'])) {
+                } elseif (isset($result["_import_category"], $input['_system_category'])) {
                     $softCat = new SoftwareCategory();
                     $input["softwarecategories_id"] = $softCat->importExternal($input["_system_category"]);
                 }

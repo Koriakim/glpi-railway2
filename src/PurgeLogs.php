@@ -33,7 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\DBAL\QueryExpression;
 use Glpi\DBAL\QueryFunction;
 
 class PurgeLogs extends CommonDBTM
@@ -119,7 +118,7 @@ class PurgeLogs extends CommonDBTM
 
         $month = self::getDateModRestriction($CFG_GLPI['purge_software_version_install']);
         if ($month) {
-           //Delete software version association
+            //Delete software version association
             $DB->delete(
                 'glpi_logs',
                 [
@@ -150,7 +149,7 @@ class PurgeLogs extends CommonDBTM
 
         $month = self::getDateModRestriction($CFG_GLPI['purge_infocom_creation']);
         if ($month) {
-           //Delete add infocom
+            //Delete add infocom
             $DB->delete(
                 'glpi_logs',
                 [
@@ -185,7 +184,7 @@ class PurgeLogs extends CommonDBTM
 
         $month = self::getDateModRestriction($CFG_GLPI['purge_profile_user']);
         if ($month) {
-           //Delete software version association
+            //Delete software version association
             $DB->delete(
                 'glpi_logs',
                 [
@@ -202,7 +201,7 @@ class PurgeLogs extends CommonDBTM
 
         $month = self::getDateModRestriction($CFG_GLPI['purge_group_user']);
         if ($month) {
-           //Delete software version association
+            //Delete software version association
             $DB->delete(
                 'glpi_logs',
                 [
@@ -219,7 +218,7 @@ class PurgeLogs extends CommonDBTM
 
         $month = self::getDateModRestriction($CFG_GLPI['purge_userdeletedfromldap']);
         if ($month) {
-           //Delete software version association
+            //Delete software version association
             $DB->delete(
                 'glpi_logs',
                 [
@@ -231,7 +230,7 @@ class PurgeLogs extends CommonDBTM
 
         $month = self::getDateModRestriction($CFG_GLPI['purge_user_auth_changes']);
         if ($month) {
-           //Delete software version association
+            //Delete software version association
             $DB->delete(
                 'glpi_logs',
                 [
@@ -266,7 +265,7 @@ class PurgeLogs extends CommonDBTM
         foreach ($actions as $key => $value) {
             $month = self::getDateModRestriction($CFG_GLPI['purge_' . $value]);
             if ($month) {
-               //Delete software version association
+                //Delete software version association
                 $DB->delete(
                     'glpi_logs',
                     [
@@ -298,7 +297,7 @@ class PurgeLogs extends CommonDBTM
         foreach ($actions as $key => $value) {
             $month = self::getDateModRestriction($CFG_GLPI['purge_' . $value]);
             if ($month) {
-               //Delete software version association
+                //Delete software version association
                 $DB->delete(
                     'glpi_logs',
                     [
@@ -333,7 +332,7 @@ class PurgeLogs extends CommonDBTM
         foreach ($actions as $key => $value) {
             $month = self::getDateModRestriction($CFG_GLPI['purge_' . $value]);
             if ($month) {
-               //Delete software version association
+                //Delete software version association
                 $DB->delete(
                     'glpi_logs',
                     [
@@ -366,8 +365,8 @@ class PurgeLogs extends CommonDBTM
             ] + $month);
 
             foreach ($iterator as $row) {
-                 //purge each one
-                 $refused->delete($row, true);
+                //purge each one
+                $refused->delete($row, true);
             }
         }
     }
@@ -462,9 +461,9 @@ class PurgeLogs extends CommonDBTM
     {
         if ($month > 0) {
             return ['date_mod' => ['<=', QueryFunction::dateSub(QueryFunction::now(), $month, 'MONTH')]];
-        } else if ($month == Config::DELETE_ALL) {
+        } elseif ($month == Config::DELETE_ALL) {
             return [1 => 1];
-        } else if ($month == Config::KEEP_ALL) {
+        } elseif ($month == Config::KEEP_ALL) {
             return false;
         }
 

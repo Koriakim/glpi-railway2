@@ -44,7 +44,7 @@ use Glpi\Event;
  **/
 class Group_User extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1                 = 'User';
     public static $items_id_1                 = 'users_id';
 
@@ -397,7 +397,7 @@ class Group_User extends CommonDBRelation
             return false;
         }
 
-       // Have right to manage members
+        // Have right to manage members
         $canedit = self::canUpdate();
         $rand    = mt_rand();
         $user    = new User();
@@ -409,8 +409,8 @@ class Group_User extends CommonDBRelation
         $used    = [];
         $ids     = [];
 
-       // Retrieve member list
-       // TODO: migrate to use CommonDBRelation::getListForItem()
+        // Retrieve member list
+        // TODO: migrate to use CommonDBRelation::getListForItem()
         $entityrestrict = self::getDataForGroup($group, $used, $ids, $_GET['filters'] ?? [], true, true);
 
         // We will load implicits members from parents groups and display
@@ -532,7 +532,7 @@ class Group_User extends CommonDBRelation
             ] + getEntitiesRestrictCriteria(Group::getTable(), '', '', true)
         ];
 
-       // Define normalized action for add_item and remove_item
+        // Define normalized action for add_item and remove_item
         $specificities['normalized']['add'][]    = 'add_supervisor';
 
         $specificities['button_labels']['add_supervisor'] = $specificities['button_labels']['add'];
@@ -674,7 +674,7 @@ class Group_User extends CommonDBRelation
                 case Group::class:
                     if (User::canView()) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
-                              $nb = self::countForItem($item);
+                            $nb = self::countForItem($item);
                         }
                         return self::createTabEntry(User::getTypeName(Session::getPluralNumber()), $nb, $item::class);
                     }
@@ -752,13 +752,13 @@ class Group_User extends CommonDBRelation
         $groups_id  = $this->fields['groups_id'];
         $planning_k = 'group_' . $groups_id . '_users';
 
-       // find users with the current group in their plannings
+        // find users with the current group in their plannings
         $user_inst = new User();
         $users = $user_inst->find([
             'plannings' => ['LIKE', "%$planning_k%"]
         ]);
 
-       // add the new user to found plannings
+        // add the new user to found plannings
         $query = $DB->buildUpdate(
             User::getTable(),
             [
@@ -845,7 +845,7 @@ class Group_User extends CommonDBRelation
             'plannings' => ['LIKE', "%$planning_k%"]
         ]);
 
-       // remove the deleted user to found plannings
+        // remove the deleted user to found plannings
         $query = $DB->buildUpdate(
             User::getTable(),
             [

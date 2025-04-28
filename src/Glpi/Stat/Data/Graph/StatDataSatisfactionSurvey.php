@@ -61,6 +61,6 @@ class StatDataSatisfactionSurvey extends StatDataAlwaysDisplay
 
     public function getTitle(): string
     {
-        return __('Satisfaction survey') . " - " .  __('Tickets');
+        return __('Satisfaction survey') . " - " . __('Tickets');
     }
 }

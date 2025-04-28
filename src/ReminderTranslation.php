@@ -126,33 +126,33 @@ class ReminderTranslation extends CommonDBChild
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="text-center">
-                    <button class="btn btn-primary" onclick="showTranslation{{ item.getID() ~ rand }}(-1)">{{ button_msg }}</button>
-                </div>
-                <div id="viewtranslation{{ item.getID() ~ rand }}" class="mb-3"></div>
-                <script>
-                    function showTranslation{{ item.getID() ~ rand }}(translations_id) {
-                        $.ajax({
-                            url: '{{ config('root_doc') }}/ajax/viewsubitem.php',
-                            method: 'POST',
-                            data: {
-                                type: 'ReminderTranslation',
-                                parenttype: '{{ item.getType }}',
-                                reminders_id: {{ item.getID() }},
-                                id: translations_id
-                            },
-                            success: (data) => {
-                                $('#viewtranslation{{ item.getID() ~ rand }}').html(data);
-                            }
-                        });
-                    }
-                    $(() => {
-                        $('#translationlist{{ rand }} tbody tr').on('click', function() {
-                            showTranslation{{ item.getID() ~ rand }}($(this).attr('data-id'));
-                        });
-                    });
-                </script>
-TWIG, $twig_params);
+                                <div class="text-center">
+                                    <button class="btn btn-primary" onclick="showTranslation{{ item.getID() ~ rand }}(-1)">{{ button_msg }}</button>
+                                </div>
+                                <div id="viewtranslation{{ item.getID() ~ rand }}" class="mb-3"></div>
+                                <script>
+                                    function showTranslation{{ item.getID() ~ rand }}(translations_id) {
+                                        $.ajax({
+                                            url: '{{ config('root_doc') }}/ajax/viewsubitem.php',
+                                            method: 'POST',
+                                            data: {
+                                                type: 'ReminderTranslation',
+                                                parenttype: '{{ item.getType }}',
+                                                reminders_id: {{ item.getID() }},
+                                                id: translations_id
+                                            },
+                                            success: (data) => {
+                                                $('#viewtranslation{{ item.getID() ~ rand }}').html(data);
+                                            }
+                                        });
+                                    }
+                                    $(() => {
+                                        $('#translationlist{{ rand }} tbody tr').on('click', function() {
+                                            showTranslation{{ item.getID() ~ rand }}($(this).attr('data-id'));
+                                        });
+                                    });
+                                </script>
+                TWIG, $twig_params);
         }
 
         $obj   = new self();
@@ -221,7 +221,7 @@ TWIG, $twig_params);
         if ($this->getID() > 0) {
             $this->check($ID, READ);
         } else {
-           // Create item
+            // Create item
             $item                = $options['parent'];
             $options['itemtype'] = get_class($item);
             $options['reminders_id'] = $item->getID();

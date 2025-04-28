@@ -44,7 +44,7 @@ class BlacklistedMailContent extends CommonDropdown
 {
     use Clonable;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory       = false;
 
     public static $rightname       = 'config';

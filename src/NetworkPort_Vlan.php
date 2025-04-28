@@ -37,7 +37,7 @@ use Glpi\Application\View\TemplateRenderer;
 
 class NetworkPort_Vlan extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1          = 'NetworkPort';
     public static $items_id_1          = 'networkports_id';
 
@@ -136,24 +136,24 @@ class NetworkPort_Vlan extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'NetworkPort_Vlan'|itemtype_form_path }}">
-                        <div class="d-flex">
-                            <input type="hidden" name="networkports_id" value="{{ id }}">
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                            {{ fields.dropdownField('Vlan', 'vlans_id', 0, null, {
-                                no_label: true,
-                                used: used
-                            }) }}
-                            {{ fields.checkboxField('tagged', 0, tagged_label) }}
-                        </div>
-                        <div class="d-flex flex-row-reverse">
-                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'NetworkPort_Vlan'|itemtype_form_path }}">
+                                        <div class="d-flex">
+                                            <input type="hidden" name="networkports_id" value="{{ id }}">
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                            {{ fields.dropdownField('Vlan', 'vlans_id', 0, null, {
+                                                no_label: true,
+                                                used: used
+                                            }) }}
+                                            {{ fields.checkboxField('tagged', 0, tagged_label) }}
+                                        </div>
+                                        <div class="d-flex flex-row-reverse">
+                                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];

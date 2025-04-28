@@ -48,7 +48,7 @@ use Glpi\DBAL\QueryFunction;
  **/
 class ItemVirtualMachine extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype = 'itemtype';
     public static $items_id = 'items_id';
     public $dohistory       = true;
@@ -145,7 +145,7 @@ class ItemVirtualMachine extends CommonDBChild
             $this->check($ID, READ);
             $asset->getFromDB($this->fields['items_id']);
         } else {
-           // Create item
+            // Create item
             $asset = new $options['itemtype']();
             $this->check(-1, CREATE, $options);
             $asset->getFromDB($options['items_id']);
@@ -417,11 +417,11 @@ class ItemVirtualMachine extends CommonDBChild
             ]
         ]);
 
-       //Virtual machine found, return ID
+        //Virtual machine found, return ID
         if (count($iterator) == 1) {
             $result = $iterator->current();
             return $result['id'];
-        } else if (count($iterator) > 1) {
+        } elseif (count($iterator) > 1) {
             trigger_error(
                 sprintf(
                     'findVirtualMachine expects to get one result, %1$s found in query "%2$s".',

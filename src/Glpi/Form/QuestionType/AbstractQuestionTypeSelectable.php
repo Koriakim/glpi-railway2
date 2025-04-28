@@ -57,31 +57,31 @@ abstract class AbstractQuestionTypeSelectable extends AbstractQuestionType imple
     public function getFormEditorJsOptions(): string
     {
         return <<<JS
-            {
-                "extractDefaultValue": function (question) {
-                    const options = question.find('[data-glpi-form-editor-selectable-question-options]')
-                        .data('manager').getOptions();
+                {
+                    "extractDefaultValue": function (question) {
+                        const options = question.find('[data-glpi-form-editor-selectable-question-options]')
+                            .data('manager').getOptions();
 
-                    return new EditorConvertedExtractedSelectableDefaultValue(options);
-                },
-                "convertDefaultValue": function (question, value) {
-                    if (value == null) {
-                        return '';
+                        return new EditorConvertedExtractedSelectableDefaultValue(options);
+                    },
+                    "convertDefaultValue": function (question, value) {
+                        if (value == null) {
+                            return '';
+                        }
+
+                        if (!(value instanceof EditorConvertedExtractedSelectableDefaultValue)) {
+                            return '';
+                        }
+
+                        setTimeout(() => {
+                            question.find('[data-glpi-form-editor-selectable-question-options]')
+                                .data('manager').setOptions(value.getOptions());
+                        });
+
+                        return value.getOptions();
                     }
-
-                    if (!(value instanceof EditorConvertedExtractedSelectableDefaultValue)) {
-                        return '';
-                    }
-
-                    setTimeout(() => {
-                        question.find('[data-glpi-form-editor-selectable-question-options]')
-                            .data('manager').setOptions(value.getOptions());
-                    });
-
-                    return value.getOptions();
                 }
-            }
-        JS;
+            JS;
     }
 
     /**
@@ -106,37 +106,37 @@ abstract class AbstractQuestionTypeSelectable extends AbstractQuestionType imple
     {
         // language=Twig
         $js = <<<TWIG
-            import("{{ js_path('js/modules/Forms/QuestionSelectable.js') }}").then((m) => {
-                {% if question is not null %}
-                    const container = $('div[data-glpi-form-editor-selectable-question-options="{{ rand }}"]');
-                    container.data(
-                        'manager',
-                        new m.GlpiFormQuestionTypeSelectable('{{ input_type|escape('js') }}', container)
-                    );
-                {% else %}
-                    $(document).on('glpi-form-editor-question-type-changed', function(e, question, type) {
-                        if (type === '{{ question_type|escape('js') }}') {
-                            const container = question.find('div[data-glpi-form-editor-selectable-question-options]');
-                            container.data(
-                                'manager',
-                                new m.GlpiFormQuestionTypeSelectable('{{ input_type|escape('js') }}', container)
-                            );
-                        }
-                    });
+                        import("{{ js_path('js/modules/Forms/QuestionSelectable.js') }}").then((m) => {
+                            {% if question is not null %}
+                                const container = $('div[data-glpi-form-editor-selectable-question-options="{{ rand }}"]');
+                                container.data(
+                                    'manager',
+                                    new m.GlpiFormQuestionTypeSelectable('{{ input_type|escape('js') }}', container)
+                                );
+                            {% else %}
+                                $(document).on('glpi-form-editor-question-type-changed', function(e, question, type) {
+                                    if (type === '{{ question_type|escape('js') }}') {
+                                        const container = question.find('div[data-glpi-form-editor-selectable-question-options]');
+                                        container.data(
+                                            'manager',
+                                            new m.GlpiFormQuestionTypeSelectable('{{ input_type|escape('js') }}', container)
+                                        );
+                                    }
+                                });
 
-                    $(document).on('glpi-form-editor-question-duplicated', function(e, question, new_question) {
-                        const question_type = question.find('input[data-glpi-form-editor-original-name="type"]').val();
-                        if (question_type === '{{ question_type|escape('js') }}') {
-                            const container = new_question.find('div[data-glpi-form-editor-selectable-question-options]');
-                            container.data(
-                                'manager',
-                                new m.GlpiFormQuestionTypeSelectable('{{ input_type|escape('js') }}', container)
-                            );
-                        }
-                    });
-                {% endif %}
-            });
-TWIG;
+                                $(document).on('glpi-form-editor-question-duplicated', function(e, question, new_question) {
+                                    const question_type = question.find('input[data-glpi-form-editor-original-name="type"]').val();
+                                    if (question_type === '{{ question_type|escape('js') }}') {
+                                        const container = new_question.find('div[data-glpi-form-editor-selectable-question-options]');
+                                        container.data(
+                                            'manager',
+                                            new m.GlpiFormQuestionTypeSelectable('{{ input_type|escape('js') }}', container)
+                                        );
+                                    }
+                                });
+                            {% endif %}
+                        });
+            TWIG;
 
         return $js;
     }
@@ -301,82 +301,82 @@ TWIG;
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-        {% set rand = random() %}
+                    {% set rand = random() %}
 
-        {% macro addOption(input_type, checked, value, translations, uuid = null, extra_details = false, disabled = false, hide_default_value_input = false) %}
-            {% if uuid is null %}
-                {% set uuid = random() %}
-            {% endif %}
+                    {% macro addOption(input_type, checked, value, translations, uuid = null, extra_details = false, disabled = false, hide_default_value_input = false) %}
+                        {% if uuid is null %}
+                            {% set uuid = random() %}
+                        {% endif %}
 
-            <div
-                class="d-flex gap-1 align-items-center mb-2"
-                data-glpi-form-selectable-question-option
-                {{ extra_details ? 'data-glpi-form-editor-question-extra-details' : '' }}
-            >
-                <i
-                    role="button"
-                    aria-label="{{ translations.move_option }}"
-                    data-glpi-form-editor-question-extra-details
-                    data-glpi-form-editor-question-option-handle
-                    class="ti ti-grip-horizontal cursor-grab ms-auto me-1"
-                    style="{{ disabled ? 'visibility: hidden;' : '' }}"
-                    draggable="true"
-                ></i>
-                <input
-                    type="{{ input_type }}"
-                    name="default_value[]"
-                    value="{{ uuid }}"
-                    class="form-check-input {{ hide_default_value_input ? 'd-none' : '' }}"
-                    aria-label="{{ translations.default_option }}"
-                    {{ checked ? 'checked' : '' }}
-                    {{ disabled ? 'disabled' : '' }}
-                >
-                <input
-                    data-glpi-form-editor-specific-question-extra-data
-                    type="text"
-                    class="flex-grow-1 w-full"
-                    style="border: none transparent; outline: none; box-shadow: none;"
-                    name="options[{{ uuid }}]"
-                    value="{{ value }}"
-                    placeholder="{{ translations.enter_option }}"
-                    aria-label="{{ translations.selectable_option }}"
-                >
-                <button
-                    class="btn btn-sm btn-icon btn-ghost-secondary {{ value ? '' : 'd-none' }}"
-                    aria-label="{{ translations.remove_option }}"
-                    data-glpi-form-editor-question-extra-details
-                    data-glpi-form-editor-question-option-remove
-                >
-                    <i class="ti ti-x"></i>
-                </button>
-            </div>
-        {% endmacro %}
+                        <div
+                            class="d-flex gap-1 align-items-center mb-2"
+                            data-glpi-form-selectable-question-option
+                            {{ extra_details ? 'data-glpi-form-editor-question-extra-details' : '' }}
+                        >
+                            <i
+                                role="button"
+                                aria-label="{{ translations.move_option }}"
+                                data-glpi-form-editor-question-extra-details
+                                data-glpi-form-editor-question-option-handle
+                                class="ti ti-grip-horizontal cursor-grab ms-auto me-1"
+                                style="{{ disabled ? 'visibility: hidden;' : '' }}"
+                                draggable="true"
+                            ></i>
+                            <input
+                                type="{{ input_type }}"
+                                name="default_value[]"
+                                value="{{ uuid }}"
+                                class="form-check-input {{ hide_default_value_input ? 'd-none' : '' }}"
+                                aria-label="{{ translations.default_option }}"
+                                {{ checked ? 'checked' : '' }}
+                                {{ disabled ? 'disabled' : '' }}
+                            >
+                            <input
+                                data-glpi-form-editor-specific-question-extra-data
+                                type="text"
+                                class="flex-grow-1 w-full"
+                                style="border: none transparent; outline: none; box-shadow: none;"
+                                name="options[{{ uuid }}]"
+                                value="{{ value }}"
+                                placeholder="{{ translations.enter_option }}"
+                                aria-label="{{ translations.selectable_option }}"
+                            >
+                            <button
+                                class="btn btn-sm btn-icon btn-ghost-secondary {{ value ? '' : 'd-none' }}"
+                                aria-label="{{ translations.remove_option }}"
+                                data-glpi-form-editor-question-extra-details
+                                data-glpi-form-editor-question-option-remove
+                            >
+                                <i class="ti ti-x"></i>
+                            </button>
+                        </div>
+                    {% endmacro %}
 
-        <template>
-            {{ _self.addOption(input_type, false, '', translations, null, true, true, hide_default_value_input) }}
-        </template>
+                    <template>
+                        {{ _self.addOption(input_type, false, '', translations, null, true, true, hide_default_value_input) }}
+                    </template>
 
-        <div class="{{ selectable_question_options_class|default('') }}">
-            <div
-                data-glpi-form-editor-selectable-question-options="{{ rand }}"
-                {{ hide_container_when_unfocused ? 'data-glpi-form-editor-question-extra-details' : '' }}
-            >
-                {% for value in values %}
-                    {{ _self.addOption(input_type, value.checked, value.value, translations, value.uuid, false, false, hide_default_value_input) }}
-                {% endfor %}
-            </div>
+                    <div class="{{ selectable_question_options_class|default('') }}">
+                        <div
+                            data-glpi-form-editor-selectable-question-options="{{ rand }}"
+                            {{ hide_container_when_unfocused ? 'data-glpi-form-editor-question-extra-details' : '' }}
+                        >
+                            {% for value in values %}
+                                {{ _self.addOption(input_type, value.checked, value.value, translations, value.uuid, false, false, hide_default_value_input) }}
+                            {% endfor %}
+                        </div>
 
-            {{ _self.addOption(input_type, false, '', translations, null, true, true, hide_default_value_input) }}
-        </div>
+                        {{ _self.addOption(input_type, false, '', translations, null, true, true, hide_default_value_input) }}
+                    </div>
 
-        <script>
-            // TODO: avoid this, the script should probably run in a dedicated method that the framework can call at
-            // the right time.
-            $("[data-glpi-form-editor-container]").on('initialized', () => {
-                {$this->getFormInlineScript()}
-            });
-        </script>
-TWIG;
+                    <script>
+                        // TODO: avoid this, the script should probably run in a dedicated method that the framework can call at
+                        // the right time.
+                        $("[data-glpi-form-editor-container]").on('initialized', () => {
+                            {$this->getFormInlineScript()}
+                        });
+                    </script>
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -402,26 +402,26 @@ TWIG;
         Question $question,
     ): string {
         $template = <<<TWIG
-            {% for value in values %}
-                <label class="form-check {{ loop.last ? 'mb-0' : '' }}">
-                    <input
-                        type="{{ input_type }}"
-                        name="{{ question.getEndUserInputName() }}[]"
-                        value="{{ value.uuid }}"
-                        class="form-check-input" {{ value.checked ? 'checked' : '' }}
-                    >
-                    <span class="form-check-label">
-                        {{ translate_item_key(
-                            question,
-                            '%s-%s'|format(
-                                constant('Glpi\\\\Form\\\\QuestionType\\\\AbstractQuestionTypeSelectable::TRANSLATION_KEY_OPTION'),
-                                value.uuid
-                            )
-                        ) }}
-                    </span>
-                </label>
-            {% endfor %}
-TWIG;
+                        {% for value in values %}
+                            <label class="form-check {{ loop.last ? 'mb-0' : '' }}">
+                                <input
+                                    type="{{ input_type }}"
+                                    name="{{ question.getEndUserInputName() }}[]"
+                                    value="{{ value.uuid }}"
+                                    class="form-check-input" {{ value.checked ? 'checked' : '' }}
+                                >
+                                <span class="form-check-label">
+                                    {{ translate_item_key(
+                                        question,
+                                        '%s-%s'|format(
+                                            constant('Glpi\\\\Form\\\\QuestionType\\\\AbstractQuestionTypeSelectable::TRANSLATION_KEY_OPTION'),
+                                            value.uuid
+                                        )
+                                    ) }}
+                                </span>
+                            </label>
+                        {% endfor %}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -441,7 +441,7 @@ TWIG;
         // Replace uuids by labels
         $options = $this->getOptions($question);
         $answer = array_map(
-            fn ($uuid) => $options[$uuid] ?? '',
+            fn($uuid) => $options[$uuid] ?? '',
             $answer
         );
 

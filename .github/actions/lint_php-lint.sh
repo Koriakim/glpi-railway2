@@ -12,6 +12,11 @@ vendor/bin/phpcs \
   --cache ~/phpcs.cache \
   .
 
+/vendor/bin/php-cs-fixer check \
+  --show-progress=dots \
+  --verbose \
+  --diff
+
 echo "Run code static analysis"
 vendor/bin/phpstan analyze \
   --ansi \

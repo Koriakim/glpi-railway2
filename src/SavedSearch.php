@@ -51,13 +51,13 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
 
     public static $rightname               = 'bookmark_public';
 
-    const SEARCH = 1; //SEARCH SYSTEM bookmark
-    const URI    = 2;
-    const ALERT  = 3; //SEARCH SYSTEM search alert
+    public const SEARCH = 1; //SEARCH SYSTEM bookmark
+    public const URI    = 2;
+    public const ALERT  = 3; //SEARCH SYSTEM search alert
 
-    const COUNT_NO = 0;
-    const COUNT_YES = 1;
-    const COUNT_AUTO = 2;
+    public const COUNT_NO = 0;
+    public const COUNT_YES = 1;
+    public const COUNT_AUTO = 2;
 
     public static function getForbiddenActionsForMenu()
     {
@@ -164,8 +164,8 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                             $ma->addMessage($saved_search->getErrorMessage(ERROR_RIGHT));
                         }
                     } else {
-                         $ma->itemDone($saved_search->getType(), $id, MassiveAction::ACTION_KO);
-                         $ma->addMessage($saved_search->getErrorMessage(ERROR_NOT_FOUND));
+                        $ma->itemDone($saved_search->getType(), $id, MassiveAction::ACTION_KO);
+                        $ma->addMessage($saved_search->getErrorMessage(ERROR_NOT_FOUND));
                     }
                 }
                 break;
@@ -190,8 +190,8 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                             $ma->addMessage($saved_search->getErrorMessage(ERROR_RIGHT));
                         }
                     } else {
-                         $ma->itemDone($saved_search->getType(), $id, MassiveAction::ACTION_KO);
-                         $ma->addMessage($saved_search->getErrorMessage(ERROR_NOT_FOUND));
+                        $ma->itemDone($saved_search->getType(), $id, MassiveAction::ACTION_KO);
+                        $ma->addMessage($saved_search->getErrorMessage(ERROR_NOT_FOUND));
                     }
                 }
                 break;
@@ -217,8 +217,8 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                             $ma->addMessage($saved_search->getErrorMessage(ERROR_RIGHT));
                         }
                     } else {
-                         $ma->itemDone($saved_search->getType(), $id, MassiveAction::ACTION_KO);
-                         $ma->addMessage($saved_search->getErrorMessage(ERROR_NOT_FOUND));
+                        $ma->itemDone($saved_search->getType(), $id, MassiveAction::ACTION_KO);
+                        $ma->addMessage($saved_search->getErrorMessage(ERROR_NOT_FOUND));
                     }
                 }
                 break;
@@ -243,8 +243,8 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                             $ma->addMessage($saved_search->getErrorMessage(ERROR_RIGHT));
                         }
                     } else {
-                         $ma->itemDone($saved_search->getType(), $id, MassiveAction::ACTION_KO);
-                         $ma->addMessage($saved_search->getErrorMessage(ERROR_NOT_FOUND));
+                        $ma->itemDone($saved_search->getType(), $id, MassiveAction::ACTION_KO);
+                        $ma->addMessage($saved_search->getErrorMessage(ERROR_NOT_FOUND));
                     }
                 }
                 break;
@@ -424,7 +424,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
     public function pre_updateInDB()
     {
 
-       // Set new user if initial user have been deleted
+        // Set new user if initial user have been deleted
         if (
             ($this->fields['users_id'] == 0)
             && ($uid = Session::getLoginUserID())
@@ -458,7 +458,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
         if (empty($this->fields) && $ID > 0) {
             $this->getFromDB($ID);
         }
-       // If this form is used to edit a saved search from the search screen
+        // If this form is used to edit a saved search from the search screen
         $is_ajax = $options['ajax'] ?? false;
         if ($is_ajax && $this->getID() > 0) {
             // Allow an extra option to save as a new search instead of editing the current one
@@ -530,7 +530,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
         }
         $url .= "?" . Toolbox::append_params($params);
 
-       // keep last loaded to set an active state on saved search panel
+        // keep last loaded to set an active state on saved search panel
         $_SESSION['glpi_loaded_savedsearch'] = $ID;
 
         Html::redirect($url);
@@ -576,7 +576,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             && ($this->fields['type'] != self::URI)
         ) {
             $dd = new SavedSearch_User();
-           // Is default view for this itemtype already exists ?
+            // Is default view for this itemtype already exists ?
             $iterator = $DB->request([
                 'SELECT' => 'id',
                 'FROM'   => 'glpi_savedsearches_users',
@@ -620,7 +620,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             && ($this->fields['type'] != self::URI)
         ) {
             $dd = new SavedSearch_User();
-           // Is default view for this itemtype already exists ?
+            // Is default view for this itemtype already exists ?
             $iterator = $DB->request([
                 'SELECT' => 'id',
                 'FROM'   => 'glpi_savedsearches_users',
@@ -1034,36 +1034,36 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             $iterator = $DB->request(['FROM'   => self::getTable(),
                 'FIELDS' => ['id', 'query', 'itemtype', 'type'],
                 'WHERE'  => ['last_execution_date'
-                                                => ['<' , $lastdate->format('Y-m-d H:i:s')]
+                                                => ['<', $lastdate->format('Y-m-d H:i:s')]
                 ]
             ]);
 
             if ($iterator->numrows()) {
-                 //prepare variables we'll use
-                 $self = new self();
-                 $now = date('Y-m-d H:i:s');
+                //prepare variables we'll use
+                $self = new self();
+                $now = date('Y-m-d H:i:s');
 
-                 $query = $DB->buildUpdate(
-                     self::getTable(),
-                     [
-                         'last_execution_time'   => new QueryParam(),
-                         'last_execution_date'   => new QueryParam()
-                     ],
-                     [
-                         'id'                    => new QueryParam()
-                     ]
-                 );
-                 $stmt = $DB->prepare($query);
+                $query = $DB->buildUpdate(
+                    self::getTable(),
+                    [
+                        'last_execution_time'   => new QueryParam(),
+                        'last_execution_date'   => new QueryParam()
+                    ],
+                    [
+                        'id'                    => new QueryParam()
+                    ]
+                );
+                $stmt = $DB->prepare($query);
 
                 if (!isset($_SESSION['glpiname'])) {
-                     //required from search class
-                     $_SESSION['glpiname'] = 'crontab';
+                    //required from search class
+                    $_SESSION['glpiname'] = 'crontab';
                 }
                 if (!isset($_SESSION['glpigroups'])) {
                     $_SESSION['glpigroups'] = [];
                 }
 
-                 $in_transaction = $DB->inTransaction();
+                $in_transaction = $DB->inTransaction();
                 if (!$in_transaction) {
                     $DB->beginTransaction();
                 }
@@ -1071,10 +1071,10 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
                     try {
                         $self->fields = $row;
                         if ($data = $self->execute(true)) {
-                              $execution_time = $data['data']['execution_time'];
+                            $execution_time = $data['data']['execution_time'];
 
-                              $stmt->bind_param('sss', $execution_time, $now, $row['id']);
-                              $DB->executeStatement($stmt);
+                            $stmt->bind_param('sss', $execution_time, $now, $row['id']);
+                            $DB->executeStatement($stmt);
                         }
                     } catch (\Throwable $e) {
                         ErrorHandler::logCaughtException($e);
@@ -1084,7 +1084,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
 
                 $stmt->close();
                 if (!$in_transaction) {
-                     $DB->commit();
+                    $DB->commit();
                 }
 
                 $cron_status = 1;
@@ -1119,7 +1119,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
               && ($this->fields['last_execution_time'] <= $CFG_GLPI['max_time_for_count']))
         ) {
             $search = new Search();
-           //Do the same as self::getParameters() but getFromDB is useless
+            //Do the same as self::getParameters() but getFromDB is useless
             $query_tab = [];
             parse_str($this->getField('query'), $query_tab);
 
@@ -1181,7 +1181,7 @@ class SavedSearch extends CommonDBTM implements ExtraVisibilityCriteria
             return '';
         }
 
-       //get and clean criteria
+        //get and clean criteria
         $criteria = self::getVisibilityCriteria();
         unset($criteria['LEFT JOIN']);
         $criteria['FROM'] = self::getTable();

@@ -69,9 +69,9 @@ class TextType extends AbstractType
 
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.textareaField(name, field_options.enable_richtext ? value : value|html_to_text, label, field_options) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {{ fields.textareaField(name, field_options.enable_richtext ? value : value|html_to_text, label, field_options) }}
+            TWIG, $twig_params);
     }
 
     public function normalizeValue(mixed $value): ?string

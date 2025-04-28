@@ -119,7 +119,7 @@ class Provider
                             User::getTable() => 'id',
                         ]
                     ]
-                ] ,
+                ],
                 'WHERE'  => $where
             ];
         } else {
@@ -367,13 +367,13 @@ class Provider
                 ]);
                 break;
 
-           // Statuses speciale cases (no break)
+                // Statuses speciale cases (no break)
             case 'incoming':
                 $status = Ticket::INCOMING;
                 $params['icon']  = Ticket::getIcon();
                 $params['label'] = __("Incoming tickets");
                 $skip = true;
-               //no break
+                //no break
             case 'waiting':
                 if (!$skip) {
                     $status = Ticket::WAITING;
@@ -381,7 +381,7 @@ class Provider
                     $params['label'] = __("Pending tickets");
                     $skip = true;
                 }
-               //no break
+                //no break
             case 'assigned':
                 if (!$skip) {
                     $status = Ticket::ASSIGNED;
@@ -389,7 +389,7 @@ class Provider
                     $params['label'] = __("Assigned tickets");
                     $skip = true;
                 }
-             //no break
+                //no break
             case 'planned':
                 if (!$skip) {
                     $status = Ticket::PLANNED;
@@ -397,7 +397,7 @@ class Provider
                     $params['label'] = __("Planned tickets");
                     $skip = true;
                 }
-             //no break
+                //no break
             case 'solved':
                 if (!$skip) {
                     $status = Ticket::SOLVED;
@@ -405,7 +405,7 @@ class Provider
                     $params['label'] = __("Solved tickets");
                     $skip = true;
                 }
-             //no break
+                //no break
             case 'closed':
                 if (!$skip) {
                     $status = Ticket::CLOSED;
@@ -413,7 +413,7 @@ class Provider
                     $params['label'] = __("Closed tickets");
                     $skip = true;
                 }
-             //no break
+                //no break
             case 'status':
                 if (!$skip) {
                     $status = Ticket::INCOMING;
@@ -585,7 +585,7 @@ class Provider
             $names[$row['name']] = $row['username'];
         }
 
-       // set legend for each serie
+        // set legend for each serie
         $data['series'][0]['name'] = __('Late own and resolve');
         $data['series'][1]['name'] = __('Late resolve');
         $data['series'][2]['name'] = __('Late own');
@@ -594,7 +594,7 @@ class Provider
         $data['series'][1]['data'] = [];
         $data['series'][2]['data'] = [];
         $data['series'][3]['data'] = [];
-       // ensure thare are 2 values per user (late and in time)
+        // ensure thare are 2 values per user (late and in time)
         foreach ($names as $name => $username) {
             if (!isset($allLate[$name])) {
                 $allLate[$name] = 0;
@@ -732,7 +732,7 @@ class Provider
             $names[$row['name']] = $row['name'];
         }
 
-       // set legend for each serie
+        // set legend for each serie
         $data['series'][0]['name'] = __('Late own and resolve');
         $data['series'][1]['name'] = __('Late resolve');
         $data['series'][2]['name'] = __('Late own');
@@ -741,7 +741,7 @@ class Provider
         $data['series'][1]['data'] = [];
         $data['series'][2]['data'] = [];
         $data['series'][3]['data'] = [];
-       // ensure thare are 2 values per user (late and in time)
+        // ensure thare are 2 values per user (late and in time)
         foreach ($names as $name => $username) {
             if (!isset($allLate[$name])) {
                 $allLate[$name] = 0;
@@ -813,7 +813,7 @@ class Provider
         $fk_table    = $fk_item::getTable();
         $fk_itemtype = $fk_item::getType();
 
-       // try to autodetect searchoption id
+        // try to autodetect searchoption id
         $searchoptions = $item->rawSearchOptions();
         $found_so = array_filter($searchoptions, function ($searchoption) use ($fk_table) {
             return isset($searchoption['table']) && $searchoption['table'] === $fk_table;
@@ -1037,7 +1037,7 @@ class Provider
 
         $data = [];
         foreach ($iterator as $result) {
-            list($start_day, $end_day) = self::formatMonthyearDates($result['ticket_month']);
+            [$start_day, $end_day] = self::formatMonthyearDates($result['ticket_month']);
 
             $s_criteria['criteria'][0]['value'] = $start_day;
             $s_criteria['criteria'][1]['value'] = $end_day;
@@ -1211,13 +1211,13 @@ class Provider
             );
 
             if ($i === 0) {
-                 $monthsyears = array_keys($values);
+                $monthsyears = array_keys($values);
             }
             $values = array_values($values);
 
             foreach ($values as $index => $number) {
                 $current_monthyear = $monthsyears[$index];
-                list($start_day, $end_day) = self::formatMonthyearDates($current_monthyear);
+                [$start_day, $end_day] = self::formatMonthyearDates($current_monthyear);
                 $serie['search']['criteria'][0]['value'] = $start_day;
                 $serie['search']['criteria'][1]['value'] = $end_day;
 
@@ -1374,7 +1374,7 @@ class Provider
             'series' => []
         ];
         foreach ($iterator as $result) {
-            list($start_day, $end_day) = self::formatMonthyearDates($result['period']);
+            [$start_day, $end_day] = self::formatMonthyearDates($result['period']);
             $s_params['criteria'][1]['value'] = $start_day;
             $s_params['criteria'][2]['value'] = $end_day;
 
@@ -1450,14 +1450,14 @@ class Provider
         $case_array = explode('_', $case);
         if ($case_array[0] == 'user') {
             $where["$ug_table.is_deleted"]  = 0;
-            $params['icon'] = $params['icon'] ?? User::getIcon();
-        } else if ($case_array[0] == 'group') {
+            $params['icon'] ??= User::getIcon();
+        } elseif ($case_array[0] == 'group') {
             $li_table = Group_Ticket::getTable();
             $ug_table = Group::getTable();
             $n_fields = [
                 "$ug_table.completename as first"
             ];
-            $params['icon'] = $params['icon'] ?? Group::getIcon();
+            $params['icon'] ??= Group::getIcon();
         }
 
         $type = 0;

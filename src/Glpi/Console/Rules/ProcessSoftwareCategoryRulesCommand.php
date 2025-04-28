@@ -102,7 +102,7 @@ class ProcessSoftwareCategoryRulesCommand extends AbstractCommand
                     $progress_bar,
                     OutputInterface::VERBOSITY_NORMAL
                 );
-                 continue;
+                continue;
             }
 
             $rule_collection = new \RuleSoftwareCategoryCollection();

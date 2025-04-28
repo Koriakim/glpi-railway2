@@ -99,7 +99,7 @@ class NotificationTargetCronTask extends NotificationTarget
             'foreach' => true
         ]);
 
-       //Tags with just lang
+        //Tags with just lang
         $tags = ['crontask.warning'
                      => __('The following automatic actions are in error. They require intervention.')
         ];

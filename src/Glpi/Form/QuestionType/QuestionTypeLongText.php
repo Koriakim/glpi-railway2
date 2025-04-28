@@ -37,7 +37,6 @@ namespace Glpi\Form\QuestionType;
 
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\JsonFieldInterface;
-use Glpi\Form\Condition\ConditionHandler\ConditionHandlerInterface;
 use Glpi\Form\Condition\ConditionHandler\RichTextConditionHandler;
 use Glpi\Form\Condition\UsedAsCriteriaInterface;
 use Glpi\Form\Migration\FormQuestionDataConverterInterface;
@@ -58,78 +57,78 @@ final class QuestionTypeLongText extends AbstractQuestionType implements
     public function getFormEditorJsOptions(): string
     {
         return <<<JS
-            {
-                "extractDefaultValue": function (question) {
-                    const GlpiFormEditorConvertedExtractedDefaultValue = $("[data-glpi-form-editor-container]")
-                        .data('EditorConvertedExtractedDefaultValue')
-                    ;
+                {
+                    "extractDefaultValue": function (question) {
+                        const GlpiFormEditorConvertedExtractedDefaultValue = $("[data-glpi-form-editor-container]")
+                            .data('EditorConvertedExtractedDefaultValue')
+                        ;
 
-                    const textarea = question.find('[data-glpi-form-editor-question-type-specific]')
-                        .find('[name="default_value"], [data-glpi-form-editor-original-name="default_value"]');
-                    const inst = tinyMCE.get(textarea.attr('id'));
+                        const textarea = question.find('[data-glpi-form-editor-question-type-specific]')
+                            .find('[name="default_value"], [data-glpi-form-editor-original-name="default_value"]');
+                        const inst = tinyMCE.get(textarea.attr('id'));
 
-                    if (inst) {
-                        let content = inst.getContent();
-                        let tmp = document.createElement("DIV");
-                        tmp.innerHTML = content;
-                        content = tmp.textContent || tmp.innerText || "";
+                        if (inst) {
+                            let content = inst.getContent();
+                            let tmp = document.createElement("DIV");
+                            tmp.innerHTML = content;
+                            content = tmp.textContent || tmp.innerText || "";
 
-                        return new GlpiFormEditorConvertedExtractedDefaultValue(
-                            GlpiFormEditorConvertedExtractedDefaultValue.DATATYPE.STRING,
-                            content
-                        );
-                    }
+                            return new GlpiFormEditorConvertedExtractedDefaultValue(
+                                GlpiFormEditorConvertedExtractedDefaultValue.DATATYPE.STRING,
+                                content
+                            );
+                        }
 
-                    return '';
-                },
-                "convertDefaultValue": function (question, value) {
-                    const GlpiFormEditorConvertedExtractedDefaultValue = $("[data-glpi-form-editor-container]")
-                        .data('EditorConvertedExtractedDefaultValue')
-                    ;
-
-                    if (value == null) {
                         return '';
+                    },
+                    "convertDefaultValue": function (question, value) {
+                        const GlpiFormEditorConvertedExtractedDefaultValue = $("[data-glpi-form-editor-container]")
+                            .data('EditorConvertedExtractedDefaultValue')
+                        ;
+
+                        if (value == null) {
+                            return '';
+                        }
+
+                        // Only accept string values
+                        if (value.getDatatype() !== GlpiFormEditorConvertedExtractedDefaultValue.DATATYPE.STRING) {
+                            return '';
+                        }
+
+                        const textarea = question.find('[data-glpi-form-editor-question-type-specific]')
+                            .find('[name="default_value"], [data-glpi-form-editor-original-name="default_value"]');
+                        textarea.val(value.getDefaultValue());
+
+                        return textarea.val();
                     }
-
-                    // Only accept string values
-                    if (value.getDatatype() !== GlpiFormEditorConvertedExtractedDefaultValue.DATATYPE.STRING) {
-                        return '';
-                    }
-
-                    const textarea = question.find('[data-glpi-form-editor-question-type-specific]')
-                        .find('[name="default_value"], [data-glpi-form-editor-original-name="default_value"]');
-                    textarea.val(value.getDefaultValue());
-
-                    return textarea.val();
                 }
-            }
-        JS;
+            JS;
     }
 
     #[Override]
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.textareaField(
-                'default_value',
-                question is not null ? question.fields.default_value : '',
-                "",
-                {
-                    'placeholder'    : placeholder,
-                    'enable_richtext': true,
-                    'editor_height'  : "0",
-                    'rows'           : 1,
-                    'init'           : question is not null ? true: false,
-                    'is_horizontal'  : false,
-                    'full_width'     : true,
-                    'no_label'       : true,
-                    'aria_label'     : aria_label,
-                    'mb'             : '',
-                }
-            ) }}
-TWIG;
+                        {{ fields.textareaField(
+                            'default_value',
+                            question is not null ? question.fields.default_value : '',
+                            "",
+                            {
+                                'placeholder'    : placeholder,
+                                'enable_richtext': true,
+                                'editor_height'  : "0",
+                                'rows'           : 1,
+                                'init'           : question is not null ? true: false,
+                                'is_horizontal'  : false,
+                                'full_width'     : true,
+                                'no_label'       : true,
+                                'aria_label'     : aria_label,
+                                'mb'             : '',
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -149,24 +148,24 @@ TWIG;
             1
         );
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.textareaField(
-                question.getEndUserInputName(),
-                default_value,
-                "",
-                {
-                    'enable_richtext': true,
-                    'editor_height'  : "100",
-                    'rows'           : 1,
-                    'init'           : question is not null ? true   : false,
-                    'is_horizontal'  : false,
-                    'full_width'     : true,
-                    'no_label'       : true,
-                    'mb'             : '',
-                }
-            ) }}
-TWIG;
+                        {{ fields.textareaField(
+                            question.getEndUserInputName(),
+                            default_value,
+                            "",
+                            {
+                                'enable_richtext': true,
+                                'editor_height'  : "100",
+                                'rows'           : 1,
+                                'init'           : question is not null ? true   : false,
+                                'is_horizontal'  : false,
+                                'full_width'     : true,
+                                'no_label'       : true,
+                                'mb'             : '',
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

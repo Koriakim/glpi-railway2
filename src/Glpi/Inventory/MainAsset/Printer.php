@@ -38,15 +38,11 @@ namespace Glpi\Inventory\MainAsset;
 
 use Blacklist;
 use CommonDBTM;
-use Glpi\Asset\Asset_PeripheralAsset;
-use Glpi\Inventory\Conf;
 use IPAddress;
-use Printer as GPrinter;
 use PrinterLog;
 use PrinterModel;
 use PrinterType;
 use RuleDictionnaryPrinterCollection;
-use RuleImportAssetCollection;
 
 class Printer extends NetworkEquipment
 {
@@ -142,7 +138,7 @@ class Printer extends NetworkEquipment
                     $pcounter = (object)$this->extra_data['pagecounters'];
                     foreach ($mapping_pcounter as $origin => $dest) {
                         if (property_exists($pcounter, $origin)) {
-                             $pcounter->$dest = $pcounter->$origin;
+                            $pcounter->$dest = $pcounter->$origin;
                         }
 
                         if (property_exists($pcounter, 'total_pages')) {

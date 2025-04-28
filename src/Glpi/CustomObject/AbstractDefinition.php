@@ -215,9 +215,9 @@ abstract class AbstractDefinition extends CommonDBTM
                 'has_rights_enabled'    => $this->hasRightsEnabled(),
                 'reserved_system_names' => $definition_manager->getReservedSystemNames(),
                 'existing_system_names' => array_values(array_filter(array_map(
-                    static fn (self $definition) => $definition->fields['system_name'],
+                    static fn(self $definition) => $definition->fields['system_name'],
                     $definition_manager->getDefinitions()
-                ), fn ($name) => $name !== $this->fields['system_name'])),
+                ), fn($name) => $name !== $this->fields['system_name'])),
                 'item_count'            => $item_count,
             ]
         );
@@ -245,7 +245,7 @@ abstract class AbstractDefinition extends CommonDBTM
 
         $central_profiles = \array_filter(
             $profiles_data,
-            static fn (array $profile) => $profile['interface'] !== 'heldesk'
+            static fn(array $profile) => $profile['interface'] !== 'heldesk'
         );
 
         $nb_cb_per_col = array_fill_keys(
@@ -338,7 +338,7 @@ abstract class AbstractDefinition extends CommonDBTM
 
         usort(
             $translations,
-            static fn (array $a, array $b) => strnatcasecmp($CFG_GLPI['languages'][$a['language']][0], $CFG_GLPI['languages'][$b['language']][0])
+            static fn(array $a, array $b) => strnatcasecmp($CFG_GLPI['languages'][$a['language']][0], $CFG_GLPI['languages'][$b['language']][0])
         );
 
         $rand = mt_rand();
@@ -402,7 +402,7 @@ abstract class AbstractDefinition extends CommonDBTM
                 $translations[$input['language']] = $input['plurals'];
                 unset($input['_save_translation'], $input['language'], $input['plurals']);
                 $input['translations'] = $translations;
-            } else if (array_key_exists('one', $input['plurals'])) {
+            } elseif (array_key_exists('one', $input['plurals'])) {
                 $custom_field = new CustomFieldDefinition();
                 if ($custom_field->getFromDB($input['field']) && $custom_field->fields[static::getForeignKeyField()] === $this->getID()) {
                     $translations = $custom_field->getDecodedTranslationsField();
@@ -460,7 +460,7 @@ abstract class AbstractDefinition extends CommonDBTM
                     ERROR
                 );
                 $has_errors = true;
-            } else if (in_array($input['system_name'], static::getDefinitionManagerClass()::getInstance()->getReservedSystemNames(), true)) {
+            } elseif (in_array($input['system_name'], static::getDefinitionManagerClass()::getInstance()->getReservedSystemNames(), true)) {
                 Session::addMessageAfterRedirect(
                     htmlescape(sprintf(
                         __('The system name must not be the reserved word "%s".'),
@@ -470,7 +470,7 @@ abstract class AbstractDefinition extends CommonDBTM
                     ERROR
                 );
                 $has_errors = true;
-            } else if (preg_match('/(Model|Type)$/i', $input['system_name']) === 1) {
+            } elseif (preg_match('/(Model|Type)$/i', $input['system_name']) === 1) {
                 Session::addMessageAfterRedirect(
                     __s('The system name must not end with the word "Model" or the word "Type".'),
                     false,
@@ -478,7 +478,7 @@ abstract class AbstractDefinition extends CommonDBTM
                 );
                 $has_errors = true;
             } else {
-                $existing_system_names = array_map(static fn ($d) => strtolower($d->fields['system_name'] ?? ''), static::getDefinitionManagerClass()::getInstance()->getDefinitions());
+                $existing_system_names = array_map(static fn($d) => strtolower($d->fields['system_name'] ?? ''), static::getDefinitionManagerClass()::getInstance()->getDefinitions());
                 if (
                     ($this->isNewItem() || ($input['system_name'] !== $this->fields['system_name']))
                     && in_array(strtolower($input['system_name']), $existing_system_names, true)
@@ -803,19 +803,19 @@ abstract class AbstractDefinition extends CommonDBTM
                 // language=Twig
                 return TemplateRenderer::getInstance()->renderFromStringTemplate(
                     <<<TWIG
-                    {% if translations is not empty %}
-                        <ul>
-                            {% for language, plurals in translations %}
-                                <li>
-                                    {{ config('languages')[language][0] }}:
-                                    {% include "pages/admin/customobjects/plurals.html.twig" with {
-                                        'plurals': plurals,
-                                    } only %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-TWIG,
+                                            {% if translations is not empty %}
+                                                <ul>
+                                                    {% for language, plurals in translations %}
+                                                        <li>
+                                                            {{ config('languages')[language][0] }}:
+                                                            {% include "pages/admin/customobjects/plurals.html.twig" with {
+                                                                'plurals': plurals,
+                                                            } only %}
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                        TWIG,
                     [
                         'translations' => $translations,
                     ]
@@ -834,9 +834,9 @@ TWIG,
             case 'icon':
                 $value = htmlescape($values[$field]);
                 return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                    {% import 'components/form/fields_macros.html.twig' as fields %}
-                    {{ fields.dropdownWebIcons(name, value, '', {no_label: true, width: '200px'}) }}
-TWIG, ['name' => $name, 'value' => $value]);
+                                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                                        {{ fields.dropdownWebIcons(name, value, '', {no_label: true, width: '200px'}) }}
+                    TWIG, ['name' => $name, 'value' => $value]);
         }
         return parent::getSpecificValueToSelect($field, $name, $values, $options);
     }
@@ -907,7 +907,7 @@ TWIG, ['name' => $name, 'value' => $value]);
             }
 
             $available_categories = array_map(
-                fn (Language_Category $category) => $category->id,
+                fn(Language_Category $category) => $category->id,
                 self::getPluralFormsForLanguage($language)
             );
             foreach ($values as $category => $translation) {

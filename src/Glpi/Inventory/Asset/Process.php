@@ -38,7 +38,6 @@ namespace Glpi\Inventory\Asset;
 
 use Glpi\Inventory\Conf;
 use Item_Process;
-use Toolbox;
 
 class Process extends InventoryAsset
 {
@@ -130,7 +129,7 @@ class Process extends InventoryAsset
         }
 
         if ((!$this->main_asset || !$this->main_asset->isPartial()) && count($db_itemProcess) != 0) {
-           // Delete Item_Process in DB
+            // Delete Item_Process in DB
             foreach ($db_itemProcess as $dbid => $data) {
                 if ($data['is_dynamic'] == 1) {
                     //Delete only dynamics

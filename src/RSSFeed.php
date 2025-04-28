@@ -45,7 +45,7 @@ use SimplePie\SimplePie;
  **/
 class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     public static $rightname    = 'rssfeed_public';
@@ -220,7 +220,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
             ];
         }
 
-       // Profiles
+        // Profiles
         if ($forceall || isset($_SESSION["glpiactiveprofile"]['id'])) {
             $join['glpi_profiles_rssfeeds'] = [
                 'ON' => [
@@ -260,7 +260,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
         }
 
         if (isset($_SESSION["glpiactiveentities"]) && count($_SESSION["glpiactiveentities"])) {
-           // Force complete SQL not summary when access to all entities
+            // Force complete SQL not summary when access to all entities
             $restrict = getEntitiesRestrictCriteria('glpi_entities_rssfeeds', '', '', true, true);
             if (count($restrict)) {
                 $orwhere[] = $restrict;
@@ -417,7 +417,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
             'massiveaction'      => false
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
 
         return $tab;
@@ -576,11 +576,11 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
         // Test _rss cache directory. If permission trouble : unable to edit
         if (Toolbox::testWriteAccessToDirectory(GLPI_RSS_DIR) > 0) {
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="alert alert-danger">
-                    <i class="alert-icon ti ti-alert-triangle"></i>
-                    <div class="alert-title">{{ msg }}</div>
-                </div>
-TWIG, ['msg' => __('Check permissions to the directory: %s', GLPI_RSS_DIR)]);
+                                <div class="alert alert-danger">
+                                    <i class="alert-icon ti ti-alert-triangle"></i>
+                                    <div class="alert-title">{{ msg }}</div>
+                                </div>
+                TWIG, ['msg' => __('Check permissions to the directory: %s', GLPI_RSS_DIR)]);
             return false;
         }
 
@@ -796,7 +796,7 @@ TWIG, ['msg' => __('Check permissions to the directory: %s', GLPI_RSS_DIR)]);
         $rssfeed = new self();
         foreach ($iterator as $data) {
             if ($rssfeed->getFromDB($data['id'])) {
-               // Force fetching feeds
+                // Force fetching feeds
                 if ($feed = self::getRSSFeed($data['url'], $data['refresh_rate'])) {
                     // Store feeds in array of feeds
                     $items = array_merge($items, $feed->get_items(0, $data['max_items']));

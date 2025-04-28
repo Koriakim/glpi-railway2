@@ -38,7 +38,6 @@ namespace Glpi\Form\QuestionType;
 use CommonItilObject_Item;
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\JsonFieldInterface;
-use Glpi\Form\Condition\ConditionHandler\ConditionHandlerInterface;
 use Glpi\Form\Condition\ConditionHandler\UserDevicesConditionHandler;
 use Glpi\Form\Condition\UsedAsCriteriaInterface;
 use Glpi\Form\Question;
@@ -85,50 +84,50 @@ final class QuestionTypeUserDevice extends AbstractQuestionType implements UsedA
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.dropdownArrayField(
-                'default_value',
-                '',
-                [],
-                '',
-                {
-                    'init'               : init,
-                    'no_label'           : true,
-                    'field_class'        : [
-                        'col-12',
-                        'col-sm-6',
-                        'devices-dropdown',
-                        is_multiple_devices ? '' : 'd-none'
-                    ]|join(' '),
-                    'multiple'           : true,
-                    'disabled'           : true,
-                    'aria_label'         : aria_label_multiple_devices,
-                    'mb'                 : '',
-                }
-            ) }}
+                        {{ fields.dropdownArrayField(
+                            'default_value',
+                            '',
+                            [],
+                            '',
+                            {
+                                'init'               : init,
+                                'no_label'           : true,
+                                'field_class'        : [
+                                    'col-12',
+                                    'col-sm-6',
+                                    'devices-dropdown',
+                                    is_multiple_devices ? '' : 'd-none'
+                                ]|join(' '),
+                                'multiple'           : true,
+                                'disabled'           : true,
+                                'aria_label'         : aria_label_multiple_devices,
+                                'mb'                 : '',
+                            }
+                        ) }}
 
-            {{ fields.dropdownArrayField(
-                'default_value',
-                '',
-                [],
-                '',
-                {
-                    'init'               : init,
-                    'no_label'           : true,
-                    'field_class'        : [
-                        'col-12',
-                        'col-sm-6',
-                        'devices-dropdown',
-                        is_multiple_devices ? 'd-none' : ''
-                    ]|join(' '),
-                    'display_emptychoice': true,
-                    'disabled'           : true,
-                    'aria_label'         : aria_label_single_device,
-                    'mb'                 : '',
-                }
-            ) }}
-TWIG;
+                        {{ fields.dropdownArrayField(
+                            'default_value',
+                            '',
+                            [],
+                            '',
+                            {
+                                'init'               : init,
+                                'no_label'           : true,
+                                'field_class'        : [
+                                    'col-12',
+                                    'col-sm-6',
+                                    'devices-dropdown',
+                                    is_multiple_devices ? 'd-none' : ''
+                                ]|join(' '),
+                                'display_emptychoice': true,
+                                'disabled'           : true,
+                                'aria_label'         : aria_label_single_device,
+                                'mb'                 : '',
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -143,34 +142,34 @@ TWIG;
     public function renderAdministrationOptionsTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% set rand = random() %}
+                        {% set rand = random() %}
 
-            <div id="is_multiple_devices_{{ rand }}" class="d-flex gap-2">
-                <label class="form-check form-switch mb-0">
-                    <input type="hidden" name="is_multiple_devices" value="0"
-                    data-glpi-form-editor-specific-question-extra-data>
-                    <input class="form-check-input" type="checkbox" name="is_multiple_devices"
-                        value="1" {{ is_multiple_devices ? 'checked' : '' }}
-                        onchange="handleMultipleDevicesCheckbox_{{ rand }}(this)"
-                        data-glpi-form-editor-specific-question-extra-data>
-                    <span class="form-check-label">{{ is_multiple_devices_label }}</span>
-                </label>
-            </div>
+                        <div id="is_multiple_devices_{{ rand }}" class="d-flex gap-2">
+                            <label class="form-check form-switch mb-0">
+                                <input type="hidden" name="is_multiple_devices" value="0"
+                                data-glpi-form-editor-specific-question-extra-data>
+                                <input class="form-check-input" type="checkbox" name="is_multiple_devices"
+                                    value="1" {{ is_multiple_devices ? 'checked' : '' }}
+                                    onchange="handleMultipleDevicesCheckbox_{{ rand }}(this)"
+                                    data-glpi-form-editor-specific-question-extra-data>
+                                <span class="form-check-label">{{ is_multiple_devices_label }}</span>
+                            </label>
+                        </div>
 
-            <script>
-                function handleMultipleDevicesCheckbox_{{ rand }}(input) {
-                    const is_checked = $(input).is(':checked');
-                    const selects = $(input).closest('section[data-glpi-form-editor-question]')
-                        .find('div .devices-dropdown');
+                        <script>
+                            function handleMultipleDevicesCheckbox_{{ rand }}(input) {
+                                const is_checked = $(input).is(':checked');
+                                const selects = $(input).closest('section[data-glpi-form-editor-question]')
+                                    .find('div .devices-dropdown');
 
-                    {# Toggle all selects visibility #}
-                    selects.toggleClass('d-none');
+                                {# Toggle all selects visibility #}
+                                selects.toggleClass('d-none');
 
-                    {# Handle hidden input for multiple devices #}
-                    selects.find('input[type="hidden"]').prop('disabled', !is_checked);
-                }
-            </script>
-TWIG;
+                                {# Handle hidden input for multiple devices #}
+                                selects.find('input[type="hidden"]').prop('disabled', !is_checked);
+                            }
+                        </script>
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -183,23 +182,23 @@ TWIG;
     public function renderEndUserTemplate(Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.dropdownArrayField(
-                question.getEndUserInputName(),
-                '',
-                items,
-                '',
-                {
-                    'no_label'           : true,
-                    'field_class'        : 'col-12 col-sm-6',
-                    'display_emptychoice': true,
-                    'multiple'           : is_multiple_devices,
-                    'aria_label'         : aria_label,
-                    'mb'                 : '',
-                }
-            ) }}
-TWIG;
+                        {{ fields.dropdownArrayField(
+                            question.getEndUserInputName(),
+                            '',
+                            items,
+                            '',
+                            {
+                                'no_label'           : true,
+                                'field_class'        : 'col-12 col-sm-6',
+                                'display_emptychoice': true,
+                                'multiple'           : is_multiple_devices,
+                                'aria_label'         : aria_label,
+                                'mb'                 : '',
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

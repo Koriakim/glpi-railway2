@@ -52,7 +52,7 @@ class Printer extends CommonDBTM
         prepareInputForUpdate as prepareInputForUpdateAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     protected static $forward_entity_to = ['Infocom', 'NetworkPort', 'ReservationItem',
@@ -183,9 +183,9 @@ class Printer extends CommonDBTM
         $entities = getAncestorsOf("glpi_entities", $this->fields['entities_id']);
         $entities[] = $this->fields['entities_id'];
 
-       // RELATION : printers -> _port -> _wire -> _port -> device
+        // RELATION : printers -> _port -> _wire -> _port -> device
 
-       // Evaluate connection in the 2 ways
+        // Evaluate connection in the 2 ways
         $tabend = ['networkports_id_1' => 'networkports_id_2',
             'networkports_id_2' => 'networkports_id_1'
         ];
@@ -225,7 +225,7 @@ class Printer extends CommonDBTM
             foreach ($iterator as $data) {
                 $itemtable = getTableForItemType($data["itemtype"]);
                 if ($item = getItemForItemtype($data["itemtype"])) {
-                   // For each itemtype which are entity dependant
+                    // For each itemtype which are entity dependant
                     if ($item->isEntityAssign()) {
                         if (
                             countElementsInTable($itemtable, ['id' => $data["ids"],
@@ -727,11 +727,11 @@ class Printer extends CommonDBTM
     }
 
 
-   /**
-    * @param $itemtype
-    *
-    * @return array
-    */
+    /**
+     * @param $itemtype
+     *
+     * @return array
+     */
     public static function rawSearchOptionsToAdd($itemtype = null)
     {
         $tab = [];
@@ -775,7 +775,7 @@ class Printer extends CommonDBTM
         /** @var \DBmysql $DB */
         global $DB;
 
-       //Look for the software by his name in GLPI for a specific entity
+        //Look for the software by his name in GLPI for a specific entity
         $iterator = $DB->request([
             'SELECT' => ['id', 'is_deleted'],
             'FROM'   => self::getTable(),
@@ -826,7 +826,7 @@ class Printer extends CommonDBTM
             $manufacturer_id = Dropdown::importExternal('Manufacturer', $manufacturer);
         }
 
-       //If there's a printer in a parent entity with the same name and manufacturer
+        //If there's a printer in a parent entity with the same name and manufacturer
         $iterator = $DB->request([
             'SELECT' => 'id',
             'FROM'   => self::getTable(),

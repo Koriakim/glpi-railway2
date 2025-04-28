@@ -261,7 +261,7 @@ class Item_RemoteManagement extends CommonDBChild
         $itemtype = null;
         if (isset($options['itemtype']) && !empty($options['itemtype'])) {
             $itemtype = $options['itemtype'];
-        } else if (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
+        } elseif (isset($this->fields['itemtype']) && !empty($this->fields['itemtype'])) {
             $itemtype = $this->fields['itemtype'];
         } else {
             throw new \RuntimeException('Unable to retrieve itemtype');

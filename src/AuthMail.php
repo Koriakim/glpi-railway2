@@ -40,7 +40,7 @@ use Glpi\Application\View\TemplateRenderer;
  */
 class AuthMail extends CommonDBTM
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory = true;
 
     public static $rightname = 'config';
@@ -253,33 +253,33 @@ class AuthMail extends CommonDBTM
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <form method="post" action="{{ 'AuthMail'|itemtype_form_path }}" data-submit-once>
-                    <div class="text-center d-flex flex-column">
-                        <div>
-                            <h1 class="fs-2">{{ title }}</h1>
-                        </div>
-                        {{ fields.textField('imap_login', '', login, {
-                            full_width: true,
-                            additional_attributes: {
-                                autocomplete: 'username'
-                            }
-                        }) }}
-                        {{ fields.passwordField('imap_password', '', password, {
-                            full_width: true,
-                            clearable: false,
-                            additional_attributes: {
-                                autocomplete: 'password'
-                            }
-                        }) }}
-                        {{ fields.hiddenField('imap_string', connect_string) }}
-                        <div>
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                            <button type="submit" name="test" class="btn btn-primary">{{ test }}</button>
-                        </div>
-                    </div>
-                </form>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <form method="post" action="{{ 'AuthMail'|itemtype_form_path }}" data-submit-once>
+                                    <div class="text-center d-flex flex-column">
+                                        <div>
+                                            <h1 class="fs-2">{{ title }}</h1>
+                                        </div>
+                                        {{ fields.textField('imap_login', '', login, {
+                                            full_width: true,
+                                            additional_attributes: {
+                                                autocomplete: 'username'
+                                            }
+                                        }) }}
+                                        {{ fields.passwordField('imap_password', '', password, {
+                                            full_width: true,
+                                            clearable: false,
+                                            additional_attributes: {
+                                                autocomplete: 'password'
+                                            }
+                                        }) }}
+                                        {{ fields.hiddenField('imap_string', connect_string) }}
+                                        <div>
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" name="test" class="btn btn-primary">{{ test }}</button>
+                                        </div>
+                                    </div>
+                                </form>
+                TWIG, $twig_params);
         }
     }
 
@@ -331,12 +331,12 @@ TWIG, $twig_params);
                 $password
             );
             if ($auth->auth_succeded) {
-                 $auth->extauth      = 1;
-                 $auth->user_present = $auth->user->getFromDBbyName($login);
-                 $auth->user->getFromIMAP($mail_method, Toolbox::decodeFromUtf8($login));
-                 // Update the authentication method for the current user
-                 $auth->user->fields["authtype"] = Auth::MAIL;
-                 $auth->user->fields["auths_id"] = $mail_method["id"];
+                $auth->extauth      = 1;
+                $auth->user_present = $auth->user->getFromDBbyName($login);
+                $auth->user->getFromIMAP($mail_method, Toolbox::decodeFromUtf8($login));
+                // Update the authentication method for the current user
+                $auth->user->fields["authtype"] = Auth::MAIL;
+                $auth->user->fields["auths_id"] = $mail_method["id"];
             }
         }
         return $auth;
@@ -366,7 +366,7 @@ TWIG, $twig_params);
                     }
                 }
             }
-        } else if (array_key_exists($auths_id, $auth->authtypes["mail"])) {
+        } elseif (array_key_exists($auths_id, $auth->authtypes["mail"])) {
             // Check if the mail server indicated as the last good one still exists !
             $auth = self::mailAuth($auth, $login, $password, $auth->authtypes["mail"][$auths_id]);
         }

@@ -917,7 +917,7 @@ class Reminder extends CommonDBVisible implements
         unset($input['content']);
 
         if ($vcomp instanceof VTodo && !array_key_exists('state', $input)) {
-           // Force default state to TODO or reminder will be considered as VEVENT
+            // Force default state to TODO or reminder will be considered as VEVENT
             $input['state'] = \Planning::TODO;
         }
 

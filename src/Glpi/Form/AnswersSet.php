@@ -103,7 +103,7 @@ final class AnswersSet extends CommonDBChild
         $answers = $this->getAnswers();
         $filtered_answers = array_filter(
             $answers,
-            fn (Answer $answer) => $answer->getQuestionId() == $id
+            fn(Answer $answer) => $answer->getQuestionId() == $id
         );
 
         if (count($filtered_answers) == 1) {
@@ -119,7 +119,7 @@ final class AnswersSet extends CommonDBChild
         $answers = $this->getAnswers();
         return array_filter(
             $answers,
-            fn (Answer $answer) => $answer->getRawType() == $type
+            fn(Answer $answer) => $answer->getRawType() == $type
         );
     }
 
@@ -129,7 +129,7 @@ final class AnswersSet extends CommonDBChild
         $answers = $this->getAnswers();
         return array_filter(
             $answers,
-            fn (Answer $answer) => in_array($answer->getRawType(), $types)
+            fn(Answer $answer) => in_array($answer->getRawType(), $types)
         );
     }
 

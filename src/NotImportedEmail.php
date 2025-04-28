@@ -40,11 +40,11 @@ class NotImportedEmail extends CommonDBTM
 {
     public static $rightname = 'config';
 
-    const MATCH_NO_RULE     = 0;
-    const USER_UNKNOWN      = 1;
-    const FAILED_OPERATION  = 2;
-    const FAILED_INSERT     = self::FAILED_OPERATION;
-    const NOT_ENOUGH_RIGHTS = 3;
+    public const MATCH_NO_RULE     = 0;
+    public const USER_UNKNOWN      = 1;
+    public const FAILED_OPERATION  = 2;
+    public const FAILED_INSERT     = self::FAILED_OPERATION;
+    public const NOT_ENOUGH_RIGHTS = 3;
 
 
     public function getForbiddenStandardMassiveAction()
@@ -111,9 +111,9 @@ class NotImportedEmail extends CommonDBTM
                     if (count($ids)) {
                         $mailcollector = new MailCollector();
                         if ($ma->getAction() == 'delete_email') {
-                              $mailcollector->deleteOrImportSeveralEmails($ids, 0);
+                            $mailcollector->deleteOrImportSeveralEmails($ids, 0);
                         } else {
-                             $mailcollector->deleteOrImportSeveralEmails($ids, 1, $input['entities_id']);
+                            $mailcollector->deleteOrImportSeveralEmails($ids, 1, $input['entities_id']);
                         }
                     }
                     $ma->itemDone($item->getType(), $ids, MassiveAction::ACTION_OK);

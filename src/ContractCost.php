@@ -255,7 +255,7 @@ class ContractCost extends CommonDBChild
         if ($ID > 0) {
             $this->check($ID, READ);
         } else {
-           // Create item
+            // Create item
             $options['contracts_id'] = $options['parent']->getField('id');
             $this->check(-1, CREATE, $options);
             $this->initBasedOnPrevious();
@@ -324,33 +324,33 @@ class ContractCost extends CommonDBChild
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="text-center">
-                    <button class="btn btn-primary" onclick="showCost{{ rand }}(-1)">{{ button_msg }}</button>
-                </div>
-                <div id="viewsubitem{{ rand }}" class="mb-3"></div>
-                <script>
-                    function showCost{{ rand }}(subitems_id) {
-                        $.ajax({
-                            url: '{{ config('root_doc') }}/ajax/viewsubitem.php',
-                            method: 'POST',
-                            data: {
-                                type: 'ContractCost',
-                                parenttype: '{{ item.getType() }}',
-                                contracts_id: {{ item.getID() }},
-                                id: subitems_id
-                            },
-                            success: (data) => {
-                                $('#viewsubitem{{ rand }}').html(data);
-                            }
-                        });
-                    }
-                    $(() => {
-                        $('#contractcostlist{{ rand }} tbody tr').on('click', function() {
-                            showCost{{ rand }}($(this).attr('data-id'));
-                        });
-                    });
-                </script>
-TWIG, $twig_params);
+                                <div class="text-center">
+                                    <button class="btn btn-primary" onclick="showCost{{ rand }}(-1)">{{ button_msg }}</button>
+                                </div>
+                                <div id="viewsubitem{{ rand }}" class="mb-3"></div>
+                                <script>
+                                    function showCost{{ rand }}(subitems_id) {
+                                        $.ajax({
+                                            url: '{{ config('root_doc') }}/ajax/viewsubitem.php',
+                                            method: 'POST',
+                                            data: {
+                                                type: 'ContractCost',
+                                                parenttype: '{{ item.getType() }}',
+                                                contracts_id: {{ item.getID() }},
+                                                id: subitems_id
+                                            },
+                                            success: (data) => {
+                                                $('#viewsubitem{{ rand }}').html(data);
+                                            }
+                                        });
+                                    }
+                                    $(() => {
+                                        $('#contractcostlist{{ rand }} tbody tr').on('click', function() {
+                                            showCost{{ rand }}($(this).attr('data-id'));
+                                        });
+                                    });
+                                </script>
+                TWIG, $twig_params);
         }
 
         $entries = [];

@@ -45,7 +45,7 @@ class PassiveDCEquipment extends CommonDBTM
     use Glpi\Features\DCBreadcrumb;
     use Glpi\Features\State;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory = true;
     public static $rightname = 'datacenter';
 

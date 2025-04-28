@@ -36,7 +36,6 @@
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\QueryExpression;
 use Glpi\DBAL\QueryFunction;
-use Glpi\Search\SearchEngine;
 
 /**
  *  Contract class
@@ -46,7 +45,7 @@ class Contract extends CommonDBTM
     use Glpi\Features\Clonable;
     use Glpi\Features\State;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     protected static $forward_entity_to = ['ContractCost'];
 
@@ -106,7 +105,7 @@ class Contract extends CommonDBTM
             ]
         );
 
-       // Alert does not extends CommonDBConnexity
+        // Alert does not extends CommonDBConnexity
         $alert = new Alert();
         $alert->cleanDBonItemDelete(static::class, $this->fields['id']);
     }
@@ -143,9 +142,9 @@ class Contract extends CommonDBTM
             $alert->clear(static::class, $this->fields['id'], Alert::END);
         }
 
-       // Clean notice alert if begin_date is after old one
-       // Or if duration is greater than old one
-       // Or if notice is lesser than old one
+        // Clean notice alert if begin_date is after old one
+        // Or if duration is greater than old one
+        // Or if notice is lesser than old one
         if (
             (isset($this->oldvalues['begin_date'])
             && ($this->oldvalues['begin_date'] < $this->fields['begin_date']))
@@ -268,7 +267,7 @@ class Contract extends CommonDBTM
             'id'                 => '131',
             'table'              => 'glpi_contracts',
             'field'              => 'periodicity',
-                                 //TRANS: %1$s is Contract, %2$s is field name
+            //TRANS: %1$s is Contract, %2$s is field name
             'name'               => __('Periodicity'),
             'forcegroupby'       => true,
             'massiveaction'      => false,
@@ -951,7 +950,7 @@ class Contract extends CommonDBTM
         ])->current();
         $contractpre7 = $result['cpt'];
 
-       // contrats avec pr??avis echeance j -30
+        // contrats avec pr??avis echeance j -30
         $result = $DB->request([
             'COUNT'  => 'cpt',
             'FROM'   => $table,
@@ -1239,7 +1238,7 @@ class Contract extends CommonDBTM
                                 break;
 
                             case 'end':
-                                 $contract_messages[$type][$entity] = __('Contract ended') . "<br>";
+                                $contract_messages[$type][$entity] = __('Contract ended') . "<br>";
                                 break;
                         }
                     }
@@ -1278,7 +1277,7 @@ class Contract extends CommonDBTM
                         ];
                         // If alert never occurs...
                         if (empty($previous_alert[$type])) {
-                           // We define it a long time ago [in a galaxy far, far away... ;-)]
+                            // We define it a long time ago [in a galaxy far, far away... ;-)]
                             $previous_alert[$type] = date('Y-m-d', 0);
                         }
 
@@ -1292,13 +1291,13 @@ class Contract extends CommonDBTM
                         ];
                         // If a notice is defined
                         if ($event == Alert::NOTICE) {
-                           // Will decrease of the Contract notice duration
+                            // Will decrease of the Contract notice duration
                             $next_alert[$type] = date('Y-m-d', strtotime($next_alert[$type] . " -" . ($data['notice']) . " month"));
                         }
 
                         // Computation of contract renewal
                         while ($next_alert[$type] < $previous_alert[$type]) {
-                           // Increasing of Contract periodicity...
+                            // Increasing of Contract periodicity...
                             $next_alert[$type] = date('Y-m-d', strtotime($next_alert[$type] . " +" . ($data['periodicity']) . " month"));
                         }
 
@@ -1306,7 +1305,7 @@ class Contract extends CommonDBTM
                         if ($next_alert[$type] <= date('Y-m-d')) {
                             $alert = new Alert();
                             $alert->clear(__CLASS__, $data['id'], $event);
-                           // Computation of the real date => add Config [alert xxx days before]
+                            // Computation of the real date => add Config [alert xxx days before]
                             $real_alert_date = date('Y-m-d', strtotime($next_alert[$type] . " +" . ($before) . " day"));
                             $message = sprintf(__('%1$s: %2$s') . "<br>\n", $data["name"], Html::convDate($real_alert_date));
                             $data['alert_date'] = $real_alert_date;
@@ -1314,7 +1313,7 @@ class Contract extends CommonDBTM
 
                             switch ($type) {
                                 case 'periodicitynotice':
-                                      $contract_messages[$type][$entity] = __('Contract entered in notice time for period') . "<br>";
+                                    $contract_messages[$type][$entity] = __('Contract entered in notice time for period') . "<br>";
                                     break;
 
                                 case 'periodicity':
@@ -1373,7 +1372,7 @@ class Contract extends CommonDBTM
                         }
                     } else {
                         $entityname = Dropdown::getDropdownName('glpi_entities', $entity);
-                     //TRANS: %1$s is entity name, %2$s is the message
+                        //TRANS: %1$s is entity name, %2$s is the message
                         $msg = sprintf(__('%1$s: %2$s'), $entityname, __('send contract alert failed'));
                         if ($task) {
                             $task->log($msg);

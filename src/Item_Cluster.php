@@ -173,16 +173,16 @@ class Item_Cluster extends CommonDBRelation
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% extends 'generic_show_form.html.twig' %}
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% block form_fields %}
-                {{ fields.dropdownItemsFromItemtypes('itemtype', item_label, {
-                    itemtypes: config('cluster_types'),
-                    used: used,
-                }) }}
-                <input type="hidden" name="clusters_id" value="{{ item.fields['clusters_id'] }}"/>
-            {% endblock %}
-TWIG, $twig_params);
+                        {% extends 'generic_show_form.html.twig' %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% block form_fields %}
+                            {{ fields.dropdownItemsFromItemtypes('itemtype', item_label, {
+                                itemtypes: config('cluster_types'),
+                                used: used,
+                            }) }}
+                            <input type="hidden" name="clusters_id" value="{{ item.fields['clusters_id'] }}"/>
+                        {% endblock %}
+            TWIG, $twig_params);
         return true;
     }
 
@@ -207,7 +207,7 @@ TWIG, $twig_params);
     {
         $error_detected = [];
 
-       //check for requirements
+        //check for requirements
         if (
             ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
             || (isset($input['itemtype']) && empty($input['itemtype']))

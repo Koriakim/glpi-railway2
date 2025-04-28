@@ -116,14 +116,14 @@ class RuleRightCollection extends RuleCollection
             '_groups_id' => $groups
         ];
 
-       //IMAP/POP login method
+        //IMAP/POP login method
         if ($params_lower["type"] == Auth::MAIL) {
             $rule_parameters["MAIL_SERVER"] = $params_lower["mail_server"] ?? "";
         }
 
-       //LDAP type method
+        //LDAP type method
         if ($params_lower["type"] == Auth::LDAP) {
-           //Get all the field to retrieve to be able to process rule matching
+            //Get all the field to retrieve to be able to process rule matching
             $rule_fields = $this->getFieldsToLookFor();
 
             //If we are oustide authentication process, $params_lower["connection"] is not set
@@ -167,7 +167,7 @@ class RuleRightCollection extends RuleCollection
                         default: // ldap criteria (added by user)
                             if (isset($rule_input[$field])) {
                                 if (!is_array($rule_input[$field])) {
-                                     $rule_parameters[$field] = $rule_input[$field];
+                                    $rule_parameters[$field] = $rule_input[$field];
                                 } else {
                                     if (count($rule_input[$field])) {
                                         foreach ($rule_input[$field] as $key => $val) {

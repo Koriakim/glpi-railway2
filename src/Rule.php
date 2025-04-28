@@ -49,16 +49,16 @@ class Rule extends CommonDBTM
 
     public $dohistory             = true;
 
-   // Specific ones
-   ///Actions affected to this rule
+    // Specific ones
+    ///Actions affected to this rule
     public $actions               = [];
-   ///Criterias affected to this rule
+    ///Criterias affected to this rule
     public $criterias             = [];
 
     // preview context ?
     protected $is_preview = false;
 
-   /// restrict matching to self::AND_MATCHING or self::OR_MATCHING : specify value to activate
+    /// restrict matching to self::AND_MATCHING or self::OR_MATCHING : specify value to activate
     public $restrict_matching     = false;
 
     protected $rules_id_field     = 'rules_id';
@@ -894,7 +894,7 @@ class Rule extends CommonDBTM
         if (!$new_item) {
             $this->check($ID, READ);
         } else {
-           // Create item
+            // Create item
             $this->checkGlobal(UPDATE);
         }
 
@@ -1031,7 +1031,7 @@ class Rule extends CommonDBTM
      **/
     public function maxActionsCount()
     {
-        return count(array_filter($this->getAllActions(), static fn ($action_obj) => !isset($action_obj['duplicatewith'])));
+        return count(array_filter($this->getAllActions(), static fn($action_obj) => !isset($action_obj['duplicatewith'])));
     }
 
     /**
@@ -1079,18 +1079,18 @@ class Rule extends CommonDBTM
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div id="viewaction{{ rules_id }}{{ rand }}"></div>
-                {% if can_add_new_action %}
-                    <div class="center mt-1 mb-3">
-                        <button type="button" name="add_action" class="btn btn-primary">{{ btn_label }}</button>
-                        <script>
-                            $('button[name="add_action"]').on('click', () => {
-                                $('#viewaction{{ rules_id }}{{ rand }}').load('{{ path('ajax/viewsubitem.php')|e('js') }}', {{ ajax_params|json_encode|raw }});
-                            });
-                        </script>
-                    </div>
-                {% endif %}
-TWIG, $twig_params);
+                                <div id="viewaction{{ rules_id }}{{ rand }}"></div>
+                                {% if can_add_new_action %}
+                                    <div class="center mt-1 mb-3">
+                                        <button type="button" name="add_action" class="btn btn-primary">{{ btn_label }}</button>
+                                        <script>
+                                            $('button[name="add_action"]').on('click', () => {
+                                                $('#viewaction{{ rules_id }}{{ rand }}').load('{{ path('ajax/viewsubitem.php')|e('js') }}', {{ ajax_params|json_encode|raw }});
+                                            });
+                                        </script>
+                                    </div>
+                                {% endif %}
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -1138,25 +1138,26 @@ TWIG, $twig_params);
 
         if ($canedit) {
             $rule_class = static::class;
-            echo Html::scriptBlock(<<<JS
-                $(() => {
-                    $('#datatable_ruleaction{$rules_id}{$rand}').on('click', 'tbody tr', (e) => {
-                        //ignore click in first column (the massive action checkbox)
-                        if ($(e.target).closest('td').is('td:first-child')) {
-                            return;
-                        }
-                        const action_id = $(e.currentTarget).data('id');
-                        if (action_id) {
-                            $('#viewaction{$rules_id}{$rand}').load(CFG_GLPI.root_doc + '/ajax/viewsubitem.php',{
-                                type: "{$this->ruleactionclass}",
-                                parenttype: "{$rule_class}",
-                                rules_id: $rules_id,
-                                id: action_id
-                            });
-                        }
-                    });
-                });
-JS
+            echo Html::scriptBlock(
+                <<<JS
+                                    $(() => {
+                                        $('#datatable_ruleaction{$rules_id}{$rand}').on('click', 'tbody tr', (e) => {
+                                            //ignore click in first column (the massive action checkbox)
+                                            if ($(e.target).closest('td').is('td:first-child')) {
+                                                return;
+                                            }
+                                            const action_id = $(e.currentTarget).data('id');
+                                            if (action_id) {
+                                                $('#viewaction{$rules_id}{$rand}').load(CFG_GLPI.root_doc + '/ajax/viewsubitem.php',{
+                                                    type: "{$this->ruleactionclass}",
+                                                    parenttype: "{$rule_class}",
+                                                    rules_id: $rules_id,
+                                                    id: action_id
+                                                });
+                                            }
+                                        });
+                                    });
+                    JS
             );
         }
     }
@@ -1200,16 +1201,16 @@ JS
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div id="viewcriteria{{ rules_id }}{{ rand }}"></div>
-                <div class="center mt-1 mb-3">
-                    <button type="button" name="add_criterion" class="btn btn-primary">{{ btn_label }}</button>
-                    <script>
-                        $('button[name="add_criterion"]').on('click', () => {
-                            $('#viewcriteria{{ rules_id }}{{ rand }}').load('{{ path('ajax/viewsubitem.php')|e('js') }}', {{ ajax_params|json_encode|raw }});
-                        });
-                    </script>
-                </div>
-TWIG, $twig_params);
+                                <div id="viewcriteria{{ rules_id }}{{ rand }}"></div>
+                                <div class="center mt-1 mb-3">
+                                    <button type="button" name="add_criterion" class="btn btn-primary">{{ btn_label }}</button>
+                                    <script>
+                                        $('button[name="add_criterion"]').on('click', () => {
+                                            $('#viewcriteria{{ rules_id }}{{ rand }}').load('{{ path('ajax/viewsubitem.php')|e('js') }}', {{ ajax_params|json_encode|raw }});
+                                        });
+                                    </script>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -1255,25 +1256,26 @@ TWIG, $twig_params);
 
         if ($canedit) {
             $rule_class = static::class;
-            echo Html::scriptBlock(<<<JS
-                $(() => {
-                    $('#datatable_rulecriteria{$rules_id}{$rand}').on('click', 'tbody tr', (e) => {
-                        //ignore click in first column (the massive action checkbox)
-                        if ($(e.target).closest('td').is('td:first-child')) {
-                            return;
-                        }
-                        const criteria_id = $(e.currentTarget).data('id');
-                        if (criteria_id) {
-                            $('#viewcriteria{$rules_id}{$rand}').load('/ajax/viewsubitem.php',{
-                                type: "{$this->rulecriteriaclass}",
-                                parenttype: "{$rule_class}",
-                                rules_id: $rules_id,
-                                id: criteria_id
-                            });
-                        }
-                    });
-                });
-JS
+            echo Html::scriptBlock(
+                <<<JS
+                                    $(() => {
+                                        $('#datatable_rulecriteria{$rules_id}{$rand}').on('click', 'tbody tr', (e) => {
+                                            //ignore click in first column (the massive action checkbox)
+                                            if ($(e.target).closest('td').is('td:first-child')) {
+                                                return;
+                                            }
+                                            const criteria_id = $(e.currentTarget).data('id');
+                                            if (criteria_id) {
+                                                $('#viewcriteria{$rules_id}{$rand}').load('/ajax/viewsubitem.php',{
+                                                    type: "{$this->rulecriteriaclass}",
+                                                    parenttype: "{$rule_class}",
+                                                    rules_id: $rules_id,
+                                                    id: criteria_id
+                                                });
+                                            }
+                                        });
+                                    });
+                    JS
             );
         }
     }
@@ -1304,7 +1306,7 @@ JS
         $group      = [];
         $groupname  = _n('Criterion', 'Criteria', Session::getPluralNumber());
         foreach ($this->getAllCriteria() as $ID => $crit) {
-           // Manage group system
+            // Manage group system
             if (!is_array($crit)) {
                 if (count($group)) {
                     asort($group);
@@ -1346,23 +1348,23 @@ JS
 
         $actions = $this->getAllActions();
 
-       // For each used actions see if several set is available
-       // Force actions to available actions for several
+        // For each used actions see if several set is available
+        // Force actions to available actions for several
         foreach ($p['used'] as $key => $ID) {
             if (isset($actions[$ID]['permitseveral'])) {
                 unset($p['used'][$key]);
             }
         }
 
-       // Complete used array with duplicate items
-       // add duplicates of used items
+        // Complete used array with duplicate items
+        // add duplicates of used items
         foreach ($p['used'] as $ID) {
             if (isset($actions[$ID]['duplicatewith'])) {
                 $p['used'][$actions[$ID]['duplicatewith']] = $actions[$ID]['duplicatewith'];
             }
         }
 
-       // Parse for duplicates of already used items
+        // Parse for duplicates of already used items
         foreach ($actions as $ID => $act) {
             if (
                 isset($actions[$ID]['duplicatewith'])
@@ -1494,7 +1496,7 @@ JS
                             $options['only_criteria'][] = $action->fields["field"];
                         }
 
-                       // Add linked criteria if available
+                        // Add linked criteria if available
                         $crit = $this->getCriteria($action->fields["field"]);
                         if (isset($crit['linked_criteria'])) {
                             $tmp = $crit['linked_criteria'];
@@ -1532,7 +1534,7 @@ JS
             ) {
                 foreach ($this->criterias as $criterion) {
                     if (in_array($criterion->fields['criteria'], $options['only_criteria'])) {
-                         return true;
+                        return true;
                     }
                 }
                 return false;
@@ -1583,7 +1585,7 @@ JS
             }
         }
 
-       //If all simple criteria match, and if necessary, check complex criteria
+        //If all simple criteria match, and if necessary, check complex criteria
         if ($doactions) {
             return $this->findWithGlobalCriteria($input);
         }
@@ -1662,7 +1664,7 @@ JS
                         $partial_regex_result
                     );
                     if (!$res) {
-                           break;
+                        break;
                     }
                 }
             } else {
@@ -1835,8 +1837,8 @@ JS
                             isset($actions[$action->fields["field"]]["appendtoarray"])
                             && isset($actions[$action->fields["field"]]["appendtoarrayfield"])
                         ) {
-                             $value = $actions[$action->fields["field"]]["appendtoarray"];
-                             $value[$actions[$action->fields["field"]]["appendtoarrayfield"]]
+                            $value = $actions[$action->fields["field"]]["appendtoarray"];
+                            $value[$actions[$action->fields["field"]]["appendtoarrayfield"]]
                             = $action->fields["value"];
                         }
                         $output[$actions[$action->fields["field"]]["appendto"]][] = $value;
@@ -1844,8 +1846,8 @@ JS
 
                     case "regex_result":
                     case "append_regex_result":
-                     //Regex result : assign value from the regex
-                     //Append regex result : append result from a regex
+                        //Regex result : assign value from the regex
+                        //Append regex result : append result from a regex
                         if (isset($this->regex_results[0])) {
                             $res = RuleAction::getRegexResultById(
                                 $action->fields["value"],
@@ -1859,7 +1861,7 @@ JS
                             if (isset($params[$action->fields["field"]])) {
                                 $res = $params[$action->fields["field"]] . $res;
                             } else {
-                             //keep rule value to append in a separate entry
+                                //keep rule value to append in a separate entry
                                 $output[$action->fields['field'] . '_append'] = $res;
                             }
                         }
@@ -1983,7 +1985,7 @@ JS
 
         if (!isset($input['sub_type'])) {
             $input['sub_type'] = static::class;
-        } else if (static::class !== 'Rule' && $input['sub_type'] !== static::class) {
+        } elseif (static::class !== 'Rule' && $input['sub_type'] !== static::class) {
             Toolbox::logDebug(
                 sprintf(
                     'Creating a %s rule with %s subtype.',
@@ -2011,7 +2013,7 @@ JS
                 // In this case, we should use moveRule rather than updating directly.
                 $input["_ranking"] = $input['ranking'];
                 unset($input['ranking']);
-            } else if (isset($input['_ranking'])) {
+            } elseif (isset($input['_ranking'])) {
                 // Set this way from RuleCollection::moveRule to avoid infinite loop
                 $input['ranking'] = $input['_ranking'];
                 unset($input['_ranking']);
@@ -2284,7 +2286,7 @@ JS
             || ($condition == self::PATTERN_FIND)
         ) {
             return __('Yes');
-        } else if (
+        } elseif (
             in_array($condition, self::getConditionsWithComplexValues())
         ) {
             $crit = $this->getCriteria($ID);
@@ -2353,6 +2355,7 @@ JS
                             return Ticket::getStatus($pattern);
                         }
 
+                        // no break
                     case "dropdown_priority":
                         return CommonITILObject::getPriorityName($pattern);
 
@@ -2541,7 +2544,7 @@ JS
                     break;
             }
         }
-       //Not a standard condition
+        //Not a standard condition
         if (!$tested) {
             $display = $this->displayAdditionalRuleCondition($condition, $crit, $name, $value, $test);
         }
@@ -2585,12 +2588,13 @@ JS
                         return __('Full structure');
                     }
                     // Intentional fall-through to handle dropdown cases
+                    // no break
                 case "dropdown":
                     if (in_array($type, ['defaultfromuser', 'fromuser', 'fromitem', 'firstgroupfromuser'], true)) {
                         return Dropdown::getYesNo($value);
                     }
 
-                   // $type == regex_result display text
+                    // $type == regex_result display text
                     if ($type == 'regex_result') {
                         return $this->displayAdditionRuleActionValue($value);
                     }
@@ -2602,7 +2606,7 @@ JS
                         return $value;
                     }
 
-                   // $type == assign
+                    // $type == assign
                     $name = Dropdown::getDropdownName($action["table"], $value);
                     return $name === '' ? NOT_AVAILABLE : $name;
 
@@ -2614,6 +2618,7 @@ JS
                         return Ticket::getStatus($value);
                     }
 
+                    // no break
                 case "dropdown_assign":
                 case "dropdown_users":
                 case "dropdown_users_validate":
@@ -2876,7 +2881,7 @@ JS
             $itemtype = static::getType();
         }
 
-       //Agregate all plugins criteria for this rules engine
+        //Agregate all plugins criteria for this rules engine
         $toreturn = $params;
         if (isset($PLUGIN_HOOKS['use_rules'])) {
             foreach ($PLUGIN_HOOKS['use_rules'] as $plugin => $val) {
@@ -2925,9 +2930,9 @@ JS
 
         $rules = [];
 
-       /// TODO : not working for SLALevels : no sub_type
+        /// TODO : not working for SLALevels : no sub_type
 
-       //Get all the rules whose sub_type is $sub_type and entity is $ID
+        //Get all the rules whose sub_type is $sub_type and entity is $ID
         $query = [
             'SELECT' => static::getTable() . '.id',
             'FROM'   => [
@@ -3219,18 +3224,18 @@ JS
                         }
                         $collection = new RuleMailCollectorCollection();
                         if ($collection->canList()) {
-                             $types[] = 'RuleMailCollector';
+                            $types[] = 'RuleMailCollector';
                         }
                         if (count($types)) {
-                             $nb = countElementsInTable(
-                                 ['glpi_rules', 'glpi_ruleactions'],
-                                 [
-                                     'glpi_ruleactions.rules_id'   => new QueryExpression(DBmysql::quoteName('glpi_rules.id')),
-                                     'glpi_rules.sub_type'         => $types,
-                                     'glpi_ruleactions.field'      => 'entities_id',
-                                     'glpi_ruleactions.value'      => $item->getID()
-                                 ]
-                             );
+                            $nb = countElementsInTable(
+                                ['glpi_rules', 'glpi_ruleactions'],
+                                [
+                                    'glpi_ruleactions.rules_id'   => new QueryExpression(DBmysql::quoteName('glpi_rules.id')),
+                                    'glpi_rules.sub_type'         => $types,
+                                    'glpi_ruleactions.field'      => 'entities_id',
+                                    'glpi_ruleactions.value'      => $item->getID()
+                                ]
+                            );
                         }
                     }
                     return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb, $item::class);
@@ -3253,14 +3258,14 @@ JS
                         $nbcriteria = 0;
                         $nbaction   = 0;
                         if ($_SESSION['glpishow_count_on_tabs']) {
-                              $nbcriteria = countElementsInTable(
-                                  getTableForItemType($item->getRuleCriteriaClass()),
-                                  [$item->getRuleIdField() => $item->getID()]
-                              );
-                              $nbaction   = countElementsInTable(
-                                  getTableForItemType($item->getRuleActionClass()),
-                                  [$item->getRuleIdField() => $item->getID()]
-                              );
+                            $nbcriteria = countElementsInTable(
+                                getTableForItemType($item->getRuleCriteriaClass()),
+                                [$item->getRuleIdField() => $item->getID()]
+                            );
+                            $nbaction   = countElementsInTable(
+                                getTableForItemType($item->getRuleActionClass()),
+                                [$item->getRuleIdField() => $item->getID()]
+                            );
                         }
 
                         $ong[1] = self::createTabEntry(
@@ -3307,9 +3312,9 @@ JS
                 $mailcollector = new RuleMailCollector();
                 $mailcollector->showAndAddRuleForm($item);
             }
-        } else if ($item instanceof LevelAgreement) {
+        } elseif ($item instanceof LevelAgreement) {
             $item->showRulesList();
-        } else if ($item instanceof self) {
+        } elseif ($item instanceof self) {
             $item->getRuleWithCriteriasAndActions($item->getID(), 1, 1);
             switch ($tabnum) {
                 case 1:

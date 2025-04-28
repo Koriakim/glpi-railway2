@@ -37,7 +37,7 @@ use Glpi\Application\View\TemplateRenderer;
 
 class RuleDictionnarySoftwareCollection extends RuleCollection
 {
-   // From RuleCollection
+    // From RuleCollection
 
     public $stop_on_first_match = true;
     public $can_replay_rules    = true;
@@ -78,26 +78,26 @@ class RuleDictionnarySoftwareCollection extends RuleCollection
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% import 'components/alerts_macros.html.twig' as alerts %}
-            <form name="testrule_form" id="softdictionnary_confirmation" method="post" action="{{ target }}">
-                <div class="card">
-                    <div class="card-body">
-                        {{ alerts.alert_warning(warning_title, warning_message) }}
-                        <div>
-                            {{ fields.dropdownField('Manufacturer', 'manufacturer', 0, manufacturer_label, {
-                                emptylabel: emptylabel,
-                            }) }}
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex flex-row-reverse">
-                        <input type="hidden" name="replay_confirm" value="replay_confirm">
-                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                        <button type="submit" name="replay_rule" class="btn btn-primary">{{ btn_label }}</button>
-                    </div>
-                </div>
-            </form>
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/alerts_macros.html.twig' as alerts %}
+                        <form name="testrule_form" id="softdictionnary_confirmation" method="post" action="{{ target }}">
+                            <div class="card">
+                                <div class="card-body">
+                                    {{ alerts.alert_warning(warning_title, warning_message) }}
+                                    <div>
+                                        {{ fields.dropdownField('Manufacturer', 'manufacturer', 0, manufacturer_label, {
+                                            emptylabel: emptylabel,
+                                        }) }}
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex flex-row-reverse">
+                                    <input type="hidden" name="replay_confirm" value="replay_confirm">
+                                    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" name="replay_rule" class="btn btn-primary">{{ btn_label }}</button>
+                                </div>
+                            </div>
+                        </form>
+            TWIG, $twig_params);
         return true;
     }
 
@@ -127,12 +127,12 @@ TWIG, $twig_params);
             $nb   = count($iterator) + $offset;
 
             foreach ($iterator as $input) {
-               //If manufacturer is set, then first run the manufacturer's dictionary
+                //If manufacturer is set, then first run the manufacturer's dictionary
                 if (isset($input["manufacturer"])) {
                     $input["manufacturer"] = Manufacturer::processName($input["manufacturer"]);
                 }
 
-               //Replay software dictionary rules
+                //Replay software dictionary rules
                 $res_rule = $this->processAllRules($input, [], []);
 
                 if (
@@ -159,7 +159,7 @@ TWIG, $twig_params);
                     ]);
 
                     if (count($same_iterator)) {
-                          //Store all the software's IDs in an array
+                        //Store all the software's IDs in an array
                         foreach ($same_iterator as $result) {
                             $IDs[] = $result["id"];
                         }
@@ -257,20 +257,20 @@ TWIG, $twig_params);
             ]);
 
             if (count($iterator)) {
-                 $soft = $iterator->current();
-                 //For each software
-                 $this->replayDictionnaryOnOneSoftware(
-                     $new_softs,
-                     $res_rule,
-                     $ID,
-                     $res_rule['new_entities_id'] ?? $soft["entities_id"],
-                     $soft['name'] ?? '',
-                     $soft['manufacturer'] ?? '',
-                     $delete_ids
-                 );
+                $soft = $iterator->current();
+                //For each software
+                $this->replayDictionnaryOnOneSoftware(
+                    $new_softs,
+                    $res_rule,
+                    $ID,
+                    $res_rule['new_entities_id'] ?? $soft["entities_id"],
+                    $soft['name'] ?? '',
+                    $soft['manufacturer'] ?? '',
+                    $delete_ids
+                );
             }
         }
-       //Delete software if needed
+        //Delete software if needed
         $this->putOldSoftsInTrash($delete_ids);
     }
 
@@ -365,7 +365,7 @@ TWIG, $twig_params);
             $soft_ids[] = $ID;
         }
 
-       //Get all the different versions for a software
+        //Get all the different versions for a software
         $iterator = $DB->request([
             'FROM'   => 'glpi_softwareversions',
             'WHERE'  => ['softwares_id' => $ID]
@@ -377,7 +377,7 @@ TWIG, $twig_params);
 
             if (isset($res_rule['version_append']) && $res_rule['version_append'] != '') {
                 $new_version_name = $old_version_name . $res_rule['version_append'];
-            } else if (isset($res_rule["version"]) && $res_rule["version"] != '') {
+            } elseif (isset($res_rule["version"]) && $res_rule["version"] != '') {
                 $new_version_name = $res_rule["version"];
             } else {
                 $new_version_name = $version["name"];
@@ -409,8 +409,8 @@ TWIG, $twig_params);
         global $DB;
 
         if (count($soft_ids) > 0) {
-           //Try to delete all the software that are not used anymore
-           // (which means that don't have version associated anymore)
+            //Try to delete all the software that are not used anymore
+            // (which means that don't have version associated anymore)
             $iterator = $DB->request([
                 'SELECT'    => [
                     'glpi_softwares.id',
@@ -435,7 +435,7 @@ TWIG, $twig_params);
 
             $software = new Software();
             foreach ($iterator as $soft) {
-                 $software->putInTrash($soft["id"], __('Software deleted by GLPI dictionary rules'));
+                $software->putInTrash($soft["id"], __('Software deleted by GLPI dictionary rules'));
             }
         }
     }
@@ -458,9 +458,9 @@ TWIG, $twig_params);
 
         $new_versionID = $this->versionExists($new_software_id, $new_version);
 
-       // Do something if it is not the same version
+        // Do something if it is not the same version
         if ($new_versionID != $version_id) {
-           //A version does not exist : update existing one
+            //A version does not exist : update existing one
             if ($new_versionID == -1) {
                 //Transfer versions from old software to new software for a specific version
                 $DB->update(
@@ -474,7 +474,7 @@ TWIG, $twig_params);
                     ]
                 );
             } else {
-               // Delete software can be in double after update
+                // Delete software can be in double after update
                 $item_softwareversion_table = Item_SoftwareVersion::getTable();
                 $iterator = $DB->request([
                     'SELECT'    => ['gcs_2.*'],
@@ -505,7 +505,7 @@ TWIG, $twig_params);
                     );
                 }
 
-               //Change ID of the version in glpi_items_softwareversions
+                //Change ID of the version in glpi_items_softwareversions
                 $DB->update(
                     $item_softwareversion_table,
                     [
@@ -516,7 +516,7 @@ TWIG, $twig_params);
                     ]
                 );
 
-               // Update licenses version link
+                // Update licenses version link
                 $DB->update(
                     'glpi_softwarelicenses',
                     [
@@ -537,7 +537,7 @@ TWIG, $twig_params);
                     ]
                 );
 
-               //Delete old version
+                //Delete old version
                 $old_version = new SoftwareVersion();
                 $old_version->delete(["id" => $version_id]);
             }

@@ -36,7 +36,6 @@
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\CalDAV\Contracts\CalDAVCompatibleItemInterface;
 use Glpi\CalDAV\Traits\VobjectConverterTrait;
-use Glpi\RichText\RichText;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Component\VTodo;
 
@@ -107,8 +106,8 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
             return false;
         }
 
-       // the current user can update only this own events without PURGE right
-       // but not bg one, see above
+        // the current user can update only this own events without PURGE right
+        // but not bg one, see above
         if (
             (int) $this->fields['users_id'] !== Session::getLoginUserID()
             && !Session::haveRight(self::$rightname, PURGE)
@@ -274,7 +273,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
         unset($input['content']);
 
         if ($vcomp instanceof VTodo && !array_key_exists('state', $input)) {
-           // Force default state to TO DO or event will be considered as VEVENT
+            // Force default state to TO DO or event will be considered as VEVENT
             $input['state'] = \Planning::TODO;
         }
 

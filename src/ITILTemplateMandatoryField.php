@@ -51,7 +51,7 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-       // can exists for template
+        // can exists for template
         if (
             $item instanceof ITILTemplate
             && Session::haveRight("itiltemplate", READ)
@@ -81,7 +81,7 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
         $itemtype_id = $itil_object->getSearchOptionIDByField('field', 'itemtype', $itil_object->getTable());
         $items_id_id = $itil_object->getSearchOptionIDByField('field', 'items_id', $itil_object->getTable());
 
-       // Try to delete itemtype -> delete items_id
+        // Try to delete itemtype -> delete items_id
         if ($this->fields['num'] == $itemtype_id) {
             $iterator = $DB->request([
                 'SELECT' => 'id',
@@ -92,9 +92,9 @@ abstract class ITILTemplateMandatoryField extends ITILTemplateField
                 ]
             ]);
             if (count($iterator)) {
-                 $result = $iterator->current();
-                 $a = new static();
-                 $a->delete(['id' => $result['id']]);
+                $result = $iterator->current();
+                $a = new static();
+                $a->delete(['id' => $result['id']]);
             }
         }
     }

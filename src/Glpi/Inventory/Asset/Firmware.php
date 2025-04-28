@@ -35,9 +35,6 @@
 
 namespace Glpi\Inventory\Asset;
 
-use CommonDBTM;
-use Glpi\Inventory\Conf;
-
 class Firmware extends Device
 {
     public function prepare(): array

@@ -58,7 +58,7 @@ class NotificationSettingConfig extends CommonDBTM
             if (!$config->update($tmp)) {
                 $success = false;
             }
-           //disable all notifications types if notifications has been disabled
+            //disable all notifications types if notifications has been disabled
             if ($tmp['use_notifications'] == 0) {
                 $modes = Notification_NotificationTemplate::getModes();
                 foreach (array_keys($modes) as $mode) {

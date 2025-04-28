@@ -50,7 +50,6 @@ use Glpi\Http\Request;
 use Glpi\Http\Response;
 use Glpi\Socket;
 use Glpi\SocketModel;
-use Group;
 use Group_Item;
 use GuzzleHttp\Psr7\Utils;
 use Location;

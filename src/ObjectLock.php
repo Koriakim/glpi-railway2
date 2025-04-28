@@ -365,16 +365,16 @@ class ObjectLock extends CommonDBTM
         switch ($field) {
             case 'id':
                 $templateContent = <<<TWIG
-                    {% set color = is_locked ? 'bg-red-lt' : 'bg-green-lt' %}
-                    {% set icon = is_locked ? 'ti-lock' : 'ti-lock-open' %}
-                    {% set text = is_locked ? locked_label : free_label %}
-                    {% set tooltip = is_locked ? locked_by_label|format(user_name, date) : text %}
+                                        {% set color = is_locked ? 'bg-red-lt' : 'bg-green-lt' %}
+                                        {% set icon = is_locked ? 'ti-lock' : 'ti-lock-open' %}
+                                        {% set text = is_locked ? locked_label : free_label %}
+                                        {% set tooltip = is_locked ? locked_by_label|format(user_name, date) : text %}
 
-                    <span class="badge {{ color }}" data-bs-toggle="tooltip" title="{{ tooltip }}">
-                        <i class="ti {{ icon }}"></i>
-                        {{ text }}
-                    </span>
-TWIG;
+                                        <span class="badge {{ color }}" data-bs-toggle="tooltip" title="{{ tooltip }}">
+                                            <i class="ti {{ icon }}"></i>
+                                            {{ text }}
+                                        </span>
+                    TWIG;
 
                 return TemplateRenderer::getInstance()->renderFromStringTemplate($templateContent, [
                     'is_locked'       => $values['id'] > 0,

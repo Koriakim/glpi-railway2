@@ -103,7 +103,7 @@ final class UserDevicesConditionHandler implements ConditionHandlerInterface
         // Format follows this pattern: "Computer_1"
         $actual_itemtypes = array_filter(
             array_map(
-                fn (string $item) => preg_match('/^([A-Za-z]+)_\d+$/', $item, $matches) ? $matches[1] : null,
+                fn(string $item) => preg_match('/^([A-Za-z]+)_\d+$/', $item, $matches) ? $matches[1] : null,
                 $a
             )
         );
@@ -111,7 +111,7 @@ final class UserDevicesConditionHandler implements ConditionHandlerInterface
         return match ($operator) {
             ValueOperator::AT_LEAST_ONE_ITEM_OF_ITEMTYPE => array_reduce(
                 $actual_itemtypes,
-                fn (bool $carry, string $actual_itemtype) => $carry || in_array(
+                fn(bool $carry, string $actual_itemtype) => $carry || in_array(
                     $actual_itemtype,
                     $b,
                     true
@@ -120,7 +120,7 @@ final class UserDevicesConditionHandler implements ConditionHandlerInterface
             ),
             ValueOperator::ALL_ITEMS_OF_ITEMTYPE => !empty($actual_itemtypes) && array_reduce(
                 $actual_itemtypes,
-                fn (bool $carry, string $actual_itemtype) => $carry && in_array(
+                fn(bool $carry, string $actual_itemtype) => $carry && in_array(
                     $actual_itemtype,
                     $b,
                     true

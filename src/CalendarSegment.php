@@ -42,10 +42,10 @@ use Glpi\DBAL\QueryFunction;
  */
 class CalendarSegment extends CommonDBChild
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory       = true;
 
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype = 'Calendar';
     public static $items_id = 'calendars_id';
 
@@ -73,7 +73,7 @@ class CalendarSegment extends CommonDBChild
     public function prepareInputForAdd($input)
     {
 
-       // Check override of segment : do not add
+        // Check override of segment : do not add
         if (
             count(self::getSegmentsBetween(
                 $input['calendars_id'],
@@ -105,7 +105,7 @@ class CalendarSegment extends CommonDBChild
     public function post_deleteFromDB()
     {
 
-       // Update calendar cache
+        // Update calendar cache
         $cal = new Calendar();
         $cal->updateDurationCache($this->fields['calendars_id']);
 
@@ -124,7 +124,7 @@ class CalendarSegment extends CommonDBChild
     public static function getSegmentsBetween($calendars_id, $begin_day, $begin_time, $end_day, $end_time)
     {
 
-       // Do not check hour if day before the end day of after the begin day
+        // Do not check hour if day before the end day of after the begin day
         return getAllDataFromTable(
             'glpi_calendarsegments',
             [
@@ -161,7 +161,7 @@ class CalendarSegment extends CommonDBChild
         global $DB;
 
         $sum = 0;
-       // Do not check hour if day before the end day of after the begin day
+        // Do not check hour if day before the end day of after the begin day
         $iterator = $DB->request([
             'SELECT' => [
                 QueryFunction::timediff(
@@ -180,7 +180,7 @@ class CalendarSegment extends CommonDBChild
         ]);
 
         foreach ($iterator as $data) {
-            list($hour, $minute ,$second) = explode(':', $data['TDIFF']);
+            [$hour, $minute, $second] = explode(':', $data['TDIFF']);
             $sum += (int)$hour * HOUR_TIMESTAMP + (int)$minute * MINUTE_TIMESTAMP + (int)$second;
         }
         return $sum;
@@ -288,7 +288,7 @@ class CalendarSegment extends CommonDBChild
         /** @var \DBmysql $DB */
         global $DB;
 
-       // Do not check hour if day before the end day of after the begin day
+        // Do not check hour if day before the end day of after the begin day
         $result = $DB->request([
             'SELECT' => ['MIN' => 'begin AS minb'],
             'FROM'   => 'glpi_calendarsegments',
@@ -313,7 +313,7 @@ class CalendarSegment extends CommonDBChild
         /** @var \DBmysql $DB */
         global $DB;
 
-       // Do not check hour if day before the end day of after the begin day
+        // Do not check hour if day before the end day of after the begin day
         $result = $DB->request([
             'SELECT' => ['MAX' => 'end AS mend'],
             'FROM'   => 'glpi_calendarsegments',
@@ -339,7 +339,7 @@ class CalendarSegment extends CommonDBChild
         /** @var \DBmysql $DB */
         global $DB;
 
-       // Do not check hour if day before the end day of after the begin day
+        // Do not check hour if day before the end day of after the begin day
         $result = $DB->request([
             'COUNT'  => 'cpt',
             'FROM'   => 'glpi_calendarsegments',
