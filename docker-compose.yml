@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  glpi:
+    build: .
+    ports:
+      - "80:80"  # Porta 80 no contêiner será mapeada para a porta 80 da máquina
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=glpi_user
+      - MYSQL_PASSWORD=glpi_password
+      - MYSQL_DATABASE=glpi
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD=root_password
+      MYSQL_DATABASE=glpi
+      MYSQL_USER=glpi_user
+      MYSQL_PASSWORD=glpi_password
+    volumes:
+      - glpi_db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"  # Porta 3306 para o banco de dados
+
+volumes:
+  glpi_db_data:
