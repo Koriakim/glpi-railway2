@@ -65,7 +65,7 @@ class Agent extends CommonDBTM
 
     /** @var string */
     public static $rightname = 'agent';
-   //static $rightname = 'inventory';
+    //static $rightname = 'inventory';
 
     private static $found_address = false;
 
@@ -566,13 +566,13 @@ class Agent extends CommonDBTM
 
         $addresses = [];
 
-       //retrieve linked items
+        //retrieve linked items
         $item = $this->getLinkedItem();
         if ((int)$item->getID() > 0) {
             $item_name = $item->getFriendlyName();
             $addresses[] = $item_name;
 
-           //deviceid should contains machines name
+            //deviceid should contains machines name
             $matches = [];
             preg_match('/^(\s)+-\d{4}(-\d{2}){5}$/', $this->fields['deviceid'], $matches);
             if (isset($matches[1])) {
@@ -581,7 +581,7 @@ class Agent extends CommonDBTM
                 }
             }
 
-           //append linked ips
+            //append linked ips
             $ports_iterator = $DB->request([
                 'SELECT' => ['ips.name', 'ips.version'],
                 'FROM'   => NetworkPort::getTable() . ' AS netports',
@@ -634,7 +634,7 @@ class Agent extends CommonDBTM
                 }
             }
 
-           //append linked domains
+            //append linked domains
             $iterator = $DB->request([
                 'SELECT' => ['d.name'],
                 'FROM'   => Domain_Item::getTable(),
@@ -653,7 +653,7 @@ class Agent extends CommonDBTM
             ]);
 
             foreach ($iterator as $row) {
-                 $addresses[] = sprintf('%s.%s', $item_name, $row['name']);
+                $addresses[] = sprintf('%s.%s', $item_name, $row['name']);
             }
         }
 

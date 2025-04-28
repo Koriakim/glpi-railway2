@@ -45,10 +45,10 @@ class PDU_Rack extends CommonDBRelation
     public static $mustBeAttached_1      = false;
     public static $mustBeAttached_2      = false;
 
-    const SIDE_LEFT   = 1;
-    const SIDE_RIGHT  = 2;
-    const SIDE_TOP    = 3;
-    const SIDE_BOTTOM = 4;
+    public const SIDE_LEFT   = 1;
+    public const SIDE_RIGHT  = 2;
+    public const SIDE_TOP    = 3;
+    public const SIDE_BOTTOM = 4;
 
     public static function getTypeName($nb = 0)
     {
@@ -91,7 +91,7 @@ class PDU_Rack extends CommonDBRelation
     {
         $error_detected = [];
 
-       //check for requirements
+        //check for requirements
         if ($this->isNewItem()) {
             if (!isset($input['pdus_id'])) {
                 $error_detected[] = __('A pdu is required');
@@ -116,7 +116,7 @@ class PDU_Rack extends CommonDBRelation
         $side     = $input['side'] ?? $this->fields['side'] ?? null;
 
         if (!count($error_detected)) {
-           //check if required U are available at position
+            //check if required U are available at position
             $required_units = 1;
 
             $rack = new Rack();
@@ -207,7 +207,7 @@ class PDU_Rack extends CommonDBRelation
         /** @var \DBmysql $DB */
         global $DB;
 
-       // search used racked (or sided mounted) pdus
+        // search used racked (or sided mounted) pdus
         $used = [];
         foreach (
             $DB->request([
@@ -276,7 +276,7 @@ class PDU_Rack extends CommonDBRelation
                 'min'    => 1,
                 'max'    => $rack->fields['number_units'],
                 'step'   => 1,
-            // 'used'   => $rack->getFilled($this->fields['itemtype'], $this->fields['items_id']),
+                // 'used'   => $rack->getFilled($this->fields['itemtype'], $this->fields['items_id']),
                 'rand'   => $rand
             ]
         );
@@ -369,7 +369,7 @@ class PDU_Rack extends CommonDBRelation
         $sides = self::getSides();
 
         $found_pdus = [];
-       // find pdus from this relation
+        // find pdus from this relation
         $iterator = $DB->request([
             'FROM' => self::getTable(),
             'WHERE' => [
@@ -386,7 +386,7 @@ class PDU_Rack extends CommonDBRelation
                 'bgcolor'  => $current['bgcolor'],
             ];
         }
-       // find pdus from item_rack relation
+        // find pdus from item_rack relation
         $iterator = $DB->request([
             'FROM' => Item_Rack::getTable(),
             'WHERE' => [
@@ -428,7 +428,7 @@ class PDU_Rack extends CommonDBRelation
                                  title='" . __s("On left") . " (" . $current_pdu['position'] . ")'></i>";
                                 break;
                             case self::SIDE_RIGHT:
-                                 echo "<i class='ti ti-arrow-right'
+                                echo "<i class='ti ti-arrow-right'
                                  title='" . __s("On right") . " (" . $current_pdu['position'] . ")'></i>";
                                 break;
                             case self::SIDE_TOP:
@@ -449,8 +449,8 @@ class PDU_Rack extends CommonDBRelation
 
                     echo "<td>";
                     if ($pdu_m->getFromDB($pdu->fields['pdumodels_id'])) {
-                         echo "<i class='ti ti-bolt'></i>";
-                         echo htmlescape($pdu_m->fields['max_power']) . "W";
+                        echo "<i class='ti ti-bolt'></i>";
+                        echo htmlescape($pdu_m->fields['max_power']) . "W";
                     }
                     echo "</td>";
                     echo "</tr>";
@@ -484,23 +484,23 @@ class PDU_Rack extends CommonDBRelation
         $ira_url = Item_Rack::getFormURL() . "?_onlypdu=true&orientation=0&position=1&racks_id=$racks_id&ajax=true";
 
         $js = <<<JAVASCRIPT
-      var showAddPduSubForm = function() {
-         var sub_form = $('#dropdown_sub_form{$rand}').val();
+                  var showAddPduSubForm = function() {
+                     var sub_form = $('#dropdown_sub_form{$rand}').val();
 
-         var form_url = "";
-         if (sub_form == "racked") {
-            form_url = "{$ira_url}";
-         } else if (sub_form == "side_rack") {
-            form_url = "{$pra_url}";
-         }
+                     var form_url = "";
+                     if (sub_form == "racked") {
+                        form_url = "{$ira_url}";
+                     } else if (sub_form == "side_rack") {
+                        form_url = "{$pra_url}";
+                     }
 
-         if (form_url.length) {
-            $('#pdu_add_sub_form$rand').load(form_url);
-         } else {
-            $('#pdu_add_sub_form$rand').html("");
-         }
-      }
-JAVASCRIPT;
+                     if (form_url.length) {
+                        $('#pdu_add_sub_form$rand').load(form_url);
+                     } else {
+                        $('#pdu_add_sub_form$rand').html("");
+                     }
+                  }
+            JAVASCRIPT;
         echo Html::scriptBlock($js);
         echo "<div id='pdu_add_sub_form$rand'></div>";
     }
@@ -517,7 +517,7 @@ JAVASCRIPT;
         $rel   = new self();
 
         $found_pdus_side = self::getForRackSide($rack, $side);
-       // check if the rack has sided pdu on other side (to get symetrical view)
+        // check if the rack has sided pdu on other side (to get symetrical view)
         $found_all_pdus_side = self::getForRackSide($rack, [$side, self::getOtherSide($side)]);
 
         $float = false;

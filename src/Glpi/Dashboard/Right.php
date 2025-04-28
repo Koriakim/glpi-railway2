@@ -42,8 +42,8 @@ class Right extends \CommonDBChild
     public static $itemtype = "Glpi\\Dashboard\\Dashboard";
     public static $items_id = 'dashboards_dashboards_id';
 
-   // prevent bad getFromDB when bootstraping tests suite
-   // FIXME Should be true
+    // prevent bad getFromDB when bootstraping tests suite
+    // FIXME Should be true
     public static $mustBeAttached = false;
 
     /**

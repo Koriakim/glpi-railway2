@@ -422,18 +422,18 @@ class Item_Rack extends CommonDBRelation
         $ajax_url     = $CFG_GLPI['root_doc'] . "/ajax/rack.php";
 
         $js = <<<JAVASCRIPT
-      // init variables to pass to js/rack.js
-      var grid_link_url      = "{$link->getFormURL()}";
-      var grid_item_ajax_url = "{$ajax_url}";
-      var grid_rack_id       = $ID;
-      var grid_rack_units    = {$rack->fields['number_units']};
-      var grid_rack_add_tip  = "{$rack_add_tip}";
+                  // init variables to pass to js/rack.js
+                  var grid_link_url      = "{$link->getFormURL()}";
+                  var grid_item_ajax_url = "{$ajax_url}";
+                  var grid_rack_id       = $ID;
+                  var grid_rack_units    = {$rack->fields['number_units']};
+                  var grid_rack_add_tip  = "{$rack_add_tip}";
 
-      $(function() {
-         // initialize grid with function defined in js/rack.js
-         initRack();
-      });
-JAVASCRIPT;
+                  $(function() {
+                     // initialize grid with function defined in js/rack.js
+                     initRack();
+                  });
+            JAVASCRIPT;
         echo Html::scriptBlock($js);
     }
 
@@ -577,7 +577,7 @@ JAVASCRIPT;
             );
         }
 
-       //get all used items
+        //get all used items
         $used = $used_reserved = [];
         $iterator = $DB->request([
             'SELECT' => ['itemtype', 'items_id', 'is_reserved'],
@@ -594,7 +594,7 @@ JAVASCRIPT;
             $used['PDU'][] = $used_pdu['pdus_id'];
         }
 
-       //items part of an enclosure should not be listed
+        //items part of an enclosure should not be listed
         $iterator = $DB->request([
             'SELECT' => ['itemtype', 'items_id'],
             'FROM'   => Item_Enclosure::getTable()
@@ -610,10 +610,10 @@ JAVASCRIPT;
             ]
         );
 
-       //TODO: update possible positions according to selected item number of units
-       //TODO: update positions on rack selection
-       //TODO: update hpos from item model info is_half_rack
-       //TODO: update orientation according to item model depth
+        //TODO: update possible positions according to selected item number of units
+        //TODO: update positions on rack selection
+        //TODO: update hpos from item model info is_half_rack
+        //TODO: update orientation according to item model depth
 
         echo "</td>";
         echo "<td><label for='dropdown_items_id$rand'>" . _sn('Item', 'Items', 1) . "</label></td>";
@@ -831,7 +831,7 @@ JAVASCRIPT;
                   </label>
                </span>";
             if (!empty($typename)) {
-                 $tip .= "<span>
+                $tip .= "<span>
                      <label>" . _n('Type', 'Types', 1) . ":</label>
                      $typename
                   </span>";
@@ -945,7 +945,7 @@ JAVASCRIPT;
         $hpos        = !$this->isNewItem() ? $this->fields['hpos'] : null;
         $orientation = !$this->isNewItem() ? $this->fields['orientation'] : null;
 
-       //check for requirements
+        //check for requirements
         if (
             ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
             || (isset($input['itemtype']) && empty($input['itemtype']))
@@ -991,14 +991,14 @@ JAVASCRIPT;
         }
 
         if (!count($error_detected)) {
-           //check if required U are available at position
+            //check if required U are available at position
             $rack = new Rack();
             $rack->getFromDB($racks_id);
 
             if ($this->isNewItem()) {
                 $filled = $rack->getFilled();
             } else {
-               // If object is existing, exclude current state from used positions
+                // If object is existing, exclude current state from used positions
                 $filled = $rack->getFilled($this->fields['itemtype'], $this->fields['items_id']);
             }
 
@@ -1038,7 +1038,7 @@ JAVASCRIPT;
                 $position + $required_units  > $rack->fields['number_units'] + 1
             ) {
                 $error_detected[] = __('Item is out of rack bounds');
-            } else if (!count($error_detected)) {
+            } elseif (!count($error_detected)) {
                 $i = 0;
                 while ($i < $required_units) {
                     $current_position = $position + $i;

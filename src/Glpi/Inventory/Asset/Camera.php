@@ -35,7 +35,6 @@
 
 namespace Glpi\Inventory\Asset;
 
-use Glpi\Inventory\Conf;
 use Item_Devices;
 
 class Camera extends Device
@@ -69,7 +68,7 @@ class Camera extends Device
     protected function itemdeviceAdded(Item_Devices $itemdevice, $val)
     {
 
-       //handle resolutions
+        //handle resolutions
         if (property_exists($val, 'resolution')) {
             $this->handleResolution($itemdevice, $val->resolution);
         }

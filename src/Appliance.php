@@ -50,7 +50,7 @@ class Appliance extends CommonDBTM
         prepareInputForUpdate as prepareInputForUpdateAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname                   = 'appliance';
     protected $usenotepad               = true;
@@ -544,9 +544,9 @@ class Appliance extends CommonDBTM
                     ];
                     if ($appli_item->can(-1, UPDATE, $input)) {
                         if ($appli_item->add($input)) {
-                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                            $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                         } else {
-                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                            $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                         }
                     } else {
                         $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);

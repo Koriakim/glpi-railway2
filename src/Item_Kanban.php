@@ -72,7 +72,7 @@ class Item_Kanban extends CommonDBRelation
         }
 
         if ($state === null || $state === 'null' || $state === false) {
-           // Save was probably denied in prepareKanbanStateForUpdate or an invalid state was given
+            // Save was probably denied in prepareKanbanStateForUpdate or an invalid state was given
             return false;
         }
 
@@ -166,13 +166,13 @@ class Item_Kanban extends CommonDBRelation
                 if (strtotime($timestamp) < strtotime($data['date_mod'])) {
                     return json_decode($data['state'], true);
                 } else {
-                   // No changes since last check
+                    // No changes since last check
                     return null;
                 }
             }
             return json_decode($data['state'], true);
         } else {
-           // State is not saved
+            // State is not saved
             return [];
         }
     }
@@ -213,7 +213,7 @@ class Item_Kanban extends CommonDBRelation
             $position = 0;
         }
 
-       // Search for old location and remove card
+        // Search for old location and remove card
         foreach ($state as $column_index => $col) {
             if (isset($col['cards'])) {
                 foreach ($col['cards'] as $card_index => $card_id) {

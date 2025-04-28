@@ -336,37 +336,37 @@ class Widget
 
         $label = $p['label'];
         $html = <<<HTML
-      <style>
-         #{$p['id']} {
-            background-color: {$p['color']};
-            color: {$fg_color};
-         }
+                  <style>
+                     #{$p['id']} {
+                        background-color: {$p['color']};
+                        color: {$fg_color};
+                     }
 
-         #{$p['id']}:hover {
-            background-color: {$fg_hover_color};
-            border: 1px solid {$fg_hover_border};
-         }
+                     #{$p['id']}:hover {
+                        background-color: {$fg_hover_color};
+                        border: 1px solid {$fg_hover_border};
+                     }
 
-         .theme-dark #{$p['id']} {
-            background-color: {$fg_color};
-            color: {$p['color']};
-         }
+                     .theme-dark #{$p['id']} {
+                        background-color: {$fg_color};
+                        color: {$p['color']};
+                     }
 
-         .theme-dark #{$p['id']}:hover {
-            background-color: {$fg_hover_color};
-            color: {$fg_color};
-            border: 1px solid {$fg_hover_border};
-         }
-      </style>
-      <a {$href}
-         id="{$p['id']}"
-         class="card big-number $class"
-         title="{$p['alt']}">
-         <span class="content">$formatted_number</span>
-         <div class="label" title="{$label}">{$label}</div>
-         <i class="main-icon {$p['icon']}"></i>
-      </a>
-HTML;
+                     .theme-dark #{$p['id']}:hover {
+                        background-color: {$fg_hover_color};
+                        color: {$fg_color};
+                        border: 1px solid {$fg_hover_border};
+                     }
+                  </style>
+                  <a {$href}
+                     id="{$p['id']}"
+                     class="card big-number $class"
+                     title="{$p['alt']}">
+                     <span class="content">$formatted_number</span>
+                     <div class="label" title="{$label}">{$label}</div>
+                     <i class="main-icon {$p['icon']}"></i>
+                  </a>
+            HTML;
 
         return $html;
     }
@@ -452,12 +452,12 @@ HTML;
             $formatted_number = Toolbox::shortenNumber($entry['number']);
 
             $numbers_html .= <<<HTML
-            <a {$href} class="line line-{$i}">
-               <span class="content" {$color}>$formatted_number</span>
-               <i class="icon {$entry['icon']}" {$color2}></i>
-               <span class="label" {$color2}>{$entry['label']}</span>
-            </a>
-HTML;
+                            <a {$href} class="line line-{$i}">
+                               <span class="content" {$color}>$formatted_number</span>
+                               <i class="icon {$entry['icon']}" {$color2}></i>
+                               <span class="label" {$color2}>{$entry['label']}</span>
+                            </a>
+                HTML;
             $i++;
         }
 
@@ -494,32 +494,32 @@ HTML;
         }
 
         $html = <<<HTML
-      <style>
-         {$palette_style}
+                  <style>
+                     {$palette_style}
 
-         #chart-{$p['rand']} {
-            background-color: {$p['color']};
-            color: {$fg_color};
-         }
+                     #chart-{$p['rand']} {
+                        background-color: {$p['color']};
+                        color: {$fg_color};
+                     }
 
-         .theme-dark #chart-{$p['rand']} {
-            background-color: {$fg_color};
-            color: {$p['color']};
-         }
-      </style>
+                     .theme-dark #chart-{$p['rand']} {
+                        background-color: {$fg_color};
+                        color: {$p['color']};
+                     }
+                  </style>
 
-      <div class="card $class"
-           id="chart-{$p['rand']}"
-           title="{$p['alt']}">
-         <div class='scrollable'>
-            <div class='table'>
-            {$numbers_html}
-            </div>
-         </div>
-         <span class="main-label">{$p['label']}</span>
-         <i class="main-icon {$p['icon']}" style="color: {$fg_color}"></i>
-      </div>
-HTML;
+                  <div class="card $class"
+                       id="chart-{$p['rand']}"
+                       title="{$p['alt']}">
+                     <div class='scrollable'>
+                        <div class='table'>
+                        {$numbers_html}
+                        </div>
+                     </div>
+                     <span class="main-label">{$p['label']}</span>
+                     <i class="main-icon {$p['icon']}" style="color: {$fg_color}"></i>
+                  </div>
+            HTML;
 
         return $html;
     }
@@ -565,7 +565,7 @@ HTML;
             'rand'         => mt_rand(),
         ];
         $p = array_merge($default, $params);
-        $p['cache_key'] = $p['cache_key'] ?? $p['rand'];
+        $p['cache_key'] ??= $p['rand'];
         $default_entry = [
             'url'    => '',
             'icon'   => '',
@@ -599,23 +599,23 @@ HTML;
         $nb_series = min($p['limit'], count($p['data']));
 
         $html = <<<HTML
-        <style>
-            #{$chart_id} {
-                background-color: {$p['color']};
-                color: {$fg_color}
-            }
+                    <style>
+                        #{$chart_id} {
+                            background-color: {$p['color']};
+                            color: {$fg_color}
+                        }
 
-            .theme-dark #{$chart_id} {
-                background-color: {$dark_bg_color};
-                color: {$dark_fg_color};
-            }
-        </style>
-        <div class="card g-chart {$class}" id="{$chart_id}">
-            <div class="chart ct-chart">{$no_data_html}</div>
-            <span class="main-label">{$p['label']}</span>
-            <i class="main-icon {$p['icon']}"></i>
-        </div>
-HTML;
+                        .theme-dark #{$chart_id} {
+                            background-color: {$dark_bg_color};
+                            color: {$dark_fg_color};
+                        }
+                    </style>
+                    <div class="card g-chart {$class}" id="{$chart_id}">
+                        <div class="chart ct-chart">{$no_data_html}</div>
+                        <span class="main-label">{$p['label']}</span>
+                        <i class="main-icon {$p['icon']}"></i>
+                    </div>
+            HTML;
 
         if ($nodata) {
             return $html;
@@ -744,27 +744,27 @@ HTML;
         ];
         // language=Twig
         $js = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <script type="module">
-                const target = GLPI.Dashboard.getActiveDashboard() ?
-                    GLPI.Dashboard.getActiveDashboard().element.find('#{{ chart_id }} .chart')
-                    : $('#{{ chart_id }} .chart');
-                const myChart = echarts.init(target[0]);
-                myChart.setOption({{ options|json_encode|raw }});
-                myChart
-                    .on('click', function (params) {
-                        const data_url = _.get(params, 'data.url', '');
-                        if (data_url.length > 0) {
-                            window.location.href = data_url;
-                        }
-                    });
+                        <script type="module">
+                            const target = GLPI.Dashboard.getActiveDashboard() ?
+                                GLPI.Dashboard.getActiveDashboard().element.find('#{{ chart_id }} .chart')
+                                : $('#{{ chart_id }} .chart');
+                            const myChart = echarts.init(target[0]);
+                            myChart.setOption({{ options|json_encode|raw }});
+                            myChart
+                                .on('click', function (params) {
+                                    const data_url = _.get(params, 'data.url', '');
+                                    if (data_url.length > 0) {
+                                        window.location.href = data_url;
+                                    }
+                                });
 
-                target.on('mouseover', () => {
-                    myChart.setOption({'toolbox': {'show': true}});
-                }).on('mouseout', () => {
-                    myChart.setOption({'toolbox': {'show': false}});
-                });
-            </script>
-TWIG, $twig_params);
+                            target.on('mouseover', () => {
+                                myChart.setOption({'toolbox': {'show': true}});
+                            }).on('mouseout', () => {
+                                myChart.setOption({'toolbox': {'show': false}});
+                            });
+                        </script>
+            TWIG, $twig_params);
 
 
         return $html . $js;
@@ -856,7 +856,7 @@ TWIG, $twig_params);
             ];
         }
 
-       // simple bar graphs are always multiple lines
+        // simple bar graphs are always multiple lines
         if (!$params['distributed']) {
             $series = [$series];
         }
@@ -999,7 +999,7 @@ TWIG, $twig_params);
         ];
         $p = array_merge($defaults, $params);
 
-        $p['cache_key'] = $p['cache_key'] ?? $p['rand'];
+        $p['cache_key'] ??= $p['rand'];
         $chart_id = Toolbox::slugify('chart_' . $p['cache_key']);
 
         $nb_labels = min($p['limit'], count($labels));
@@ -1089,24 +1089,24 @@ TWIG, $twig_params);
         }
 
         $html = <<<HTML
-            <style>
-            #{$chart_id} {
-                background-color: {$p['color']};
-                color: {$fg_color}
-            }
+                        <style>
+                        #{$chart_id} {
+                            background-color: {$p['color']};
+                            color: {$fg_color}
+                        }
 
-            .theme-dark #{$chart_id} {
-                background-color: {$dark_bg_color};
-                color: {$dark_fg_color};
-            }
-            </style>
+                        .theme-dark #{$chart_id} {
+                            background-color: {$dark_bg_color};
+                            color: {$dark_fg_color};
+                        }
+                        </style>
 
-            <div class="card g-chart $class" id="{$chart_id}">
-                <div class="chart ct-chart">$no_data_html</div>
-                <span class="main-label">{$p['label']}</span>
-                <i class="main-icon {$p['icon']}"></i>
-            </div>
-HTML;
+                        <div class="card g-chart $class" id="{$chart_id}">
+                            <div class="chart ct-chart">$no_data_html</div>
+                            <span class="main-label">{$p['label']}</span>
+                            <i class="main-icon {$p['icon']}"></i>
+                        </div>
+            HTML;
 
         $options = [
             'animationDuration' => self::$animation_duration,
@@ -1191,58 +1191,58 @@ HTML;
         ];
         // language=Twig
         $js = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <script type="module">
-                const target = GLPI.Dashboard.getActiveDashboard() ?
-                    GLPI.Dashboard.getActiveDashboard().element.find('#{{ chart_id }} .chart')
-                    : $('#{{ chart_id }} .chart');
-                const chart_options = {{ options|json_encode|raw }};
-                const palette = {{ palette|json_encode|raw }};
-                $.each(chart_options.series, function (index, serie) {
-                    if ({{ distributed ? 'true' : 'false' }}) {
-                        serie['itemStyle'] = {
-                            ...serie['itemStyle'],
-                            'color': (param) => palette[param.dataIndex]
-                        }
-                    }
-                    serie['label'] = {
-                        ...serie['label'],
-                        'formatter': (param) => param.data.value == 0 ? '' : param.data.value
-                    };
-                });
-                if ({{ horizontal ? 'true' : 'false' }}) {
-                    chart_options['xAxis'] = {
-                        ...chart_options['xAxis'],
-                        'axisLabel': {
-                            'formatter': (value) => {
-                                if (value < 1e3) {
-                                    return value;
-                                } else if (value < 1e6) {
-                                    return value / 1e3 + "K";
-                                } else {
-                                    return value / 1e6 + "M";
+                        <script type="module">
+                            const target = GLPI.Dashboard.getActiveDashboard() ?
+                                GLPI.Dashboard.getActiveDashboard().element.find('#{{ chart_id }} .chart')
+                                : $('#{{ chart_id }} .chart');
+                            const chart_options = {{ options|json_encode|raw }};
+                            const palette = {{ palette|json_encode|raw }};
+                            $.each(chart_options.series, function (index, serie) {
+                                if ({{ distributed ? 'true' : 'false' }}) {
+                                    serie['itemStyle'] = {
+                                        ...serie['itemStyle'],
+                                        'color': (param) => palette[param.dataIndex]
+                                    }
                                 }
+                                serie['label'] = {
+                                    ...serie['label'],
+                                    'formatter': (param) => param.data.value == 0 ? '' : param.data.value
+                                };
+                            });
+                            if ({{ horizontal ? 'true' : 'false' }}) {
+                                chart_options['xAxis'] = {
+                                    ...chart_options['xAxis'],
+                                    'axisLabel': {
+                                        'formatter': (value) => {
+                                            if (value < 1e3) {
+                                                return value;
+                                            } else if (value < 1e6) {
+                                                return value / 1e3 + "K";
+                                            } else {
+                                                return value / 1e6 + "M";
+                                            }
+                                        }
+                                    }
+                                };
                             }
-                        }
-                    };
-                }
 
-                const myChart = echarts.init(target[0]);
-                myChart.setOption(chart_options);
-                myChart
-                    .on('click', function (params) {
-                        const data_url = _.get(params, 'data.url', '');
-                        if (data_url.length > 0) {
-                            window.location.href = data_url;
-                        }
-                    });
+                            const myChart = echarts.init(target[0]);
+                            myChart.setOption(chart_options);
+                            myChart
+                                .on('click', function (params) {
+                                    const data_url = _.get(params, 'data.url', '');
+                                    if (data_url.length > 0) {
+                                        window.location.href = data_url;
+                                    }
+                                });
 
-                target.on('mouseover', () => {
-                    myChart.setOption({'toolbox': {'show': true}});
-                }).on('mouseout', () => {
-                    myChart.setOption({'toolbox': {'show': false}});
-                });
-            </script>
-TWIG, $twig_params);
+                            target.on('mouseover', () => {
+                                myChart.setOption({'toolbox': {'show': true}});
+                            }).on('mouseout', () => {
+                                myChart.setOption({'toolbox': {'show': false}});
+                            });
+                        </script>
+            TWIG, $twig_params);
 
         return $html . $js;
     }
@@ -1276,7 +1276,7 @@ TWIG, $twig_params);
             ];
         }
 
-       // simple line graphs are always multiple lines
+        // simple line graphs are always multiple lines
         $series = [
             [
                 'name' => $params['label'],
@@ -1384,7 +1384,7 @@ TWIG, $twig_params);
             'rand'         => mt_rand(),
         ];
         $p = array_merge($defaults, $params);
-        $p['cache_key'] = $p['cache_key'] ?? $p['rand'];
+        $p['cache_key'] ??= $p['rand'];
 
         $chart_id = Toolbox::slugify('chart_' . $p['cache_key']);
 
@@ -1454,24 +1454,24 @@ TWIG, $twig_params);
         $class .= count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
         $html = <<<HTML
-            <style>
-            #{$chart_id} {
-                background-color: {$p['color']};
-                color: {$fg_color}
-            }
+                        <style>
+                        #{$chart_id} {
+                            background-color: {$p['color']};
+                            color: {$fg_color}
+                        }
 
-            .theme-dark #{$chart_id} {
-                background-color: {$dark_bg_color};
-                color: {$dark_fg_color};
-            }
-            </style>
+                        .theme-dark #{$chart_id} {
+                            background-color: {$dark_bg_color};
+                            color: {$dark_fg_color};
+                        }
+                        </style>
 
-            <div class="card g-chart $class" id="{$chart_id}">
-                <div class="chart ct-chart"></div>
-                <span class="main-label">{$p['label']}</span>
-                <i class="main-icon {$p['icon']}"></i>
-            </div>
-HTML;
+                        <div class="card g-chart $class" id="{$chart_id}">
+                            <div class="chart ct-chart"></div>
+                            <span class="main-label">{$p['label']}</span>
+                            <i class="main-icon {$p['icon']}"></i>
+                        </div>
+            HTML;
 
         $options = [
             'animationDuration' => self::$animation_duration,
@@ -1525,38 +1525,38 @@ HTML;
         ];
         // language=Twig
         $js = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <script type="module">
-                const target = GLPI.Dashboard.getActiveDashboard() ?
-                    GLPI.Dashboard.getActiveDashboard().element.find('#{{ chart_id }} .chart')
-                    : $('#{{ chart_id }} .chart');
-                const chart_options = {{ options|json_encode|raw }};
-                
-                $.each(chart_options.series, function (index, serie) {
-                    if ({{ show_points ? 'true' : 'false' }}) {
-                        serie['symbol'] = (value) => value > 0 ? 'circle': 'none';
-                    }
-                    if ({{ point_labels ? 'true' : 'false' }}) {
-                        serie['label']['formatter'] = (param) => param.data.value == 0 ? '': param.data.value;
-                    }
-                });
+                        <script type="module">
+                            const target = GLPI.Dashboard.getActiveDashboard() ?
+                                GLPI.Dashboard.getActiveDashboard().element.find('#{{ chart_id }} .chart')
+                                : $('#{{ chart_id }} .chart');
+                            const chart_options = {{ options|json_encode|raw }};
+                            
+                            $.each(chart_options.series, function (index, serie) {
+                                if ({{ show_points ? 'true' : 'false' }}) {
+                                    serie['symbol'] = (value) => value > 0 ? 'circle': 'none';
+                                }
+                                if ({{ point_labels ? 'true' : 'false' }}) {
+                                    serie['label']['formatter'] = (param) => param.data.value == 0 ? '': param.data.value;
+                                }
+                            });
 
-                const myChart = echarts.init(target[0]);
-                myChart.setOption(chart_options);
-                myChart
-                    .on('click', function (params) {
-                        const data_url = _.get(params, 'data.url', '');
-                        if (data_url.length > 0) {
-                            window.location.href = data_url;
-                        }
-                    });
+                            const myChart = echarts.init(target[0]);
+                            myChart.setOption(chart_options);
+                            myChart
+                                .on('click', function (params) {
+                                    const data_url = _.get(params, 'data.url', '');
+                                    if (data_url.length > 0) {
+                                        window.location.href = data_url;
+                                    }
+                                });
 
-                target.on('mouseover', () => {
-                    myChart.setOption({'toolbox': {'show': true}});
-                }).on('mouseout', () => {
-                    myChart.setOption({'toolbox': {'show': false}});
-                });
-            </script>
-TWIG, $twig_params);
+                            target.on('mouseover', () => {
+                                myChart.setOption({'toolbox': {'show': true}});
+                            }).on('mouseout', () => {
+                                myChart.setOption({'toolbox': {'show': false}});
+                            });
+                        </script>
+            TWIG, $twig_params);
 
         return $html . $js;
     }
@@ -1589,17 +1589,17 @@ TWIG, $twig_params);
         $content = RichText::getSafeHtml($md->disableHeadings()->render($p['markdown_content']));
 
         $html = <<<HTML
-      <div
-         class="card markdown"
-         style="background-color: {$p['color']}; color: {$fg_color}; border-color: {$border_color}">
+                  <div
+                     class="card markdown"
+                     style="background-color: {$p['color']}; color: {$fg_color}; border-color: {$border_color}">
 
-         <div class="html_content">{$content}</div>
-         <textarea
-            class="markdown_content"
-            placeholder="{$ph}">{$p['markdown_content']}</textarea>
+                     <div class="html_content">{$content}</div>
+                     <textarea
+                        class="markdown_content"
+                        placeholder="{$ph}">{$p['markdown_content']}</textarea>
 
-      </div>
-HTML;
+                  </div>
+            HTML;
 
         return $html;
     }
@@ -1654,7 +1654,7 @@ HTML;
 
         $class = count($p['filters']) > 0 ? " filter-" . implode(' filter-', $p['filters']) : "";
 
-       // prepare search data
+        // prepare search data
         $_GET['_in_modal'] = true;
         $params = [
             'criteria' => $p['s_criteria'],
@@ -1663,7 +1663,7 @@ HTML;
 
         ob_start();
         $params = Search::manageParams($p['itemtype'], $params, false);
-       // remove parts of search list
+        // remove parts of search list
         $params = array_merge($params, [
             'showmassiveactions' => false,
             'dont_flush'         => true,
@@ -1678,24 +1678,24 @@ HTML;
         $search_result = $crawler->filter('.search-results')->outerHtml();
 
         $html = <<<HTML
-      <style>
-         #{$id} table th {
-            background: {$fg_color2};
-         }
-      </style>
-      <div
-         class="card search-table {$class}"
-         id="{$id}"
-         style="background-color: {$p['color']}; color: {$fg_color}">
-         <div class='table-container'>
-            $search_result
-         </div>
-         <span class="main-label">
-            <a {$href}>{$p['label']}</a>
-         </span>
-         <i class="main-icon {$p['icon']}"></i>
-      </div>
-HTML;
+                  <style>
+                     #{$id} table th {
+                        background: {$fg_color2};
+                     }
+                  </style>
+                  <div
+                     class="card search-table {$class}"
+                     id="{$id}"
+                     style="background-color: {$p['color']}; color: {$fg_color}">
+                     <div class='table-container'>
+                        $search_result
+                     </div>
+                     <span class="main-label">
+                        <a {$href}>{$p['label']}</a>
+                     </span>
+                     <i class="main-icon {$p['icon']}"></i>
+                  </div>
+            HTML;
 
         return $html;
     }
@@ -1751,20 +1751,21 @@ HTML;
             $content_size = strlen($entry['content']);
             $content = strlen($entry['content'])
             ? RichText::getEnhancedHtml($entry['content']) .
-              ($content_size > 300
+              (
+                  $content_size > 300
                ? "<p class='read_more'><span class='read_more_button'>...</span></p>"
                : ""
               )
              : "";
 
             $list_html .= <<<HTML
-            <li class="line"><a {$href}>
-               <span class="label">{$entry['label']}</span>
-               <div class="content long_text">{$content}</div>
-               <span class="author">$author</span>
-               <span class="date">{$entry['date']}</span>
-            </a></li>
-HTML;
+                            <li class="line"><a {$href}>
+                               <span class="label">{$entry['label']}</span>
+                               <div class="content long_text">{$content}</div>
+                               <span class="author">$author</span>
+                               <span class="date">{$entry['date']}</span>
+                            </a></li>
+                HTML;
             $i++;
         }
 
@@ -1783,47 +1784,47 @@ HTML;
          : "";
 
         $html = <<<HTML
-      <style>
-         #chart-{$p['rand']} .line {
-            background-color: $bg_color_2;
-         }
+                  <style>
+                     #chart-{$p['rand']} .line {
+                        background-color: $bg_color_2;
+                     }
 
-         #chart-{$p['rand']} .ti-eye {
-            color: {$fg_color};
-         }
-      </style>
+                     #chart-{$p['rand']} .ti-eye {
+                        color: {$fg_color};
+                     }
+                  </style>
 
-      <div class="card {$class}"
-           id="chart-{$p['rand']}"
-           title="{$p['alt']}"
-           style="background-color: {$p['color']}; color: {$fg_color}">
-         <div class='scrollable'>
-            <ul class='list'>
-            {$list_html}
-   </ul>
-         </div>
-         <span class="main-label">
-            {$p['label']}
-            $view_all
-         </span>
-         <i class="main-icon {$p['icon']}" style="color: {$fg_color}"></i>
-      </div>
-HTML;
+                  <div class="card {$class}"
+                       id="chart-{$p['rand']}"
+                       title="{$p['alt']}"
+                       style="background-color: {$p['color']}; color: {$fg_color}">
+                     <div class='scrollable'>
+                        <ul class='list'>
+                        {$list_html}
+               </ul>
+                     </div>
+                     <span class="main-label">
+                        {$p['label']}
+                        $view_all
+                     </span>
+                     <i class="main-icon {$p['icon']}" style="color: {$fg_color}"></i>
+                  </div>
+            HTML;
 
         $js = <<<JAVASCRIPT
-      $(function () {
-         // init readmore controls
-         read_more();
+                  $(function () {
+                     // init readmore controls
+                     read_more();
 
-         // set dates in relative format
-         $('#chart-{$p['rand']} .date').each(function() {
-            var line_date = $(this).html();
-            var rel_date = relativeDate(line_date);
+                     // set dates in relative format
+                     $('#chart-{$p['rand']} .date').each(function() {
+                        var line_date = $(this).html();
+                        var rel_date = relativeDate(line_date);
 
-            $(this).html(rel_date).attr('title', line_date);
-         });
-      });
-JAVASCRIPT;
+                        $(this).html(rel_date).attr('title', line_date);
+                     });
+                  });
+            JAVASCRIPT;
         $js = \Html::scriptBlock($js);
 
         return $html . $js;
@@ -1909,12 +1910,12 @@ JAVASCRIPT;
         for ($i = 1; $i <= $nb_series; $i++) {
             $names[$i - 1] = $i - 1;
 
-           // adjust luminosity
+            // adjust luminosity
             $i_l_step = $i * $step_l + $min_l / 100;
             $hsl['L'] = min(1, $revert
             ? 1 - $i_l_step
             : $i_l_step);
-           // adjust saturation
+            // adjust saturation
             if ($hsl['H'] != 0 && $hsl['H'] != 1) {
                 $i_s_step = $i * $step_s + $min_s / 100;
                 $hsl['S'] = min(1, $revert

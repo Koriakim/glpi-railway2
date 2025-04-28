@@ -181,7 +181,7 @@ class QueuedNotification extends CommonDBTM
             $input['documents'] = '';
         }
 
-       // Force items_id to integer
+        // Force items_id to integer
         if (empty($input['items_id'])) {
             $input['items_id'] = 0;
         }
@@ -579,7 +579,7 @@ class QueuedNotification extends CommonDBTM
                 || !$CFG_GLPI['notifications_' . $mode]
                 || !$eventclass::canCron()
             ) {
-               //mode is not in limits, is disabled, or cannot be called from cron, passing
+                //mode is not in limits, is disabled, or cannot be called from cron, passing
                 continue;
             }
 
@@ -613,7 +613,7 @@ class QueuedNotification extends CommonDBTM
         }
         $cron_status = 0;
 
-       // Send notifications at least 1 minute after adding in queue to be sure that process on it is finished
+        // Send notifications at least 1 minute after adding in queue to be sure that process on it is finished
         $send_time = date("Y-m-d H:i:s", strtotime("+1 minutes"));
 
         $pendings = self::getPendings(

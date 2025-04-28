@@ -86,7 +86,7 @@ class Domain_Item extends CommonDBRelation
     {
         if ($item::class === Domain::class) {
             self::showForDomain($item);
-        } else if (
+        } elseif (
             $item::class === DomainRelation::class
             || in_array($item::class, Domain::getTypes(true), true)
         ) {
@@ -200,31 +200,31 @@ class Domain_Item extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-                {% set rand = random() %}
-                <div class="mb-3">
-                    <form name="domain_form{{ rand }}" id="domain_form{{ rand }}" method="post"
-                          action="{{ 'Domain'|itemtype_form_path }}" data-submit-once>
-                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
-                        {{ inputs.hidden('domains_id', domain.getID()) }}
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                                {% set rand = random() %}
+                                <div class="mb-3">
+                                    <form name="domain_form{{ rand }}" id="domain_form{{ rand }}" method="post"
+                                          action="{{ 'Domain'|itemtype_form_path }}" data-submit-once>
+                                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
+                                        {{ inputs.hidden('domains_id', domain.getID()) }}
 
-                        <div class="d-flex">
-                            {{ fields.dropdownItemsFromItemtypes('', items_field_label, {
-                                itemtypes: itemtypes,
-                                entity_restrict: entity_restrict,
-                                checkright: true
-                            }) }}
-                            {{ fields.dropdownField('DomainRelation', 'domainrelations_id', constant('DomainRelation::BELONGS'), 'DomainRelation'|itemtype_name, {
-                                display_emptychoice: false
-                            }) }}
-                        </div>
-                        <div class="d-flex flex-row-reverse pe-3">
-                            {{ inputs.submit('additem', btn_msg, 'btn-primary') }}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                        <div class="d-flex">
+                                            {{ fields.dropdownItemsFromItemtypes('', items_field_label, {
+                                                itemtypes: itemtypes,
+                                                entity_restrict: entity_restrict,
+                                                checkright: true
+                                            }) }}
+                                            {{ fields.dropdownField('DomainRelation', 'domainrelations_id', constant('DomainRelation::BELONGS'), 'DomainRelation'|itemtype_name, {
+                                                display_emptychoice: false
+                                            }) }}
+                                        </div>
+                                        <div class="d-flex flex-row-reverse pe-3">
+                                            {{ inputs.submit('additem', btn_msg, 'btn-primary') }}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -480,40 +480,40 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-                {% set rand = random() %}
-                <div class="mb-3">
-                    <form name="domain_form{{ rand }}" id="domain_form{{ rand }}" method="post"
-                          action="{{ 'Domain'|itemtype_form_path }}" data-submit-once>
-                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
-                        {{ inputs.hidden('entities_id', entity) }}
-                        {{ inputs.hidden('is_recursive', is_recursive) }}
-                        {{ inputs.hidden('itemtype', item.getType()) }}
-                        {{ inputs.hidden('items_id', item.getID()) }}
-                        {% if item.getType() == 'Ticket' %}
-                            {{ inputs.hidden('tickets_id', item.getID()) }}
-                        {% endif %}
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                                {% set rand = random() %}
+                                <div class="mb-3">
+                                    <form name="domain_form{{ rand }}" id="domain_form{{ rand }}" method="post"
+                                          action="{{ 'Domain'|itemtype_form_path }}" data-submit-once>
+                                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
+                                        {{ inputs.hidden('entities_id', entity) }}
+                                        {{ inputs.hidden('is_recursive', is_recursive) }}
+                                        {{ inputs.hidden('itemtype', item.getType()) }}
+                                        {{ inputs.hidden('items_id', item.getID()) }}
+                                        {% if item.getType() == 'Ticket' %}
+                                            {{ inputs.hidden('tickets_id', item.getID()) }}
+                                        {% endif %}
 
-                        <div class="d-flex">
-                            {% set domain_dropdown = call('Domain::dropdownDomains', [{
-                                entity: entities,
-                                used: used,
-                                display: false
-                            }]) %}
-                            {{ fields.htmlField('', domain_dropdown, 'Domain'|itemtype_name, {
-                                helper: helper
-                            }) }}
-                            {{ fields.dropdownField('DomainRelation', 'domainrelations_id', constant('DomainRelation::BELONGS'), 'DomainRelation'|itemtype_name, {
-                                display_emptychoice: false
-                            }) }}
-                        </div>
-                        <div class="d-flex flex-row-reverse pe-3">
-                            {{ inputs.submit('additem', btn_msg, 'btn-primary') }}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                        <div class="d-flex">
+                                            {% set domain_dropdown = call('Domain::dropdownDomains', [{
+                                                entity: entities,
+                                                used: used,
+                                                display: false
+                                            }]) %}
+                                            {{ fields.htmlField('', domain_dropdown, 'Domain'|itemtype_name, {
+                                                helper: helper
+                                            }) }}
+                                            {{ fields.dropdownField('DomainRelation', 'domainrelations_id', constant('DomainRelation::BELONGS'), 'DomainRelation'|itemtype_name, {
+                                                display_emptychoice: false
+                                            }) }}
+                                        </div>
+                                        <div class="d-flex flex-row-reverse pe-3">
+                                            {{ inputs.submit('additem', btn_msg, 'btn-primary') }}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         // Some caches to avoid redundant DB requests
@@ -554,7 +554,7 @@ TWIG, $twig_params);
                 && $data["date_expiration"] <= date('Y-m-d')
             ) {
                 $expiration = "<span class='table-deleted'>{$expiration}</span>";
-            } else if (empty($data["date_expiration"])) {
+            } elseif (empty($data["date_expiration"])) {
                 $expiration = __s('Does not expire');
             }
 

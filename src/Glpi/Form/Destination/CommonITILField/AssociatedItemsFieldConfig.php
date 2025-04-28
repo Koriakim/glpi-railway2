@@ -64,7 +64,7 @@ final class AssociatedItemsFieldConfig implements
     public static function jsonDeserialize(array $data): self
     {
         $strategies = array_map(
-            fn (string $strategy) => AssociatedItemsFieldStrategy::tryFrom($strategy),
+            fn(string $strategy) => AssociatedItemsFieldStrategy::tryFrom($strategy),
             $data[self::STRATEGIES] ?? []
         );
         if (empty($strategies)) {
@@ -83,7 +83,7 @@ final class AssociatedItemsFieldConfig implements
     {
         return [
             self::STRATEGIES                => array_map(
-                fn (AssociatedItemsFieldStrategy $strategy) => $strategy->value,
+                fn(AssociatedItemsFieldStrategy $strategy) => $strategy->value,
                 $this->strategies
             ),
             self::SPECIFIC_QUESTION_IDS     => $this->specific_question_ids,

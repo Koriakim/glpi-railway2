@@ -77,13 +77,13 @@ abstract class AbstractQuestionType implements QuestionTypeInterface
     public function getFormEditorJsOptions(): string
     {
         return <<<JS
-            {
-                "extractDefaultValue": function (question) { return null; },
-                "convertDefaultValue": function (question, value) {
-                    return value;
+                {
+                    "extractDefaultValue": function (question) { return null; },
+                    "convertDefaultValue": function (question, value) {
+                        return value;
+                    }
                 }
-            }
-        JS;
+            JS;
     }
 
     #[Override]

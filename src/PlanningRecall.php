@@ -41,7 +41,7 @@ use Glpi\DBAL\QueryFunction;
 // @since 0.84
 class PlanningRecall extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype        = 'itemtype';
     public static $items_id        = 'items_id';
 
@@ -151,7 +151,7 @@ class PlanningRecall extends CommonDBChild
             )
         ) {
             if ($data['before_time'] !== $pr->fields['before_time']) {
-               // Recall exists and is different : update datas and clean alert
+                // Recall exists and is different : update datas and clean alert
                 if ($item = getItemForItemtype($data['itemtype'])) {
                     if (
                         $item->getFromDB($data['items_id'])
@@ -171,14 +171,14 @@ class PlanningRecall extends CommonDBChild
                             }
                         } else {
                             if ($pr->can($pr->fields['id'], PURGE)) {
-                                 $pr->delete(['id' => $pr->fields['id']]);
+                                $pr->delete(['id' => $pr->fields['id']]);
                             }
                         }
                     }
                 }
             }
         } else {
-           // Recall does not exists : create it
+            // Recall does not exists : create it
             if ($pr->can(-1, CREATE, $data)) {
                 if ($item = getItemForItemtype($data['itemtype'])) {
                     $item->getFromDB($data['items_id']);
@@ -192,7 +192,7 @@ class PlanningRecall extends CommonDBChild
                             - $data['before_time']
                         );
                         if ($data['before_time'] >= 0) {
-                             $pr->add($data);
+                            $pr->add($data);
                         }
                     }
                 }
@@ -324,11 +324,11 @@ class PlanningRecall extends CommonDBChild
         ]);
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <input type="hidden" name="_planningrecall[itemtype]" value="{{ itemtype }}">
-            <input type="hidden" name="_planningrecall[items_id]" value="{{ items_id }}">
-            <input type="hidden" name="_planningrecall[users_id]" value="{{ users_id }}">
-            <input type="hidden" name="_planningrecall[field]" value="{{ field }}">
-TWIG, $p);
+                        <input type="hidden" name="_planningrecall[itemtype]" value="{{ itemtype }}">
+                        <input type="hidden" name="_planningrecall[items_id]" value="{{ items_id }}">
+                        <input type="hidden" name="_planningrecall[users_id]" value="{{ users_id }}">
+                        <input type="hidden" name="_planningrecall[field]" value="{{ field }}">
+            TWIG, $p);
     }
 
     /**

@@ -38,7 +38,7 @@ use Glpi\Plugin\Hooks;
 
 class RuleImportEntity extends Rule
 {
-   // From Rule
+    // From Rule
     public static $rightname = 'rule_import';
 
     public function getTitle()
@@ -56,9 +56,9 @@ class RuleImportEntity extends Rule
                         break;
 
                     case "regex_result":
-                      //Assign entity using the regex's result
+                        //Assign entity using the regex's result
                         if ($action->fields["field"] === "_affect_entity_by_tag") {
-                             //Get the TAG from the regex's results
+                            //Get the TAG from the regex's results
                             if (isset($this->regex_results[0])) {
                                 $res = RuleAction::getRegexResultById(
                                     $action->fields["value"],
@@ -68,8 +68,8 @@ class RuleImportEntity extends Rule
                                 $res = $action->fields["value"];
                             }
                             if ($res !== null) {
-                                 // Get the entity associated with the TAG
-                                 $target_entity = Entity::getEntityIDByTag($res);
+                                // Get the entity associated with the TAG
+                                $target_entity = Entity::getEntityIDByTag($res);
                                 if ($target_entity != '') {
                                     $output["entities_id"] = $target_entity;
                                 }

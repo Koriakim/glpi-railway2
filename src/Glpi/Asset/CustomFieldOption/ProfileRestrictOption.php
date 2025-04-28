@@ -53,17 +53,17 @@ class ProfileRestrictOption extends AbstractOption
         ];
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.dropdownField('Profile', 'field_options[' ~ key ~ ']', value, label, {
-                multiple: true,
-                to_add: {
-                    '-1': all_label
-                },
-                condition: {
-                    'interface': 'central'
-                }
-            }) }}
-        TWIG, $twig_params);
+                {% import 'components/form/fields_macros.html.twig' as fields %}
+                {{ fields.dropdownField('Profile', 'field_options[' ~ key ~ ']', value, label, {
+                    multiple: true,
+                    to_add: {
+                        '-1': all_label
+                    },
+                    condition: {
+                        'interface': 'central'
+                    }
+                }) }}
+            TWIG, $twig_params);
     }
 
     public function getValue(): bool

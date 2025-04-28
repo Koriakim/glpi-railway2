@@ -150,7 +150,7 @@ class NetworkPortMetrics extends CommonDBChild
             'line_width'  => 2,
         ];
 
-       //display bytes graph
+        //display bytes graph
         echo "<div class='dashboard netports_metrics bytes'>";
         echo Widget::multipleAreas($bytes_bar_conf);
         echo "</div>";
@@ -170,7 +170,7 @@ class NetworkPortMetrics extends CommonDBChild
 
         echo "</br>";
 
-       //display error graph
+        //display error graph
         echo "<div class='dashboard netports_metrics'>";
         echo Widget::multipleAreas($errors_bar_conf);
         echo "</div>";

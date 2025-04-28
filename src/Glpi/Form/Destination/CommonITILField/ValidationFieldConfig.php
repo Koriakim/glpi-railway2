@@ -63,7 +63,7 @@ final class ValidationFieldConfig implements
     public static function jsonDeserialize(array $data): self
     {
         $strategies = array_map(
-            fn (string $strategy) => ValidationFieldStrategy::tryFrom($strategy),
+            fn(string $strategy) => ValidationFieldStrategy::tryFrom($strategy),
             $data[self::STRATEGIES] ?? []
         );
         if (empty($strategies)) {
@@ -82,7 +82,7 @@ final class ValidationFieldConfig implements
     {
         return [
             self::STRATEGIES              => array_map(
-                fn (ValidationFieldStrategy $strategy) => $strategy->value,
+                fn(ValidationFieldStrategy $strategy) => $strategy->value,
                 $this->strategies
             ),
             self::SPECIFIC_QUESTION_IDS => $this->specific_question_ids,

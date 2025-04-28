@@ -42,7 +42,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class Contract_Item extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1 = 'Contract';
     public static $items_id_1 = 'contracts_id';
 
@@ -100,11 +100,11 @@ class Contract_Item extends CommonDBRelation
                     $name = Dropdown::getDropdownName($table, $value);
                     if (isset($options['comments']) && $options['comments']) {
                         $comments = Dropdown::getDropdownComments($table, $value);
-                         return sprintf(
-                             __('%1$s %2$s'),
-                             htmlescape($name),
-                             Html::showToolTip($comments, ['display' => false])
-                         );
+                        return sprintf(
+                            __('%1$s %2$s'),
+                            htmlescape($name),
+                            Html::showToolTip($comments, ['display' => false])
+                        );
                     }
                     return htmlescape($name);
                 }
@@ -201,7 +201,7 @@ class Contract_Item extends CommonDBRelation
         /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
-       // Can exists on template
+        // Can exists on template
         if (Contract::canView()) {
             $nb = 0;
             switch ($item::class) {
@@ -279,26 +279,26 @@ class Contract_Item extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Contract_Item'|itemtype_form_path }}">
-                        <input type="hidden" name="itemtype" value="{{ get_class(item) }}">
-                        <input type="hidden" name="items_id" value="{{ item.getID() }}">
-                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                        <div class="d-flex">
-                            {{ fields.dropdownField('Contract', 'contracts_id', 0, null, {
-                                entity: item.fields['entities_id'],
-                                used: used,
-                                expired: false,
-                            }) }}
-                            {% set btn %}
-                                <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
-                            {% endset %}
-                            {{ fields.htmlField('', btn, null) }}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Contract_Item'|itemtype_form_path }}">
+                                        <input type="hidden" name="itemtype" value="{{ get_class(item) }}">
+                                        <input type="hidden" name="items_id" value="{{ item.getID() }}">
+                                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                        <div class="d-flex">
+                                            {{ fields.dropdownField('Contract', 'contracts_id', 0, null, {
+                                                entity: item.fields['entities_id'],
+                                                used: used,
+                                                expired: false,
+                                            }) }}
+                                            {% set btn %}
+                                                <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
+                                            {% endset %}
+                                            {{ fields.htmlField('', btn, null) }}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -536,26 +536,26 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Contract_Item'|itemtype_form_path }}">
-                        <div class="d-flex">
-                            <input type="hidden" name="contracts_id" value="{{ contract.getID() }}">
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                            {{ fields.dropdownItemsFromItemtypes('', null, {
-                                itemtypes: contract_types,
-                                entity_restrict: entity_restrict,
-                                checkright: true,
-                                used: used
-                            }) }}
-                            {% set btn %}
-                                <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
-                            {% endset %}
-                            {{ fields.htmlField('', btn, null) }}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Contract_Item'|itemtype_form_path }}">
+                                        <div class="d-flex">
+                                            <input type="hidden" name="contracts_id" value="{{ contract.getID() }}">
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                            {{ fields.dropdownItemsFromItemtypes('', null, {
+                                                itemtypes: contract_types,
+                                                entity_restrict: entity_restrict,
+                                                checkright: true,
+                                                used: used
+                                            }) }}
+                                            {% set btn %}
+                                                <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
+                                            {% endset %}
+                                            {{ fields.htmlField('', btn, null) }}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];

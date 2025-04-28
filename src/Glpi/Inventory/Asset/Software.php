@@ -48,7 +48,7 @@ use SoftwareVersion;
 
 class Software extends InventoryAsset
 {
-    const SEPARATOR = '$$$$';
+    public const SEPARATOR = '$$$$';
 
     /** @var array */
     private $softwares = [];
@@ -133,7 +133,7 @@ class Software extends InventoryAsset
                 }
 
                 if (isset($res_rule['_ignore_import']) && $res_rule['_ignore_import'] == 1) {
-                   //ignored by rules
+                    //ignored by rules
                     unset($this->data[$k]);
                     continue;
                 }
@@ -154,7 +154,7 @@ class Software extends InventoryAsset
                     $sc = new \SoftwareCategory();
                     $sc->getFromDB($res_rule["softwarecategories_id"]);
                     $val->softwarecategories_id = $sc->fields['name'];
-                } else if (
+                } elseif (
                     property_exists($val, '_system_category')
                     && $val->_system_category != ''
                     && $val->_system_category != '0'
@@ -182,7 +182,7 @@ class Software extends InventoryAsset
                     );
                     $this->known_links[$mkey] = $mid;
                     $val->manufacturers_id = $res_rule['manufacturer'];
-                } else if (
+                } elseif (
                     property_exists($val, 'manufacturers_id')
                     && $val->manufacturers_id != ''
                     && $val->manufacturers_id != '0'
@@ -236,7 +236,7 @@ class Software extends InventoryAsset
         //NOTE: A same software may have a manufacturer or not. Keep the one with manufacturer.
         foreach ($without_manufacturer as $comp_key => $data_index) {
             if (isset($with_manufacturer[$comp_key])) {
-               //same software do exists with a manufacturer, remove current duplicate
+                //same software do exists with a manufacturer, remove current duplicate
                 unset($this->data[$data_index]);
             }
         }
@@ -838,12 +838,12 @@ class Software extends InventoryAsset
             );
 
             if (!isset($this->versions[$vkey])) {
-                 $version_name = $val->version;
-                 $stmt_columns = $this->cleanInputToPrepare((array)$val, $version_fields);
-                 $stmt_columns['name'] = $version_name;
-                 $stmt_columns['softwares_id'] = $softwares_id;
-                 //set create date
-                 $stmt_columns['date_creation'] = $_SESSION["glpi_currenttime"];
+                $version_name = $val->version;
+                $stmt_columns = $this->cleanInputToPrepare((array)$val, $version_fields);
+                $stmt_columns['name'] = $version_name;
+                $stmt_columns['softwares_id'] = $softwares_id;
+                //set create date
+                $stmt_columns['date_creation'] = $_SESSION["glpi_currenttime"];
                 if ($stmt === null) {
                     $stmt_types = str_repeat('s', count($stmt_columns));
                     $reference = array_fill_keys(
@@ -857,10 +857,10 @@ class Software extends InventoryAsset
                     $stmt = $DB->prepare($insert_query);
                 }
 
-                 $stmt_values = array_values($stmt_columns);
-                 $stmt->bind_param($stmt_types, ...$stmt_values);
-                 $DB->executeStatement($stmt);
-                 $versions_id = $DB->insertId();
+                $stmt_values = array_values($stmt_columns);
+                $stmt->bind_param($stmt_types, ...$stmt_values);
+                $DB->executeStatement($stmt);
+                $versions_id = $DB->insertId();
                 \Log::history(
                     $softwares_id,
                     'Software',
@@ -868,7 +868,7 @@ class Software extends InventoryAsset
                     'SoftwareVersion',
                     \Log::HISTORY_ADD_SUBITEM
                 );
-                 $this->versions[$vkey] = $versions_id;
+                $this->versions[$vkey] = $versions_id;
             }
         }
 
@@ -944,7 +944,7 @@ class Software extends InventoryAsset
                     'glpi_items_softwareversions',
                     $dparams
                 );
-                 $stmt = $DB->prepare($insert_query);
+                $stmt = $DB->prepare($insert_query);
             }
 
             $input = [

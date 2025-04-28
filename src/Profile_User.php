@@ -41,10 +41,10 @@ use Glpi\DBAL\QuerySubQuery;
  **/
 class Profile_User extends CommonDBRelation
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $auto_message_on_action               = false;
 
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1                    = 'User';
     public static $items_id_1                    = 'users_id';
 
@@ -52,7 +52,7 @@ class Profile_User extends CommonDBRelation
     public static $items_id_2                    = 'profiles_id';
     public static $checkItem_2_Rights            = self::DONT_CHECK_ITEM_RIGHTS;
 
-   // Manage Entity properties forwarding
+    // Manage Entity properties forwarding
     public static $disableAutoEntityForwarding   = true;
 
     /**
@@ -71,12 +71,12 @@ class Profile_User extends CommonDBRelation
 
     public function maybeRecursive()
     {
-       // Store is_recursive fields but not really recursive object
+        // Store is_recursive fields but not really recursive object
         return false;
     }
 
 
-   // TODO CommonDBConnexity : check in details if we can replace canCreateItem by canRelationItem ...
+    // TODO CommonDBConnexity : check in details if we can replace canCreateItem by canRelationItem ...
     public function canCreateItem(): bool
     {
 
@@ -100,7 +100,7 @@ class Profile_User extends CommonDBRelation
 
     public function prepareInputForAdd($input)
     {
-       // TODO: check if the entities should not be inherited from the profile or the user
+        // TODO: check if the entities should not be inherited from the profile or the user
         $valid_entity = isset($input['entities_id']) && $input['entities_id'] >= 0;
         $valid_profile = isset($input['profiles_id']) && $input['profiles_id'] > 0;
         $valid_user = isset($input['users_id']) && $input['users_id'] > 0;
@@ -275,9 +275,9 @@ class Profile_User extends CommonDBRelation
                 "$utable.realname $order",
                 "$utable.firstname $order"
             ];
-        } else if ($sort === 'profile') {
+        } elseif ($sort === 'profile') {
             $sort_params = ["$ptable.name $order"];
-        } else if ($sort !== '') {
+        } elseif ($sort !== '') {
             $sort_params = [$sort . ' ' . ($order === 'DESC' ? 'DESC' : 'ASC')];
         }
         if (empty($sort_params)) {
@@ -298,7 +298,7 @@ class Profile_User extends CommonDBRelation
                         "$utable.firstname" => ['LIKE', "%$v%"]
                     ]
                 ];
-            } else if ($k === 'profile') {
+            } elseif ($k === 'profile') {
                 $filter_conditions[] = [
                     "$ptable.name" => ['LIKE', "%$v%"]
                 ];
@@ -376,14 +376,14 @@ class Profile_User extends CommonDBRelation
                 'initials_bg' => Toolbox::getColorForString($initials)
             ];
             $username = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% set bg_color = picture is not empty ? 'inherit' : initials_bg %}
-                <span class="avatar avatar-md me-2"
-                    style="{% if picture is not null %} background-image: url({{ picture }}); {% endif %} background-color: {{ bg_color }}">
-                    {% if picture is empty %}
-                        {{ initials }}
-                    {% endif %}
-                </span>
-TWIG, $avatar_params) . $username;
+                                {% set bg_color = picture is not empty ? 'inherit' : initials_bg %}
+                                <span class="avatar avatar-md me-2"
+                                    style="{% if picture is not null %} background-image: url({{ picture }}); {% endif %} background-color: {{ bg_color }}">
+                                    {% if picture is empty %}
+                                        {{ initials }}
+                                    {% endif %}
+                                </span>
+                TWIG, $avatar_params) . $username;
 
             $entries[] = [
                 'itemtype' => self::class,
@@ -458,9 +458,9 @@ TWIG, $avatar_params) . $username;
                 "$utable.realname $order",
                 "$utable.firstname $order"
             ];
-        } else if ($sort === 'entity') {
+        } elseif ($sort === 'entity') {
             $sort_params = ["$etable.completename $order"];
-        } else if ($sort !== '') {
+        } elseif ($sort !== '') {
             $sort_params = [$sort . ' ' . ($order === 'DESC' ? 'DESC' : 'ASC')];
         }
         if (empty($sort_params)) {
@@ -477,7 +477,7 @@ TWIG, $avatar_params) . $username;
                         "$utable.firstname" => ['LIKE', "%$v%"]
                     ]
                 ];
-            } else if ($k === 'entity') {
+            } elseif ($k === 'entity') {
                 $filter_conditions[] = [
                     "$etable.completename" => ['LIKE', "%$v%"]
                 ];
@@ -562,14 +562,14 @@ TWIG, $avatar_params) . $username;
                 'initials_bg' => Toolbox::getColorForString($initials)
             ];
             $username = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% set bg_color = picture is not empty ? 'inherit' : initials_bg %}
-                <span class="avatar avatar-md me-2"
-                    style="{% if picture is not null %} background-image: url({{ picture }}); {% endif %} background-color: {{ bg_color }}">
-                    {% if picture is empty %}
-                        {{ initials }}
-                    {% endif %}
-                </span>
-TWIG, $avatar_params) . $username;
+                                {% set bg_color = picture is not empty ? 'inherit' : initials_bg %}
+                                <span class="avatar avatar-md me-2"
+                                    style="{% if picture is not null %} background-image: url({{ picture }}); {% endif %} background-color: {{ bg_color }}">
+                                    {% if picture is empty %}
+                                        {{ initials }}
+                                    {% endif %}
+                                </span>
+                TWIG, $avatar_params) . $username;
             $entries[] = [
                 'itemtype' => self::class,
                 'id' => $data['id'],
@@ -653,7 +653,7 @@ TWIG, $avatar_params) . $username;
             }
         }
 
-       // Set default user entity at the beginning
+        // Set default user entity at the beginning
         if ($default_first) {
             $user = new User();
             if ($user->getFromDB((int)$user_ID)) {
@@ -998,12 +998,12 @@ TWIG, $avatar_params) . $username;
         );
 
         if (isset($this->fields['is_dynamic']) && $this->fields['is_dynamic']) {
-           //TRANS: D for Dynamic
+            //TRANS: D for Dynamic
             $dyn  = __('D');
             $name = sprintf(__('%1$s, %2$s'), $name, $dyn);
         }
         if (isset($this->fields['is_recursive']) && $this->fields['is_recursive']) {
-           //TRANS: R for Recursive
+            //TRANS: R for Recursive
             $rec  = __('R');
             $name = sprintf(__('%1$s, %2$s'), $name, $rec);
         }
@@ -1046,7 +1046,7 @@ TWIG, $avatar_params) . $username;
                 case Profile::class:
                     if (Session::haveRight('user', READ)) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
-                              $nb = self::countForItem($item);
+                            $nb = self::countForItem($item);
                         }
                         return self::createTabEntry(User::getTypeName(Session::getPluralNumber()), $nb, $item::getType());
                     }

@@ -76,10 +76,10 @@ class NotificationAjaxSetting extends NotificationSetting
             $twig_params = ['message' => __('Notifications are disabled.')];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="alert alert-warning">
-                    <a href="{{ path('front/setup.notification.php') }}">{{ message|raw }}</a>
-                </div>
-TWIG, $twig_params);
+                                <div class="alert alert-warning">
+                                    <a href="{{ path('front/setup.notification.php') }}">{{ message|raw }}</a>
+                                </div>
+                TWIG, $twig_params);
         }
     }
 

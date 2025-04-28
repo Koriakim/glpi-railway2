@@ -33,7 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\DBAL\QueryExpression;
 use Glpi\DBAL\QueryFunction;
 
 /**
@@ -218,12 +217,12 @@ class OlaLevel_Ticket extends CommonDBTM
         $ticket         = new Ticket();
         $olalevelticket = new self();
 
-       // existing ticket and not deleted
+        // existing ticket and not deleted
         if (
             $ticket->getFromDB($data['tickets_id'])
             && !$ticket->isDeleted()
         ) {
-           // search all actors of a ticket
+            // search all actors of a ticket
             foreach ($ticket->getUsers(CommonITILActor::REQUESTER) as $user) {
                 $ticket->fields['_users_id_requester'][] = $user['users_id'];
             }
@@ -250,19 +249,19 @@ class OlaLevel_Ticket extends CommonDBTM
 
             $olalevel = new OlaLevel();
             $ola      = new OLA();
-           // Check if ola datas are OK
+            // Check if ola datas are OK
             [, $olaField] = OLA::getFieldNames($olaType);
             if (($ticket->fields[$olaField] > 0)) {
                 if ($ticket->fields['status'] == CommonITILObject::CLOSED) {
-                   // Drop line when status is closed
+                    // Drop line when status is closed
                     $olalevelticket->delete(['id' => $data['id']]);
-                } else if ($ticket->fields['status'] != CommonITILObject::SOLVED) {
-                   // No execution if ticket has been taken into account
+                } elseif ($ticket->fields['status'] != CommonITILObject::SOLVED) {
+                    // No execution if ticket has been taken into account
                     if (
                         !(($olaType == SLM::TTO)
                         && ($ticket->fields['takeintoaccount_delay_stat'] > 0))
                     ) {
-                       // If status = solved : keep the line in case of solution not validated
+                        // If status = solved : keep the line in case of solution not validated
                         $input = [
                             'id'           => $ticket->getID(),
                             '_auto_update' => true,
@@ -276,13 +275,13 @@ class OlaLevel_Ticket extends CommonDBTM
                             if (count($olalevel->criterias)) {
                                 $doit = $olalevel->checkCriterias($ticket->fields);
                             }
-                           // Process rules
+                            // Process rules
                             if ($doit) {
                                 $input = $olalevel->executeActions($input, [], $ticket->fields);
                             }
                         }
 
-                       // Put next level in todo list
+                        // Put next level in todo list
                         if (
                             $next = $olalevel->getNextOlaLevel(
                                 $ticket->fields[$olaField],
@@ -291,21 +290,21 @@ class OlaLevel_Ticket extends CommonDBTM
                         ) {
                             $ola->addLevelToDo($ticket, $next);
                         }
-                       // Action done : drop the line
+                        // Action done : drop the line
                         $olalevelticket->delete(['id' => $data['id']]);
 
                         $ticket->update($input);
                     } else {
-                       // Drop line
+                        // Drop line
                         $olalevelticket->delete(['id' => $data['id']]);
                     }
                 }
             } else {
-               // Drop line
+                // Drop line
                 $olalevelticket->delete(['id' => $data['id']]);
             }
         } else {
-           // Drop line
+            // Drop line
             $olalevelticket->delete(['id' => $data['id']]);
         }
     }

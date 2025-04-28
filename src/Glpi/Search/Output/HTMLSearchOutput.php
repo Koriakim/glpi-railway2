@@ -136,7 +136,7 @@ abstract class HTMLSearchOutput extends AbstractSearchOutput
                 $active_search_name = $savedsearch->getName();
                 $active_savedsearch = true;
             }
-        } else if (count($data['search']['criteria']) > 0) {
+        } elseif (count($data['search']['criteria']) > 0) {
             // check if it isn't the default search
             $default = CriteriaFilter::getDefaultSearch($itemtype);
             if ($default != $data['search']['criteria']) {
@@ -214,7 +214,8 @@ abstract class HTMLSearchOutput extends AbstractSearchOutput
             'hide_search_toggle'  => $params['hide_criteria'] ?? false,
             'showmassiveactions'  => ($params['showmassiveactions'] ?? $search['showmassiveactions'] ?? true)
                 && $data['display_type'] != \Search::GLOBAL_SEARCH
-                && ($itemtype == \AllAssets::getType()
+                && (
+                    $itemtype == \AllAssets::getType()
                     || count(\MassiveAction::getAllMassiveActions($item, $is_deleted))
                 ),
             'massiveactionparams' => $data['search']['massiveactionparams'] + [

@@ -75,7 +75,7 @@ class TicketFollowup implements DeprecatedInterface
 
     public function mapDeprecatedToCurrentCriteria(array $criteria): array
     {
-       // Add itemtype condition
+        // Add itemtype condition
         $criteria[] = [
             "link"       => 'AND',
             "field"      => "6",

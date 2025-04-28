@@ -39,7 +39,6 @@ use Glpi\DBAL\QueryFunction;
 use Glpi\DBAL\QuerySubQuery;
 use Glpi\DBAL\QueryUnion;
 use Glpi\Plugin\Hooks;
-use Glpi\RichText\RichText;
 use Glpi\Team\Team;
 
 /**
@@ -53,14 +52,14 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
     use Glpi\Features\Clonable;
     use Glpi\Features\Teamwork;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     protected static $forward_entity_to = ['ProjectCost', 'ProjectTask'];
     public static $rightname                   = 'project';
     protected $usenotepad               = true;
 
-    const READMY                        = 1;
-    const READALL                       = 1024;
+    public const READMY                        = 1;
+    public const READALL                       = 1024;
 
     protected $team                     = [];
 
@@ -110,11 +109,12 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
         }
         return (Session::haveRight(self::$rightname, self::READALL)
               || (Session::haveRight(self::$rightname, self::READMY)
-                  && (($this->fields["users_id"] === Session::getLoginUserID())
+                  && (
+                      ($this->fields["users_id"] === Session::getLoginUserID())
                       || $this->isInTheManagerGroup()
                       || $this->isInTheTeam()
                   ))
-              );
+        );
     }
 
     /**
@@ -1112,7 +1112,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             ]
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
 
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
@@ -1328,10 +1328,10 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
         if ($canedit) {
             // langauge=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="mb-3">
-                    <a class="btn btn-primary" href="{{ 'Project'|itemtype_form_path() }}?projects_id={{ projects_id }}">{{ label }}</a>
-                </div>
-TWIG, ['projects_id' => $ID, 'label' => __('Create a sub project from this project')]);
+                                <div class="mb-3">
+                                    <a class="btn btn-primary" href="{{ 'Project'|itemtype_form_path() }}?projects_id={{ projects_id }}">{{ label }}</a>
+                                </div>
+                TWIG, ['projects_id' => $ID, 'label' => __('Create a sub project from this project')]);
         }
 
         foreach ($iterator as $data) {
@@ -1442,20 +1442,20 @@ TWIG, ['projects_id' => $ID, 'label' => __('Create a sub project from this proje
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'ProjectTeam'|itemtype_form_path }}">
-                        <div class="d-flex">
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="projects_id" value="{{ id }}">
-                            {{ fields.dropdownItemsFromItemtypes('items_id', label, dropdown_params) }}
-                        </div>
-                        <div class="d-flex flex-row-reverse">
-                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'ProjectTeam'|itemtype_form_path }}">
+                                        <div class="d-flex">
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="projects_id" value="{{ id }}">
+                                            {{ fields.dropdownItemsFromItemtypes('items_id', label, dropdown_params) }}
+                                        </div>
+                                        <div class="d-flex flex-row-reverse">
+                                            <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -1549,7 +1549,7 @@ TWIG, $twig_params);
         }
 
         if ($current_id > -1 && !isset($items[$current_id])) {
-           // Current Kanban is not in the list yet
+            // Current Kanban is not in the list yet
             $iterator = $DB->request([
                 'SELECT'   => [
                     'glpi_projects.id',
@@ -1620,7 +1620,7 @@ TWIG, $twig_params);
             }
 
             // sort by name ASC
-            uasort($result, static fn ($a, $b) => strnatcasecmp($a['name'], $b['name']));
+            uasort($result, static fn($a, $b) => strnatcasecmp($a['name'], $b['name']));
         }
 
         return $result;
@@ -1677,7 +1677,7 @@ TWIG, $twig_params);
             $projects[$data['id']] = $data;
         }
         $project_ids = array_map(
-            static fn ($e) => $e['id'],
+            static fn($e) => $e['id'],
             array_filter($projects, static function ($e) use ($ID) {
                 // Filter tasks of closed projects in Global view
                 return ($ID > 0 || !$e['is_finished']);
@@ -1685,7 +1685,7 @@ TWIG, $twig_params);
         );
         $projectteams = count($project_ids) ? $projectteam->find(['projects_id' => $project_ids]) : [];
 
-       // Get sub-tasks
+        // Get sub-tasks
         $projecttask = new ProjectTask();
         $projecttaskteam = new ProjectTaskTeam();
         $project_task_criteria = [
@@ -1693,7 +1693,7 @@ TWIG, $twig_params);
             'projects_id' => ($ID <= 0 && count($project_ids)) ? $project_ids : $ID,
         ];
         $projecttasks = $projecttask->find($project_task_criteria + $criteria);
-        $projecttask_ids = array_map(static fn ($e) => $e['id'], $projecttasks);
+        $projecttask_ids = array_map(static fn($e) => $e['id'], $projecttasks);
         $projecttaskteams = count($projecttask_ids) ? $projecttaskteam->find(['projecttasks_id' => $projecttask_ids]) : [];
 
         // Build team member data
@@ -1707,7 +1707,7 @@ TWIG, $twig_params);
         $all_members = [];
         foreach ($supported_teamtypes as $itemtype => $fields) {
             $all_ids = array_map(
-                static fn ($e) => $e['items_id'],
+                static fn($e) => $e['items_id'],
                 array_filter(array_merge($projectteams, $projecttaskteams), static function ($e) use ($itemtype) {
                     return ($e['itemtype'] === $itemtype);
                 })
@@ -1721,9 +1721,9 @@ TWIG, $twig_params);
                         "{$itemtable}.id"   => $all_ids
                     ]
                 ]);
-                 $all_members[$itemtype] = [];
+                $all_members[$itemtype] = [];
                 foreach ($all_items as $data) {
-                     $all_members[$itemtype][] = $data;
+                    $all_members[$itemtype][] = $data;
                 }
             } else {
                 $all_members[$itemtype] = [];
@@ -1758,7 +1758,7 @@ TWIG, $twig_params);
                             return ($e['id'] === $teammember['items_id']);
                         });
                         if (count($matches)) {
-                             $item['_team'][] = array_merge($teammember, reset($matches));
+                            $item['_team'][] = array_merge($teammember, reset($matches));
                         }
                         break;
                     case 'User':
@@ -1767,12 +1767,12 @@ TWIG, $twig_params);
                             return ($e['id'] === $teammember['items_id']);
                         });
                         if (count($contact_matches)) {
-                              $match = reset($contact_matches);
-                              // contact -> name, user -> realname
-                              $realname = $teammember['itemtype'] === 'User' ? $match['realname'] : $match['name'];
-                              $name = $teammember['itemtype'] === 'User' ? $match['name'] : '';
-                              $match['name'] = formatUserName($match['id'], $name, $realname, $match['firstname']);
-                              $item['_team'][] = array_merge($teammember, $match);
+                            $match = reset($contact_matches);
+                            // contact -> name, user -> realname
+                            $realname = $teammember['itemtype'] === 'User' ? $match['realname'] : $match['name'];
+                            $name = $teammember['itemtype'] === 'User' ? $match['name'] : '';
+                            $match['name'] = formatUserName($match['id'], $name, $realname, $match['firstname']);
+                            $item['_team'][] = array_merge($teammember, $match);
                         }
                         break;
                 }
@@ -1807,7 +1807,7 @@ TWIG, $twig_params);
                             return ($e['id'] === $teammember['items_id']);
                         });
                         if (count($matches)) {
-                             $item['_team'][] = array_merge($teammember, reset($matches));
+                            $item['_team'][] = array_merge($teammember, reset($matches));
                         }
                         break;
                     case 'User':
@@ -1816,13 +1816,13 @@ TWIG, $twig_params);
                             return ($e['id'] === $teammember['items_id']);
                         });
                         if (count($contact_matches)) {
-                              $match = reset($contact_matches);
+                            $match = reset($contact_matches);
                             if ($teammember['itemtype'] === 'User') {
                                 $match['name'] = formatUserName($match['id'], $match['name'], $match['realname'], $match['firstname']);
                             } else {
                                 $match['name'] = formatUserName($match['id'], '', $match['name'], $match['firstname']);
                             }
-                             $item['_team'][] = array_merge($teammember, $match);
+                            $item['_team'][] = array_merge($teammember, $match);
                         }
                         break;
                 }
@@ -1882,7 +1882,7 @@ TWIG, $twig_params);
                 $content .= $plugin_content_pre['content'];
             }
             $content .= "</div>";
-           // Core content
+            // Core content
             $content .= "<div class='kanban-core-content'>";
             if (isset($item['_parents_id'])) {
                 $childref = $itemtype === 'Project' ? __('Subproject') : __('Subtask');
@@ -1903,12 +1903,12 @@ TWIG, $twig_params);
                 $content .= "&nbsp;<i class='fas fa-map-signs' title='" . __s('Milestone') . "'></i>&nbsp;";
             }
             if (isset($item['_steps']) && count($item['_steps'])) {
-                $done = count(array_filter($item['_steps'], static fn ($step) => (int) $step['percent_done'] === 100));
+                $done = count(array_filter($item['_steps'], static fn($step) => (int) $step['percent_done'] === 100));
                 $total = count($item['_steps']);
                 $content .= "<div class='flex-break'></div>";
                 $content .= sprintf(__s('%s / %s tasks complete'), $done, $total);
             }
-           // Percent Done
+            // Percent Done
             $content .= "<div class='flex-break'></div>";
             $content .= Html::progress(100, $item['percent_done']);
 

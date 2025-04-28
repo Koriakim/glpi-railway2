@@ -41,7 +41,6 @@ use DomainType;
 use Session;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
-use Toolbox;
 
 class DomainsPluginToCoreCommand extends AbstractPluginToCoreCommand
 {
@@ -312,8 +311,8 @@ class DomainsPluginToCoreCommand extends AbstractPluginToCoreCommand
             );
 
             if ($core_relation_id !== null) {
-                 //if it already exist in DB, there is nothing to change
-                 continue;
+                //if it already exist in DB, there is nothing to change
+                continue;
             }
 
             $item_input = [

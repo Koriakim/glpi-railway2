@@ -50,7 +50,7 @@ class NetworkEquipment extends CommonDBTM
         prepareInputForAdd as prepareInputForAddAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     protected static $forward_entity_to = ['Infocom', 'NetworkPort', 'ReservationItem',
         'Item_OperatingSystem', 'Item_Disk', 'Item_SoftwareVersion'
@@ -255,7 +255,7 @@ class NetworkEquipment extends CommonDBTM
                                     'NOT' => ['entities_id' => $entities ]
                                 ]) > 0
                             ) {
-                                 return false;
+                                return false;
                             }
                         }
                     }
@@ -540,7 +540,7 @@ class NetworkEquipment extends CommonDBTM
             'massiveaction'      => false
         ];
 
-       // add operating system search options
+        // add operating system search options
         $tab = array_merge($tab, Item_OperatingSystem::rawSearchOptionsToAdd(get_class($this)));
 
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());

@@ -42,10 +42,10 @@ class SoftwareVersion extends CommonDBChild
 {
     use Glpi\Features\State;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory = true;
 
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype  = 'Software';
     public static $items_id  = 'softwares_id';
 
@@ -126,18 +126,18 @@ class SoftwareVersion extends CommonDBChild
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% extends 'generic_show_form.html.twig' %}
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% extends 'generic_show_form.html.twig' %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {% block form_fields %}
-                {% if item.isNewItem() %}
-                    <input type="hidden" name="softwares_id" value="{{ softwares_id }}">
-                {% endif %}
-                {{ fields.htmlField('', get_item_link('Software', softwares_id), 'Software'|itemtype_name()) }}
-                {{ parent() }}
-                {{ fields.dropdownField('OperatingSystem', 'operatingsystems_id', item.fields['operatingsystems_id'], 'OperatingSystem'|itemtype_name()) }}
-            {% endblock %}
-TWIG, $twig_params);
+                        {% block form_fields %}
+                            {% if item.isNewItem() %}
+                                <input type="hidden" name="softwares_id" value="{{ softwares_id }}">
+                            {% endif %}
+                            {{ fields.htmlField('', get_item_link('Software', softwares_id), 'Software'|itemtype_name()) }}
+                            {{ parent() }}
+                            {{ fields.dropdownField('OperatingSystem', 'operatingsystems_id', item.fields['operatingsystems_id'], 'OperatingSystem'|itemtype_name()) }}
+                        {% endblock %}
+            TWIG, $twig_params);
         return true;
     }
 
@@ -295,10 +295,10 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="text-center mb-3">
-                    <a class="btn btn-primary" href="{{ 'SoftwareVersion'|itemtype_form_path }}?softwares_id={{ softwares_id }}">{{ btn_msg }}</a>
-                </div>
-TWIG, $twig_params);
+                                <div class="text-center mb-3">
+                                    <a class="btn btn-primary" href="{{ 'SoftwareVersion'|itemtype_form_path }}?softwares_id={{ softwares_id }}">{{ btn_msg }}</a>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $sv_table = self::getTable();

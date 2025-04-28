@@ -182,7 +182,7 @@ class Item_Enclosure extends CommonDBRelation
             ]
         );
 
-       //get all used items
+        //get all used items
         $used = [];
         $iterator = $DB->request([
             'FROM'   => $this->getTable()
@@ -191,7 +191,7 @@ class Item_Enclosure extends CommonDBRelation
             $used [$row['itemtype']][] = $row['items_id'];
         }
 
-       // get used items by racks
+        // get used items by racks
         $iterator = $DB->request([
             'FROM'  => Item_Rack::getTable(),
             'WHERE' => [
@@ -215,10 +215,10 @@ class Item_Enclosure extends CommonDBRelation
             ]
         );
 
-       //TODO: update possible positions according to selected item number of units
-       //TODO: update positions on rack selection
-       //TODO: update hpos from item model info is_half_rack
-       //TODO: update orientation according to item model depth
+        //TODO: update possible positions according to selected item number of units
+        //TODO: update positions on rack selection
+        //TODO: update hpos from item model info is_half_rack
+        //TODO: update orientation according to item model depth
 
         echo "</td>";
         echo "<td><label for='dropdown_items_id$rand'>" . _sn('Item', 'Items', 1) . "</label></td>";
@@ -291,7 +291,7 @@ class Item_Enclosure extends CommonDBRelation
     {
         $error_detected = [];
 
-       //check for requirements
+        //check for requirements
         if (
             ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
             || (isset($input['itemtype']) && empty($input['itemtype']))

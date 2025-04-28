@@ -39,7 +39,6 @@ use Glpi\DBAL\QueryFunction;
 use Glpi\Event;
 use Glpi\Helpdesk\Tile\LinkableToTilesInterface;
 use Glpi\Helpdesk\Tile\TilesManager;
-use Glpi\Plugin\Hooks;
 use Glpi\UI\IllustrationManager;
 use Ramsey\Uuid\Uuid;
 
@@ -314,7 +313,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
                 if (Session::haveRight(self::$rightname, self::UPDATEHELPDESK)) {
                     foreach ($fields as $field) {
                         if (isset($input[$field])) {
-                             $tmp[$field] = $input[$field];
+                            $tmp[$field] = $input[$field];
                         }
                     }
                 }
@@ -328,7 +327,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
                 }
             }
         }
-       // Add framework  / internal ones
+        // Add framework  / internal ones
         foreach ($input as $key => $val) {
             if ($key[0] === '_') {
                 $tmp[$key] = $input[$key];
@@ -719,7 +718,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
     {
         parent::post_addItem();
 
-       // Add right to current user - Hack to avoid login/logout
+        // Add right to current user - Hack to avoid login/logout
         $_SESSION['glpiactiveentities'][$this->fields['id']] = $this->fields['id'];
         $_SESSION['glpiactiveentities_string']              .= ",'" . $this->fields['id'] . "'";
         // Root entity cannot be deleted, so if we added an entity this means GLPI is now multi-entity
@@ -1525,7 +1524,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
             'table'              => static::getTable(),
             'field'              => 'entities_id_software',
             'linkfield'          => 'entities_id_software', // not a dropdown because of special value
-                                 //TRANS: software in plural
+            //TRANS: software in plural
             'name'               => __('Entity for software creation'),
             'massiveaction'      => false,
             'nosearch'           => true,
@@ -1561,10 +1560,10 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
         $ruleid     = $rule->add($_POST);
 
         if ($ruleid) {
-           //Add an action associated to the rule
+            //Add an action associated to the rule
             $ruleAction = new RuleAction();
 
-           //Action is : affect computer to this entity
+            //Action is : affect computer to this entity
             $ruleAction->addActionByAttributes(
                 "assign",
                 $ruleid,
@@ -1646,8 +1645,8 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
             ) {
                 // config inherit from parent
                 $entities[$entitydata['entity']] = $entities[$entitydata['parent']];
-            } else if ($entitydata[$field] > 0) {
-               // config found in entity
+            } elseif ($entitydata[$field] > 0) {
+                // config found in entity
                 $entities[$entitydata['entity']] = $entitydata[$field];
             }
         }
@@ -1857,7 +1856,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
             );
         }
 
-       // Notification right applied
+        // Notification right applied
         $canedit = (Notification::canUpdate()
                   && Session::haveAccessToEntity($ID));
         TemplateRenderer::getInstance()->display('pages/admin/entity/notifications.html.twig', [
@@ -1900,7 +1899,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
             return false;
         }
 
-       // Notification right applied
+        // Notification right applied
         $canedit = Session::haveRight(Config::$rightname, UPDATE)
          && Session::haveAccessToEntity($ID);
         $enable_css_options = [];
@@ -2611,7 +2610,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
                         if (str_contains($values[$field], '_')) {
                             [$type, $sid] = explode('_', $values[$field], 2);
                             if ($type === Infocom::ON_STATUS_CHANGE) {
-                                       // TRANS %s is the name of the state
+                                // TRANS %s is the name of the state
                                 return sprintf(
                                     __('Fill when shifting to state %s'),
                                     Dropdown::getDropdownName(table: 'glpi_states', id: $sid, default: __('None'))
@@ -2818,7 +2817,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
                     if ($field != 'autofill_order_date') {
                         $tab[Infocom::COPY_ORDER_DATE] = __('Copy the order date');
                         if ($field != 'autofill_delivery_date') {
-                             $options[Infocom::COPY_DELIVERY_DATE] = __('Copy the delivery date');
+                            $options[Infocom::COPY_DELIVERY_DATE] = __('Copy the delivery date');
                         }
                     }
                 }
@@ -2957,7 +2956,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
             return null;
         }
         $item  = new $itemtype();
-        $field = $field ?? $item::getForeignKeyField();
+        $field ??= $item::getForeignKeyField();
         if ($this->fields[$field] == self::CONFIG_PARENT) {
             $tid = self::getUsedConfig(str_replace('_id', '_strategy', $field), $this->getID(), $field, $default_value);
             if (!$tid) {
@@ -3023,7 +3022,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
         $breadcrumbs = implode(
             '<i class="fas fa-caret-right mx-1"></i>',
             array_map(
-                static fn (string $name) => '<span class="text-nowrap">' . htmlescape($name) . '</span>',
+                static fn(string $name) => '<span class="text-nowrap">' . htmlescape($name) . '</span>',
                 $names
             )
         );
@@ -3064,7 +3063,7 @@ class Entity extends CommonTreeDropdown implements LinkableToTilesInterface
         $breadcrumbs = implode(
             '<i class="fas fa-caret-right mx-1"></i>',
             array_map(
-                static fn (string $name) => '<span class="text-nowrap text-muted">' . htmlescape($name) . '</span>',
+                static fn(string $name) => '<span class="text-nowrap text-muted">' . htmlescape($name) . '</span>',
                 $names
             )
         );

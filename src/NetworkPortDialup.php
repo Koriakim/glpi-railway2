@@ -56,12 +56,12 @@ class NetworkPortDialup extends NetworkPortInstantiation
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% do call([item, 'showMacField'], [netport, params]) %}
-            {% set connection_field %}
-                {% do call([item, 'showConnection'], [netport, true]) %}
-            {% endset %}
-            {{ fields.htmlField('', connection_field, connection_label) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% do call([item, 'showMacField'], [netport, params]) %}
+                        {% set connection_field %}
+                            {% do call([item, 'showConnection'], [netport, true]) %}
+                        {% endset %}
+                        {{ fields.htmlField('', connection_field, connection_label) }}
+            TWIG, $twig_params);
     }
 }

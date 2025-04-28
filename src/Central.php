@@ -48,7 +48,7 @@ class Central extends CommonGLPI
     public static function getTypeName($nb = 0)
     {
 
-       // No plural
+        // No plural
         return __('Standard interface');
     }
 
@@ -153,7 +153,7 @@ class Central extends CommonGLPI
             $grid_items[] = Contract::showCentral(false);
         }
         if (Session::haveRight(Log::$rightname, READ)) {
-           //Show last add events
+            //Show last add events
             $grid_items[] = Event::showForUser($_SESSION["glpiname"], false);
         }
 

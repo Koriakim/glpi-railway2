@@ -36,7 +36,6 @@
 
 namespace Glpi\Inventory\Asset;
 
-use CommonDBTM;
 use Glpi\Inventory\Conf;
 
 class Battery extends Device
@@ -61,7 +60,7 @@ class Battery extends Device
             }
 
             if (!isset($val->voltage) || $val->voltage == '') {
-               //a numeric value is expected here
+                //a numeric value is expected here
                 $val->voltage = 0;
             }
 

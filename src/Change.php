@@ -42,11 +42,11 @@ use Glpi\RichText\RichText;
  **/
 class Change extends CommonITILObject
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     protected static $forward_entity_to = ['ChangeValidation', 'ChangeCost'];
 
-   // From CommonITIL
+    // From CommonITIL
     public $userlinkclass               = 'Change_User';
     public $grouplinkclass              = 'Change_Group';
     public $supplierlinkclass           = 'Change_Supplier';
@@ -54,16 +54,16 @@ class Change extends CommonITILObject
     public static $rightname            = 'change';
     protected $usenotepad               = true;
 
-    const MATRIX_FIELD                  = 'priority_matrix';
-    const URGENCY_MASK_FIELD            = 'urgency_mask';
-    const IMPACT_MASK_FIELD             = 'impact_mask';
-    const STATUS_MATRIX_FIELD           = 'change_status';
+    public const MATRIX_FIELD                  = 'priority_matrix';
+    public const URGENCY_MASK_FIELD            = 'urgency_mask';
+    public const IMPACT_MASK_FIELD             = 'impact_mask';
+    public const STATUS_MATRIX_FIELD           = 'change_status';
 
 
-    const READMY                        = 1;
-    const READALL                       = 1024;
+    public const READMY                        = 1;
+    public const READALL                       = 1024;
 
-   // Specific status for changes
+    // Specific status for changes
     public const EVALUATION             = 9;
     public const TEST                   = 11;
     public const QUALIFICATION          = 12;
@@ -173,7 +173,7 @@ class Change extends CommonITILObject
         $this->processRules(RuleCommonITILObject::ONADD, $input);
 
         if (!isset($input['_skip_auto_assign']) || $input['_skip_auto_assign'] === false) {
-           // Manage auto assign
+            // Manage auto assign
             $auto_assign_mode = Entity::getUsedConfig('auto_assign_mode', $input['entities_id']);
 
             switch ($auto_assign_mode) {
@@ -182,8 +182,8 @@ class Change extends CommonITILObject
 
                 case Entity::AUTO_ASSIGN_HARDWARE_CATEGORY:
                 case Entity::AUTO_ASSIGN_CATEGORY_HARDWARE:
-                   // Auto assign tech/group from Category
-                   // Changes are not associated to a hardware then both settings behave the same way
+                    // Auto assign tech/group from Category
+                    // Changes are not associated to a hardware then both settings behave the same way
                     $input = $this->setTechAndGroupFromItilCategory($input);
                     break;
             }
@@ -237,7 +237,7 @@ class Change extends CommonITILObject
                 case __CLASS__:
                     $ong = [];
                     if ($item->canUpdate()) {
-                         $ong[1] = static::createTabEntry(__('Statistics'), 0, null, 'ti ti-chart-pie');
+                        $ong[1] = static::createTabEntry(__('Statistics'), 0, null, 'ti ti-chart-pie');
                     }
                     $satisfaction = new ChangeSatisfaction();
                     if (
@@ -298,7 +298,7 @@ class Change extends CommonITILObject
     public function cleanDBonPurge()
     {
 
-       // CommonITILTask does not extends CommonDBConnexity
+        // CommonITILTask does not extends CommonDBConnexity
         $ct = new ChangeTask();
         $ct->deleteByCriteria(['changes_id' => $this->fields['id']]);
 
@@ -361,7 +361,7 @@ class Change extends CommonITILObject
                 $mailtype = "closed";
             }
 
-           // Read again change to be sure that all data are up to date
+            // Read again change to be sure that all data are up to date
             $this->getFromDB($this->fields['id']);
             NotificationEvent::raiseEvent($mailtype, $this);
         }
@@ -386,11 +386,11 @@ class Change extends CommonITILObject
                 ]);
 
                 if (!empty($ticket->fields['itemtype']) && $ticket->fields['items_id'] > 0) {
-                     $it = new Change_Item();
-                     $it->add(['changes_id' => $this->fields['id'],
-                         'itemtype'   => $ticket->fields['itemtype'],
-                         'items_id'   => $ticket->fields['items_id']
-                     ]);
+                    $it = new Change_Item();
+                    $it->add(['changes_id' => $this->fields['id'],
+                        'itemtype'   => $ticket->fields['itemtype'],
+                        'items_id'   => $ticket->fields['items_id']
+                    ]);
                 }
 
                 //Copy associated elements
@@ -402,10 +402,10 @@ class Change extends CommonITILObject
                 ]);
                 $assoc = new Change_Item();
                 foreach ($iterator as $row) {
-                     unset($row['tickets_id']);
-                     unset($row['id']);
-                     $row['changes_id'] = $this->fields['id'];
-                     $assoc->add($row);
+                    unset($row['tickets_id']);
+                    unset($row['id']);
+                    $row['changes_id'] = $this->fields['id'];
+                    $assoc->add($row);
                 }
             }
         }
@@ -418,7 +418,7 @@ class Change extends CommonITILObject
                     'changes_id'  => $this->fields['id']
                 ]);
 
-               //Copy associated elements
+                //Copy associated elements
                 $iterator = $DB->request([
                     'FROM'   => Item_Problem::getTable(),
                     'WHERE'  => [
@@ -427,10 +427,10 @@ class Change extends CommonITILObject
                 ]);
                 $assoc = new Change_Item();
                 foreach ($iterator as $row) {
-                     unset($row['problems_id']);
-                     unset($row['id']);
-                     $row['changes_id'] = $this->fields['id'];
-                     $assoc->add($row);
+                    unset($row['problems_id']);
+                    unset($row['id']);
+                    $row['changes_id'] = $this->fields['id'];
+                    $assoc->add($row);
                 }
             }
         }
@@ -745,7 +745,7 @@ class Change extends CommonITILObject
     public static function getClosedStatusArray()
     {
 
-       // To be overridden by class
+        // To be overridden by class
         $tab = [
             self::CLOSED,
             self::CANCELED,
@@ -764,7 +764,7 @@ class Change extends CommonITILObject
      **/
     public static function getSolvedStatusArray()
     {
-       // To be overridden by class
+        // To be overridden by class
         $tab = [self::OBSERVED, self::SOLVED];
         return $tab;
     }
@@ -792,7 +792,7 @@ class Change extends CommonITILObject
     public static function getProcessStatusArray()
     {
 
-       // To be overridden by class
+        // To be overridden by class
         $tab = [self::ACCEPTED, self::QUALIFICATION, self::TEST];
         return $tab;
     }
@@ -1386,7 +1386,7 @@ class Change extends CommonITILObject
          */
         global $CFG_GLPI, $DB;
 
-       // show a tab with count of jobs in the central and give link
+        // show a tab with count of jobs in the central and give link
         if (!static::canView()) {
             return false;
         }
@@ -1510,10 +1510,10 @@ class Change extends CommonITILObject
      **/
     public static function showVeryShort($ID, $forcetab = '')
     {
-       // Prints a job in short form
-       // Should be called in a <table>-segment
-       // Print links or not in case of user view
-       // Make new job object and fill it from database, if success, print it
+        // Prints a job in short form
+        // Should be called in a <table>-segment
+        // Print links or not in case of user view
+        // Make new job object and fill it from database, if success, print it
         $viewusers = User::canView();
 
         $change   = new self();
@@ -1536,7 +1536,7 @@ class Change extends CommonITILObject
                 foreach ($change->users[CommonITILActor::REQUESTER] as $d) {
                     $user = new User();
                     if ($d["users_id"] > 0 && $user->getFromDB($d["users_id"])) {
-                         $name     = "<span class='b'>" . htmlescape($user->getName()) . "</span>";
+                        $name     = "<span class='b'>" . htmlescape($user->getName()) . "</span>";
                         if ($viewusers) {
                             $name = sprintf(
                                 __s('%1$s %2$s'),
@@ -1550,7 +1550,7 @@ class Change extends CommonITILObject
                                 )
                             );
                         }
-                         echo $name;
+                        echo $name;
                     } else {
                         echo htmlescape($d['alternative_email']) . "&nbsp;";
                     }
@@ -1592,7 +1592,7 @@ class Change extends CommonITILObject
 
             echo "</td>";
 
-           // Finish Line
+            // Finish Line
             echo "</tr>";
         } else {
             echo "<tr class='tab_bg_2'>";

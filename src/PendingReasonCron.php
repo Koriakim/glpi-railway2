@@ -38,7 +38,7 @@
  */
 class PendingReasonCron extends CommonDBTM
 {
-    const TASK_NAME = 'pendingreason_autobump_autosolve';
+    public const TASK_NAME = 'pendingreason_autobump_autosolve';
 
     /**
      * Get task description
@@ -158,7 +158,7 @@ class PendingReasonCron extends CommonDBTM
 
                 // Send notification
                 \NotificationEvent::raiseEvent('auto_reminder', $item);
-            } else if ($resolve && $now > $resolve) {
+            } elseif ($resolve && $now > $resolve) {
                 // Load solution template
                 $solution_template = SolutionTemplate::getById($pending_reason->fields['solutiontemplates_id']);
                 if (!$solution_template) {

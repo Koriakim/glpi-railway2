@@ -128,7 +128,7 @@ class Stat extends CommonGLPI
 
             case 'group_tree':
             case 'groups_tree_assign':
-               // Get all groups
+                // Get all groups
                 $is_field = ($type === 'group_tree') ? 'is_requester' : 'is_assign';
                 $iterator = $DB->request([
                     'SELECT' => ['id', 'name'],
@@ -144,18 +144,18 @@ class Stat extends CommonGLPI
                 ]);
 
                 foreach ($iterator as $line) {
-                     $val[] = [
-                         'itemtype' => Group::class,
-                         'id'     => $line['id'],
-                         'link'   => $line['name']
-                     ];
+                    $val[] = [
+                        'itemtype' => Group::class,
+                        'id'     => $line['id'],
+                        'link'   => $line['name']
+                    ];
                 }
                 break;
 
             case "itilcategories_tree":
             case "itilcategories_id":
                 $is_tree = $type === 'itilcategories_tree';
-               // Get all ticket categories for tree merge management
+                // Get all ticket categories for tree merge management
                 $criteria = [
                     'SELECT'    => [
                         'glpi_itilcategories.id',
@@ -188,7 +188,7 @@ class Stat extends CommonGLPI
             case 'locations_tree':
             case 'locations_id':
                 $is_tree = $type === 'locations_tree';
-               // Get all locations for tree merge management
+                // Get all locations for tree merge management
                 $criteria = [
                     'SELECT'    => [
                         'glpi_locations.id',
@@ -296,7 +296,7 @@ class Stat extends CommonGLPI
                 }, $val);
                 break;
 
-            // DEVICE CASE
+                // DEVICE CASE
             default:
                 if (
                     ($item = getItemForItemtype($type))
@@ -304,7 +304,7 @@ class Stat extends CommonGLPI
                 ) {
                     $device_table = $item::getTable();
 
-                   //select devices IDs (table row)
+                    //select devices IDs (table row)
                     $iterator = $DB->request([
                         'SELECT' => [
                             'id',
@@ -315,14 +315,14 @@ class Stat extends CommonGLPI
                     ]);
 
                     foreach ($iterator as $line) {
-                          $val[] = [
-                              'itemtype' => $item::class,
-                              'id'     => $line['id'],
-                              'link'   => $line['designation']
-                          ];
+                        $val[] = [
+                            'itemtype' => $item::class,
+                            'id'     => $line['id'],
+                            'link'   => $line['designation']
+                        ];
                     }
                 } else {
-                   // Dropdown case for computers
+                    // Dropdown case for computers
                     $field = "name";
                     $table = getTableForItemType($type);
                     if (
@@ -667,7 +667,7 @@ class Stat extends CommonGLPI
             [, $nb_closed] = $fn_show_entry_values($i, 'inter_closed');
 
             if ($itemtype === Ticket::class) {
-                 // Satisfaction open
+                // Satisfaction open
                 $fn_show_entry_values($i, 'inter_opensatisfaction');
                 // Satisfaction answer
                 [$answersatisfaction, $nb_answersatisfaction] = $fn_show_entry_values($i, 'inter_answersatisfaction');
@@ -683,7 +683,7 @@ class Stat extends CommonGLPI
                     $value2
                 );
                 foreach (array_keys($satisfaction) as $key2) {
-                      $satisfaction[$key2] *= $answersatisfaction[$key2];
+                    $satisfaction[$key2] *= $answersatisfaction[$key2];
                 }
                 if ($nb_answersatisfaction > 0) {
                     $avgsatisfaction = round(array_sum($satisfaction) / $nb_answersatisfaction, 1);
@@ -728,7 +728,7 @@ class Stat extends CommonGLPI
 
                 if ($is_html_output || is_a($output, Pdf::class)) {
                     $timedisplay = Html::timestampToString($timedisplay, 0, false);
-                } else if (is_a($output, Csv::class)) {
+                } elseif (is_a($output, Csv::class)) {
                     $timedisplay = Html::timestampToCsvString($timedisplay);
                 }
                 if ($is_html_output) {
@@ -763,7 +763,7 @@ class Stat extends CommonGLPI
             }
             if ($is_html_output || is_a($output, Pdf::class)) {
                 $timedisplay = Html::timestampToString($timedisplay, 0, false);
-            } else if (is_a($output, Csv::class)) {
+            } elseif (is_a($output, Csv::class)) {
                 $timedisplay = Html::timestampToCsvString($timedisplay);
             }
             if ($is_html_output) {
@@ -797,7 +797,7 @@ class Stat extends CommonGLPI
             }
             if ($is_html_output || is_a($output, Pdf::class)) {
                 $timedisplay = Html::timestampToString($timedisplay, 0, false);
-            } else if (is_a($output, Csv::class)) {
+            } elseif (is_a($output, Csv::class)) {
                 $timedisplay = Html::timestampToCsvString($timedisplay);
             }
             if ($is_html_output) {
@@ -849,7 +849,7 @@ class Stat extends CommonGLPI
 
             if ($is_html_output || is_a($output, Pdf::class)) {
                 $timedisplay = Html::timestampToString($timedisplay, 0, false);
-            } else if (is_a($output, Csv::class)) {
+            } elseif (is_a($output, Csv::class)) {
                 $timedisplay = Html::timestampToCsvString($timedisplay);
             }
             if ($is_html_output) {
@@ -866,7 +866,7 @@ class Stat extends CommonGLPI
 
             if ($is_html_output || is_a($output, Pdf::class)) {
                 $timedisplay = Html::timestampToString($timedisplay, 0, false);
-            } else if (is_a($output, Csv::class)) {
+            } elseif (is_a($output, Csv::class)) {
                 $timedisplay = Html::timestampToCsvString($timedisplay);
             }
             if ($is_html_output) {
@@ -1082,7 +1082,7 @@ class Stat extends CommonGLPI
                 $grptype = (($param == 'group_tree') ? CommonITILActor::REQUESTER
                                                  : CommonITILActor::ASSIGN);
                 if ($value == $value2) {
-                     $groups = [$value];
+                    $groups = [$value];
                 } else {
                     $groups = getSonsOf("glpi_groups", $value);
                 }
@@ -1140,7 +1140,7 @@ class Stat extends CommonGLPI
             case "device":
                 $devtable = getTableForItemType('Item_' . $value2);
                 $fkname   = getForeignKeyFieldForTable(getTableForItemType($value2));
-               //select computers IDs that are using this device;
+                //select computers IDs that are using this device;
                 $linkedtable = $table;
                 if (in_array($itemtype, $CFG_GLPI['itil_types'], true)) {
                     $linkedtable = $itemtype::getItemsTable();
@@ -1620,7 +1620,7 @@ class Stat extends CommonGLPI
         }
         $date2 .= " 23:59:59";
 
-       // 1 an par defaut
+        // 1 an par defaut
         if (empty($date1)) {
             $date1 = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d"), date("Y") - 1));
         }
@@ -1674,7 +1674,7 @@ class Stat extends CommonGLPI
             $i = $start;
             foreach ($assets as $data) {
                 $item_num = 1;
-               // Get data and increment loop variables
+                // Get data and increment loop variables
                 echo $output::showNewLine($i % 2);
                 $link = $is_html_output
                     ? sprintf(__s('%1$s - %2$s'), htmlescape($data['itemtype']::getTypeName()), $data['link'])
@@ -1687,13 +1687,13 @@ class Stat extends CommonGLPI
                     : "")
                 );
                 if ($view_entities) {
-                      echo $output::showItem(
-                          $is_html_output ? htmlescape($data['entity_name']) : $data['entity_name'],
-                          $item_num,
-                          $i - $start + 1,
-                          "class='text-center'" . " " . ($data['is_deleted'] ? " class='deleted' "
-                          : "")
-                      );
+                    echo $output::showItem(
+                        $is_html_output ? htmlescape($data['entity_name']) : $data['entity_name'],
+                        $item_num,
+                        $i - $start + 1,
+                        "class='text-center'" . " " . ($data['is_deleted'] ? " class='deleted' "
+                        : "")
+                    );
                 }
                 echo $output::showItem(
                     $is_html_output ? htmlescape($data["NB"]) : $data["NB"],
@@ -2021,19 +2021,19 @@ class Stat extends CommonGLPI
         $height = $param['height'] . "px";
         $width  = $param['width'] . "px";
         $html = <<<HTML
-        <div class="card mb-3 d-inline-flex">
-            <div class="card-body">
-                <div class="chart" id='$slug' ></div>
-            </div>
-        </div>
+                    <div class="card mb-3 d-inline-flex">
+                        <div class="card-body">
+                            <div class="chart" id='$slug' ></div>
+                        </div>
+                    </div>
 
-        <style>
-        #$slug {
-            width: $width;
-            height: $height;
-        }
-        </style>
-HTML;
+                    <style>
+                    #$slug {
+                        width: $width;
+                        height: $height;
+                    }
+                    </style>
+            HTML;
 
         $twig_params = [
             'slug' => $slug,
@@ -2042,22 +2042,22 @@ HTML;
         ];
         // language=Twig
         $js = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <script type="module">
-                function exportToCSV() {
-                    location.href = '{{ csv_link|e('js') }}';
-                }
-                const chart_options = {{ chart_options|json_encode|raw }};
-                const myChart = echarts.init(document.getElementById('{{ slug }}'));
+                        <script type="module">
+                            function exportToCSV() {
+                                location.href = '{{ csv_link|e('js') }}';
+                            }
+                            const chart_options = {{ chart_options|json_encode|raw }};
+                            const myChart = echarts.init(document.getElementById('{{ slug }}'));
 
-                $.each(chart_options.series, function (index, serie) {
-                    serie.symbol = (value) => value > 0 ? 'circle': 'none';
-                });
-                if (chart_options['toolbox']['feature']['myCsvExport'] !== undefined) {
-                    chart_options['toolbox']['feature']['myCsvExport']['onclick'] = exportToCSV;
-                }
-                myChart.setOption(chart_options);
-            </script>
-TWIG, $twig_params);
+                            $.each(chart_options.series, function (index, serie) {
+                                serie.symbol = (value) => value > 0 ? 'circle': 'none';
+                            });
+                            if (chart_options['toolbox']['feature']['myCsvExport'] !== undefined) {
+                                chart_options['toolbox']['feature']['myCsvExport']['onclick'] = exportToCSV;
+                            }
+                            myChart.setOption(chart_options);
+                        </script>
+            TWIG, $twig_params);
 
         $out = $html . $js;
 
@@ -2179,19 +2179,19 @@ TWIG, $twig_params);
         }
 
         $html = <<<HTML
-        <div class="card d-inline-flex mx-auto mb-1">
-            <div class="card-body">
-                <div id='$slug' class='chart'></div>
-            </div>
-        </div>
+                    <div class="card d-inline-flex mx-auto mb-1">
+                        <div class="card-body">
+                            <div id='$slug' class='chart'></div>
+                        </div>
+                    </div>
 
-        <style>
-        #$slug {
-            width: 475px;
-            height: 300px;
-        }
-        </style>
-HTML;
+                    <style>
+                    #$slug {
+                        width: 475px;
+                        height: 300px;
+                    }
+                    </style>
+            HTML;
 
         $twig_params = [
             'slug' => $slug,
@@ -2200,19 +2200,19 @@ HTML;
         ];
         // language=Twig
         $js = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <script type="module">
-                function exportToCSV() {
-                    location.href = '{{ csv_link|e('js') }}';
-                }
-                const chart_options = {{ chart_options|json_encode|raw }};
-                const myChart = echarts.init(document.getElementById('{{ slug }}'));
+                        <script type="module">
+                            function exportToCSV() {
+                                location.href = '{{ csv_link|e('js') }}';
+                            }
+                            const chart_options = {{ chart_options|json_encode|raw }};
+                            const myChart = echarts.init(document.getElementById('{{ slug }}'));
 
-                if (chart_options['toolbox']['feature']['myCsvExport'] !== undefined) {
-                    chart_options['toolbox']['feature']['myCsvExport']['onclick'] = exportToCSV;
-                }
-                myChart.setOption(chart_options);
-            </script>
-TWIG, $twig_params);
+                            if (chart_options['toolbox']['feature']['myCsvExport'] !== undefined) {
+                                chart_options['toolbox']['feature']['myCsvExport']['onclick'] = exportToCSV;
+                            }
+                            myChart.setOption(chart_options);
+                        </script>
+            TWIG, $twig_params);
 
         $out = $html . $js;
 

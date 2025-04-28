@@ -33,7 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\DBAL\QueryExpression;
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\QueryFunction;
 use Glpi\DBAL\QuerySubQuery;
@@ -46,21 +45,21 @@ use Glpi\RichText\RichText;
  **/
 abstract class CommonITILValidation extends CommonDBChild
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $auto_message_on_action    = false;
 
     public static $log_history_add    = Log::HISTORY_LOG_SIMPLE_MESSAGE;
     public static $log_history_update = Log::HISTORY_LOG_SIMPLE_MESSAGE;
     public static $log_history_delete = Log::HISTORY_LOG_SIMPLE_MESSAGE;
 
-    const VALIDATE               = 1024;
+    public const VALIDATE               = 1024;
 
 
-   // STATUS
-    const NONE      = 1; // none
-    const WAITING   = 2; // waiting
-    const ACCEPTED  = 3; // accepted
-    const REFUSED   = 4; // rejected
+    // STATUS
+    public const NONE      = 1; // none
+    public const WAITING   = 2; // waiting
+    public const ACCEPTED  = 3; // accepted
+    public const REFUSED   = 4; // rejected
 
     public static function getIcon()
     {
@@ -237,11 +236,11 @@ abstract class CommonITILValidation extends CommonDBChild
     {
         /** @var CommonDBTM $item */
         $hidetab = false;
-       // Hide if no rights on validations
+        // Hide if no rights on validations
         if (!static::canView()) {
             $hidetab = true;
         }
-       // No right to create and no validation for current object
+        // No right to create and no validation for current object
         if (
             !$hidetab
             && !Session::haveRightsOr(static::$rightname, static::getCreateRights())
@@ -254,7 +253,7 @@ abstract class CommonITILValidation extends CommonDBChild
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $restrict = [static::$items_id => $item->getID()];
-               // No rights for create only count asign ones
+                // No rights for create only count asign ones
                 if (!Session::haveRightsOr(static::$rightname, static::getCreateRights())) {
                     $restrict[] = static::getTargetCriteriaForUser(Session::getLoginUserID());
                 }
@@ -287,7 +286,7 @@ abstract class CommonITILValidation extends CommonDBChild
     {
 
         $input["users_id"] = 0;
-       // Only set requester on manual action
+        // Only set requester on manual action
         if (
             !isset($input['_auto_import'])
             && !isset($input['_auto_update'])
@@ -351,15 +350,15 @@ abstract class CommonITILValidation extends CommonDBChild
                     '_from_itilvalidation'  => true,
                 ];
 
-               // to fix lastupdater
+                // to fix lastupdater
                 if (isset($this->input['_auto_update'])) {
                     $input['_auto_update'] = $this->input['_auto_update'];
                 }
-             // to know update by rules
+                // to know update by rules
                 if (isset($this->input["_rule_process"])) {
-                      $input['_rule_process'] = $this->input["_rule_process"];
+                    $input['_rule_process'] = $this->input["_rule_process"];
                 }
-             // No update ticket notif on ticket add
+                // No update ticket notif on ticket add
                 if (isset($this->input["_ticket_add"])) {
                     $input['_disablenotif'] = true;
                 }
@@ -442,7 +441,7 @@ abstract class CommonITILValidation extends CommonDBChild
                 return false;
             }
             if ($input["status"] == self::WAITING) {
-               // $input["comment_validation"] = '';
+                // $input["comment_validation"] = '';
                 $input["validation_date"] = 'NULL';
             } else {
                 $input["validation_date"] = $_SESSION["glpi_currenttime"];
@@ -938,7 +937,7 @@ abstract class CommonITILValidation extends CommonDBChild
                                 $input2["itemtype_target"] = $itemtype;
                                 $input2["items_id_target"] = $item_id;
                                 if (!$valid->add($input2)) {
-                                     $ok = false;
+                                    $ok = false;
                                 }
                             }
                             if ($ok) {
@@ -1070,16 +1069,16 @@ abstract class CommonITILValidation extends CommonDBChild
                 ]);
 
                 $script = <<<HTML
-                    <span class="ti ti-edit" style="cursor:pointer" title="{$edit_title}" 
-                          onclick="viewEditValidation{$item_id}{$row_id}{$rand}();" 
-                          id="viewvalidation{$view_validation_id}{$row_id}{$rand}">
-                    </span>
-                    <script>
-                        function viewEditValidation{$item_id}{$row_id}{$rand}() {
-                            $('#viewvalidation{$item_id}{$rand}').load('$root_doc/ajax/viewsubitem.php', $params_json);
-                        };
-                    </script>
-HTML;
+                                        <span class="ti ti-edit" style="cursor:pointer" title="{$edit_title}" 
+                                              onclick="viewEditValidation{$item_id}{$row_id}{$rand}();" 
+                                              id="viewvalidation{$view_validation_id}{$row_id}{$rand}">
+                                        </span>
+                                        <script>
+                                            function viewEditValidation{$item_id}{$row_id}{$rand}() {
+                                                $('#viewvalidation{$item_id}{$rand}').load('$root_doc/ajax/viewsubitem.php', $params_json);
+                                            };
+                                        </script>
+                    HTML;
             }
 
             $values[] = [
@@ -1407,7 +1406,8 @@ HTML;
             'linkfield'          => 'users_id_substitute',
             'name'               => __('Approver substitute'),
             'datatype'           => 'itemlink',
-            'right'              => (static::$itemtype == 'Ticket' ?
+            'right'              => (
+                static::$itemtype == 'Ticket' ?
                 ['validate_request', 'validate_incident'] :
                 'validate'
             ),
@@ -1488,7 +1488,8 @@ HTML;
             'linkfield'          => 'users_id_substitute',
             'name'               => __('Substitute of a member of approver group'),
             'datatype'           => 'itemlink',
-            'right'              => (static::$itemtype == 'Ticket' ?
+            'right'              => (
+                static::$itemtype == 'Ticket' ?
                 ['validate_request', 'validate_incident'] :
                 'validate'
             ),
@@ -1782,7 +1783,7 @@ HTML;
     public static function computeValidationStatus(CommonITILObject $item)
     {
 
-       // Percent of validation
+        // Percent of validation
         $validation_percent = $item->fields['validation_percent'];
 
         $statuses           = [self::ACCEPTED => 0,
@@ -1835,15 +1836,15 @@ HTML;
             if ($accepted >= $validation_percent) {
                 // We have reached the acceptation threshold
                 return self::ACCEPTED;
-            } else if ($refused + $validation_percent > 100) {
-               // We can no longer reach the acceptation threshold
+            } elseif ($refused + $validation_percent > 100) {
+                // We can no longer reach the acceptation threshold
                 return self::REFUSED;
             }
         } else {
-           // No validation threshold set, one approval or denial is enough
+            // No validation threshold set, one approval or denial is enough
             if ($accepted > 0) {
                 return self::ACCEPTED;
-            } else if ($refused > 0) {
+            } elseif ($refused > 0) {
                 return self::REFUSED;
             }
         }
@@ -1875,7 +1876,7 @@ HTML;
                 if (!isset($stats[$status])) {
                     $stats[$status] = 0;
                 }
-                 $stats[$status] = $validations;
+                $stats[$status] = $validations;
             }
         }
 
@@ -1898,7 +1899,7 @@ HTML;
         /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
-       // No alert for new item
+        // No alert for new item
         if ($item->isNewID($item->getID())) {
             return;
         }
@@ -1949,18 +1950,18 @@ HTML;
                     $message = __s("Do you really want to resolve or close it?");
                     ;
                     $html = <<<HTML
-                  <div class="alert alert-warning" role="alert">
-                     <div class="d-flex">
-                        <div class="me-2">
-                           <i class="ti ti-alert-triangle fs-2x"></i>
-                        </div>
-                        <div>
-                           <h4 class="alert-title">$title</h4>
-                           <div class="text-muted">$message</div>
-                        </div>
-                     </div>
-                  </div>
-HTML;
+                                          <div class="alert alert-warning" role="alert">
+                                             <div class="d-flex">
+                                                <div class="me-2">
+                                                   <i class="ti ti-alert-triangle fs-2x"></i>
+                                                </div>
+                                                <div>
+                                                   <h4 class="alert-title">$title</h4>
+                                                   <div class="text-muted">$message</div>
+                                                </div>
+                                             </div>
+                                          </div>
+                        HTML;
                     echo $html;
                 }
                 break;

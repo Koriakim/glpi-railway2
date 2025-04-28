@@ -41,7 +41,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class SLM extends CommonDBTM
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     protected static $forward_entity_to = ['SLA', 'OLA'];
@@ -173,18 +173,18 @@ class SLM extends CommonDBTM
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% extends 'generic_show_form.html.twig' %}
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            
-            {% block more_fields %}
-                {{ fields.dropdownField('Calendar', 'calendars_id', item.fields['use_ticket_calendar'] ? -1 : item.fields['calendars_id'], 'Calendar'|itemtype_name(1), {
-                    emptylabel: empty_label,
-                    toadd: {
-                        (-1): toadd_label
-                    }
-                }) }}
-            {% endblock %}
-TWIG, $twig_params);
+                        {% extends 'generic_show_form.html.twig' %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        
+                        {% block more_fields %}
+                            {{ fields.dropdownField('Calendar', 'calendars_id', item.fields['use_ticket_calendar'] ? -1 : item.fields['calendars_id'], 'Calendar'|itemtype_name(1), {
+                                emptylabel: empty_label,
+                                toadd: {
+                                    (-1): toadd_label
+                                }
+                            }) }}
+                        {% endblock %}
+            TWIG, $twig_params);
         return true;
     }
 

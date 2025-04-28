@@ -313,7 +313,7 @@ class TaskTemplate extends AbstractITILChildTemplate
         if (isset($input['users_id_tech']) && (int) $input['users_id_tech'] == -1) {
             $input['use_current_user'] = 1;
             $input['users_id_tech'] = 0;
-        } else if (isset($input['users_id_tech'])) {
+        } elseif (isset($input['users_id_tech'])) {
             $input['use_current_user'] = 0;
         }
 
@@ -356,13 +356,13 @@ class TaskTemplate extends AbstractITILChildTemplate
                 } else {
                     return " $link ($table_use_current_user = 0)";
                 }
-            } else if ($val == 0) {
+            } elseif ($val == 0) {
                 if ($positive_condition) {
                     return " $link ($table_use_current_user = 0 AND $table_users_id_tech = 0)";
                 } else {
                     return " $link ($table_use_current_user = 1 OR $table_users_id_tech != 0)";
                 }
-            } else if ($val == 'null' && $searchtype == 'empty') {
+            } elseif ($val == 'null' && $searchtype == 'empty') {
                 if ($positive_condition) {
                     return " $link ($table_use_current_user = 0 AND $table_users_id_tech = 0)";
                 } else {

@@ -64,7 +64,7 @@ abstract class LevelAgreementLevel extends RuleTicket
      **/
     public function __construct()
     {
-       // Override in order not to use glpi_rules table.
+        // Override in order not to use glpi_rules table.
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class LevelAgreementLevel extends RuleTicket
      **/
     public static function getConditionsArray()
     {
-       // Override ruleticket one
+        // Override ruleticket one
         return [];
     }
 
@@ -221,7 +221,7 @@ abstract class LevelAgreementLevel extends RuleTicket
 
         unset($actions['olas_id']);
         unset($actions['slas_id']);
-       // Could not be used as criteria
+        // Could not be used as criteria
         unset($actions['users_id_validate_requester_supervisor']);
         unset($actions['users_id_validate_assign_supervisor']);
         unset($actions['affectobject']);
@@ -326,7 +326,7 @@ abstract class LevelAgreementLevel extends RuleTicket
             }
         }
 
-       // Display default value;
+        // Display default value;
         if (($key = array_search($p['value'], $p['used'])) !== false) {
             unset($p['used'][$key]);
         }
@@ -483,25 +483,25 @@ abstract class LevelAgreementLevel extends RuleTicket
 
             // language=Twig
             $criteria_list = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <table class="table table-sm table-borderless table-striped">
-                    {% for criterion in la_level.criterias %}
-                        <tr>
-                            {{ la_level.getMinimalCriteriaText(criterion.fields, 'class="pt-0 pb-2"')|raw }}
-                        </tr>
-                    {% endfor %}
-                </table>
-TWIG, ['la_level' => $la_level]);
+                                <table class="table table-sm table-borderless table-striped">
+                                    {% for criterion in la_level.criterias %}
+                                        <tr>
+                                            {{ la_level.getMinimalCriteriaText(criterion.fields, 'class="pt-0 pb-2"')|raw }}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                TWIG, ['la_level' => $la_level]);
 
             // language=Twig
             $actions_list = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <table class="table table-sm table-borderless table-striped">
-                    {% for action in la_level.actions %}
-                        <tr>
-                            {{ la_level.getMinimalActionText(action.fields, 'class="pt-0 pb-2"')|raw }}
-                        </tr>
-                    {% endfor %}
-                </table>
-TWIG, ['la_level' => $la_level]);
+                                <table class="table table-sm table-borderless table-striped">
+                                    {% for action in la_level.actions %}
+                                        <tr>
+                                            {{ la_level.getMinimalActionText(action.fields, 'class="pt-0 pb-2"')|raw }}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                TWIG, ['la_level' => $la_level]);
 
 
             $entries[] = [

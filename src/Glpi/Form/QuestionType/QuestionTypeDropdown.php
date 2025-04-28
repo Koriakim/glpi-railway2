@@ -37,7 +37,6 @@ namespace Glpi\Form\QuestionType;
 
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\JsonFieldInterface;
-use Glpi\Form\Condition\ConditionHandler\ConditionHandlerInterface;
 use Glpi\Form\Condition\ConditionHandler\MultipleChoiceFromValuesConditionHandler;
 use Glpi\Form\Condition\ConditionHandler\SingleChoiceFromValuesConditionHandler;
 use Glpi\Form\Condition\UsedAsCriteriaInterface;
@@ -106,37 +105,37 @@ final class QuestionTypeDropdown extends AbstractQuestionTypeSelectable implemen
     {
         // language=Twig
         $js = <<<TWIG
-            import("{{ js_path('js/modules/Forms/QuestionDropdown.js') }}").then((m) => {
-                {% if question is not null %}
-                    const container = $('div[data-glpi-form-editor-selectable-question-options="{{ rand }}"]');
-                    container.data(
-                        'manager',
-                        new m.GlpiFormQuestionTypeDropdown('{{ input_type|escape('js') }}', container)
-                    );
-                {% else %}
-                    $(document).on('glpi-form-editor-question-type-changed', function(e, question, type) {
-                        if (type === '{{ question_type|escape('js') }}') {
-                            const container = question.find('div[data-glpi-form-editor-selectable-question-options]');
-                            container.data(
-                                'manager',
-                                new m.GlpiFormQuestionTypeDropdown('{{ input_type|escape('js') }}', container)
-                            );
-                        }
-                    });
+                        import("{{ js_path('js/modules/Forms/QuestionDropdown.js') }}").then((m) => {
+                            {% if question is not null %}
+                                const container = $('div[data-glpi-form-editor-selectable-question-options="{{ rand }}"]');
+                                container.data(
+                                    'manager',
+                                    new m.GlpiFormQuestionTypeDropdown('{{ input_type|escape('js') }}', container)
+                                );
+                            {% else %}
+                                $(document).on('glpi-form-editor-question-type-changed', function(e, question, type) {
+                                    if (type === '{{ question_type|escape('js') }}') {
+                                        const container = question.find('div[data-glpi-form-editor-selectable-question-options]');
+                                        container.data(
+                                            'manager',
+                                            new m.GlpiFormQuestionTypeDropdown('{{ input_type|escape('js') }}', container)
+                                        );
+                                    }
+                                });
 
-                    $(document).on('glpi-form-editor-question-duplicated', function(e, question, new_question) {
-                        const question_type = question.find('input[data-glpi-form-editor-original-name="type"]').val();
-                        if (question_type === '{{ question_type|escape('js') }}') {
-                            const container = new_question.find('div[data-glpi-form-editor-selectable-question-options]');
-                            container.data(
-                                'manager',
-                                new m.GlpiFormQuestionTypeDropdown('{{ input_type|escape('js') }}', container)
-                            );
-                        }
-                    });
-                {% endif %}
-            });
-TWIG;
+                                $(document).on('glpi-form-editor-question-duplicated', function(e, question, new_question) {
+                                    const question_type = question.find('input[data-glpi-form-editor-original-name="type"]').val();
+                                    if (question_type === '{{ question_type|escape('js') }}') {
+                                        const container = new_question.find('div[data-glpi-form-editor-selectable-question-options]');
+                                        container.data(
+                                            'manager',
+                                            new m.GlpiFormQuestionTypeDropdown('{{ input_type|escape('js') }}', container)
+                                        );
+                                    }
+                                });
+                            {% endif %}
+                        });
+            TWIG;
 
         return $js;
     }
@@ -151,52 +150,52 @@ TWIG;
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-        {% import 'components/form/fields_macros.html.twig' as fields %}
+                    {% import 'components/form/fields_macros.html.twig' as fields %}
 
-        <div data-glpi-form-editor-preview-dropdown>
-            {{ fields.dropdownArrayField(
-                'default_value',
-                checked_values|first,
-                values,
-                '',
-                {
-                    'init': init,
-                    'no_label': true,
-                    'multiple': false,
-                    'display_emptychoice': true,
-                    'field_class': 'single-preview-dropdown col-12' ~ (is_multiple_dropdown ? ' d-none' : ''),
-                    'mb': '',
-                    'aria_label': default_option_label
-                }
-            ) }}
-            {{ fields.dropdownArrayField(
-                'default_value',
-                '',
-                values,
-                '',
-                {
-                    'init': init,
-                    'no_label': true,
-                    'multiple': true,
-                    'values': checked_values,
-                    'field_class': 'multiple-preview-dropdown col-12' ~ (not is_multiple_dropdown ? ' d-none' : ''),
-                    'mb': '',
-                    'aria_label': default_options_label
-                }
-            ) }}
-        </div>
-TWIG;
+                    <div data-glpi-form-editor-preview-dropdown>
+                        {{ fields.dropdownArrayField(
+                            'default_value',
+                            checked_values|first,
+                            values,
+                            '',
+                            {
+                                'init': init,
+                                'no_label': true,
+                                'multiple': false,
+                                'display_emptychoice': true,
+                                'field_class': 'single-preview-dropdown col-12' ~ (is_multiple_dropdown ? ' d-none' : ''),
+                                'mb': '',
+                                'aria_label': default_option_label
+                            }
+                        ) }}
+                        {{ fields.dropdownArrayField(
+                            'default_value',
+                            '',
+                            values,
+                            '',
+                            {
+                                'init': init,
+                                'no_label': true,
+                                'multiple': true,
+                                'values': checked_values,
+                                'field_class': 'multiple-preview-dropdown col-12' ~ (not is_multiple_dropdown ? ' d-none' : ''),
+                                'mb': '',
+                                'aria_label': default_options_label
+                            }
+                        ) }}
+                    </div>
+            TWIG;
 
         $template .= parent::renderAdministrationTemplate($question);
 
         $twig = TemplateRenderer::getInstance();
         $values = array_combine(
-            array_map(fn ($option) => $option['uuid'], $this->getValues($question)),
-            array_map(fn ($option) => $option['value'], $this->getValues($question))
+            array_map(fn($option) => $option['uuid'], $this->getValues($question)),
+            array_map(fn($option) => $option['value'], $this->getValues($question))
         );
         $checked_values = array_map(
-            fn ($option) => $option['uuid'],
-            array_filter($this->getValues($question), fn ($option) => $option['checked'])
+            fn($option) => $option['uuid'],
+            array_filter($this->getValues($question), fn($option) => $option['checked'])
         );
         return $twig->renderFromStringTemplate($template, [
             'question'              => $question,
@@ -213,19 +212,19 @@ TWIG;
     public function renderAdministrationOptionsTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% set rand = random() %}
+                        {% set rand = random() %}
 
-            <div class="d-flex gap-2">
-                <label class="form-check form-switch mb-0">
-                    <input type="hidden" name="is_multiple_dropdown" value="0"
-                    data-glpi-form-editor-specific-question-extra-data>
-                    <input class="form-check-input" type="checkbox" name="is_multiple_dropdown"
-                        value="1" {{ is_multiple_dropdown ? 'checked' : '' }}
-                        data-glpi-form-editor-specific-question-extra-data>
-                    <span class="form-check-label">{{ is_multiple_dropdown_label }}</span>
-                </label>
-            </div>
-TWIG;
+                        <div class="d-flex gap-2">
+                            <label class="form-check form-switch mb-0">
+                                <input type="hidden" name="is_multiple_dropdown" value="0"
+                                data-glpi-form-editor-specific-question-extra-data>
+                                <input class="form-check-input" type="checkbox" name="is_multiple_dropdown"
+                                    value="1" {{ is_multiple_dropdown ? 'checked' : '' }}
+                                    data-glpi-form-editor-specific-question-extra-data>
+                                <span class="form-check-label">{{ is_multiple_dropdown_label }}</span>
+                            </label>
+                        </div>
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -239,27 +238,27 @@ TWIG;
         Question $question,
     ): string {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.dropdownArrayField(
-                question.getEndUserInputName(),
-                not is_multiple ? checked_values|first : '',
-                values,
-                '',
-                {
-                    'no_label'  : true,
-                    'values'    : checked_values,
-                    'multiple'  : is_multiple,
-                    'mb'        : '',
-                    'aria_label': label,
-                }
-            ) }}
-TWIG;
+                        {{ fields.dropdownArrayField(
+                            question.getEndUserInputName(),
+                            not is_multiple ? checked_values|first : '',
+                            values,
+                            '',
+                            {
+                                'no_label'  : true,
+                                'values'    : checked_values,
+                                'multiple'  : is_multiple,
+                                'mb'        : '',
+                                'aria_label': label,
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         $checked_values = array_map(
-            fn ($option) => $option['uuid'],
-            array_filter($this->getValues($question), fn ($option) => $option['checked'])
+            fn($option) => $option['uuid'],
+            array_filter($this->getValues($question), fn($option) => $option['checked'])
         );
         return $twig->renderFromStringTemplate($template, [
             'question'       => $question,

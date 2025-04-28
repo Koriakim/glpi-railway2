@@ -44,7 +44,7 @@ use Glpi\DBAL\QuerySubQuery;
  **/
 class ProfileRight extends CommonDBChild
 {
-   // From CommonDBChild:
+    // From CommonDBChild:
     public static $itemtype = 'Profile';
     public static $items_id = 'profiles_id'; // Field name
     public $dohistory       = true;
@@ -182,7 +182,7 @@ class ProfileRight extends CommonDBChild
                     ]
                 );
                 if (!$res) {
-                     $ok = false;
+                    $ok = false;
                 }
             }
         }
@@ -213,7 +213,7 @@ class ProfileRight extends CommonDBChild
                 ]
             );
             if (!$result) {
-                 $ok = false;
+                $ok = false;
             }
         }
         return $ok;
@@ -295,7 +295,7 @@ class ProfileRight extends CommonDBChild
             }
         }
 
-       // Don't forget to complete the profile rights ...
+        // Don't forget to complete the profile rights ...
         self::fillProfileRights($profiles_id);
     }
 

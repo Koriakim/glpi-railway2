@@ -312,13 +312,16 @@ abstract class CommonDCModelDropdown extends CommonDropdown
     {
         // Checks whether any fields that might be causing a problem have been modified
         if (
-            (!isset($input['required_units'])
+            (
+                !isset($input['required_units'])
                 || $input['required_units'] <= $this->fields['required_units']
             )
-            && (!isset($input['is_half_rack'])
+            && (
+                !isset($input['is_half_rack'])
                 || $input['is_half_rack'] == $this->fields['is_half_rack']
             )
-            && (!isset($input['depth'])
+            && (
+                !isset($input['depth'])
                 || $input['depth'] == $this->fields['depth']
             )
         ) {

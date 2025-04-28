@@ -53,8 +53,8 @@ class URLType extends StringType
         ];
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.urlField(name, value, label, field_options) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {{ fields.urlField(name, value, label, field_options) }}
+            TWIG, $twig_params);
     }
 }

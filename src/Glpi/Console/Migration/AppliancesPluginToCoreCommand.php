@@ -67,21 +67,21 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
      *
      * @var integer
      */
-    const ERROR_PLUGIN_VERSION_OR_DATA_INVALID = 1;
+    public const ERROR_PLUGIN_VERSION_OR_DATA_INVALID = 1;
 
     /**
      * Error code returned if import failed.
      *
      * @var integer
      */
-    const ERROR_PLUGIN_IMPORT_FAILED = 2;
+    public const ERROR_PLUGIN_IMPORT_FAILED = 2;
 
     /**
      * list of possible relations of the plugin indexed by their correspond integer in the plugin
      *
      * @var array
      */
-    const PLUGIN_RELATION_TYPES = [
+    public const PLUGIN_RELATION_TYPES = [
         1 => Location::class,
         2 => Network::class,
         3 => Domain::class,
@@ -92,7 +92,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
      *
      * @var array
      */
-    const PLUGIN_APPLIANCE_TABLES = [
+    public const PLUGIN_APPLIANCE_TABLES = [
         "glpi_plugin_appliances_appliances"       => [
             "id",
             "entities_id",
@@ -125,14 +125,14 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
      *
      * @var string
      */
-    const PLUGIN_APPLIANCE_ITEMTYPE = "PluginAppliancesAppliance";
+    public const PLUGIN_APPLIANCE_ITEMTYPE = "PluginAppliancesAppliance";
 
     /**
      * itemtype corresponding to appliance in core
      *
      * @var string
      */
-    const CORE_APPLIANCE_ITEMTYPE = "Appliance";
+    public const CORE_APPLIANCE_ITEMTYPE = "Appliance";
 
     protected function configure()
     {
@@ -153,7 +153,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
     {
         $no_interaction = $input->getOption('no-interaction');
         if (!$no_interaction) {
-           // Ask for confirmation (unless --no-interaction)
+            // Ask for confirmation (unless --no-interaction)
             $output->writeln([
                 __('You are about to launch migration of Appliances plugin data into GLPI core tables.'),
                 __('Any previous appliance created in core will be lost.'),
@@ -260,7 +260,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
         /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
-       //prevent infocom creation from general setup
+        //prevent infocom creation from general setup
         if (isset($CFG_GLPI["auto_create_infocoms"]) && $CFG_GLPI["auto_create_infocoms"]) {
             $CFG_GLPI['auto_create_infocoms'] = false;
         }
@@ -301,7 +301,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                 sprintf(__('Unable to update "%s" in profiles.'), __('Associable items to a ticket'))
             );
             if (!$this->input->getOption('skip-errors')) {
-                 return false;
+                return false;
             }
         }
 
@@ -348,7 +348,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                     )
                 );
                 if (!$this->input->getOption('skip-errors')) {
-                     return false;
+                    return false;
                 }
             }
         }
@@ -406,7 +406,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                     $progress_bar
                 );
                 if (!$this->input->getOption('skip-errors')) {
-                     return false;
+                    return false;
                 }
             }
         }
@@ -465,7 +465,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                     $progress_bar
                 );
                 if (!$this->input->getOption('skip-errors')) {
-                     return false;
+                    return false;
                 }
             }
         }
@@ -540,7 +540,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                     $progress_bar
                 );
                 if (!$this->input->getOption('skip-errors')) {
-                     return false;
+                    return false;
                 }
             }
         }
@@ -602,7 +602,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                     $progress_bar
                 );
                 if (!$this->input->getOption('skip-errors')) {
-                     return false;
+                    return false;
                 }
             }
         }
@@ -670,7 +670,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                     $progress_bar
                 );
                 if (!$this->input->getOption('skip-errors')) {
-                     return false;
+                    return false;
                 } else {
                     continue; // Skip this relation
                 }
@@ -694,7 +694,7 @@ class AppliancesPluginToCoreCommand extends AbstractCommand
                     $progress_bar
                 );
                 if (!$this->input->getOption('skip-errors')) {
-                     return false;
+                    return false;
                 }
             }
         }

@@ -48,9 +48,9 @@ class BooleanOption extends AbstractOption
         ];
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.sliderField('field_options[' ~ key ~ ']', value, label) }}
-        TWIG, $twig_params);
+                {% import 'components/form/fields_macros.html.twig' as fields %}
+                {{ fields.sliderField('field_options[' ~ key ~ ']', value, label) }}
+            TWIG, $twig_params);
     }
 
     public function getValue(): bool

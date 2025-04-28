@@ -44,7 +44,7 @@ class Cable extends CommonDBTM
     use Glpi\Features\Clonable;
     use Glpi\Features\State;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory         = true;
     public static $rightname         = 'cable_management';
 
@@ -452,8 +452,8 @@ class Cable extends CommonDBTM
                 }
                 break;
             case '_virtual_datacenter_position':
-                $itemtype = isset($values['itemtype_endpoint_b']) ? $values['itemtype_endpoint_b'] : $values['itemtype_endpoint_a'];
-                $items_id = isset($values['items_id_endpoint_b']) ? $values['items_id_endpoint_b'] : $values['items_id_endpoint_a'];
+                $itemtype = $values['itemtype_endpoint_b'] ?? $values['itemtype_endpoint_a'];
+                $items_id = $values['items_id_endpoint_b'] ?? $values['items_id_endpoint_a'];
 
                 if (method_exists($itemtype, 'renderDcBreadcrumb')) {
                     /** @var class-string $itemtype */

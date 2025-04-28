@@ -40,7 +40,7 @@ use Glpi\Application\View\TemplateRenderer;
  */
 class Certificate_Item extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1    = "Certificate";
     public static $items_id_1    = 'certificates_id';
     public static $take_entity_1 = false;
@@ -90,7 +90,7 @@ class Certificate_Item extends CommonDBRelation
                     $nb = self::countForMainItem($item);
                 }
                 return self::createTabEntry(_n('Associated item', 'Associated items', Session::getPluralNumber()), $nb, $item::getType(), 'ti ti-package');
-            } else if (
+            } elseif (
                 in_array($item->getType(), Certificate::getTypes(true))
                 && Certificate::canView()
             ) {
@@ -121,7 +121,7 @@ class Certificate_Item extends CommonDBRelation
 
         if ($item->getType() == 'Certificate') {
             self::showForCertificate($item);
-        } else if (in_array($item->getType(), Certificate::getTypes(true))) {
+        } elseif (in_array($item->getType(), Certificate::getTypes(true))) {
             self::showForItem($item);
         }
         return true;
@@ -228,23 +228,23 @@ class Certificate_Item extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" name="certificates_form" action="{{ 'Certificate_Item'|itemtype_form_path }}">
-                        <input type="hidden" name="certificates_id" value="{{ certificates_id }}">
-                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                        <div class="d-flex">
-                            {{ fields.dropdownItemsFromItemtypes('items_id', '', dropdown_params|merge({
-                                add_field_class: 'd-inline',
-                                no_label: true,
-                            })) }}
-                            <div>
-                                <button type="submit" name="add" class="btn btn-primary ms-3 mb-3">{{ btn_label }}</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" name="certificates_form" action="{{ 'Certificate_Item'|itemtype_form_path }}">
+                                        <input type="hidden" name="certificates_id" value="{{ certificates_id }}">
+                                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                        <div class="d-flex">
+                                            {{ fields.dropdownItemsFromItemtypes('items_id', '', dropdown_params|merge({
+                                                add_field_class: 'd-inline',
+                                                no_label: true,
+                                            })) }}
+                                            <div>
+                                                <button type="submit" name="add" class="btn btn-primary ms-3 mb-3">{{ btn_label }}</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -368,29 +368,29 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" name="certificates_form" action="{{ 'Certificate_Item'|itemtype_form_path }}">
-                        <input type="hidden" name="itemtype" value="{{ get_class(item) }}">
-                        <input type="hidden" name="items_id" value="{{ item.getID() }}">
-                        {% if get_class(item) is same as 'Ticket' %}
-                            <input type="hidden" name="tickets_id" value="{{ item.getID() }}">
-                        {% endif %}
-                        <input type="hidden" name="entities_id" value="{{ item.getEntityID() }}">
-                        <input type="hidden" name="is_recursive" value="{{ is_recursive }}">
-                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                        <div class="d-flex">
-                            {{ fields.dropdownField('Certificate', 'certificates_id', null, '', dropdown_params|merge({
-                                add_field_class: 'd-inline',
-                                no_label: true,
-                            })) }}
-                            <div>
-                                <button type="submit" name="add" class="btn btn-primary ms-3 mb-3">{{ btn_label }}</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" name="certificates_form" action="{{ 'Certificate_Item'|itemtype_form_path }}">
+                                        <input type="hidden" name="itemtype" value="{{ get_class(item) }}">
+                                        <input type="hidden" name="items_id" value="{{ item.getID() }}">
+                                        {% if get_class(item) is same as 'Ticket' %}
+                                            <input type="hidden" name="tickets_id" value="{{ item.getID() }}">
+                                        {% endif %}
+                                        <input type="hidden" name="entities_id" value="{{ item.getEntityID() }}">
+                                        <input type="hidden" name="is_recursive" value="{{ is_recursive }}">
+                                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                        <div class="d-flex">
+                                            {{ fields.dropdownField('Certificate', 'certificates_id', null, '', dropdown_params|merge({
+                                                add_field_class: 'd-inline',
+                                                no_label: true,
+                                            })) }}
+                                            <div>
+                                                <button type="submit" name="add" class="btn btn-primary ms-3 mb-3">{{ btn_label }}</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $used = [];
@@ -426,7 +426,7 @@ TWIG, $twig_params);
                 && $data["date_expiration"] <= date('Y-m-d')
             ) {
                 $expiration = "<span class='table-deleted'>{$expiration}</span>";
-            } else if (empty($data["date_expiration"])) {
+            } elseif (empty($data["date_expiration"])) {
                 $expiration = __s('Does not expire');
             }
             $entry['date_expiration'] = $expiration;

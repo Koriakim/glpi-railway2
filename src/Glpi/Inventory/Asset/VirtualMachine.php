@@ -41,7 +41,6 @@ use Computer;
 use ItemVirtualMachine;
 use Glpi\Inventory\Conf;
 use RuleImportAssetCollection;
-use Toolbox;
 
 class VirtualMachine extends InventoryAsset
 {
@@ -117,11 +116,11 @@ class VirtualMachine extends InventoryAsset
             if (property_exists($vm_val, 'ram')) {
                 if (strstr($vm_val->ram, 'MB')) {
                     $vm_val = str_replace('MB', '', $vm_val->ram);
-                } else if (strstr($vm_val->ram, 'KB')) {
+                } elseif (strstr($vm_val->ram, 'KB')) {
                     $vm_val = (float) str_replace('KB', '', $vm_val->ram) / 1000;
-                } else if (strstr($vm_val->ram, 'GB')) {
+                } elseif (strstr($vm_val->ram, 'GB')) {
                     $vm_val->ram = (float) str_replace('GB', '', $vm_val->ram) * 1000;
-                } else if (strstr($vm_val->ram, 'B')) {
+                } elseif (strstr($vm_val->ram, 'B')) {
                     $vm_val->ram = (float) str_replace('B', '', $vm_val->ram) / 1000000;
                 }
             }

@@ -35,23 +35,13 @@
 
 namespace Glpi\Api\HL\Controller;
 
-use AutoUpdateSystem;
 use Calendar;
-use CommonDBTM;
 use Entity;
 use Glpi\Api\HL\Doc as Doc;
-use Glpi\Api\HL\Middleware\ResultFormatterMiddleware;
 use Glpi\Api\HL\Route;
-use Glpi\Api\HL\Search;
-use Glpi\Http\JSONResponse;
-use Glpi\Http\Request;
-use Glpi\Http\Response;
-use Group;
 use Location;
 use Manufacturer;
-use Network;
 use State;
-use User;
 
 #[Route(path: '/Dropdowns', priority: 1, tags: ['Dropdowns'])]
 #[Doc\Route(

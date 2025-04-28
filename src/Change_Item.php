@@ -40,7 +40,7 @@
  **/
 class Change_Item extends CommonItilObject_Item
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1          = 'Change';
     public static $items_id_1          = 'changes_id';
 
@@ -65,12 +65,12 @@ class Change_Item extends CommonItilObject_Item
     public function prepareInputForAdd($input)
     {
 
-       // Well, if I remember my PHP: empty(0) == true ...
+        // Well, if I remember my PHP: empty(0) == true ...
         if (empty($input['changes_id']) || ($input['changes_id'] == 0)) {
             return false;
         }
 
-       // Avoid duplicate entry
+        // Avoid duplicate entry
         if (
             countElementsInTable($this->getTable(), ['changes_id' => $input['changes_id'],
                 'itemtype' => $input['itemtype'],

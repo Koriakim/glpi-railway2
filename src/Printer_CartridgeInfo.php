@@ -88,7 +88,7 @@ class Printer_CartridgeInfo extends CommonDBChild
                     _sx('%1$s remaining page', '%1$s remaining pages', $pages),
                     $pages
                 );
-            } else if ($value === 'OK') {
+            } elseif ($value === 'OK') {
                 $value = __s('OK');
             }
 
@@ -103,20 +103,20 @@ class Printer_CartridgeInfo extends CommonDBChild
 
 
                 $out = <<<HTML
-                    <span class='text-nowrap'>
-                    {$progressbar_data['text']}
-                    </span>
-                    <div class="progress" style="height: 16px">
-                        <div class="progress-bar progress-bar-striped" role="progressbar"
-                            style="width: {$progressbar_data['percent']}%; background-color:
-                            {$progressbar_data['background-color']}; color: {$progressbar_data['text-color']};"
-                            aria-valuenow="{$progressbar_data['percent']}"
-                            aria-valuemin="0" aria-valuemax="100">
-                            {$progressbar_data['percent_text']}%
-                        </div>
+                                        <span class='text-nowrap'>
+                                        {$progressbar_data['text']}
+                                        </span>
+                                        <div class="progress" style="height: 16px">
+                                            <div class="progress-bar progress-bar-striped" role="progressbar"
+                                                style="width: {$progressbar_data['percent']}%; background-color:
+                                                {$progressbar_data['background-color']}; color: {$progressbar_data['text-color']};"
+                                                aria-valuenow="{$progressbar_data['percent']}"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                                {$progressbar_data['percent_text']}%
+                                            </div>
 
-                    </div>
-HTML;
+                                        </div>
+                    HTML;
             } else {
                 $out = $value;
             }
@@ -229,10 +229,10 @@ HTML;
             ];
             // language=Twig
             return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <span class="badge bg-{{ color }} text-{{ color }}-fg fw-bold">
-                    {{ color_translated }} : {{ status }}
-                </span>
-TWIG, $twig_params);
+                                <span class="badge bg-{{ color }} text-{{ color }}-fg fw-bold">
+                                    {{ color_translated }} : {{ status }}
+                                </span>
+                TWIG, $twig_params);
         }
 
         return null;
@@ -253,12 +253,12 @@ TWIG, $twig_params);
             if ($badges) {
                 // language=Twig
                 return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                    <div class="d-flex flex-wrap gap-1">
-                        {% for badge in badges %}
-                            {{ badge|raw }}
-                        {% endfor %}
-                    </div>
-TWIG, ['badges' => $badges]);
+                                        <div class="d-flex flex-wrap gap-1">
+                                            {% for badge in badges %}
+                                                {{ badge|raw }}
+                                            {% endfor %}
+                                        </div>
+                    TWIG, ['badges' => $badges]);
             }
         }
 

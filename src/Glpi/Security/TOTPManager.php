@@ -431,7 +431,7 @@ final class TOTPManager
             if (!$enforced) {
                 // Check group configuration
                 $groups = \Group_User::getUserGroups($users_id);
-                $enforced = count(array_filter($groups, static fn ($group) => $group['2fa_enforced'])) > 0;
+                $enforced = count(array_filter($groups, static fn($group) => $group['2fa_enforced'])) > 0;
             }
         }
 
@@ -526,7 +526,7 @@ final class TOTPManager
         $name = self::$brand_label;
         if (isset($_SESSION['mfa_pre_auth'])) {
             $name = $_SESSION['mfa_pre_auth']['user']['name'];
-        } else if (isset($_SESSION['glpiname'])) {
+        } elseif (isset($_SESSION['glpiname'])) {
             $name = $_SESSION['glpiname'];
         }
         $qr = $tfa->getQRCodeImageAsDataUri($name, $secret);

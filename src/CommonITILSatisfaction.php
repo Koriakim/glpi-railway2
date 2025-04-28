@@ -234,7 +234,7 @@ abstract class CommonITILSatisfaction extends CommonDBTM
             // Send notification only if fields related to reply are updated.
             $answer_updates = array_filter(
                 $this->updates,
-                fn ($field) => in_array($field, ['satisfaction', 'comment'])
+                fn($field) => in_array($field, ['satisfaction', 'comment'])
             );
 
             /** @var CommonDBTM $itemtype */

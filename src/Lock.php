@@ -90,15 +90,15 @@ class Lock extends CommonGLPI
 
         // language=Twig
         $list_info_alert_template = <<<TWIG
-            <div class="alert alert-info d-flex align-items-center" role="alert">
-                <i class="ti ti-info-circle fs-1"></i>
-                <span class="ms-2">
-                    <span class="alert-title">{{ alert_title }}</span>
-                    <br>
-                    {{ alert_content }}
-                </span>
-            </div>
-TWIG;
+                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                            <i class="ti ti-info-circle fs-1"></i>
+                            <span class="ms-2">
+                                <span class="alert-title">{{ alert_title }}</span>
+                                <br>
+                                {{ alert_content }}
+                            </span>
+                        </div>
+            TWIG;
 
         echo TemplateRenderer::getInstance()->renderFromStringTemplate($list_info_alert_template, [
             'alert_title' => __("A locked field is a manually modified field."),
@@ -208,7 +208,7 @@ TWIG;
                 if (isset($search_option['table']) && $search_option['table'] === getTableForItemType($itemtype)) {
                     if (isset($search_option['linkfield'])) {
                         $so_fields[$search_option['linkfield']] = $search_option['name'];
-                    } else if (isset($search_option['field'])) {
+                    } elseif (isset($search_option['field'])) {
                         $so_fields[$search_option['field']] = $search_option['name'];
                     }
                 }
@@ -218,7 +218,7 @@ TWIG;
                 $field_label = $row['field'];
                 if (isset($so_fields[$row['field']])) {
                     $field_label = $so_fields[$row['field']];
-                } else if (isForeignKeyField($row['field'])) {
+                } elseif (isForeignKeyField($row['field'])) {
                     // on fkey, we can try to retrieve the object
                     $object = getItemtypeForForeignKeyField($row['field']);
                     if ($object !== 'UNKNOWN') {
@@ -328,10 +328,10 @@ TWIG;
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <form method="post" id="lock_form" name="lock_form" class="mt-5" action="{{ 'Lock'|itemtype_form_path }}">
-                <input type="hidden" name="id" value="{{ id }}">
-                <input type="hidden" name="itemtype" value="{{ itemtype }}">
-TWIG, $twig_params);
+                        <form method="post" id="lock_form" name="lock_form" class="mt-5" action="{{ 'Lock'|itemtype_form_path }}">
+                            <input type="hidden" name="id" value="{{ id }}">
+                            <input type="hidden" name="itemtype" value="{{ itemtype }}">
+            TWIG, $twig_params);
 
         $subtables = [];
         //Use a hook to allow external inventory tools to manage per field lock
@@ -1071,23 +1071,23 @@ TWIG, $twig_params);
         if (count($rendered_subtables) > 0) {
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div>
-                    <i class='fas fa-level-up-alt fa-flip-horizontal fs-2 mx-2'></i>
-                    <a onclick="if ( markCheckboxes('lock_form') ) return false;" href='#'>{{ check_all_msg }}</a>
-                    <span>/</span>
-                    <a onclick="if ( unMarkCheckboxes('lock_form') ) return false;" href='#'>{{ uncheck_all_msg }}</a>
-                    <button type="submit" name="unlock" class="btn btn-primary">{{ unlock_msg }}</button>
-                    <button type="submit" name="purge" class="btn btn-danger">{{ purge_msg }}</button>
-                </div>
-TWIG, $twig_params);
+                                <div>
+                                    <i class='fas fa-level-up-alt fa-flip-horizontal fs-2 mx-2'></i>
+                                    <a onclick="if ( markCheckboxes('lock_form') ) return false;" href='#'>{{ check_all_msg }}</a>
+                                    <span>/</span>
+                                    <a onclick="if ( unMarkCheckboxes('lock_form') ) return false;" href='#'>{{ uncheck_all_msg }}</a>
+                                    <button type="submit" name="unlock" class="btn btn-primary">{{ unlock_msg }}</button>
+                                    <button type="submit" name="purge" class="btn btn-danger">{{ purge_msg }}</button>
+                                </div>
+                TWIG, $twig_params);
         }
 
         // Close the custom form used for the unlock item checkboxes (not using massive actions)
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-            </form>
-TWIG);
+                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                        </form>
+            TWIG);
     }
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
@@ -1412,8 +1412,8 @@ TWIG);
                     foreach ($attached_items as $attached_item) {
                         $infos = self::getLocksQueryInfosByItemType($attached_item, $baseitem->getType());
                         if ($item = getItemForItemtype($infos['type'])) {
-                             $infos['item'] = $item;
-                             $links[$attached_item] = $infos;
+                            $infos['item'] = $item;
+                            $links[$attached_item] = $infos;
                         }
                     }
                     foreach ($ids as $id) {

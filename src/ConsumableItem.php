@@ -55,7 +55,7 @@ class ConsumableItem extends CommonDBTM
         prepareInputForUpdate as prepareInputForUpdateAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     protected static $forward_entity_to = ['Consumable', 'Infocom'];
     public $dohistory                   = true;
     protected $usenotepad               = true;
@@ -406,7 +406,7 @@ class ConsumableItem extends CommonDBTM
 
                         $items[$consumable["consID"]] = $consumable;
 
-                       // if alert exists -> delete
+                        // if alert exists -> delete
                         if (!empty($consumable["alertID"])) {
                             $alert->delete(["id" => $consumable["alertID"]]);
                         }
@@ -421,16 +421,16 @@ class ConsumableItem extends CommonDBTM
 
                     if (NotificationEvent::raiseEvent('alert', new ConsumableItem(), $options)) {
                         if ($task) {
-                             $task->log(Dropdown::getDropdownName(
-                                 "glpi_entities",
-                                 $entity
-                             ) . " :  $message\n");
-                               $task->addVolume(1);
+                            $task->log(Dropdown::getDropdownName(
+                                "glpi_entities",
+                                $entity
+                            ) . " :  $message\n");
+                            $task->addVolume(1);
                         } else {
-                             Session::addMessageAfterRedirect(htmlescape(Dropdown::getDropdownName(
-                                 "glpi_entities",
-                                 $entity
-                             ) . " :  $message"));
+                            Session::addMessageAfterRedirect(htmlescape(Dropdown::getDropdownName(
+                                "glpi_entities",
+                                $entity
+                            ) . " :  $message"));
                         }
 
                         $input = [

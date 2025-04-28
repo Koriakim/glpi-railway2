@@ -36,9 +36,6 @@
 namespace Glpi\Api\HL;
 
 use CommonGLPI;
-use Glpi\Api\HL\Controller\ComponentController;
-use Glpi\Api\HL\Controller\ProjectController;
-use Glpi\Api\HL\Doc\Response;
 use Glpi\Api\HL\Doc\Schema;
 use Glpi\Api\HL\Doc\SchemaReference;
 use Glpi\Api\HL\Middleware\ResultFormatterMiddleware;
@@ -123,9 +120,9 @@ final class OpenAPIGenerator
     private function getInfo(): array
     {
         $description = <<<EOT
-The High-Level REST API documentation shown here is dynamically generated from the core GLPI code and any enabled plugins.
-If a plugin is not enabled, its routes will not be shown here.
-EOT;
+            The High-Level REST API documentation shown here is dynamically generated from the core GLPI code and any enabled plugins.
+            If a plugin is not enabled, its routes will not be shown here.
+            EOT;
 
         return [
             'title' => 'GLPI High-Level REST API',

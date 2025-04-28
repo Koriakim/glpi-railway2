@@ -42,7 +42,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class Notification_NotificationTemplate extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1       = 'Notification';
     public static $items_id_1       = 'notifications_id';
     public static $itemtype_2       = 'NotificationTemplate';
@@ -52,12 +52,12 @@ class Notification_NotificationTemplate extends CommonDBRelation
     public $no_form_page    = false;
     protected $displaylist  = false;
 
-    const MODE_MAIL      = 'mailing';
-    const MODE_AJAX      = 'ajax';
-    const MODE_WEBSOCKET = 'websocket';
-    const MODE_SMS       = 'sms';
-    const MODE_XMPP      = 'xmpp';
-    const MODE_IRC       = 'irc';
+    public const MODE_MAIL      = 'mailing';
+    public const MODE_AJAX      = 'ajax';
+    public const MODE_WEBSOCKET = 'websocket';
+    public const MODE_SMS       = 'sms';
+    public const MODE_XMPP      = 'xmpp';
+    public const MODE_IRC       = 'irc';
 
     public static function getTypeName($nb = 0)
     {
@@ -139,12 +139,12 @@ class Notification_NotificationTemplate extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="text-center mb-3">
-                    <a class="btn btn-primary" href="{{ 'Notification_NotificationTemplate'|itemtype_form_path }}?notifications_id={{ id }}&withtemplate={{ withtemplate}}">
-                        {{ add_msg }}
-                    </a>
-                </div>
-TWIG, $twig_params);
+                                <div class="text-center mb-3">
+                                    <a class="btn btn-primary" href="{{ 'Notification_NotificationTemplate'|itemtype_form_path }}?notifications_id={{ id }}&withtemplate={{ withtemplate}}">
+                                        {{ add_msg }}
+                                    </a>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $iterator = $DB->request([
@@ -397,7 +397,7 @@ TWIG, $twig_params);
                 'label'  => __('Browser'),
                 'from'   => 'core'
             ]
-         /*self::MODE_WEBSOCKET => [
+            /*self::MODE_WEBSOCKET => [
             'label'  => __('Websocket'),
             'from'   => 'core'
          ],
@@ -496,7 +496,7 @@ TWIG, $twig_params);
     {
         if ($extratype === 'event') {
             $classname = 'NotificationEvent' . ucfirst($mode);
-        } else if ($extratype === 'setting') {
+        } elseif ($extratype === 'setting') {
             $classname = 'Notification' . ucfirst($mode) . 'Setting';
         } else {
             // @phpstan-ignore notIdentical.alwaysFalse (defensive programming)

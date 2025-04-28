@@ -40,14 +40,14 @@
  */
 class KnowbaseItem_KnowbaseItemCategory extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1          = 'KnowbaseItem';
     public static $items_id_1          = 'knowbaseitems_id';
     public static $itemtype_2          = 'KnowbaseItemCategory';
     public static $items_id_2          = 'knowbaseitemcategories_id';
     public static $checkItem_2_Rights  = self::HAVE_VIEW_RIGHT_ON_ITEM;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory = true;
 
     public static $rightname = 'knowbase';

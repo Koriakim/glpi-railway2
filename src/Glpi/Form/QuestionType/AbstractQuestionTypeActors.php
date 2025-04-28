@@ -43,7 +43,6 @@ use Glpi\Form\Export\Serializer\DynamicExportDataField;
 use Glpi\Form\Export\Specification\DataRequirementSpecification;
 use Glpi\Form\Migration\FormQuestionDataConverterInterface;
 use Glpi\Form\Condition\ConditionHandler\ActorConditionHandler;
-use Glpi\Form\Condition\ConditionHandler\ConditionHandlerInterface;
 use Glpi\Form\Condition\UsedAsCriteriaInterface;
 use Glpi\Form\Question;
 use Group;
@@ -249,75 +248,75 @@ abstract class AbstractQuestionTypeActors extends AbstractQuestionType implement
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-        {% import 'components/form/fields_macros.html.twig' as fields %}
+                    {% import 'components/form/fields_macros.html.twig' as fields %}
 
-        {% set actors_dropdown = call('Glpi\\\\Form\\\\Dropdown\\\\FormActorsDropdown::show', [
-            'default_value',
-            values,
-            {
-                'form_id'         : form_id,
-                'multiple'        : false,
-                'init'            : init,
-                'allowed_types'   : allowed_types,
-                'right_for_users' : right_for_users,
-                'group_conditions': group_conditions,
-                'aria_label'      : aria_label,
-                'specific_tags'   : is_multiple_actors ? {
-                    'disabled': 'disabled'
-                } : {}
-            }
-        ]) %}
-        {% set actors_dropdown_multiple = call('Glpi\\\\Form\\\\Dropdown\\\\FormActorsDropdown::show', [
-            'default_value',
-            values,
-            {
-                'form_id'         : form_id,
-                'multiple'        : true,
-                'init'            : init,
-                'allowed_types'   : allowed_types,
-                'right_for_users' : right_for_users,
-                'group_conditions': group_conditions,
-                'aria_label'      : aria_label,
-                'specific_tags'   : not is_multiple_actors ? {
-                    'disabled': 'disabled'
-                } : {}
-            }
-        ]) %}
+                    {% set actors_dropdown = call('Glpi\\\\Form\\\\Dropdown\\\\FormActorsDropdown::show', [
+                        'default_value',
+                        values,
+                        {
+                            'form_id'         : form_id,
+                            'multiple'        : false,
+                            'init'            : init,
+                            'allowed_types'   : allowed_types,
+                            'right_for_users' : right_for_users,
+                            'group_conditions': group_conditions,
+                            'aria_label'      : aria_label,
+                            'specific_tags'   : is_multiple_actors ? {
+                                'disabled': 'disabled'
+                            } : {}
+                        }
+                    ]) %}
+                    {% set actors_dropdown_multiple = call('Glpi\\\\Form\\\\Dropdown\\\\FormActorsDropdown::show', [
+                        'default_value',
+                        values,
+                        {
+                            'form_id'         : form_id,
+                            'multiple'        : true,
+                            'init'            : init,
+                            'allowed_types'   : allowed_types,
+                            'right_for_users' : right_for_users,
+                            'group_conditions': group_conditions,
+                            'aria_label'      : aria_label,
+                            'specific_tags'   : not is_multiple_actors ? {
+                                'disabled': 'disabled'
+                            } : {}
+                        }
+                    ]) %}
 
-        {{ fields.htmlField(
-            'default_value',
-            actors_dropdown,
-            '',
-            {
-                'disabled'     : is_multiple_actors,
-                'no_label'     : true,
-                'mb'           : '',
-                'wrapper_class': '',
-                'field_class': [
-                    'actors-dropdown',
-                    'col-12',
-                    'col-sm-6',
-                    not is_multiple_actors ? '' : 'd-none'
-                ]|join(' '),
-            }
-        ) }}
-        {{ fields.htmlField(
-            'default_value',
-            actors_dropdown_multiple,
-            '',
-            {
-                'no_label'     : true,
-                'wrapper_class': '',
-                'mb'           : '',
-                'field_class'  : [
-                    'actors-dropdown',
-                    'col-12',
-                    'col-sm-6',
-                    is_multiple_actors ? '' : 'd-none'
-                ]|join(' '),
-            }
-        ) }}
-TWIG;
+                    {{ fields.htmlField(
+                        'default_value',
+                        actors_dropdown,
+                        '',
+                        {
+                            'disabled'     : is_multiple_actors,
+                            'no_label'     : true,
+                            'mb'           : '',
+                            'wrapper_class': '',
+                            'field_class': [
+                                'actors-dropdown',
+                                'col-12',
+                                'col-sm-6',
+                                not is_multiple_actors ? '' : 'd-none'
+                            ]|join(' '),
+                        }
+                    ) }}
+                    {{ fields.htmlField(
+                        'default_value',
+                        actors_dropdown_multiple,
+                        '',
+                        {
+                            'no_label'     : true,
+                            'wrapper_class': '',
+                            'mb'           : '',
+                            'field_class'  : [
+                                'actors-dropdown',
+                                'col-12',
+                                'col-sm-6',
+                                is_multiple_actors ? '' : 'd-none'
+                            ]|join(' '),
+                        }
+                    ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         $form_id = $question ? $question->getForm()->getId() : null;
@@ -339,35 +338,35 @@ TWIG;
     public function renderAdministrationOptionsTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% set rand = random() %}
+                        {% set rand = random() %}
 
-            <div id="is_multiple_actors_{{ rand }}" class="d-flex gap-2">
-                <label class="form-check form-switch mb-0">
-                    <input type="hidden" name="is_multiple_actors" value="0"
-                    data-glpi-form-editor-specific-question-extra-data>
-                    <input class="form-check-input" type="checkbox" name="is_multiple_actors"
-                        value="1" {{ is_multiple_actors ? 'checked' : '' }}
-                        onchange="handleMultipleActorsCheckbox_{{ rand }}(this)"
-                        data-glpi-form-editor-specific-question-extra-data>
-                    <span class="form-check-label">{{ is_multiple_actors_label }}</span>
-                </label>
-            </div>
+                        <div id="is_multiple_actors_{{ rand }}" class="d-flex gap-2">
+                            <label class="form-check form-switch mb-0">
+                                <input type="hidden" name="is_multiple_actors" value="0"
+                                data-glpi-form-editor-specific-question-extra-data>
+                                <input class="form-check-input" type="checkbox" name="is_multiple_actors"
+                                    value="1" {{ is_multiple_actors ? 'checked' : '' }}
+                                    onchange="handleMultipleActorsCheckbox_{{ rand }}(this)"
+                                    data-glpi-form-editor-specific-question-extra-data>
+                                <span class="form-check-label">{{ is_multiple_actors_label }}</span>
+                            </label>
+                        </div>
 
-            <script>
-                function handleMultipleActorsCheckbox_{{ rand }}(input) {
-                    const is_checked = $(input).is(':checked');
-                    const selects = $(input).closest('section[data-glpi-form-editor-question]')
-                        .find('div .actors-dropdown');
+                        <script>
+                            function handleMultipleActorsCheckbox_{{ rand }}(input) {
+                                const is_checked = $(input).is(':checked');
+                                const selects = $(input).closest('section[data-glpi-form-editor-question]')
+                                    .find('div .actors-dropdown');
 
-                    {# Disable all selects and toggle their visibility, then enable the right ones #}
-                    selects.toggleClass('d-none').find('select').prop('disabled', is_checked)
-                        .filter('[multiple]').prop('disabled', !is_checked);
+                                {# Disable all selects and toggle their visibility, then enable the right ones #}
+                                selects.toggleClass('d-none').find('select').prop('disabled', is_checked)
+                                    .filter('[multiple]').prop('disabled', !is_checked);
 
-                    {# Handle hidden input for multiple actors #}
-                    selects.find('input[type="hidden"]').prop('disabled', !is_checked);
-                }
-            </script>
-TWIG;
+                                {# Handle hidden input for multiple actors #}
+                                selects.find('input[type="hidden"]').prop('disabled', !is_checked);
+                            }
+                        </script>
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -398,35 +397,35 @@ TWIG;
     public function renderEndUserTemplate(Question $question): string
     {
         $template = <<<TWIG
-        {% import 'components/form/fields_macros.html.twig' as fields %}
+                    {% import 'components/form/fields_macros.html.twig' as fields %}
 
-        {% set actors_dropdown = call('Glpi\\\\Form\\\\Dropdown\\\\FormActorsDropdown::show', [
-            question.getEndUserInputName(),
-            value,
-            {
-                'form_id'      : question.getForm().getId(),
-                'multiple'     : is_multiple_actors,
-                'allowed_types': allowed_types,
-                'aria_label'   : aria_label,
-                'mb'           : ''
-            }
-        ]) %}
+                    {% set actors_dropdown = call('Glpi\\\\Form\\\\Dropdown\\\\FormActorsDropdown::show', [
+                        question.getEndUserInputName(),
+                        value,
+                        {
+                            'form_id'      : question.getForm().getId(),
+                            'multiple'     : is_multiple_actors,
+                            'allowed_types': allowed_types,
+                            'aria_label'   : aria_label,
+                            'mb'           : ''
+                        }
+                    ]) %}
 
-        {{ fields.htmlField(
-            question.getEndUserInputName(),
-            actors_dropdown,
-            '',
-            {
-                'no_label'     : true,
-                'wrapper_class': '',
-                'mb'           : '',
-                'field_class'  : [
-                    'col-12',
-                    'col-sm-6',
-                ]|join(' '),
-            }
-        ) }}
-TWIG;
+                    {{ fields.htmlField(
+                        question.getEndUserInputName(),
+                        actors_dropdown,
+                        '',
+                        {
+                            'no_label'     : true,
+                            'wrapper_class': '',
+                            'mb'           : '',
+                            'field_class'  : [
+                                'col-12',
+                                'col-sm-6',
+                            ]|join(' '),
+                        }
+                    ) }}
+            TWIG;
 
         $is_multiple_actors = $this->isMultipleActors($question);
         $twig = TemplateRenderer::getInstance();

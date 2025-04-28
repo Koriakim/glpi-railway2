@@ -135,7 +135,7 @@ class CableStrand extends CommonDropdown
 
         $iterator = $DB->request($criteria);
 
-       // Execute a second request to get the total number of rows
+        // Execute a second request to get the total number of rows
         unset($criteria['SELECT']);
         unset($criteria['START']);
         unset($criteria['LIMIT']);

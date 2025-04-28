@@ -120,7 +120,7 @@ class KnowbaseItemTranslation extends CommonDBChild
                     $item->showForm($item->getID(), ['parent' => $item]);
                     break;
             }
-        } else if ($item instanceof KnowbaseItem) {
+        } elseif ($item instanceof KnowbaseItem) {
             self::showTranslations($item);
         }
         return true;
@@ -146,15 +146,15 @@ class KnowbaseItemTranslation extends CommonDBChild
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="d-flex flex-column">
-                <h2>{{ subject_label }}</h2>
-                <span class="mb-3">{{ item.fields['name'] }}</span>
-                <h2>{{ content_label }}</h2>
-                <div id="kbanswer" class="rich_text_container">
-                    {{ item.fields['answer']|enhanced_html }}
-                </div>
-            </div>
-TWIG, $twig_params);
+                        <div class="d-flex flex-column">
+                            <h2>{{ subject_label }}</h2>
+                            <span class="mb-3">{{ item.fields['name'] }}</span>
+                            <h2>{{ content_label }}</h2>
+                            <div id="kbanswer" class="rich_text_container">
+                                {{ item.fields['answer']|enhanced_html }}
+                            </div>
+                        </div>
+            TWIG, $twig_params);
     }
 
     /**
@@ -175,28 +175,28 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% set rand = random() %}
-                <div id="viewtranslation{{ item.getID() ~ rand }}"></div>
-                <div class="text-center mb-3">
-                    <button name="add_translation{{ rand }}" class="btn btn-primary">{{ btn_msg }}</button>
-                </div>
-                <script>
-                    $(() => {
-                        function addTranslation{{ item.getID() ~ rand }}() {
-                            $('#viewtranslation{{ item.getID() ~ rand }}').load(
-                                '/ajax/viewsubitem.php',
-                                {
-                                    type: 'KnowbaseItemTranslation',
-                                    parenttype: '{{ get_class(item)|e('js') }}',
-                                    knowbaseitems_id: {{ item.getID() }},
-                                    id: -1
-                                }
-                            );
-                        }
-                        $('button[name="add_translation{{ rand }}"]').on('click', addTranslation{{ item.getID() ~ rand }});
-                    });
-                </script>
-TWIG, $twig_params);
+                                {% set rand = random() %}
+                                <div id="viewtranslation{{ item.getID() ~ rand }}"></div>
+                                <div class="text-center mb-3">
+                                    <button name="add_translation{{ rand }}" class="btn btn-primary">{{ btn_msg }}</button>
+                                </div>
+                                <script>
+                                    $(() => {
+                                        function addTranslation{{ item.getID() ~ rand }}() {
+                                            $('#viewtranslation{{ item.getID() ~ rand }}').load(
+                                                '/ajax/viewsubitem.php',
+                                                {
+                                                    type: 'KnowbaseItemTranslation',
+                                                    parenttype: '{{ get_class(item)|e('js') }}',
+                                                    knowbaseitems_id: {{ item.getID() }},
+                                                    id: -1
+                                                }
+                                            );
+                                        }
+                                        $('button[name="add_translation{{ rand }}"]').on('click', addTranslation{{ item.getID() ~ rand }});
+                                    });
+                                </script>
+                TWIG, $twig_params);
         }
 
         $obj   = new self();
@@ -262,7 +262,7 @@ TWIG, $twig_params);
         if ($ID > 0) {
             $this->check($ID, READ);
         } else {
-           // Create item
+            // Create item
             $options['itemtype']         = get_class($options['parent']);
             $options['knowbaseitems_id'] = $options['parent']->getID();
             $this->check(-1, CREATE, $options);

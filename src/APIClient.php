@@ -41,14 +41,14 @@ use Glpi\Application\View\TemplateRenderer;
 
 class APIClient extends CommonDBTM
 {
-    const DOLOG_DISABLED   = 0;
-    const DOLOG_LOGS       = 1;
-    const DOLOG_HISTORICAL = 2;
+    public const DOLOG_DISABLED   = 0;
+    public const DOLOG_LOGS       = 1;
+    public const DOLOG_HISTORICAL = 2;
 
     public static $rightname = 'config';
     protected $displaylist = false;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
 
     public static $undisclosedFields = [

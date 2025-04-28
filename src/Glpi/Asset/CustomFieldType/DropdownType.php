@@ -63,8 +63,8 @@ class DropdownType extends AbstractType
             if (!is_array($value)) {
                 $value = [$value];
             }
-            $value = array_filter($value, static fn ($val) => (int) $val > 0);
-            $value = array_map(static fn ($val) => (int) $val, $value);
+            $value = array_filter($value, static fn($val) => (int) $val > 0);
+            $value = array_map(static fn($val) => (int) $val, $value);
             return $value;
         }
 
@@ -87,7 +87,7 @@ class DropdownType extends AbstractType
         $is_multiple = $this->getOptionValues()['multiple'] ?? false;
         if ($is_multiple && !is_array($value)) {
             $value = [$value];
-        } else if (!$is_multiple && is_array($value)) {
+        } elseif (!$is_multiple && is_array($value)) {
             $value = $value[0] ?? '';
         }
         return $value;
@@ -110,12 +110,12 @@ class DropdownType extends AbstractType
         }
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.dropdownField(itemtype, name, value, label, field_options|merge({
-                values: value|default({}),
-                entity: session('glpiactiveentities'),
-            })) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {{ fields.dropdownField(itemtype, name, value, label, field_options|merge({
+                            values: value|default({}),
+                            entity: session('glpiactiveentities'),
+                        })) }}
+            TWIG, $twig_params);
     }
 
     public function getSearchOption(): ?array

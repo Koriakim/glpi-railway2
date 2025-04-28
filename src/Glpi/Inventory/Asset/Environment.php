@@ -38,7 +38,6 @@ namespace Glpi\Inventory\Asset;
 
 use Glpi\Inventory\Conf;
 use Item_Environment;
-use Toolbox;
 
 final class Environment extends InventoryAsset
 {
@@ -109,7 +108,7 @@ final class Environment extends InventoryAsset
         }
 
         if ((!$this->main_asset || !$this->main_asset->isPartial()) && count($db_itemEnvs) != 0) {
-           // Delete Item_Environment in DB
+            // Delete Item_Environment in DB
             foreach ($db_itemEnvs as $dbid => $data) {
                 if ($data['is_dynamic'] == 1) {
                     //Delete only dynamics

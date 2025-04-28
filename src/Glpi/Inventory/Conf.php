@@ -117,8 +117,8 @@ class Conf extends CommonGLPI
 
     public static $rightname = 'inventory';
 
-    const IMPORTFROMFILE     = 1024;
-    const UPDATECONFIG       = 2048;
+    public const IMPORTFROMFILE     = 1024;
+    public const UPDATECONFIG       = 2048;
 
     /**
      * Display form for import the XML
@@ -1148,8 +1148,8 @@ class Conf extends CommonGLPI
 
         if (isset($values['auth_required']) && $values['auth_required'] === Conf::BASIC_AUTH) {
             if (
-                    !empty($values['basic_auth_password']) &&
-                    !empty($values['basic_auth_login'])
+                !empty($values['basic_auth_password']) &&
+                !empty($values['basic_auth_login'])
             ) {
                 $values['basic_auth_password'] = (new GLPIKey())->encrypt($values['basic_auth_password']);
             } else {
@@ -1176,7 +1176,7 @@ class Conf extends CommonGLPI
                 } elseif ($prop == 'stale_agents_status_condition') {
                     $to_process[$prop] = ArrayNormalizer::normalizeValues(
                         $to_process[$prop],
-                        fn (mixed $val) => $val === 'all' ? 'all' : intval($val)
+                        fn(mixed $val) => $val === 'all' ? 'all' : intval($val)
                     );
                 }
                 $to_process[$prop] = exportArrayToDB($to_process[$prop]);
@@ -1204,8 +1204,8 @@ class Conf extends CommonGLPI
         }
         if (in_array($name, array_keys(self::getDefaults()))) {
             return $this->currents[$name];
-        } else if ($name == 'fields') {
-           //no fields here
+        } elseif ($name == 'fields') {
+            //no fields here
             return;
         } else {
             $msg = sprintf(

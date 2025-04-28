@@ -74,7 +74,7 @@ class CheckRequirementsCommand extends AbstractCommand
             ]
         );
 
-       /* @var \Glpi\System\Requirement\RequirementInterface $requirement */
+        /* @var \Glpi\System\Requirement\RequirementInterface $requirement */
         foreach ($core_requirements as $requirement) {
             if ($requirement->isOutOfContext()) {
                 $status = sprintf('<%s>[%s]</> ', 'fg=white;bg=yellow', __('SKIPPED'));

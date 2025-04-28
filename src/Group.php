@@ -281,7 +281,7 @@ class Group extends CommonTreeDropdown
                 ) {
                     if ($group = getItemForItemtype($input['check_itemtype'])) {
                         if ($group->getFromDB($input['check_items_id'])) {
-                              $condition = [];
+                            $condition = [];
                             if ($input['is_tech']) {
                                 $condition['is_assign'] = 1;
                             } else {
@@ -292,9 +292,9 @@ class Group extends CommonTreeDropdown
                                 'used'      => [$group->fields["id"]],
                                 'condition' => $condition
                             ]);
-                              echo "<br><br><input type='submit' name='massiveaction' class='btn btn-primary' value='" .
-                                    _sx('button', 'Move') . "'>";
-                              return true;
+                            echo "<br><br><input type='submit' name='massiveaction' class='btn btn-primary' value='" .
+                                  _sx('button', 'Move') . "'>";
+                            return true;
                         }
                     }
                 }
@@ -326,8 +326,8 @@ class Group extends CommonTreeDropdown
                                 $ma->addMessage($item->getErrorMessage(ERROR_ON_ACTION));
                             }
                         } else {
-                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
-                             $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                            $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_NORIGHT);
+                            $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
                         }
                     }
                 } else {
@@ -624,7 +624,7 @@ class Group extends CommonTreeDropdown
                 continue;
             }
             if ($start >= $nb[$itemtype]) {
-               // No need to read
+                // No need to read
                 $start -= $nb[$itemtype];
             } else {
                 $request = [
@@ -911,7 +911,7 @@ class Group extends CommonTreeDropdown
     public function getGroupLink(bool $enable_anonymization = false): string
     {
         if ($enable_anonymization && Session::getCurrentInterface() === 'helpdesk' && ($anon = static::getAnonymizedName()) !== null) {
-           // if anonymized name active, return only the anonymized name
+            // if anonymized name active, return only the anonymized name
             return $anon;
         }
 

@@ -119,7 +119,7 @@ class Unmanaged extends MainAsset
                 $port->logical_number = 0;
                 $port->ipaddress = [];
 
-               //add internal port(s)
+                //add internal port(s)
                 foreach ($device->ips as $ip) {
                     if ($ip != '127.0.0.1' && $ip != '::1' && !in_array($ip, $port->ipaddress)) {
                         $port->ipaddress[] = $ip;

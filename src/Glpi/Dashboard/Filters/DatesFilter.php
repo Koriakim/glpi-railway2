@@ -145,16 +145,16 @@ class DatesFilter extends AbstractFilter
         ]);
 
         $js = <<<JAVASCRIPT
-            var on_change_{$rand} = function(selectedDates, dateStr, instance) {
-                // we are waiting for empty value or a range of dates,
-                // don't trigger when only the first date is selected
-                var nb_dates = selectedDates.length;
-                if (nb_dates == 0 || nb_dates == 2) {
-                    GLPI.Dashboard.getActiveDashboard().saveFilter('dates', selectedDates);
-                    $(instance.input).closest("fieldset").addClass("filled");
-                }
-            };
-JAVASCRIPT;
+                        var on_change_{$rand} = function(selectedDates, dateStr, instance) {
+                            // we are waiting for empty value or a range of dates,
+                            // don't trigger when only the first date is selected
+                            var nb_dates = selectedDates.length;
+                            if (nb_dates == 0 || nb_dates == 2) {
+                                GLPI.Dashboard.getActiveDashboard().saveFilter('dates', selectedDates);
+                                $(instance.input).closest("fieldset").addClass("filled");
+                            }
+                        };
+            JAVASCRIPT;
         $field .= Html::scriptBlock($js);
 
         return self::field('dates', $field, $label, count($values) > 0);

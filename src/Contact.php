@@ -45,7 +45,7 @@ class Contact extends CommonDBTM
 {
     use AssetImage;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory           = true;
 
     public static $rightname           = 'contact_enterprise';
@@ -201,13 +201,13 @@ class Contact extends CommonDBTM
             $vcard_lbl = __s('Vcard');
             $vcard_url = htmlspecialchars(self::getFormURLWithID($ID) . "&getvcard=1");
             $vcard_btn = <<<HTML
-            <a href="{$vcard_url}" target="_blank"
-                     class="btn btn-icon btn-sm btn-ghost-secondary"
-                     title="{$vcard_lbl}"
-                     data-bs-toggle="tooltip" data-bs-placement="bottom">
-               <i class="ti ti-id fs-2"></i>
-            </a>
-HTML;
+                            <a href="{$vcard_url}" target="_blank"
+                                     class="btn btn-icon btn-sm btn-ghost-secondary"
+                                     title="{$vcard_lbl}"
+                                     data-bs-toggle="tooltip" data-bs-placement="bottom">
+                               <i class="ti ti-id fs-2"></i>
+                            </a>
+                HTML;
             $toolbar[] = $vcard_btn;
         }
         return $toolbar;
@@ -235,8 +235,8 @@ HTML;
             return formatUserName(
                 '',
                 '',
-                (isset($this->fields["name"]) ? $this->fields["name"] : ''),
-                (isset($this->fields["firstname"]) ? $this->fields["firstname"] : '')
+                ($this->fields["name"] ?? ''),
+                ($this->fields["firstname"] ?? '')
             );
         }
         return '';
@@ -442,7 +442,7 @@ HTML;
             'autocomplete'       => true
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
 
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
@@ -468,7 +468,7 @@ HTML;
             $title = new UserTitle();
             $title->getFromDB($this->fields['usertitles_id']);
         }
-       // build the Vcard
+        // build the Vcard
         $vcard = new VObject\Component\VCard([
             'N'     => [$this->fields["name"], $this->fields["firstname"]],
             'EMAIL' => $this->fields["email"],
@@ -489,13 +489,13 @@ HTML;
             $vcard->add('ADR', $addr_string, ['type' => 'WORK;POSTAL']);
         }
 
-       // Get more data from plugins such as an IM contact
+        // Get more data from plugins such as an IM contact
         $data = Plugin::doHook(Hooks::VCARD_DATA, ['item' => $this, 'data' => []])['data'];
         foreach ($data as $field => $additional_field) {
             $vcard->add($additional_field['name'], $additional_field['value'] ?? '', $additional_field['params'] ?? []);
         }
 
-       // send the  VCard
+        // send the  VCard
         $output   = $vcard->serialize();
         $filename = $this->fields["name"] . "_" . $this->fields["firstname"] . ".vcf";
 

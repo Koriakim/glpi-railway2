@@ -45,7 +45,7 @@ class Location extends CommonTreeDropdown
     use MapGeolocation;
     use Clonable;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory          = true;
     public $can_be_translated  = true;
 
@@ -475,7 +475,7 @@ class Location extends CommonTreeDropdown
         $locations_id = $this->fields['id'];
         $filters = $_GET['filters'] ?? [];
         $location_types = $CFG_GLPI['location_types'];
-        $location_types = array_combine($location_types, array_map(static fn ($itemtype) => $itemtype::getTypeName(1), $location_types));
+        $location_types = array_combine($location_types, array_map(static fn($itemtype) => $itemtype::getTypeName(1), $location_types));
         asort($location_types);
 
         if (!$this->can($locations_id, READ)) {

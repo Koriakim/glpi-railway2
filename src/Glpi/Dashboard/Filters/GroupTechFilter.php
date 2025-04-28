@@ -71,7 +71,7 @@ class GroupTechFilter extends AbstractFilter
         $groups_id = null;
         if ((int)$value > 0) {
             $groups_id = (int) $value;
-        } else if ($value == 'mygroups') {
+        } elseif ($value == 'mygroups') {
             $groups_id = $_SESSION['glpigroups'];
         }
 
@@ -80,7 +80,7 @@ class GroupTechFilter extends AbstractFilter
                 $criteria["WHERE"] = [
                     "$table.groups_id_tech" => $groups_id
                 ];
-            } else if (in_array($table, [Ticket::getTable(), Change::getTable(), Problem::getTable()])) {
+            } elseif (in_array($table, [Ticket::getTable(), Change::getTable(), Problem::getTable()])) {
                 $itemtype  = getItemTypeForTable($table);
                 $main_item = getItemForItemtype($itemtype);
                 $grouplink = $main_item->grouplinkclass;
@@ -115,7 +115,7 @@ class GroupTechFilter extends AbstractFilter
         $groups_id = null;
         if ((int) $value > 0) {
             $groups_id =  (int) $value;
-        } else if ($value == 'mygroups') {
+        } elseif ($value == 'mygroups') {
             $groups_id =  'mygroups';
         }
 
@@ -127,7 +127,7 @@ class GroupTechFilter extends AbstractFilter
                     'searchtype' => 'equals',
                     'value'      => $groups_id
                 ];
-            } else if (in_array($table, [Ticket::getTable(), Change::getTable(),Problem::getTable()])) {
+            } elseif (in_array($table, [Ticket::getTable(), Change::getTable(),Problem::getTable()])) {
                 $criteria[] = [
                     'link'       => 'AND',
                     'field'      => 8, // group tech

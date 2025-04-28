@@ -42,19 +42,19 @@ class RuleCollection extends CommonDBTM
     public const MOVE_BEFORE = 'before';
     public const MOVE_AFTER = 'after';
 
-   /// Rule type
+    /// Rule type
     public $sub_type;
-   /// process collection stop on first matched rule
+    /// process collection stop on first matched rule
     public $stop_on_first_match                   = false;
-   /// Processing several rules : use result of the previous one to computer the current one
+    /// Processing several rules : use result of the previous one to computer the current one
     public $use_output_rule_process_as_next_input = false;
-   /// Rule collection can be replay (for dictionary)
+    /// Rule collection can be replay (for dictionary)
     public $can_replay_rules                      = false;
     /** @var SingletonRuleList $RuleList */
     public $RuleList                              = null;
-   /// Menu type
+    /// Menu type
     public $menu_type                             = "rule";
-   /// Menu option
+    /// Menu option
     public $menu_option                           = "";
 
     public $entity                                = 0;
@@ -155,7 +155,7 @@ class RuleCollection extends CommonDBTM
             $where['condition'] = ['&', (int)$p['condition']];
         }
 
-       //Select all the rules of a different type
+        //Select all the rules of a different type
         $where['sub_type'] = static::getRuleClassName();
         if ($this->isRuleRecursive()) {
             $criteria['LEFT JOIN'] = [
@@ -237,7 +237,7 @@ class RuleCollection extends CommonDBTM
         $iterator   = $DB->request($criteria);
 
         foreach ($iterator as $data) {
-           //For each rule, get a Rule object with all the criterias and actions
+            //For each rule, get a Rule object with all the criterias and actions
             $tempRule               = $this->getRuleClass();
             $tempRule->fields       = $data;
 
@@ -265,9 +265,9 @@ class RuleCollection extends CommonDBTM
         }
         $need = 1 + ($retrieve_criteria ? 2 : 0) + ($retrieve_action ? 4 : 0) + (8 * $condition);
 
-       // check if load required
+        // check if load required
         if (($need & $this->RuleList->load) != $need) {
-           //Select all the rules of a different type
+            //Select all the rules of a different type
             $criteria = $this->getRuleListCriteria(['condition' => $condition]);
             $iterator = $DB->request($criteria);
 
@@ -489,7 +489,7 @@ class RuleCollection extends CommonDBTM
         $display_criterias = $p['display_criterias'];
         $display_actions   = $p['display_actions'];
 
-       // Do not know what it is ?
+        // Do not know what it is ?
         $canedit    = self::canUpdate() && !$display_entities;
 
         $use_conditions = false;
@@ -507,13 +507,13 @@ class RuleCollection extends CommonDBTM
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="d-flex justify-content-center">
-                    {{ fields.dropdownArrayField('condition', p.condition, conditions, label, {
-                        on_change: 'reloadTab("start=0&inherited=' ~ p.inherited ~ '&childrens=' ~ p.childrens ~ '&condition=" + this.value)'
-                    }) }}
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="d-flex justify-content-center">
+                                    {{ fields.dropdownArrayField('condition', p.condition, conditions, label, {
+                                        on_change: 'reloadTab("start=0&inherited=' ~ p.inherited ~ '&childrens=' ~ p.childrens ~ '&condition=" + this.value)'
+                                    }) }}
+                                </div>
+                TWIG, $twig_params);
         }
 
         $nb         = $this->getCollectionSize($p['inherited'], $p['condition'], $p['childrens']);
@@ -590,29 +590,29 @@ TWIG, $twig_params);
         ]);
         $collection_classname = static::class;
         echo <<<HTML
-            <script>
-                $(() => {
-                    sortable('#rulelist tbody', {
-                        handle: '.grip-rule',
-                        placeholder: '<tr><td colspan="8" class="sortable-placeholder">&nbsp;</td></tr>'
-                    })[0].addEventListener('sortupdate', (e) => {
-                       const sort_detail = e.detail;
-                       const new_index = sort_detail.destination.index;
-                       const old_index = sort_detail.origin.index;
+                        <script>
+                            $(() => {
+                                sortable('#rulelist tbody', {
+                                    handle: '.grip-rule',
+                                    placeholder: '<tr><td colspan="8" class="sortable-placeholder">&nbsp;</td></tr>'
+                                })[0].addEventListener('sortupdate', (e) => {
+                                   const sort_detail = e.detail;
+                                   const new_index = sort_detail.destination.index;
+                                   const old_index = sort_detail.origin.index;
 
-                       $.post(CFG_GLPI['root_doc'] + '/ajax/rule.php', {
-                          'action': 'move_rule',
-                          'rule_id': sort_detail.item.dataset.id,
-                          'collection_classname':  "{$collection_classname}",
-                          'sort_action': (old_index > new_index) ? 'before' : 'after',
-                          'ref_id': sort_detail.destination.itemsBeforeUpdate[new_index].dataset.id,
-                       });
+                                   $.post(CFG_GLPI['root_doc'] + '/ajax/rule.php', {
+                                      'action': 'move_rule',
+                                      'rule_id': sort_detail.item.dataset.id,
+                                      'collection_classname':  "{$collection_classname}",
+                                      'sort_action': (old_index > new_index) ? 'before' : 'after',
+                                      'ref_id': sort_detail.destination.itemsBeforeUpdate[new_index].dataset.id,
+                                   });
 
-                       displayAjaxMessageAfterRedirect();
-                    });
-                });
-            </script>
-HTML;
+                                   displayAjaxMessageAfterRedirect();
+                                });
+                            });
+                        </script>
+            HTML;
 
         $url = $CFG_GLPI["root_doc"];
         if ($plugin = isPluginItemType(static::class)) {
@@ -632,31 +632,31 @@ HTML;
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div class="d-flex justify-content-center">
-                {% if can_reset %}
-                    <button type="button" class="btn btn-ghost-danger mx-1" data-bs-toggle="modal" data-bs-target="#reset_rules">
-                        {{ reset_label }}
-                    </button>
+                        <div class="d-flex justify-content-center">
+                            {% if can_reset %}
+                                <button type="button" class="btn btn-ghost-danger mx-1" data-bs-toggle="modal" data-bs-target="#reset_rules">
+                                    {{ reset_label }}
+                                </button>
 
-                    {% set reset_btn %}
-                        <a class="btn btn-danger w-100" role="button" href="{{ rule_class|itemtype_search_path }}?reinit=true&subtype={{ rule_class }}">
-                            {{ reset_label }}
-                        </a>
-                    {% endset %}
+                                {% set reset_btn %}
+                                    <a class="btn btn-danger w-100" role="button" href="{{ rule_class|itemtype_search_path }}?reinit=true&subtype={{ rule_class }}">
+                                        {{ reset_label }}
+                                    </a>
+                                {% endset %}
 
-                    {{ include('components/danger_modal.html.twig', {
-                        'modal_id': 'reset_rules',
-                        'confirm_btn': reset_btn,
-                        'content': reset_warning
-                    }) }}
-                {% endif %}
-                <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#allruletest">{{ test_label }}</button>
-                {% do call('Ajax::createIframeModalWindow', ['allruletest', test_url, {title: test_label}]) %}
-                {% if can_replay %}
-                    <a class="btn btn-primary mx-1" role="button" href="{{ rule_class|itemtype_search_path }}?replay_rule=replay_rule">{{ replay_label }}</a>
-                {% endif %}
-            </div>
-TWIG, $twig_params);
+                                {{ include('components/danger_modal.html.twig', {
+                                    'modal_id': 'reset_rules',
+                                    'confirm_btn': reset_btn,
+                                    'content': reset_warning
+                                }) }}
+                            {% endif %}
+                            <button type="button" class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#allruletest">{{ test_label }}</button>
+                            {% do call('Ajax::createIframeModalWindow', ['allruletest', test_url, {title: test_label}]) %}
+                            {% if can_replay %}
+                                <a class="btn btn-primary mx-1" role="button" href="{{ rule_class|itemtype_search_path }}?replay_rule=replay_rule">{{ replay_label }}</a>
+                            {% endif %}
+                        </div>
+            TWIG, $twig_params);
 
         echo "<div class='mb-2'>";
         $this->showAdditionalInformationsInForm($target);
@@ -703,7 +703,7 @@ TWIG, $twig_params);
         if (count($iterator) === 1) {
             $result = $iterator->current();
             $current_rank = $result['ranking'];
-           // Search rules to switch
+            // Search rules to switch
             $criteria = [
                 'SELECT' => ['id', 'ranking'],
                 'FROM'   => 'glpi_rules',
@@ -772,21 +772,21 @@ TWIG, $twig_params);
                 }
 
                 if ($diff != 0) {
-                   // Move several rules
+                    // Move several rules
                     $iterator3 = $DB->request($criteria);
                     foreach ($iterator3 as $data) {
                         $data['ranking'] += $diff;
                         $result = $rule->update($data);
                     }
                 } else {
-                   // Only move one
+                    // Only move one
                     $result = $rule->update([
                         'id'      => $ID,
                         'ranking' => $new_rank
                     ]);
                 }
 
-               // Update reference
+                // Update reference
                 if ($result) {
                     $result = $rule->update([
                         'id'      => $other_ID,
@@ -864,7 +864,7 @@ TWIG, $twig_params);
             if ($ref_ID) { // Move after/before an existing rule
                 $ruleDescription->getFromDB($ref_ID);
                 $rank = $ruleDescription->fields["ranking"];
-            } else if ($type === self::MOVE_AFTER) {
+            } elseif ($type === self::MOVE_AFTER) {
                 // Move after all
                 $result = $DB->request($max_ranking_criteria)->current();
                 $rank = $result['maxi'];
@@ -902,7 +902,7 @@ TWIG, $twig_params);
                 $data['_ranking']--;
                 $result = $rule->update($data);
             }
-        } else if ($new_rule || $old_rank > $rank) {
+        } elseif ($new_rule || $old_rank > $rank) {
             if ($type === self::MOVE_AFTER) {
                 $rank++;
             }
@@ -967,10 +967,10 @@ TWIG, $twig_params);
         $rulecritera    = new RuleCriteria();
         $ruleaction     = new RuleAction();
 
-       //create xml
+        //create xml
         $xmlE           = new SimpleXMLElement('<rules/>');
 
-       //parse all rules
+        //parse all rules
         foreach ($items as $ID) {
             $rulecollection->getFromDB($ID);
             if (!class_exists($rulecollection->fields['sub_type'])) {
@@ -988,12 +988,12 @@ TWIG, $twig_params);
             // add root node
             $xmlERule = $xmlE->addChild('rule');
 
-           //convert rule direct indexes in XML
+            //convert rule direct indexes in XML
             foreach ($rulecollection->fields as $key => $val) {
                 $xmlERule->$key = $val;
             }
 
-           //find criterias
+            //find criterias
             $criterias = $rulecritera->find(['rules_id' => $ID]);
             foreach ($criterias as &$criteria) {
                 unset($criteria['id'], $criteria['rules_id']);
@@ -1011,20 +1011,20 @@ TWIG, $twig_params);
                     );
                 }
 
-               //convert criterias in XML
+                //convert criterias in XML
                 $xmlECritiera = $xmlERule->addChild('rulecriteria');
                 foreach ($criteria as $key => $val) {
                     $xmlECritiera->$key = $val;
                 }
             }
 
-           //find actions
+            //find actions
             $actions = $ruleaction->find(['rules_id' => $ID]);
             foreach ($actions as &$action) {
                 unset($action['id']);
                 unset($action['rules_id']);
 
-               //process FK (just in case of "assign" action)
+                //process FK (just in case of "assign" action)
                 if (
                     ($action['action_type'] === "assign")
                     && (str_contains($action['field'], '_id'))
@@ -1047,7 +1047,7 @@ TWIG, $twig_params);
                     );
                 }
 
-               //convert actions in XML
+                //convert actions in XML
                 $xmlEAction = $xmlERule->addChild('ruleaction');
                 foreach ($action as $key => $val) {
                     $xmlEAction->$key = $val;
@@ -1229,7 +1229,7 @@ TWIG, $twig_params);
                         && (isset($available_actions[$act]['type'])
                         && ($available_actions[$act]['type'] === 'dropdown'))
                     ) {
-                       //pass root entity and empty array (N/A value)
+                        //pass root entity and empty array (N/A value)
                         if (
                             (in_array($action['field'], ['entities_id', 'new_entities_id'], true))
                             && (($action['value'] == 0)
@@ -1276,10 +1276,10 @@ TWIG, $twig_params);
                 $r['entity'] = true;
             }
             if (isset($rule['reasons']['criteria'])) {
-                $r['criterias'] = array_map(static fn ($c) => $c['id'], $rule['reasons']['criteria']);
+                $r['criterias'] = array_map(static fn($c) => $c['id'], $rule['reasons']['criteria']);
             }
             if (isset($rule['reasons']['actions'])) {
-                $r['actions'] = array_map(static fn ($c) => $c['id'], $rule['reasons']['actions']);
+                $r['actions'] = array_map(static fn($c) => $c['id'], $rule['reasons']['actions']);
             }
             $rules_refused_for_session[$k] = $r;
         }
@@ -1422,7 +1422,7 @@ TWIG, $twig_params);
                         // fix array in value key
                         // (simplexml bug, empty xml node are converted in empty array instead of null)
                         if (is_array($action['value'])) {
-                             $action['value'] = null;
+                            $action['value'] = null;
                         }
                         $ruleAction->add($action);
                     }
@@ -1519,8 +1519,8 @@ TWIG, $twig_params);
         $criterias = $rule->getAllCriteria();
 
         if (count($input)) {
-           // Add all used criteria on rule as `Rule::showSpecificCriteriasForPreview()`
-           // adapt its output depending on used criteria
+            // Add all used criteria on rule as `Rule::showSpecificCriteriasForPreview()`
+            // adapt its output depending on used criteria
             $rule->criterias = [];
             foreach ($input as $criteria) {
                 $rule->criterias[] = (object)[
@@ -1581,13 +1581,13 @@ TWIG, $twig_params);
                         $output["result"][$rule->fields["id"]]["result"] = 1;
                         $output["_ruleid"]                               = $rule->fields["id"];
                         return $output;
-                    } else if ($output["_rule_process"]) {
+                    } elseif ($output["_rule_process"]) {
                         $output["result"][$rule->fields["id"]]["result"] = 1;
                     } else {
                         $output["result"][$rule->fields["id"]]["result"] = 0;
                     }
                 } else {
-                   //Rule is inactive
+                    //Rule is inactive
                     $output["result"][$rule->fields["id"]]["result"] = 2;
                 }
 
@@ -1912,7 +1912,7 @@ TWIG, $twig_params);
         ]);
 
         foreach ($iterator as $data) {
-             $params[] = Toolbox::strtolower($data["criteria"]);
+            $params[] = Toolbox::strtolower($data["criteria"]);
         }
         return $params;
     }
@@ -1963,7 +1963,7 @@ TWIG, $twig_params);
             }
             $title = $item->getMainTabLabel();
             if ($item->isRuleRecursive()) {
-               //TRANS: %s is the entity name
+                //TRANS: %s is the entity name
                 $title = sprintf(
                     __('Local rules: %s'),
                     Dropdown::getDropdownName(

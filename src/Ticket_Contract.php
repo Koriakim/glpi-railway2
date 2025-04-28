@@ -59,7 +59,7 @@ class Ticket_Contract extends CommonDBRelation
                     $nb = count(self::getListForItem($item));
                 }
                 return self::createTabEntry(Contract::getTypeName(Session::getPluralNumber()), $nb, $item::class);
-            } else if ($item::class === Contract::class) {
+            } elseif ($item::class === Contract::class) {
                 if ($_SESSION['glpishow_count_on_tabs']) {
                     $nb = count(self::getListForItem($item));
                 }
@@ -85,7 +85,7 @@ class Ticket_Contract extends CommonDBRelation
         if ($item instanceof Ticket) {
             $item_a_fkey = self::$items_id_1;
             $linked_itemtype = self::$itemtype_2;
-        } else if ($item instanceof Contract) {
+        } elseif ($item instanceof Contract) {
             $item_a_fkey = self::$items_id_2;
             $linked_itemtype = self::$itemtype_1;
         } else {
@@ -118,26 +118,26 @@ class Ticket_Contract extends CommonDBRelation
         if ($canedit) {
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Ticket_Contract'|itemtype_form_path }}">
-                        <div class="d-flex">
-                            <input type="hidden" name="{{ item_a_fkey }}" value="{{ id }}">
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                            {{ fields.dropdownField(linked_itemtype, linked_itemtype|itemtype_foreign_key, 0, null, {
-                                used: used,
-                                displaywith: ['id'],
-                                entity: item.fields['entities_id'],
-                                nochecklimit: true
-                            }) }}
-                            {% set btn %}
-                                <button type="submit" class="btn btn-primary">{{ btn_label }}</button>
-                            {% endset %}
-                            {{ fields.htmlField('', btn, null) }}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Ticket_Contract'|itemtype_form_path }}">
+                                        <div class="d-flex">
+                                            <input type="hidden" name="{{ item_a_fkey }}" value="{{ id }}">
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                            {{ fields.dropdownField(linked_itemtype, linked_itemtype|itemtype_foreign_key, 0, null, {
+                                                used: used,
+                                                displaywith: ['id'],
+                                                entity: item.fields['entities_id'],
+                                                nochecklimit: true
+                                            }) }}
+                                            {% set btn %}
+                                                <button type="submit" class="btn btn-primary">{{ btn_label }}</button>
+                                            {% endset %}
+                                            {{ fields.htmlField('', btn, null) }}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         if ($linked_itemtype === Ticket::class) {

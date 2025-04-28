@@ -417,7 +417,7 @@ abstract class CommonITILObject_CommonITILObject extends CommonDBRelation
      **/
     public static function dropdownLinks($myname, $value = self::LINK_TO)
     {
-        $link_options = array_map(static fn ($link) => $link['name'], self::getITILLinkTypes());
+        $link_options = array_map(static fn($link) => $link['name'], self::getITILLinkTypes());
         Dropdown::showFromArray($myname, $link_options, ['value' => $value]);
     }
 
@@ -464,16 +464,16 @@ abstract class CommonITILObject_CommonITILObject extends CommonDBRelation
         $itemtypes = [$itemtype_1, $itemtype_2];
         if (in_array(Change::class, $itemtypes, true) && in_array(Problem::class, $itemtypes, true)) {
             return Change_Problem::class;
-        } else if (in_array(Change::class, $itemtypes, true) && in_array(Ticket::class, $itemtypes, true)) {
+        } elseif (in_array(Change::class, $itemtypes, true) && in_array(Ticket::class, $itemtypes, true)) {
             return Change_Ticket::class;
-        } else if (in_array(Problem::class, $itemtypes, true) && in_array(Ticket::class, $itemtypes, true)) {
+        } elseif (in_array(Problem::class, $itemtypes, true) && in_array(Ticket::class, $itemtypes, true)) {
             return Problem_Ticket::class;
-        } else if ($itemtype_1 === $itemtype_2) {
+        } elseif ($itemtype_1 === $itemtype_2) {
             if ($itemtype_1 === Change::class) {
                 return Change_Change::class;
-            } else if ($itemtype_1 === Problem::class) {
+            } elseif ($itemtype_1 === Problem::class) {
                 return Problem_Problem::class;
-            } else if ($itemtype_1 === Ticket::class) {
+            } elseif ($itemtype_1 === Ticket::class) {
                 return Ticket_Ticket::class;
             }
         }
@@ -622,7 +622,7 @@ abstract class CommonITILObject_CommonITILObject extends CommonDBRelation
                             $new_solution = new ITILSolution();
                             $new_solution->add($solution_data);
                         }
-                    } else if (isset($changes['status']) && in_array($changes['status'], Ticket::getSolvedStatusArray())) {
+                    } elseif (isset($changes['status']) && in_array($changes['status'], Ticket::getSolvedStatusArray())) {
                         $linked_ticket = new Ticket();
                         foreach ($tickets as $data) {
                             $linked_ticket->update([

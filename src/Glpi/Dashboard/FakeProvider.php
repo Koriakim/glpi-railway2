@@ -39,7 +39,6 @@ use CommonDBTM;
 use CommonDevice;
 use Group;
 use Session;
-use Stat;
 use Ticket;
 use User;
 
@@ -434,15 +433,15 @@ final class FakeProvider extends Provider
 
                 if ($i >= 4 && $status_i === \CommonITILObject::CLOSED) {
                     $num = self::getObscureNumberForString($date . $status, 500) + 1500;
-                } else if ($i >= 8 && $status_i === \CommonITILObject::CLOSED) {
+                } elseif ($i >= 8 && $status_i === \CommonITILObject::CLOSED) {
                     $num = self::getObscureNumberForString($date . $status, 2500);
-                } else if ($i >= 8) {
+                } elseif ($i >= 8) {
                     $num = 0;
-                } else if ($i >= 4) {
+                } elseif ($i >= 4) {
                     $num = self::getObscureNumberForString($date . $status, 20);
-                } else if (($i === 3 || $i === 2) && $status_i === \CommonITILObject::CLOSED) {
+                } elseif (($i === 3 || $i === 2) && $status_i === \CommonITILObject::CLOSED) {
                     $num = self::getObscureNumberForString($date . $status, 500) + 1000;
-                } else if ($i === 0) {
+                } elseif ($i === 0) {
                     // base the max number on how far into the current month we are
                     $num = self::getObscureNumberForString($date . $status, (int) date("d") * 16);
                 } else {

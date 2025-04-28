@@ -202,7 +202,7 @@ abstract class Device extends InventoryAsset
 
     protected function itemdeviceAdded(Item_Devices $itemdevice, $val)
     {
-       //to be overrided
+        //to be overrided
     }
 
     public function checkConf(Conf $conf): bool

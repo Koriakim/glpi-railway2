@@ -55,7 +55,7 @@ trait Inventoriable
     {
         $file_name = $this->getInventoryFileName();
         if ($file_name === null) {
-           //file does not exist
+            //file does not exist
             return true;
         }
 
@@ -123,7 +123,7 @@ trait Inventoriable
                 $download_file
             );
             $title = sprintf(
-             //TRANS: parameter is the name of the asset
+                //TRANS: parameter is the name of the asset
                 __s('Download "%1$s" inventory file'),
                 htmlescape($this->getName())
             );
@@ -138,14 +138,14 @@ trait Inventoriable
                 $url = $CFG_GLPI['root_doc'] . '/Inventory/RefusedEquipment';
                 $title = __s('Try a reimport from stored inventory file');
                 echo <<<HTML
-                        <button type="submit" class="btn btn-sm btn-ghost-secondary" name="redo_inventory"
-                                title="{$title}"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                style="float: right;margin-right: .5em;"
-                                formaction="{$url}">
-                           <i class="ti ti-reload"></i>
-                        </button>
-HTML;
+                                            <button type="submit" class="btn btn-sm btn-ghost-secondary" name="redo_inventory"
+                                                    title="{$title}"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    style="float: right;margin-right: .5em;"
+                                                    formaction="{$url}">
+                                               <i class="ti ti-reload"></i>
+                                            </button>
+                    HTML;
             }
         } else {
             echo sprintf(
@@ -165,7 +165,7 @@ HTML;
             $this->displayAgentInformation();
         }
 
-       // Display auto inventory information
+        // Display auto inventory information
         if (
             !empty($this->fields['id'])
             && $this->maybeDynamic() && $this->fields["is_dynamic"]
@@ -204,7 +204,7 @@ HTML;
         echo "<i id='update-status' class='ti ti-refresh' style='float: right;cursor: pointer;' title='" . __s('Ask agent about its current status') . "'></i>";
         echo '</td>';
         echo '<td id="agent_status">' . __s('Unknown') . '</td>';
-        echo '<td>' .  __s('Request inventory');
+        echo '<td>' . __s('Request inventory');
         echo "<i id='update-inventory' class='ti ti-refresh' style='float: right;cursor: pointer;' title='" . __s('Request agent to proceed an new inventory') . "'></i>";
         echo '</td>';
         echo '<td id="inventory_status">' . __s('None') . '</td>';
@@ -214,31 +214,31 @@ HTML;
         $inventory = Agent::ACTION_INVENTORY;
         $agents_id = (int)$this->agent->fields['id'];
         $js = <<<JAVASCRIPT
-         $(function() {
-            $('#update-status').on('click', function() {
-               $.post({
-                  url: '{$CFG_GLPI['root_doc']}/ajax/agent.php',
-                  timeout: 3000, //3 seconds timeout
-                  data: {'action': '{$status}', 'id': '{$agents_id}'},
-                  success: function(json) {
-                     $('#agent_status').html(json.answer);
-                  }
-               });
-            });
+                     $(function() {
+                        $('#update-status').on('click', function() {
+                           $.post({
+                              url: '{$CFG_GLPI['root_doc']}/ajax/agent.php',
+                              timeout: 3000, //3 seconds timeout
+                              data: {'action': '{$status}', 'id': '{$agents_id}'},
+                              success: function(json) {
+                                 $('#agent_status').html(json.answer);
+                              }
+                           });
+                        });
 
-            $('#update-inventory').on('click', function() {
-               $.post({
-                  url: '{$CFG_GLPI['root_doc']}/ajax/agent.php',
-                  timeout: 3000, //3 seconds timeout
-                  data: {'action': '{$inventory}', 'id': '{$agents_id}'},
-                  success: function(json) {
-                     $('#inventory_status').html(json.answer);
-                  }
-               });
-            });
+                        $('#update-inventory').on('click', function() {
+                           $.post({
+                              url: '{$CFG_GLPI['root_doc']}/ajax/agent.php',
+                              timeout: 3000, //3 seconds timeout
+                              data: {'action': '{$inventory}', 'id': '{$agents_id}'},
+                              success: function(json) {
+                                 $('#inventory_status').html(json.answer);
+                              }
+                           });
+                        });
 
-         });
-JAVASCRIPT;
+                     });
+            JAVASCRIPT;
         echo Html::scriptBlock($js);
     }
 

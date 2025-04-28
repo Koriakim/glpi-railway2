@@ -47,7 +47,7 @@ class OlaLevel extends LevelAgreementLevel
     protected $ruleactionclass    = 'OlaLevelAction';
     protected static $parentclass = 'OLA';
     protected static $fkparent    = 'olas_id';
-   // No criteria
+    // No criteria
     protected $rulecriteriaclass = 'OlaLevelCriteria';
 
 
@@ -156,8 +156,8 @@ class OlaLevel extends LevelAgreementLevel
             ]);
 
             if (count($iterator)) {
-                 $result = $iterator->current();
-                 return $result['id'];
+                $result = $iterator->current();
+                return $result['id'];
             }
         }
         return 0;

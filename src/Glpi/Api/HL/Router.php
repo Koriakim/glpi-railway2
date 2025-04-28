@@ -133,10 +133,10 @@ class Router
         global $CFG_GLPI;
 
         $low_level_api_description = <<<EOT
-The low-level API which is closely tied to the GLPI source code.
-While not as user friendly as the high-level API, it is more powerful and allows to do some things that are not possible with the high-level API.
-It has no promise of stability between versions so it may change without warning.
-EOT;
+            The low-level API which is closely tied to the GLPI source code.
+            While not as user friendly as the high-level API, it is more powerful and allows to do some things that are not possible with the high-level API.
+            It has no promise of stability between versions so it may change without warning.
+            EOT;
         $current_version = self::API_VERSION;
         // Get short version which is the major part of the semver string
         $current_version_major = explode('.', $current_version)[0];
@@ -538,7 +538,7 @@ EOT;
             if (!$conditions_met) {
                 continue;
             }
-            $action = static fn ($input) => $middleware['middleware']($input, $action);
+            $action = static fn($input) => $middleware['middleware']($input, $action);
         }
         $action($input);
     }
@@ -554,7 +554,7 @@ EOT;
             if (!$conditions_met) {
                 continue;
             }
-            $action = static fn ($input) => $middleware['middleware']($input, $action);
+            $action = static fn($input) => $middleware['middleware']($input, $action);
         }
         return $action($input);
     }
@@ -569,7 +569,7 @@ EOT;
             if (!$conditions_met) {
                 continue;
             }
-            $action = static fn ($input) => $middleware['middleware']($input, $action);
+            $action = static fn($input) => $middleware['middleware']($input, $action);
         }
         $action($input);
     }
@@ -642,7 +642,7 @@ EOT;
             // Do auth middlewares now even if auth isn't required so session data *could* be used like the theme for doc endpoints.
             $this->doAuthMiddleware($middleware_input);
             $auth_from_middleware = $middleware_input->response === null;
-            $this->current_client = $this->current_client ?? $middleware_input->client;
+            $this->current_client ??= $middleware_input->client;
 
             if ($requires_auth && !$auth_from_middleware) {
                 if (!($request->hasHeader('Authorization') && Session::getLoginUserID() !== false)) {

@@ -166,7 +166,7 @@ class Migration
             $log_file_name = 'migration_to_' . $this->version;
         }
 
-       // Do not log if more than 3 log error
+        // Do not log if more than 3 log error
         if (
             $this->log_errors < 3
             && !Toolbox::logInFile($log_file_name, $message . "\n", true, output: false)
@@ -299,7 +299,7 @@ class Migration
                 if (!$nodefault) {
                     if (is_null($default_value)) {
                         $format .= " DEFAULT '0'";
-                    } else if (in_array($default_value, ['0', '1'])) {
+                    } elseif (in_array($default_value, ['0', '1'])) {
                         $format .= " DEFAULT '$default_value'";
                     } else {
                         throw new \LogicException('Default value must be 0 or 1.');
@@ -337,7 +337,7 @@ class Migration
                 if (!$nodefault) {
                     if (is_null($default_value)) {
                         $format .= " DEFAULT '0'";
-                    } else if (is_numeric($default_value)) {
+                    } elseif (is_numeric($default_value)) {
                         $format .= " DEFAULT '$default_value'";
                     } else {
                         throw new \LogicException('Default value must be numeric.');
@@ -396,7 +396,7 @@ class Migration
                 }
                 break;
 
-           // for plugins
+                // for plugins
             case 'autoincrement':
                 $format = "INT " . DBConnection::getDefaultPrimaryKeySignOption() . " NOT NULL AUTO_INCREMENT";
                 break;
@@ -458,7 +458,7 @@ class Migration
 
         if (!empty($params['after'])) {
             $params['after'] = " AFTER `" . $params['after'] . "`";
-        } else if (!empty($params['first'])) {
+        } elseif (!empty($params['first'])) {
             $params['first'] = " FIRST ";
         }
 
@@ -527,7 +527,7 @@ class Migration
 
         if (!empty($params['after'])) {
             $params['after'] = " AFTER `" . $params['after'] . "`";
-        } else if (!empty($params['first'])) {
+        } elseif (!empty($params['first'])) {
             $params['first'] = " FIRST ";
         }
 
@@ -536,8 +536,8 @@ class Migration
         }
 
         if ($DB->fieldExists($table, $oldfield, false)) {
-           // in order the function to be replayed
-           // Drop new field if name changed
+            // in order the function to be replayed
+            // Drop new field if name changed
             if (
                 ($oldfield !== $newfield)
                 && $DB->fieldExists($table, $newfield)
@@ -621,7 +621,7 @@ class Migration
                 } else {
                     $fields = "`" . implode("`, `", $fields) . "`";
                 }
-            } else if ($len) {
+            } elseif ($len) {
                 $fields = "`$fields`($len)";
             } else {
                 $fields = "`$fields`";
@@ -629,7 +629,7 @@ class Migration
 
             if ($type === 'FULLTEXT') {
                 $this->fulltexts[$table][] = "ADD $type `$indexname` ($fields)";
-            } else if ($type === 'UNIQUE') {
+            } elseif ($type === 'UNIQUE') {
                 $this->uniques[$table][] = "ADD $type `$indexname` ($fields)";
             } else {
                 $this->change[$table][] = "ADD $type `$indexname` ($fields)";
@@ -688,14 +688,14 @@ class Migration
             $query = "RENAME TABLE `$oldtable` TO `$newtable`";
             $DB->doQuery($query);
 
-           // Clear possibly forced value of table name.
-           // Actually the only forced value in core is for config table.
+            // Clear possibly forced value of table name.
+            // Actually the only forced value in core is for config table.
             $itemtype = getItemTypeForTable($newtable);
             if (class_exists($itemtype)) {
                 $itemtype::forceTable($newtable);
             }
 
-           // Update target of "buffered" schema updates
+            // Update target of "buffered" schema updates
             if (isset($this->change[$oldtable])) {
                 $this->change[$newtable] = $this->change[$oldtable];
                 unset($this->change[$oldtable]);
@@ -746,15 +746,15 @@ class Migration
             !$DB->tableExists($newtable)
             && $DB->tableExists($oldtable)
         ) {
-           // Try to do a flush tables if RELOAD privileges available
-           // $query = "FLUSH TABLES `$oldtable`, `$newtable`";
-           // $DB->doQuery($query);
+            // Try to do a flush tables if RELOAD privileges available
+            // $query = "FLUSH TABLES `$oldtable`, `$newtable`";
+            // $DB->doQuery($query);
 
             $query = "CREATE TABLE `$newtable` LIKE `$oldtable`";
             $DB->doQuery($query);
 
             if ($insert) {
-               //needs DB::insert to support subqueries to get migrated
+                //needs DB::insert to support subqueries to get migrated
                 $query = "INSERT INTO `$newtable` (SELECT * FROM `$oldtable`)";
                 $DB->doQuery($query);
             }
@@ -865,7 +865,7 @@ class Migration
         $this->storeConfig();
         $this->migrateSearchOptions();
 
-       // end of global message
+        // end of global message
         $this->addSuccessMessage(sprintf(__('Update to %s version completed.'), $this->version));
     }
 
@@ -885,7 +885,7 @@ class Migration
         /** @var \DBmysql $DB */
         global $DB;
 
-       // Avoid duplicate - Need to be improved using a rule uuid of other
+        // Avoid duplicate - Need to be improved using a rule uuid of other
         if (countElementsInTable('glpi_rules', ['name' => $rule['name']])) {
             return 0;
         }
@@ -1089,7 +1089,7 @@ class Migration
 
         $backup_tables = false;
         foreach ($tables as $table) {
-           // rename new tables if exists ?
+            // rename new tables if exists ?
             if ($DB->tableExists($table)) {
                 $this->dropTable("backup_$table");
                 $this->addInfoMessage(sprintf(
@@ -1119,7 +1119,7 @@ class Migration
      */
     public function addConfig($values, $context = null)
     {
-        $context = $context ?? $this->context;
+        $context ??= $this->context;
         if (!isset($this->configs[$context])) {
             $this->configs[$context] = [];
         }
@@ -1146,7 +1146,7 @@ class Migration
             return $this;
         }
 
-        $context = $context ?? $this->context;
+        $context ??= $this->context;
         $DB->delete(
             'glpi_configs',
             [
@@ -1179,7 +1179,7 @@ class Migration
                     ]
                 ]);
                 foreach ($existing as $conf) {
-                     unset($config[$conf['name']]);
+                    unset($config[$conf['name']]);
                 }
                 if (count($config)) {
                     foreach ($config as $name => $value) {
@@ -1221,7 +1221,7 @@ class Migration
         /** @var \DBmysql $DB */
         global $DB;
 
-       // Get all profiles where new rights has not been added yet
+        // Get all profiles where new rights has not been added yet
         $prof_iterator = $DB->request(
             [
                 'SELECT'    => 'glpi_profiles.id',
@@ -1596,7 +1596,7 @@ class Migration
             $old_fkey  = getForeignKeyFieldForTable($old_table);
             $new_fkey  = getForeignKeyFieldForTable($new_table);
 
-           // Check prerequisites
+            // Check prerequisites
             if (!$DB->tableExists($old_table)) {
                 throw new \RuntimeException(
                     sprintf(
@@ -1867,7 +1867,7 @@ class Migration
                     // Fix criteria
                     if (isset($query['criteria'])) {
                         foreach ($query['criteria'] as $cid => $criterion) {
-                             $is_meta = isset($criterion['meta']) && (int)$criterion['meta'] === 1;
+                            $is_meta = isset($criterion['meta']) && (int)$criterion['meta'] === 1;
                             if (
                                 ($is_meta &&
                                  isset($criterion['itemtype'], $criterion['field']) &&

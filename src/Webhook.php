@@ -411,7 +411,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
                             }
                             unset($supported[$controller][$category][$i]);
                         }
-                    } else if ($category === 'subtypes' && $controller === ITILController::class) {
+                    } elseif ($category === 'subtypes' && $controller === ITILController::class) {
                         /** @phpstan-var class-string<ITILController> $controller */
                         foreach ($itemtypes as $supported_itemtype => $type_data) {
                             $supported[$controller][$category][$supported_itemtype]['name'] = $controller::getFriendlyNameForSubtype($supported_itemtype);
@@ -479,7 +479,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
         $router->registerAuthMiddleware(new \Glpi\Api\HL\Middleware\InternalAuthMiddleware());
         $path = rtrim($path, '/');
         $request = new Request('GET', $path);
-        $response = Session::callAsSystem(static fn () => $router->handleRequest($request));
+        $response = Session::callAsSystem(static fn() => $router->handleRequest($request));
         if ($response->getStatusCode() === 200) {
             $body = (string)$response->getBody();
             try {
@@ -511,7 +511,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
         if ($raw_output) {
             return json_encode($data, JSON_PRETTY_PRINT);
         } else {
-            $payload_template = isset($this->fields['payload']) ? $this->fields['payload'] : null;
+            $payload_template = $this->fields['payload'] ?? null;
             if ($this->fields['use_default_payload'] === 1) {
                 $payload_template = null;
             }
@@ -521,7 +521,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
                         foreach ($value as $k => $v) {
                             $value[$k] = $fn_desanitize($v);
                         }
-                    } else if (is_string($value)) {
+                    } elseif (is_string($value)) {
                         // slash double quotes
                         $value = str_replace('"', '\\"', $value);
                     }
@@ -593,7 +593,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
         if (is_subclass_of($itemtype, CommonDBChild::class)) {
             $parent_itemtype = $data['item']['itemtype'];
             $parent_id = $data['item']['items_id'];
-        } else if (is_subclass_of($itemtype, CommonITILTask::class)) {
+        } elseif (is_subclass_of($itemtype, CommonITILTask::class)) {
             /** @var class-string<CommonDBTM> $parent_itemtype */
             $parent_itemtype = str_replace('Task', '', $itemtype);
             $parent_id = $data['item'][$parent_itemtype::getForeignKeyField()];
@@ -683,7 +683,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
                 }
                 $parent_name = $itemtypes[$controller]['main'][$itemtype_value]['name'];
                 $parent_id = $item->fields[$item::$items_id];
-            } else if ($item instanceof CommonDBRelation) {
+            } elseif ($item instanceof CommonDBRelation) {
                 $itemtype_field = $item::$itemtype_2;
                 if (str_starts_with($itemtype_field, "itemtype")) {
                     $itemtype_value = $item->fields[$itemtype_field];
@@ -693,7 +693,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
                 $items_id_value = $item->fields[$item::$items_id_2];
                 $parent_name = $itemtypes[$controller]['main'][$itemtype_value]['name'];
                 $parent_id = $items_id_value;
-            } else if ($item instanceof CommonITILTask) {
+            } elseif ($item instanceof CommonITILTask) {
                 $parent_itemtype = $item::getItilObjectItemType();
                 $parent_name = $itemtypes[$controller]['main'][$parent_itemtype]['name'];
                 $parent_id = $item->fields[$parent_itemtype::getForeignKeyField()];
@@ -1135,7 +1135,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
                 if ($item->getEntityID() === $webhook_data['entities_id']) {
                     $match_entity = true;
                 }
-            } else if ($webhook_data['entities_id'] === 0) {
+            } elseif ($webhook_data['entities_id'] === 0) {
                 $match_entity = true;
             }
             if (!$match_entity) {
@@ -1240,7 +1240,7 @@ class Webhook extends CommonDBTM implements FilterableInterface
                 unset($custom_headers[$static_header]);
             }
             $input['custom_headers'] = exportArrayToDB($custom_headers);
-        } else if (isset($input['custom_headers']) && is_array($input['custom_headers'])) {
+        } elseif (isset($input['custom_headers']) && is_array($input['custom_headers'])) {
             $input['custom_headers'] = exportArrayToDB($input['custom_headers']);
         }
         unset($input['header_name'], $input['header_value']);

@@ -44,7 +44,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class Change_Problem extends CommonITILObject_CommonITILObject
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1   = 'Change';
     public static $items_id_1   = 'changes_id';
 

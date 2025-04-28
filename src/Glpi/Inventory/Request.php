@@ -287,7 +287,7 @@ class Request extends AbstractRequest
             //try to use hook response
             if (isset($hook_response['response']) && count($hook_response['response'])) {
                 $this->addToResponse($response);
-            } else if (isset($hook_response['errors']) && count($hook_response['errors'])) {
+            } elseif (isset($hook_response['errors']) && count($hook_response['errors'])) {
                 $this->addError($hook_response['errors'], 400);
             } else {
                 //nothing expected happens; this is an error
@@ -552,13 +552,13 @@ class Request extends AbstractRequest
                 'itemtype' => $item->getType(),
                 'items_id' => $item->fields['id']
             ];
-        } else if (count($items)) {
+        } elseif (count($items)) {
             // Defines 'itemtype' only if all items has same type
             $itemtype = null;
             foreach ($items as $item) {
                 if ($itemtype === null && $item->getType() != Unmanaged::class) {
                     $itemtype = $item->getType();
-                } else if ($itemtype !== $item->getType()) {
+                } elseif ($itemtype !== $item->getType()) {
                     $itemtype = false;
                     break;
                 }

@@ -150,7 +150,7 @@ class Item_OperatingSystem extends CommonDBRelation
         /** @var \DBmysql $DB */
         global $DB;
 
-       //default options
+        //default options
         $params = ['rand' => mt_rand()];
 
         $columns = [
@@ -190,15 +190,15 @@ class Item_OperatingSystem extends CommonDBRelation
 
         $canedit = $item->canEdit($item->getID());
 
-       //multi OS for an item is not an existing feature right now.
-       /*if ($canedit && $number >= 1
-          && !(!empty($withtemplate) && ($withtemplate == 2))) {
-         echo "<div class='center firstbloc'>".
-            "<a class='btn btn-primary' href='" . Toolbox::getItemTypeFormURL(self::getType()) . "?items_id=" . $item->getID() .
-            "&amp;itemtype=" . $item->getType() . "&amp;withtemplate=" . $withtemplate."'>";
-         echo __('Add an operating system');
-         echo "</a></div>\n";
-       }*/
+        //multi OS for an item is not an existing feature right now.
+        /*if ($canedit && $number >= 1
+           && !(!empty($withtemplate) && ($withtemplate == 2))) {
+          echo "<div class='center firstbloc'>".
+             "<a class='btn btn-primary' href='" . Toolbox::getItemTypeFormURL(self::getType()) . "?items_id=" . $item->getID() .
+             "&amp;itemtype=" . $item->getType() . "&amp;withtemplate=" . $withtemplate."'>";
+          echo __('Add an operating system');
+          echo "</a></div>\n";
+        }*/
 
         if ($number <= 1) {
             $id = -1;
@@ -206,7 +206,7 @@ class Item_OperatingSystem extends CommonDBRelation
             if ($number > 0) {
                 $id = array_keys($os)[0];
             } else {
-               //set itemtype and items_id
+                //set itemtype and items_id
                 $instance->fields['itemtype']       = $item->getType();
                 $instance->fields['items_id']       = $item->getID();
                 $instance->fields['install_date']   = $item->fields['install_date'] ?? '';
@@ -307,7 +307,7 @@ class Item_OperatingSystem extends CommonDBRelation
         $getEmpty = true,
         $getFromDBOrEmpty = true
     ) {
-       //overrided to set $getFromDBOrEmpty to true
+        //overrided to set $getFromDBOrEmpty to true
         return parent::getConnexityItem($itemtype, $items_id, $getFromDB, $getEmpty, $getFromDBOrEmpty);
     }
 
@@ -632,9 +632,9 @@ class Item_OperatingSystem extends CommonDBRelation
                             ]);
                             $ok = false;
                             if ($exists) {
-                                   $ok = $ios->update(['id'  => $ios->getID()] + $input);
+                                $ok = $ios->update(['id'  => $ios->getID()] + $input);
                             } else {
-                                 $ok = $ios->add(['itemtype' => $item->getType(), 'items_id' => $item->getID()] + $input);
+                                $ok = $ios->add(['itemtype' => $item->getType(), 'items_id' => $item->getID()] + $input);
                             }
 
                             if ($ok != false) {

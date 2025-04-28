@@ -51,7 +51,7 @@ class NotificationAjax implements NotificationInterface
      **/
     public static function check($value, $options = [])
     {
-       //waiting for a user ID
+        //waiting for a user ID
         $value = (int)$value;
         return $value > 0;
     }
@@ -98,7 +98,7 @@ class NotificationAjax implements NotificationInterface
             Session::addMessageAfterRedirect(__s('Error inserting browser notification to queue'), true, ERROR);
             return false;
         } else {
-           //TRANS to be written in logs %1$s is the to email / %2$s is the subject of the mail
+            //TRANS to be written in logs %1$s is the to email / %2$s is the subject of the mail
             Toolbox::logInFile(
                 "notification",
                 sprintf(

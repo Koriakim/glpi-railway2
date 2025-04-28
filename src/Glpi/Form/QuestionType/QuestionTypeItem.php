@@ -45,7 +45,6 @@ use Glpi\Form\Export\Context\DatabaseMapper;
 use Glpi\Form\Export\Serializer\DynamicExportDataField;
 use Glpi\Form\Export\Specification\DataRequirementSpecification;
 use Glpi\Form\Migration\FormQuestionDataConverterInterface;
-use Glpi\Form\Condition\ConditionHandler\ConditionHandlerInterface;
 use Glpi\Form\Condition\ConditionHandler\ItemConditionHandler;
 use Glpi\Form\Condition\UsedAsCriteriaInterface;
 use Glpi\Form\Question;
@@ -222,36 +221,36 @@ class QuestionTypeItem extends AbstractQuestionType implements FormQuestionDataC
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {% set rand = random() %}
+                        {% set rand = random() %}
 
-            {{ fields.dropdownField(
-                default_itemtype|default(itemtypes|first|first),
-                'default_value',
-                default_items_id,
-                '',
-                {
-                    'init'               : init,
-                    'no_label'           : true,
-                    'display_emptychoice': true,
-                    'width'              : '100%',
-                    'container_css_class': 'mt-2',
-                    'mb'                 : '',
-                    'comments'           : false,
-                    'addicon'            : false,
-                    'aria_label'         : aria_label,
-                }
-            ) }}
+                        {{ fields.dropdownField(
+                            default_itemtype|default(itemtypes|first|first),
+                            'default_value',
+                            default_items_id,
+                            '',
+                            {
+                                'init'               : init,
+                                'no_label'           : true,
+                                'display_emptychoice': true,
+                                'width'              : '100%',
+                                'container_css_class': 'mt-2',
+                                'mb'                 : '',
+                                'comments'           : false,
+                                'addicon'            : false,
+                                'aria_label'         : aria_label,
+                            }
+                        ) }}
 
-            {% if question == null %}
-                <script>
-                    import("{{ js_path('js/modules/Forms/QuestionItem.js') }}").then((m) => {
-                        new m.GlpiFormQuestionTypeItem({{ question_type|json_encode|raw }});
-                    });
-                </script>
-            {% endif %}
-TWIG;
+                        {% if question == null %}
+                            <script>
+                                import("{{ js_path('js/modules/Forms/QuestionItem.js') }}").then((m) => {
+                                    new m.GlpiFormQuestionTypeItem({{ question_type|json_encode|raw }});
+                                });
+                            </script>
+                        {% endif %}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -269,33 +268,33 @@ TWIG;
     public function renderEndUserTemplate(Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.hiddenField(
-                question.getEndUserInputName() ~ '[itemtype]',
-                itemtype,
-                '',
-                {
-                    'no_label': true,
-                    'mb': ''
-                }
-            ) }}
-            {{ fields.dropdownField(
-                itemtype,
-                question.getEndUserInputName() ~ '[items_id]',
-                default_items_id,
-                '',
-                {
-                    'no_label'           : true,
-                    'display_emptychoice': true,
-                    'right'              : 'all',
-                    'aria_label'         : aria_label,
-                    'mb'                 : '',
-                    'addicon'            : false,
-                    'comments'           : false,
-                }
-            ) }}
-TWIG;
+                        {{ fields.hiddenField(
+                            question.getEndUserInputName() ~ '[itemtype]',
+                            itemtype,
+                            '',
+                            {
+                                'no_label': true,
+                                'mb': ''
+                            }
+                        ) }}
+                        {{ fields.dropdownField(
+                            itemtype,
+                            question.getEndUserInputName() ~ '[items_id]',
+                            default_items_id,
+                            '',
+                            {
+                                'no_label'           : true,
+                                'display_emptychoice': true,
+                                'right'              : 'all',
+                                'aria_label'         : aria_label,
+                                'mb'                 : '',
+                                'addicon'            : false,
+                                'comments'           : false,
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

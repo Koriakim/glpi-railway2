@@ -186,7 +186,7 @@ class View extends CommonGLPI
                         . __('and') . " "
                         . "<a href='$config_url'>" . __("fill your registration key in setup.") . "</a>"
                 );
-            } else if (!$registration_info['subscription']['is_running']) {
+            } elseif (!$registration_info['subscription']['is_running']) {
                 $valid = false;
 
                 array_push(
@@ -383,7 +383,7 @@ class View extends CommonGLPI
         }
 
         if (!$only_lis) {
-           // check writable state
+            // check writable state
             if (!Controller::hasWriteAccess()) {
                 echo "<div class='alert alert-warning'><i class='ti ti-alert-triangle fs-5x'></i>"
                       . sprintf(__("We can't write on the markeplace directory (%s)."), GLPI_MARKETPLACE_DIR)
@@ -398,19 +398,19 @@ class View extends CommonGLPI
 
             if (static::$offline_mode && $tab !== 'installed') {
                 $marketplace  = <<<HTML
-                <div class='marketplace $tab' data-tab='{$tab}'>
-                    <div class='left-panel'></div>
-                    <div class='right-panel'>
-                        <div class='top-panel'>
-                            <div class='controls'></div>
-                        </div>
-                        <ul class='plugins'>
-                            {$messages}
-                            {$plugins_li}
-                        </ul>
-                    </div>
-                </div>
-HTML;
+                                    <div class='marketplace $tab' data-tab='{$tab}'>
+                                        <div class='left-panel'></div>
+                                        <div class='right-panel'>
+                                            <div class='top-panel'>
+                                                <div class='controls'></div>
+                                            </div>
+                                            <ul class='plugins'>
+                                                {$messages}
+                                                {$plugins_li}
+                                            </ul>
+                                        </div>
+                                    </div>
+                    HTML;
                 echo $marketplace;
                 return;
             }
@@ -463,57 +463,57 @@ HTML;
             $search_label = __s("Filter plugin list");
 
             $marketplace  = <<<HTML
-                <div class='marketplace $tab' data-tab='{$tab}'>
-                    {$tags_list}
-                    <div class='right-panel'>
-                        <div class='top-panel'>
-                            <input type='search' class='filter-list form-control' placeholder='{$search_label}'>
-                            <div class='controls'>
-                                $sort_controls
-                                <i class='ti ti-refresh refresh-plugin-list' title='{$refresh_lbl}'></i>
-                            </div>
-                        </div>
-                        <ul class='plugins'>
-                            {$messages}
-                            {$plugins_li}
-                        </ul>
-                        $pagination
-                        <a href="mailto:{$networkmail}" class="network-mail" target="_blank">
-                            $yourplugin&nbsp;<i class="ti ti-mail"></i>
-                        </a>
-                    </div>
-                </div>
-                <script>
-                    var marketplace_total_plugin = {$nb_plugins};
-                </script>
-HTML;
+                                <div class='marketplace $tab' data-tab='{$tab}'>
+                                    {$tags_list}
+                                    <div class='right-panel'>
+                                        <div class='top-panel'>
+                                            <input type='search' class='filter-list form-control' placeholder='{$search_label}'>
+                                            <div class='controls'>
+                                                $sort_controls
+                                                <i class='ti ti-refresh refresh-plugin-list' title='{$refresh_lbl}'></i>
+                                            </div>
+                                        </div>
+                                        <ul class='plugins'>
+                                            {$messages}
+                                            {$plugins_li}
+                                        </ul>
+                                        $pagination
+                                        <a href="mailto:{$networkmail}" class="network-mail" target="_blank">
+                                            $yourplugin&nbsp;<i class="ti ti-mail"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <script>
+                                    var marketplace_total_plugin = {$nb_plugins};
+                                </script>
+                HTML;
             echo $marketplace;
         } else {
             echo $messages . $plugins_li;
         }
 
         $js = <<<JS
-            $(document).ready(function() {
-                // load button tooltips
-                addTooltips();
+                        $(document).ready(function() {
+                            // load button tooltips
+                            addTooltips();
 
-                var displaySortIcon = function(option) {
-                    if (!option.element) {
-                        return option.element;
-                    }
-                    var element = option.element;
-                    var icon = $(element).data('icon');
+                            var displaySortIcon = function(option) {
+                                if (!option.element) {
+                                    return option.element;
+                                }
+                                var element = option.element;
+                                var icon = $(element).data('icon');
 
-                    return $("<span><i class='"+icon+"'></i>&nbsp;"+option.text+"</span>");
-                };
+                                return $("<span><i class='"+icon+"'></i>&nbsp;"+option.text+"</span>");
+                            };
 
-                $('.sort-control').select2({
-                    templateResult: displaySortIcon,
-                    templateSelection: displaySortIcon,
-                    width: 135,
-                });
-            });
-JS;
+                            $('.sort-control').select2({
+                                templateResult: displaySortIcon,
+                                templateSelection: displaySortIcon,
+                                width: 135,
+                            });
+                        });
+            JS;
         echo Html::scriptBlock($js);
     }
 
@@ -588,65 +588,65 @@ JS;
 
         if ($tab === "discover") {
             $card = <<<HTML
-                <li class="plugin {$plugin_state}" data-key="{$plugin_key}">
-                    <div class="main">
-                        <span class="icon">{$icon}</span>
-                        <span class="details">
-                            <h3 class="title">{$name}</h3>
-                            $network
-                            <p class="description">{$description}</p>
-                        </span>
-                        <span class="buttons">
-                            {$buttons}
-                        </span>
-                    </div>
-                    <div class="footer">
-                        <span class="misc-left">
-                            <div class="note">{$stars}</div>
-                            <div class="links">
-                                {$home_url}
-                                {$issues_url}
-                                {$readme_url}
-                                {$changelog_url}
-                            </div>
-                        </span>
-                        <span class='misc-right'>
-                            <div class="license">{$licence}</div>
-                            <div class="authors" title="{$authors_title}">{$authors}</div>
-                            <div class="version">{$version}</div>
-                        </span>
-                    </div>
-                </li>
-HTML;
+                                <li class="plugin {$plugin_state}" data-key="{$plugin_key}">
+                                    <div class="main">
+                                        <span class="icon">{$icon}</span>
+                                        <span class="details">
+                                            <h3 class="title">{$name}</h3>
+                                            $network
+                                            <p class="description">{$description}</p>
+                                        </span>
+                                        <span class="buttons">
+                                            {$buttons}
+                                        </span>
+                                    </div>
+                                    <div class="footer">
+                                        <span class="misc-left">
+                                            <div class="note">{$stars}</div>
+                                            <div class="links">
+                                                {$home_url}
+                                                {$issues_url}
+                                                {$readme_url}
+                                                {$changelog_url}
+                                            </div>
+                                        </span>
+                                        <span class='misc-right'>
+                                            <div class="license">{$licence}</div>
+                                            <div class="authors" title="{$authors_title}">{$authors}</div>
+                                            <div class="version">{$version}</div>
+                                        </span>
+                                    </div>
+                                </li>
+                HTML;
         } else {
             $card = <<<HTML
-                <li class="plugin {$plugin_state}" data-key="{$plugin_key}">
-                    <div class="main">
-                        <span class="icon">{$icon}</span>
-                        <span class="details">
-                            <h3 class="title">{$name}</h3>
-                            <span class='misc-right'>
-                                <div class="license">{$licence}</div>
-                                <div class="authors" title="{$authors_title}">{$authors}</div>
-                                <div class="version">{$version}</div>
-                            </span>
-                        </span>
-                        <span class="buttons">
-                            {$buttons}
-                        </span>
-                    </div>
-                    <div class="footer">
-                        <span class="misc-left">
-                            <div class="links">
-                                {$home_url}
-                                {$issues_url}
-                                {$readme_url}
-                                {$changelog_url}
-                            </div>
-                        </span>
-                    </div>
-                </li>
-HTML;
+                                <li class="plugin {$plugin_state}" data-key="{$plugin_key}">
+                                    <div class="main">
+                                        <span class="icon">{$icon}</span>
+                                        <span class="details">
+                                            <h3 class="title">{$name}</h3>
+                                            <span class='misc-right'>
+                                                <div class="license">{$licence}</div>
+                                                <div class="authors" title="{$authors_title}">{$authors}</div>
+                                                <div class="version">{$version}</div>
+                                            </span>
+                                        </span>
+                                        <span class="buttons">
+                                            {$buttons}
+                                        </span>
+                                    </div>
+                                    <div class="footer">
+                                        <span class="misc-left">
+                                            <div class="links">
+                                                {$home_url}
+                                                {$issues_url}
+                                                {$readme_url}
+                                                {$changelog_url}
+                                            </div>
+                                        </span>
+                                    </div>
+                                </li>
+                HTML;
         }
 
         return $card;
@@ -667,7 +667,7 @@ HTML;
         for ($i = 1; $i < 6; $i++) {
             if ($value >= $i) {
                 $stars .= "<i class='ti ti-star-filled'></i>";
-            } else if ($value + 0.5 == $i) {
+            } elseif ($value + 0.5 == $i) {
                 $stars .= "<i class='ti ti-star-half-filled'></i>";
             } else {
                 $stars .= "<i class='ti ti-star'></i>";
@@ -758,7 +758,7 @@ HTML;
                         <i class='ti ti-cloud-download'></i>
                     </button>";
             }
-        } else if (!$is_available) {
+        } elseif (!$is_available) {
             if (!$can_run_local_install) {
                 $rand = mt_rand();
                 $buttons .= "<i class='ti ti-alert-triangle plugin-unavailable' id='plugin-tooltip-$rand'></i>";
@@ -769,7 +769,7 @@ HTML;
                     ]
                 );
             }
-        } else if (
+        } elseif (
             (!$exists && !$mk_controller->hasWriteAccess())
             || ($has_web_update && !$can_be_overwritten && GLPI_MARKETPLACE_MANUAL_DOWNLOADS)
         ) {
@@ -805,14 +805,14 @@ HTML;
                     </button>";
                 }
             }
-        } else if ($can_be_downloaded) {
+        } elseif ($can_be_downloaded) {
             if (!$exists) {
                 $buttons .= "<button class='modify_plugin'
                                      data-action='download_plugin'
                                      title='" . __s("Download") . "'>
                         <i class='ti ti-cloud-download'></i>
                     </button>";
-            } else if ($can_be_updated) {
+            } elseif ($can_be_updated) {
                 $update_title = sprintf(
                     __s("A new version (%s) is available, update?", 'marketplace'),
                     htmlescape($web_update_version)
@@ -842,7 +842,7 @@ HTML;
                 implode(', ', $required_offers)
             );
 
-             $buttons .= "<a href='" . GLPI_NETWORK_SERVICES . "' target='_blank'>
+            $buttons .= "<a href='" . GLPI_NETWORK_SERVICES . "' target='_blank'>
                     <button class='add_tooltip need_offers' title='$warning'>
                         <i class='ti ti-alert-triangle'></i>
                     </button>
@@ -898,12 +898,12 @@ HTML;
 
             $uninstall_label = __s("Uninstall");
             $buttons .= <<<HTML
-                <button data-bs-toggle="modal"
-                        data-bs-target="#uninstallModal{$plugin_inst->getField('directory')}"
-                        title="{$uninstall_label}">
-                    <i class="ti ti-folder-x"></i>
-                </button>
-HTML;
+                                <button data-bs-toggle="modal"
+                                        data-bs-target="#uninstallModal{$plugin_inst->getField('directory')}"
+                                        title="{$uninstall_label}">
+                                    <i class="ti ti-folder-x"></i>
+                                </button>
+                HTML;
             $buttons .= TemplateRenderer::getInstance()->render('components/danger_modal.html.twig', [
                 'modal_id' => 'uninstallModal' . $plugin_inst->getField('directory'),
                 'confirm_btn' => '<a href="#" class="btn btn-danger w-100 modify_plugin"
@@ -1127,7 +1127,7 @@ HTML;
 
             // is user agree, redirect him to marketplace
             if ($mp_value === Controller::MP_REPLACE_YES) {
-                 Html::redirect($CFG_GLPI["root_doc"] . "/front/marketplace.php");
+                Html::redirect($CFG_GLPI["root_doc"] . "/front/marketplace.php");
             }
 
             // avoid annoying user for the current session

@@ -376,7 +376,7 @@ class Certificate extends CommonDBTM
             'massiveaction'      => false
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
 
@@ -628,9 +628,9 @@ class Certificate extends CommonDBTM
                     ];
                     if ($certif_item->can(-1, UPDATE, $input)) {
                         if ($certif_item->add($input)) {
-                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
+                            $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                         } else {
-                             $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
+                            $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
                         }
                     } else {
                         $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);

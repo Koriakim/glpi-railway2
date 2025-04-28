@@ -388,15 +388,15 @@ final class AssetDefinitionManager extends AbstractDefinitionManager
         // Static properties must be defined in each concrete class otherwise they will be shared
         // accross all concrete classes, and so would be overriden by the values from the last loaded class.
         eval(<<<PHP
-namespace Glpi\\CustomAsset;
+            namespace Glpi\\CustomAsset;
 
-use Glpi\\Asset\\Asset;
+            use Glpi\\Asset\\Asset;
 
-final class {$definition->getAssetClassName(false)} extends Asset {
-    protected static string \$definition_system_name = '{$definition->fields['system_name']}';
-    public static \$rightname = '{$rightname}';
-}
-PHP
+            final class {$definition->getAssetClassName(false)} extends Asset {
+                protected static string \$definition_system_name = '{$definition->fields['system_name']}';
+                public static \$rightname = '{$rightname}';
+            }
+            PHP
         );
     }
 
@@ -410,14 +410,14 @@ PHP
     private function loadConcreteModelClass(AssetDefinition $definition): void
     {
         eval(<<<PHP
-namespace Glpi\\CustomAsset;
+            namespace Glpi\\CustomAsset;
 
-use Glpi\\Asset\\AssetModel;
+            use Glpi\\Asset\\AssetModel;
 
-final class {$definition->getAssetModelClassName(false)} extends AssetModel {
-    protected static string \$definition_system_name = '{$definition->fields['system_name']}';
-}
-PHP
+            final class {$definition->getAssetModelClassName(false)} extends AssetModel {
+                protected static string \$definition_system_name = '{$definition->fields['system_name']}';
+            }
+            PHP
         );
     }
 
@@ -431,74 +431,74 @@ PHP
     private function loadConcreteTypeClass(AssetDefinition $definition): void
     {
         eval(<<<PHP
-namespace Glpi\\CustomAsset;
+            namespace Glpi\\CustomAsset;
 
-use Glpi\\Asset\\AssetType;
+            use Glpi\\Asset\\AssetType;
 
-final class {$definition->getAssetTypeClassName(false)} extends AssetType {
-    protected static string \$definition_system_name = '{$definition->fields['system_name']}';
-}
-PHP
+            final class {$definition->getAssetTypeClassName(false)} extends AssetType {
+                protected static string \$definition_system_name = '{$definition->fields['system_name']}';
+            }
+            PHP
         );
     }
 
     private function loadConcreteModelDictionaryClass(AssetDefinition $definition): void
     {
         eval(<<<PHP
-namespace Glpi\\CustomAsset;
+            namespace Glpi\\CustomAsset;
 
-use Glpi\\Asset\\RuleDictionaryModel;
+            use Glpi\\Asset\\RuleDictionaryModel;
 
-final class {$definition->getAssetModelDictionaryClassName(false)} extends RuleDictionaryModel
-{
-    protected static string \$definition_system_name = '{$definition->fields['system_name']}';
-}
-PHP
+            final class {$definition->getAssetModelDictionaryClassName(false)} extends RuleDictionaryModel
+            {
+                protected static string \$definition_system_name = '{$definition->fields['system_name']}';
+            }
+            PHP
         );
     }
 
     private function loadConcreteTypeDictionaryClass(AssetDefinition $definition): void
     {
         eval(<<<PHP
-namespace Glpi\\CustomAsset;
+            namespace Glpi\\CustomAsset;
 
-use Glpi\\Asset\\RuleDictionaryType;
+            use Glpi\\Asset\\RuleDictionaryType;
 
-final class {$definition->getAssetTypeDictionaryClassName(false)} extends RuleDictionaryType
-{
-    protected static string \$definition_system_name = '{$definition->fields['system_name']}';
-}
-PHP
+            final class {$definition->getAssetTypeDictionaryClassName(false)} extends RuleDictionaryType
+            {
+                protected static string \$definition_system_name = '{$definition->fields['system_name']}';
+            }
+            PHP
         );
     }
 
     private function loadConcreteModelDictionaryCollectionClass(AssetDefinition $definition): void
     {
         eval(<<<PHP
-namespace Glpi\\CustomAsset;
+            namespace Glpi\\CustomAsset;
 
-use Glpi\\Asset\\RuleDictionaryModelCollection;
+            use Glpi\\Asset\\RuleDictionaryModelCollection;
 
-final class {$definition->getAssetModelDictionaryCollectionClassName(false)} extends RuleDictionaryModelCollection
-{
-    protected static string \$definition_system_name = '{$definition->fields['system_name']}';
-}
-PHP
+            final class {$definition->getAssetModelDictionaryCollectionClassName(false)} extends RuleDictionaryModelCollection
+            {
+                protected static string \$definition_system_name = '{$definition->fields['system_name']}';
+            }
+            PHP
         );
     }
 
     private function loadConcreteTypeDictionaryCollectionClass(AssetDefinition $definition): void
     {
         eval(<<<PHP
-namespace Glpi\\CustomAsset;
+            namespace Glpi\\CustomAsset;
 
-use Glpi\\Asset\\RuleDictionaryTypeCollection;
+            use Glpi\\Asset\\RuleDictionaryTypeCollection;
 
-final class {$definition->getAssetTypeDictionaryCollectionClassName(false)} extends RuleDictionaryTypeCollection
-{
-    protected static string \$definition_system_name = '{$definition->fields['system_name']}';
-}
-PHP
+            final class {$definition->getAssetTypeDictionaryCollectionClassName(false)} extends RuleDictionaryTypeCollection
+            {
+                protected static string \$definition_system_name = '{$definition->fields['system_name']}';
+            }
+            PHP
         );
     }
 }

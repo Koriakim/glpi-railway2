@@ -56,11 +56,11 @@ abstract class AbstractFilter
      */
     abstract public static function getHtml($value): string;
 
-     /**
-     * Get the filter id
-     *
-     * @return string
-     */
+    /**
+    * Get the filter id
+    *
+    * @return string
+    */
     abstract public static function getId(): string;
 
     /**
@@ -133,39 +133,39 @@ abstract class AbstractFilter
         $class = $filled ? "filled" : "";
 
         $js = <<<JAVASCRIPT
-            $(function () {
-                $('#filter-{$rand} input')
-                    .on('input', function() {
-                        var str_len = $(this).val().length;
-                        if (str_len > 0) {
-                            $('#filter-{$rand}').addClass('filled');
-                        } else {
-                            $('#filter-{$rand}').removeClass('filled');
-                        }
+                        $(function () {
+                            $('#filter-{$rand} input')
+                                .on('input', function() {
+                                    var str_len = $(this).val().length;
+                                    if (str_len > 0) {
+                                        $('#filter-{$rand}').addClass('filled');
+                                    } else {
+                                        $('#filter-{$rand}').removeClass('filled');
+                                    }
 
-                        $(this).width((str_len + 1) * 8 );
-                    });
+                                    $(this).width((str_len + 1) * 8 );
+                                });
 
-                $('#filter-{$rand}')
-                    .hover(function() {
-                        $('.dashboard .card.filter-{$id}').addClass('filter-impacted');
-                    }, function() {
-                        $('.dashboard .card.filter-{$id}').removeClass('filter-impacted');
-                    });
-                });
-JAVASCRIPT;
+                            $('#filter-{$rand}')
+                                .hover(function() {
+                                    $('.dashboard .card.filter-{$id}').addClass('filter-impacted');
+                                }, function() {
+                                    $('.dashboard .card.filter-{$id}').removeClass('filter-impacted');
+                                });
+                            });
+            JAVASCRIPT;
         $js = Html::scriptBlock($js);
 
         $html  = <<<HTML
-            <fieldset id='filter-{$rand}' class='filter $class' data-filter-id='{$id}'>
-                $field
-                <legend>$label</legend>
-                <button class="btn btn-sm btn-icon btn-ghost-secondary delete-filter">
-                    <i class='ti ti-trash'></i>
-                </button>
-                {$js}
-            </fieldset>
-HTML;
+                        <fieldset id='filter-{$rand}' class='filter $class' data-filter-id='{$id}'>
+                            $field
+                            <legend>$label</legend>
+                            <button class="btn btn-sm btn-icon btn-ghost-secondary delete-filter">
+                                <i class='ti ti-trash'></i>
+                            </button>
+                            {$js}
+                        </fieldset>
+            HTML;
 
         return $html;
     }
@@ -193,15 +193,15 @@ HTML;
         ] + $add_params);
 
         $js = <<<JAVASCRIPT
-            var on_change_{$rand} = function() {
-                var dom_elem    = $('#dropdown_{$fieldname}{$rand}');
-                var selected    = dom_elem.find(':selected').val();
+                        var on_change_{$rand} = function() {
+                            var dom_elem    = $('#dropdown_{$fieldname}{$rand}');
+                            var selected    = dom_elem.find(':selected').val();
 
-                GLPI.Dashboard.getActiveDashboard().saveFilter('{$fieldname}', selected);
+                            GLPI.Dashboard.getActiveDashboard().saveFilter('{$fieldname}', selected);
 
-                $(dom_elem).closest("fieldset").toggleClass("filled", selected !== null)
-            };
-JAVASCRIPT;
+                            $(dom_elem).closest("fieldset").toggleClass("filled", selected !== null)
+                        };
+            JAVASCRIPT;
         $field .= Html::scriptBlock($js);
 
         return self::field($fieldname, $field, $label, $value !== null);

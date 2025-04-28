@@ -41,7 +41,7 @@
  */
 class NetworkAlias extends FQDNLabel
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype           = 'NetworkName';
     public static $items_id           = 'networknames_id';
     public $dohistory                 = true;
@@ -410,11 +410,11 @@ class NetworkAlias extends FQDNLabel
             Session::initNavigateListItems(
                 $item->getType(),
                 //TRANS : %1$s is the itemtype name, %2$s is the name of the item (used for headings of a list)
-                                        sprintf(
-                                            __('%1$s = %2$s'),
-                                            self::getTypeName(1),
-                                            $item->fields['name']
-                                        )
+                sprintf(
+                    __('%1$s = %2$s'),
+                    self::getTypeName(1),
+                    $item->fields['name']
+                )
             );
 
             $iterator = $DB->request([

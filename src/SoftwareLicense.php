@@ -54,8 +54,8 @@ class SoftwareLicense extends CommonTreeDropdown
         post_updateItem as post_updateItemAssignableItem;
     }
 
-   /// TODO move to CommonDBChild ?
-   // From CommonDBTM
+    /// TODO move to CommonDBChild ?
+    // From CommonDBTM
     public $dohistory                   = true;
 
     protected static $forward_entity_to = ['Infocom'];
@@ -315,7 +315,7 @@ class SoftwareLicense extends CommonTreeDropdown
     {
         $tab = [];
 
-       // Only use for History (not by search Engine)
+        // Only use for History (not by search Engine)
         $tab[] = [
             'id'                 => 'common',
             'name'               => __('Characteristics')
@@ -580,7 +580,7 @@ class SoftwareLicense extends CommonTreeDropdown
             ]
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
 
@@ -831,7 +831,7 @@ class SoftwareLicense extends CommonTreeDropdown
                     $input["type"]     = Alert::END;
                     $input["itemtype"] = 'SoftwareLicense';
 
-                   // add alerts
+                    // add alerts
                     foreach ($items as $ID => $consumable) {
                         $input["items_id"] = $ID;
                         $alert->add($input);
@@ -839,7 +839,7 @@ class SoftwareLicense extends CommonTreeDropdown
                     }
                 } else {
                     $entityname = Dropdown::getDropdownName(Entity::getTable(), $entity);
-                   //TRANS: %s is entity name
+                    //TRANS: %s is entity name
                     $msg = htmlescape(sprintf(__('%1$s: %2$s'), $entityname, __('Send licenses alert failed')));
                     if ($task) {
                         $task->log($msg);
@@ -995,10 +995,10 @@ class SoftwareLicense extends CommonTreeDropdown
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="text-center mb-3">
-                    <a class="btn btn-primary" href="{{ 'SoftwareLicense'|itemtype_form_path }}?softwares_id={{ softwares_id }}">{{ btn_msg }}</a>
-                </div>
-TWIG, $twig_params);
+                                <div class="text-center mb-3">
+                                    <a class="btn btn-primary" href="{{ 'SoftwareLicense'|itemtype_form_path }}?softwares_id={{ softwares_id }}">{{ btn_msg }}</a>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $iterator = $DB->request([
@@ -1071,7 +1071,7 @@ TWIG, $twig_params);
             if ($data['number'] < 0) {
                 // One unlimited license, total is unlimited
                 $tot = -1;
-            } else if ($tot >= 0) {
+            } elseif ($tot >= 0) {
                 // Expired licenses do not count
                 if (!$expired) {
                     // Not unlimited, add the current number
@@ -1188,7 +1188,7 @@ TWIG, $twig_params);
     {
         if ($item::class === Software::class && self::canView()) {
             self::showForSoftware($item);
-        } else if ($item::class === self::class && self::canView()) {
+        } elseif ($item::class === self::class && self::canView()) {
             $item->showChildren();
             return true;
         }

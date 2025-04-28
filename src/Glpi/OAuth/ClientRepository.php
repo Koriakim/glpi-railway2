@@ -35,7 +35,6 @@
 
 namespace Glpi\OAuth;
 
-use GLPIKey;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use OAuthClient;

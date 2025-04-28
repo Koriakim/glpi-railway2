@@ -53,9 +53,9 @@ class DateTimeType extends AbstractType
         ];
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.datetimeField(name, value, label, field_options) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {{ fields.datetimeField(name, value, label, field_options) }}
+            TWIG, $twig_params);
     }
 
     public function normalizeValue(mixed $value): ?string

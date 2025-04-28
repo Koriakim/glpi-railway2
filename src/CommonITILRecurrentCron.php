@@ -33,7 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\DBAL\QueryExpression;
 use Glpi\DBAL\QueryFunction;
 
 /**
@@ -69,7 +68,7 @@ class CommonITILRecurrentCron extends CommonDBTM
 
         $total = 0;
 
-       // Concrete classes for which recurrent items can be created
+        // Concrete classes for which recurrent items can be created
         $targets = [
             TicketRecurrent::class,
             RecurrentChange::class,

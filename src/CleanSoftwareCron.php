@@ -40,9 +40,9 @@ use Glpi\DBAL\QuerySubQuery;
  */
 class CleanSoftwareCron extends CommonDBTM
 {
-    const TASK_NAME = 'cleansoftware';
+    public const TASK_NAME = 'cleansoftware';
 
-    const MAX_BATCH_SIZE = 2000;
+    public const MAX_BATCH_SIZE = 2000;
 
     protected static $notable = true;
 
@@ -84,7 +84,7 @@ class CleanSoftwareCron extends CommonDBTM
     {
         $total = 0;
 
-       // Delete software versions with no installation
+        // Delete software versions with no installation
         $total += self::deleteItems(
             self::getVersionsWithNoInstallationCriteria(),
             new SoftwareVersion(),
@@ -208,7 +208,7 @@ class CleanSoftwareCron extends CommonDBTM
                 $em->delete($item);
             }
 
-           // Stop if no items found
+            // Stop if no items found
         } while ($count > 0 && $total < $max);
 
         return $total;

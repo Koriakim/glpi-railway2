@@ -152,10 +152,10 @@ class Grid
             ];
 
             $card_html    = <<<HTML
-            <div class="loading-card">
-               <span class="spinner-border spinner-border" role="status" aria-hidden="true"></span>
-            </div>
-HTML;
+                            <div class="loading-card">
+                               <span class="spinner-border spinner-border" role="status" aria-hidden="true"></span>
+                            </div>
+                HTML;
             $this->addGridItem(
                 $card_html,
                 $gridstack_id,
@@ -176,7 +176,7 @@ HTML;
      */
     public function canViewCurrent(): bool
     {
-       // check global (admin) right
+        // check global (admin) right
         if (Dashboard::canView()) {
             return true;
         }
@@ -223,7 +223,7 @@ HTML;
 
         $dashboard = new Dashboard($key);
         $dashboard->load();
-       // check global (admin) right
+        // check global (admin) right
         if (Dashboard::canView() && !$dashboard->isPrivate()) {
             return true;
         }
@@ -267,7 +267,7 @@ HTML;
         $can_purge     = Session::haveRight('dashboard', PURGE) && $nb_dashboards;
         $can_clone     = $can_create && $nb_dashboards;
 
-       // prepare html for add controls
+        // prepare html for add controls
         $add_controls = "";
         for ($y = 0; $y < $this->grid_rows; $y++) {
             for ($x = 0; $x < $this->grid_cols; $x++) {
@@ -278,10 +278,10 @@ HTML;
         // prepare all available cards
         $cards = $this->getAllDasboardCards();
 
-       // prepare all available widgets
+        // prepare all available widgets
         $all_widgets = Widget::getAllTypes();
 
-       // prepare labels
+        // prepare labels
         $embed_label      = __("Share or embed this dashboard");
         $delete_label     = __("Delete this dashboard");
         $history_label    = __("Toggle auto-refresh");
@@ -345,31 +345,31 @@ HTML;
 
             if (!$mini) {
                 $left_toolbar = <<<HTML
-               <span class="toolbar left-toolbar">
-                  <div class="change-dashboard d-flex">
-                     $dropdown_dashboards
-                     $l_tb_icons
-                  </div>
-                  $rename
-               </span>
-HTML;
+                                   <span class="toolbar left-toolbar">
+                                      <div class="change-dashboard d-flex">
+                                         $dropdown_dashboards
+                                         $l_tb_icons
+                                      </div>
+                                      $rename
+                                   </span>
+                    HTML;
             }
 
             $grid_guide = <<<HTML
-            <div class="grid-guide">
-               $add_controls
-            </div>
-HTML;
+                            <div class="grid-guide">
+                               $add_controls
+                            </div>
+                HTML;
         }
 
         $toolbars = <<<HTML
-         $left_toolbar
-         <span class="toolbar">
-            <i class="btn btn-sm btn-icon btn-ghost-secondary ti ti-refresh auto-refresh" title="$history_label"></i>
-            <i class="btn btn-sm btn-icon btn-ghost-secondary ti ti-moon night-mode" title="$night_label"></i>
-            $r_tb_icons
-         </span>
-HTML;
+                     $left_toolbar
+                     <span class="toolbar">
+                        <i class="btn btn-sm btn-icon btn-ghost-secondary ti ti-refresh auto-refresh" title="$history_label"></i>
+                        <i class="btn btn-sm btn-icon btn-ghost-secondary ti ti-moon night-mode" title="$night_label"></i>
+                        $r_tb_icons
+                     </span>
+            HTML;
 
         $filters = "";
         /** @var array $CFG_GLPI */
@@ -385,40 +385,40 @@ HTML;
                 'can_disable_demo' => Session::haveRight(Config::$rightname, UPDATE) ? 1 : 0,
             ];
             $filters = TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class='filters_toolbar m-2 {{ is_placeholder ? "d-none" : "" }}'>
-                    <span class='filters'></span>
-                    <span class='filters-control'>
-                        <i class="btn btn-sm btn-ghost-secondary ti ti-plus plus-sign add-filter">
-                            <span class='add-filter-lbl'>{{ messages['add_filter'] }}</span>
-                        </i>
-                    </span>
-                </div>
-                <div class='placeholder_info {{ is_placeholder ? "" : "d-none" }}' style="background-color: transparent; color: var(--tblr-body-color); font-size: var(--tblr-body-font-size)">
-                    <div class="alert alert-info">
-                        <div class="d-flex">
-                            <i class="ti ti-info-circle fs-2x me-3"></i>
-                            <div>
-                                <h4 class="alert-title">{{ messages['placeholder_main'] }}</h4>
-                                <div class="mt-2">
-                                    <button class="btn btn-info btn-sm disable-dashboard-demo me-2 {{ can_disable_demo ? '' : 'd-none' }}" type="button">
-                                        <i class="ti ti-presentation-off"></i>
-                                        <span>{{ messages['disable_demo_msg'] }}</span>
-                                    </button>
-                                    <script>
-                                        $('button.disable-dashboard-demo').on('click', function() {
-                                            $.post(CFG_GLPI.root_doc + '/ajax/dashboard.php', {
-                                                action: 'disable_placeholders'
-                                            }).then(() => {
-                                                window.location.reload();
-                                            });
-                                        });
-                                    </script>
+                                <div class='filters_toolbar m-2 {{ is_placeholder ? "d-none" : "" }}'>
+                                    <span class='filters'></span>
+                                    <span class='filters-control'>
+                                        <i class="btn btn-sm btn-ghost-secondary ti ti-plus plus-sign add-filter">
+                                            <span class='add-filter-lbl'>{{ messages['add_filter'] }}</span>
+                                        </i>
+                                    </span>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-TWIG, $params);
+                                <div class='placeholder_info {{ is_placeholder ? "" : "d-none" }}' style="background-color: transparent; color: var(--tblr-body-color); font-size: var(--tblr-body-font-size)">
+                                    <div class="alert alert-info">
+                                        <div class="d-flex">
+                                            <i class="ti ti-info-circle fs-2x me-3"></i>
+                                            <div>
+                                                <h4 class="alert-title">{{ messages['placeholder_main'] }}</h4>
+                                                <div class="mt-2">
+                                                    <button class="btn btn-info btn-sm disable-dashboard-demo me-2 {{ can_disable_demo ? '' : 'd-none' }}" type="button">
+                                                        <i class="ti ti-presentation-off"></i>
+                                                        <span>{{ messages['disable_demo_msg'] }}</span>
+                                                    </button>
+                                                    <script>
+                                                        $('button.disable-dashboard-demo').on('click', function() {
+                                                            $.post(CFG_GLPI.root_doc + '/ajax/dashboard.php', {
+                                                                action: 'disable_placeholders'
+                                                            }).then(() => {
+                                                                window.location.reload();
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                TWIG, $params);
         }
 
         $ajax_cards = GLPI_AJAX_DASHBOARD;
@@ -454,33 +454,33 @@ TWIG, $params);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% if mini %}
-                <div class='card mb-4 d-none d-md-block dashboard-card'>
-                    <div class='card-body p-2'>
-            {% endif %}
-            <div class="dashboard {{ embed_class }} {{ mini_class }}" id="dashboard-{{ rand }}">
-                <span class='glpi_logo'></span>
-                {{ toolbars|raw }}
-                {{ filters|raw }}
-                {{ grid_guide|raw }}
-                <div class="grid-stack grid-stack-{{ grid_cols }}"
-                    id="grid-stack-{{ rand }}"
-                    gs-column="{{ grid_cols }}"
-                    gs-min-row="{{ grid_rows }}"
-                    style="width: 100%">
-                    {{ gridstack_items|raw }}
-                </div>
-            </div>
-            {% if mini %}
-                    </div>
-                </div>
-            {% endif %}
-            <script type="module">
-                import('{{ js_path('js/modules/Dashboard/Dashboard.js') }}').then((m) => {
-                    new m.GLPIDashboard({{ js_params|json_encode|raw }});
-                });
-            </script>
-TWIG, $twig_params);
+                        {% if mini %}
+                            <div class='card mb-4 d-none d-md-block dashboard-card'>
+                                <div class='card-body p-2'>
+                        {% endif %}
+                        <div class="dashboard {{ embed_class }} {{ mini_class }}" id="dashboard-{{ rand }}">
+                            <span class='glpi_logo'></span>
+                            {{ toolbars|raw }}
+                            {{ filters|raw }}
+                            {{ grid_guide|raw }}
+                            <div class="grid-stack grid-stack-{{ grid_cols }}"
+                                id="grid-stack-{{ rand }}"
+                                gs-column="{{ grid_cols }}"
+                                gs-min-row="{{ grid_rows }}"
+                                style="width: 100%">
+                                {{ gridstack_items|raw }}
+                            </div>
+                        </div>
+                        {% if mini %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <script type="module">
+                            import('{{ js_path('js/modules/Dashboard/Dashboard.js') }}').then((m) => {
+                                new m.GLPIDashboard({{ js_params|json_encode|raw }});
+                            });
+                        </script>
+            TWIG, $twig_params);
     }
 
 
@@ -611,17 +611,17 @@ TWIG, $twig_params);
 
         if ($with_lock) {
             $this->items[] = <<<HTML
-         <div class="grid-stack-item lock-bottom"
-            gs-no-resize="true"
-            gs-no-move="true"
-            gs-h="1"
-            gs-w="{$this->grid_cols}"
-            gs-x="0"
-            gs-y="{$this->grid_rows}"></div>
-HTML;
+                         <div class="grid-stack-item lock-bottom"
+                            gs-no-resize="true"
+                            gs-no-move="true"
+                            gs-h="1"
+                            gs-w="{$this->grid_cols}"
+                            gs-x="0"
+                            gs-y="{$this->grid_rows}"></div>
+                HTML;
         }
 
-       // append all elements to insert them in html
+        // append all elements to insert them in html
         return implode("", $this->items);
     }
 
@@ -649,7 +649,7 @@ HTML;
         array $data_option = []
     ) {
 
-       // let grid-stack to autoposition item
+        // let grid-stack to autoposition item
         $autoposition = 'gs-auto-position="true"';
         $coordinates  = '';
         if ((int) $x >= 0 && (int) $y >= 0) {
@@ -660,7 +660,7 @@ HTML;
         $color    = $data_option['color'] ?? "#FFFFFF";
         $fg_color = Toolbox::getFgColor($color, 100, true);
 
-       // add card options in data attribute
+        // add card options in data attribute
         $data_option_attr = "";
         if (count($data_option)) {
             $data_option_attr = "data-card-options='" . json_encode($data_option, JSON_HEX_APOS) . "'";
@@ -673,22 +673,22 @@ HTML;
         $gridstack_id = htmlescape($gridstack_id);
 
         $this->items[] = <<<HTML
-         <div class="grid-stack-item"
-               gs-id="{$gridstack_id}"
-               gs-w="{$width}"
-               gs-h="{$height}"
-               {$coordinates}
-               {$autoposition}
-               {$data_option_attr}
-               style="color: {$fg_color}">
-            <span class="controls">
-               <i class="refresh-item ti ti-refresh" title="{$refresh_label}"></i>
-               <i class="edit-item ti ti-edit" title="{$edit_label}"></i>
-               <i class="delete-item ti ti-x" title="{$delete_label}"></i>
-            </span>
-            <div class="grid-stack-item-content">{$html}</div>
-         </div>
-HTML;
+                     <div class="grid-stack-item"
+                           gs-id="{$gridstack_id}"
+                           gs-w="{$width}"
+                           gs-h="{$height}"
+                           {$coordinates}
+                           {$autoposition}
+                           {$data_option_attr}
+                           style="color: {$fg_color}">
+                        <span class="controls">
+                           <i class="refresh-item ti ti-refresh" title="{$refresh_label}"></i>
+                           <i class="edit-item ti ti-edit" title="{$edit_label}"></i>
+                           <i class="delete-item ti ti-x" title="{$delete_label}"></i>
+                        </span>
+                        <div class="grid-stack-item-content">{$html}</div>
+                     </div>
+            HTML;
     }
 
 
@@ -759,7 +759,7 @@ HTML;
         $edit         = $params['action'] === "display_edit_widget";
         $cards        = $this->getAllDasboardCards();
         $card         = $cards[$card_id] ?? [];
-       // append card id to options
+        // append card id to options
         if (!isset($cardopt['card_id'])) {
             $cardopt['card_id'] = $card_id;
         }
@@ -950,7 +950,7 @@ HTML;
 
         $force = ($card_options['args']['force'] ?? $card_options['force'] ?? false);
 
-       // retrieve card
+        // retrieve card
         $notfound_html = "<div class='empty-card card-warning '>
          <i class='ti ti-alert-triangle'></i>" .
          __('empty card!') . "
@@ -1057,10 +1057,10 @@ HTML;
             // Use the current PHP request duration as the execution time for a more accurate card loading time
             $execution_time = Profiler::getInstance()->getCurrentDuration('php_request');
             $html .= <<<HTML
-         <span class='debug-card'>
-            {$execution_time}ms
-         </span>
-HTML;
+                         <span class='debug-card'>
+                            {$execution_time}ms
+                         </span>
+                HTML;
         }
 
         return $html;
@@ -1123,7 +1123,7 @@ HTML;
         array_walk($menu, static function ($firstlvl) use (&$menu_itemtypes) {
             $key = $firstlvl['title'];
             if (isset($firstlvl['types'])) {
-                  $menu_itemtypes[$key] = array_merge($menu_itemtypes[$key] ?? [], $firstlvl['types']);
+                $menu_itemtypes[$key] = array_merge($menu_itemtypes[$key] ?? [], $firstlvl['types']);
             }
         });
 
@@ -1133,7 +1133,7 @@ HTML;
                     in_array($itemtype, $exclude)
                     || !is_subclass_of($itemtype, 'CommonDBTM')
                 ) {
-                      return false;
+                    return false;
                 }
 
                 $testClass = new \ReflectionClass($itemtype);

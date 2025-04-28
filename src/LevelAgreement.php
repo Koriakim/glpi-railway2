@@ -42,11 +42,11 @@ use Glpi\DBAL\QuerySubQuery;
  **/
 abstract class LevelAgreement extends CommonDBChild
 {
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory          = true;
     public static $rightname       = 'slm';
 
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype = 'SLM';
     public static $items_id = 'slms_id';
 
@@ -341,26 +341,26 @@ abstract class LevelAgreement extends CommonDBChild
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div id="showLa{{ instID }}{{ rand }}"></div>
-                <script>
-                    function viewAddEditLa{{ instID }}{{ rand }}(item_id = -1) {
-                        $('#showLa{{ instID }}{{ rand }}').load("{{ config('root_doc') }}/ajax/viewsubitem.php", {
-                            type: "{{ la.getType() }}",
-                            parenttype: "{{ slm.getType() }}",
-                            {{ slm.getForeignKeyField() }}: {{ instID }},
-                            id: item_id,
-                        });
-                    }
-                    $(() => {
-                        $('#levelagreement{{ instID }}').on('click', 'tbody tr', function () {
-                            viewAddEditLa{{ instID }}{{ rand }}($(this).data('id'));
-                        });
-                    });
-                </script>
-                <div class="text-center mb-3">
-                    <button name="new_la" type="button" class="btn btn-primary" onclick="viewAddEditLa{{ instID }}{{ rand }}();">{{ btn_msg }}</button>
-                </div>
-TWIG, $twig_params);
+                                <div id="showLa{{ instID }}{{ rand }}"></div>
+                                <script>
+                                    function viewAddEditLa{{ instID }}{{ rand }}(item_id = -1) {
+                                        $('#showLa{{ instID }}{{ rand }}').load("{{ config('root_doc') }}/ajax/viewsubitem.php", {
+                                            type: "{{ la.getType() }}",
+                                            parenttype: "{{ slm.getType() }}",
+                                            {{ slm.getForeignKeyField() }}: {{ instID }},
+                                            id: item_id,
+                                        });
+                                    }
+                                    $(() => {
+                                        $('#levelagreement{{ instID }}').on('click', 'tbody tr', function () {
+                                            viewAddEditLa{{ instID }}{{ rand }}($(this).data('id'));
+                                        });
+                                    });
+                                </script>
+                                <div class="text-center mb-3">
+                                    <button name="new_la" type="button" class="btn btn-primary" onclick="viewAddEditLa{{ instID }}{{ rand }}();">{{ btn_msg }}</button>
+                                </div>
+                TWIG, $twig_params);
         }
 
         // list
@@ -372,9 +372,9 @@ TWIG, $twig_params);
             $link = '';
             if ($slm->fields['use_ticket_calendar']) {
                 $link = __s('Calendar of the ticket');
-            } else if (!$slm->fields['calendars_id']) {
-                 $link =  __s('24/7');
-            } else if ($calendar->getFromDB($slm->fields['calendars_id'])) {
+            } elseif (!$slm->fields['calendars_id']) {
+                $link =  __s('24/7');
+            } elseif ($calendar->getFromDB($slm->fields['calendars_id'])) {
                 $link = $calendar->getLink();
             }
             $entries[] = [
@@ -981,7 +981,7 @@ TWIG, $twig_params);
             ]);
 
             foreach ($iterator as $data) {
-                 $levelticket->delete(['id' => $data['id']]);
+                $levelticket->delete(['id' => $data['id']]);
             }
         }
     }
@@ -996,7 +996,7 @@ TWIG, $twig_params);
         $level     = new static::$levelclass();
         $level->deleteByCriteria([$fk => $this->getID()]);
 
-       // Update tickets : clean SLA/OLA
+        // Update tickets : clean SLA/OLA
         [, $laField] = static::getFieldNames($this->fields['type']);
         $iterator =  $DB->request([
             'SELECT' => 'id',

@@ -75,7 +75,7 @@ class Appliance_Item extends CommonDBRelation
                 }
             }
             return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb, $item::getType(), 'ti ti-package');
-        } else if (in_array($item->getType(), Appliance::getTypes(true))) {
+        } elseif (in_array($item->getType(), Appliance::getTypes(true))) {
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = self::countForItem($item);
             }
@@ -330,7 +330,7 @@ class Appliance_Item extends CommonDBRelation
     {
         $error_detected = [];
 
-       //check for requirements
+        //check for requirements
         if (
             ($this->isNewItem() && (!isset($input['itemtype']) || empty($input['itemtype'])))
             || (isset($input['itemtype']) && empty($input['itemtype']))

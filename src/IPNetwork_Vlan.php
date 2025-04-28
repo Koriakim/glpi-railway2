@@ -38,7 +38,7 @@
  **/
 class IPNetwork_Vlan extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1          = 'IPNetwork';
     public static $items_id_1          = 'ipnetworks_id';
 

@@ -385,7 +385,7 @@ class GLPIMailer
                 $name  = array_key_exists(0, $arguments) && is_string($arguments[0]) ? $arguments[0] : null;
                 $value = array_key_exists(1, $arguments) && is_string($arguments[1]) ? $arguments[1] : null;
                 if (null === $value && strpos($name, ':') !== false) {
-                    list($name, $value) = explode(':', $name, 2);
+                    [$name, $value] = explode(':', $name, 2);
                 }
                 if ($name !== null && $value !== null) {
                     $this->email->getHeaders()->addTextHeader($name, $value);

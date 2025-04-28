@@ -37,11 +37,11 @@ use Glpi\Application\View\TemplateRenderer;
 
 abstract class RuleCommonITILObject extends Rule
 {
-    const PARENT  = 1024;
+    public const PARENT  = 1024;
 
 
-    const ONADD    = 1;
-    const ONUPDATE = 2;
+    public const ONADD    = 1;
+    public const ONUPDATE = 2;
 
     /**
      * Get the ITIL Object itemtype that this rule is for
@@ -113,7 +113,7 @@ abstract class RuleCommonITILObject extends Rule
                 if (isset($val->fields['field'])) {
                     if (in_array($val->fields['field'], ['impact', 'urgency'])) {
                         $has_impact_urgency = true;
-                    } else if ($val->fields['field'] === 'priority' && $val->fields['action_type'] === 'compute') {
+                    } elseif ($val->fields['field'] === 'priority' && $val->fields['action_type'] === 'compute') {
                         $has_priority_recompute = true;
                     }
                 }
@@ -122,10 +122,10 @@ abstract class RuleCommonITILObject extends Rule
         if ($has_impact_urgency && !$has_priority_recompute) {
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="alert alert-warning">
-                    {{ message }}
-                </div>
-TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority: recompute action if needed.')]);
+                                <div class="alert alert-warning">
+                                    {{ message }}
+                                </div>
+                TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority: recompute action if needed.')]);
         }
     }
 
@@ -318,19 +318,19 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
 
                     case 'defaultfromuser':
                         if (
-                            ( $action->fields['field'] == '_groups_id_requester')
+                            ($action->fields['field'] == '_groups_id_requester')
                             &&  isset($output['users_default_groups'])
                         ) {
                             $output['_groups_id_requester'] = $output['users_default_groups'];
                         }
                         if (
-                            ( $action->fields['field'] == '_groups_id_observer')
+                            ($action->fields['field'] == '_groups_id_observer')
                             && isset($output['users_default_groups'])
                         ) {
                             $output['_groups_id_observer'] = $output['users_default_groups'];
                         }
                         if (
-                            ( $action->fields['field'] == '_groups_id_assign')
+                            ($action->fields['field'] == '_groups_id_assign')
                             && isset($output['users_default_groups'])
                         ) {
                             $output['_groups_id_assign'] = $output['users_default_groups'];
@@ -360,8 +360,8 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
 
                     case 'compute':
                         // Value could be not set (from test)
-                        $urgency = (isset($output['urgency']) ? $output['urgency'] : 3);
-                        $impact  = (isset($output['impact']) ? $output['impact'] : 3);
+                        $urgency = ($output['urgency'] ?? 3);
+                        $impact  = ($output['impact'] ?? 3);
                         // Apply priority_matrix from config
                         /** @var CommonITILObject $itemtype */
                         $itemtype = static::getItemtype();
@@ -426,7 +426,7 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
                     case 'regex_result':
                         // Get each regex values
                         $regex_values = array_map(
-                            fn ($regex_result) => RuleAction::getRegexResultById(
+                            fn($regex_result) => RuleAction::getRegexResultById(
                                 $action->fields["value"],
                                 $regex_result
                             ),

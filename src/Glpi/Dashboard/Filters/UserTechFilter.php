@@ -72,7 +72,7 @@ class UserTechFilter extends AbstractFilter
         $users_id = null;
         if ((int) $value > 0) {
             $users_id = (int) $value;
-        } else if ($value === 'myself') {
+        } elseif ($value === 'myself') {
             $users_id = $_SESSION['glpiID'];
         }
 
@@ -81,7 +81,7 @@ class UserTechFilter extends AbstractFilter
                 $criteria["WHERE"] = [
                     "$table.users_id_tech" => $users_id,
                 ];
-            } else if (in_array($table, [Ticket::getTable(), Change::getTable(), Problem::getTable()])) {
+            } elseif (in_array($table, [Ticket::getTable(), Change::getTable(), Problem::getTable()])) {
                 $itemtype  = getItemTypeForTable($table);
                 $main_item = getItemForItemtype($itemtype);
                 $userlink  = $main_item->userlinkclass;

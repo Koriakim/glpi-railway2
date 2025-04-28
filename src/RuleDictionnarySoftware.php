@@ -143,21 +143,21 @@ class RuleDictionnarySoftware extends Rule
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% for action in actions %}
-                {% if action.fields['action_type'] == 'append_regex_result' %}
-                    {{ fields.htmlField('', type_match|e, '', {
-                        no_label: true,
-                        field_class: 'col-2',
-                        input_class: 'col-12'
-                    }) }}
-                    {{ fields.textField('version', fields[action.fields['field']]|default(''), action_names[action.fields['field']], {
-                        field_class: 'col-10',
-                        label_class: 'col-5',
-                        input_class: 'col-7'
-                    }) }}
-                {% endif %}
-            {% endfor %}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% for action in actions %}
+                            {% if action.fields['action_type'] == 'append_regex_result' %}
+                                {{ fields.htmlField('', type_match|e, '', {
+                                    no_label: true,
+                                    field_class: 'col-2',
+                                    input_class: 'col-12'
+                                }) }}
+                                {{ fields.textField('version', fields[action.fields['field']]|default(''), action_names[action.fields['field']], {
+                                    field_class: 'col-10',
+                                    label_class: 'col-5',
+                                    input_class: 'col-7'
+                                }) }}
+                            {% endif %}
+                        {% endfor %}
+            TWIG, $twig_params);
     }
 }

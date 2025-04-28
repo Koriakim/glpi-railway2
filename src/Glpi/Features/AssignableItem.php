@@ -176,7 +176,7 @@ trait AssignableItem
                 if (!is_array($input[$field])) {
                     $input[$field] = [$input[$field]];
                 }
-                $input['_' . $field] = array_filter(array_map('intval', $input[$field] ?? []), static fn ($v) => $v > 0);
+                $input['_' . $field] = array_filter(array_map('intval', $input[$field] ?? []), static fn($v) => $v > 0);
                 unset($input[$field]);
             }
         }

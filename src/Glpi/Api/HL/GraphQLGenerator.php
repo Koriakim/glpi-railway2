@@ -51,7 +51,7 @@ final class GraphQLGenerator
 
     private function normalizeTypeName(string $type_name): string
     {
-        return str_replace(array(' ', '-'), array('', '_'), $type_name);
+        return str_replace([' ', '-'], ['', '_'], $type_name);
     }
 
     public function getSchema()
@@ -125,7 +125,7 @@ final class GraphQLGenerator
             if ($prop['type'] === Doc\Schema::TYPE_OBJECT) {
                 $namespaced_type = "{$schema_name}_{$prop_name}";
                 $types['_' . $namespaced_type] = $this->convertRESTPropertyToGraphQLType($prop, $namespaced_type);
-            } else if ($prop['type'] === Doc\Schema::TYPE_ARRAY) {
+            } elseif ($prop['type'] === Doc\Schema::TYPE_ARRAY) {
                 $items = $prop['items'];
                 if ($items['type'] === Doc\Schema::TYPE_OBJECT) {
                     $namespaced_type = "{$schema_name}_{$prop_name}";

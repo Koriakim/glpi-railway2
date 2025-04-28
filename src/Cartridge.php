@@ -45,7 +45,7 @@ class Cartridge extends CommonDBRelation
 {
     use Glpi\Features\Clonable;
 
-   // From CommonDBTM
+    // From CommonDBTM
     protected static $forward_entity_to = ['Infocom'];
     public $dohistory                   = true;
     public $no_form_page                = true;
@@ -252,7 +252,7 @@ class Cartridge extends CommonDBRelation
         return $result && ($DB->affectedRows() > 0);
     }
 
-   // SPECIFIC FUNCTIONS
+    // SPECIFIC FUNCTIONS
 
     /**
      * Link a cartridge to a printer.
@@ -296,13 +296,13 @@ class Cartridge extends CommonDBRelation
                 ]
             );
             if ($result && ($DB->affectedRows() > 0)) {
-                 $changes = [
-                     '0',
-                     '',
-                     __('Installing a cartridge'),
-                 ];
-                 Log::history($pID, 'Printer', $changes, 0, Log::HISTORY_LOG_SIMPLE_MESSAGE);
-                 return true;
+                $changes = [
+                    '0',
+                    '',
+                    __('Installing a cartridge'),
+                ];
+                Log::history($pID, 'Printer', $changes, 0, Log::HISTORY_LOG_SIMPLE_MESSAGE);
+                return true;
             }
         } else {
             Session::addMessageAfterRedirect(__s('No free cartridge'), false, ERROR);
@@ -343,20 +343,20 @@ class Cartridge extends CommonDBRelation
                 $result
                 && ($DB->affectedRows() > 0)
             ) {
-                 $changes = [
-                     '0',
-                     '',
-                     __('Uninstalling a cartridge'),
-                 ];
-                 Log::history(
-                     $this->getField("printers_id"),
-                     'Printer',
-                     $changes,
-                     0,
-                     Log::HISTORY_LOG_SIMPLE_MESSAGE
-                 );
+                $changes = [
+                    '0',
+                    '',
+                    __('Uninstalling a cartridge'),
+                ];
+                Log::history(
+                    $this->getField("printers_id"),
+                    'Printer',
+                    $changes,
+                    0,
+                    Log::HISTORY_LOG_SIMPLE_MESSAGE
+                );
 
-                 return true;
+                return true;
             }
         }
         return false;
@@ -404,24 +404,24 @@ class Cartridge extends CommonDBRelation
             if (!$nohtml) {
                 // language=Twig
                 $out .= TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                    <table class="table table-sm table-borderless {{ highlight ? 'table-danger' : '' }}">
-                        <tr>
-                            <td>{{ counts['total']['label'] }}</td>
-                            <td>{{ counts['total']['value'] }}</td>
-                            <td class="fw-bold">{{ counts['new']['label'] }}</td>
-                            <td class="fw-bold">{{ counts['new']['value'] }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ counts['used']['label'] }}</td>
-                            <td>{{ counts['used']['value'] }}</td>
-                            <td>{{ counts['worn']['label'] }}</td>
-                            <td>{{ counts['worn']['value'] }}</td>
-                        </tr>
-                    </table>
-TWIG, ['counts' => $counts, 'highlight' => $highlight]);
+                                        <table class="table table-sm table-borderless {{ highlight ? 'table-danger' : '' }}">
+                                            <tr>
+                                                <td>{{ counts['total']['label'] }}</td>
+                                                <td>{{ counts['total']['value'] }}</td>
+                                                <td class="fw-bold">{{ counts['new']['label'] }}</td>
+                                                <td class="fw-bold">{{ counts['new']['value'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ counts['used']['label'] }}</td>
+                                                <td>{{ counts['used']['value'] }}</td>
+                                                <td>{{ counts['worn']['label'] }}</td>
+                                                <td>{{ counts['worn']['value'] }}</td>
+                                            </tr>
+                                        </table>
+                    TWIG, ['counts' => $counts, 'highlight' => $highlight]);
             } else {
-               //TRANS : for display cartridges count : %1$d is the total number,
-               //        %2$d the new one, %3$d the used one, %4$d worn one
+                //TRANS : for display cartridges count : %1$d is the total number,
+                //        %2$d the new one, %3$d the used one, %4$d worn one
                 $out .= sprintf(
                     __('Total: %1$d (%2$d new, %3$d used, %4$d worn)'),
                     $total,
@@ -478,23 +478,23 @@ TWIG, ['counts' => $counts, 'highlight' => $highlight]);
             if (!$nohtml) {
                 // language=Twig
                 $out .= TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                    <table class="table table-sm table-borderless {{ highlight ? 'table-danger' : '' }}">
-                        <tr>
-                            <td>{{ counts['total']['label'] }}</td>
-                            <td>{{ counts['total']['value'] }}</td>
-                            <td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td>{{ counts['used']['label'] }}</td>
-                            <td>{{ counts['used']['value'] }}</td>
-                            <td>{{ counts['worn']['label'] }}</td>
-                            <td>{{ counts['worn']['value'] }}</td>
-                        </tr>
-                    </table>
-TWIG, ['counts' => $counts, 'highlight' => $highlight]);
+                                        <table class="table table-sm table-borderless {{ highlight ? 'table-danger' : '' }}">
+                                            <tr>
+                                                <td>{{ counts['total']['label'] }}</td>
+                                                <td>{{ counts['total']['value'] }}</td>
+                                                <td></td><td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ counts['used']['label'] }}</td>
+                                                <td>{{ counts['used']['value'] }}</td>
+                                                <td>{{ counts['worn']['label'] }}</td>
+                                                <td>{{ counts['worn']['value'] }}</td>
+                                            </tr>
+                                        </table>
+                    TWIG, ['counts' => $counts, 'highlight' => $highlight]);
             } else {
-               //TRANS : for display cartridges count : %1$d is the total number,
-               //        %2$d the used one, %3$d the worn one
+                //TRANS : for display cartridges count : %1$d is the total number,
+                //        %2$d the used one, %3$d the worn one
                 $out .= sprintf(__('Total: %1$d (%2$d used, %3$d worn)'), $total, $used, $old);
             }
         } else {
@@ -959,29 +959,29 @@ TWIG, ['counts' => $counts, 'highlight' => $highlight]);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Cartridge'|itemtype_form_path }}"/>
-                        <div class="d-flex row">
-                            {{ fields.numberField('to_add', 1, null, {
-                                min: 1,
-                                max: 100,
-                                field_class: 'col-4',
-                            }) }}
-                            {% set btn %}
-                                <button type="submit" name="add" class="btn btn-primary">{{ add_label }}</button>
-                                <input type="hidden" name="cartridgeitems_id" value="{{ cartridgeitems_id }}">
-                                <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                            {% endset %}
-                            {{ fields.htmlField('', btn, null, {
-                                no_label: true,
-                                field_class: 'col-4',
-                                mb: 'mb-2'
-                            }) }}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Cartridge'|itemtype_form_path }}"/>
+                                        <div class="d-flex row">
+                                            {{ fields.numberField('to_add', 1, null, {
+                                                min: 1,
+                                                max: 100,
+                                                field_class: 'col-4',
+                                            }) }}
+                                            {% set btn %}
+                                                <button type="submit" name="add" class="btn btn-primary">{{ add_label }}</button>
+                                                <input type="hidden" name="cartridgeitems_id" value="{{ cartridgeitems_id }}">
+                                                <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                            {% endset %}
+                                            {{ fields.htmlField('', btn, null, {
+                                                no_label: true,
+                                                field_class: 'col-4',
+                                                mb: 'mb-2'
+                                            }) }}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
     }
 
@@ -1059,59 +1059,59 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Cartridge'|itemtype_form_path }}"/>
-                        <div class="d-flex row">
-                            {% set has_cartridges = false %}
-                            {% set dropdown %}
-                                {% set has_cartridges = call('CartridgeItem::dropdownForPrinter', [printer]) %}
-                            {% endset %}
-                            {% if has_cartridges %}
-                                {{ fields.htmlField('', dropdown, null, {
-                                    field_class: 'col-4',
-                                }) }}
-                                {{ fields.numberField('nbcart', 1, count_label, {
-                                    min: 1,
-                                    max: 5,
-                                    field_class: 'col-4',
-                                }) }}
-                                {% set btn_install %}
-                                    <input type="submit" name="install" value="{{ install_label }}" class="btn btn-primary">
-                                    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                                {% endset %}
-                                {{ fields.htmlField('', btn_install, null, {
-                                    no_label: true,
-                                    field_class: 'col-4',
-                                    mb: 'mb-2'
-                                }) }}
-                            {% endif %}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Cartridge'|itemtype_form_path }}"/>
+                                        <div class="d-flex row">
+                                            {% set has_cartridges = false %}
+                                            {% set dropdown %}
+                                                {% set has_cartridges = call('CartridgeItem::dropdownForPrinter', [printer]) %}
+                                            {% endset %}
+                                            {% if has_cartridges %}
+                                                {{ fields.htmlField('', dropdown, null, {
+                                                    field_class: 'col-4',
+                                                }) }}
+                                                {{ fields.numberField('nbcart', 1, count_label, {
+                                                    min: 1,
+                                                    max: 5,
+                                                    field_class: 'col-4',
+                                                }) }}
+                                                {% set btn_install %}
+                                                    <input type="submit" name="install" value="{{ install_label }}" class="btn btn-primary">
+                                                    <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                                {% endset %}
+                                                {{ fields.htmlField('', btn_install, null, {
+                                                    no_label: true,
+                                                    field_class: 'col-4',
+                                                    mb: 'mb-2'
+                                                }) }}
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <div id="viewcartridge"></div>
-            <script>
-                function viewEditCartridge(cart_id) {
-                    $('#viewcartridge').load(
-                        '{{ path('ajax/viewsubitem.php') }}',
-                        {
-                            type: 'Cartridge',
-                            parenttype: 'Printer',
-                            printers_id: {{ printer_id }},
-                            id: cart_id
-                        }
-                    );
-                }
-                $('tr[data-itemtype="Cartridge"]').on('click', function() {
-                    viewEditCartridge($(this).data('id'));
-                });
-            </script>
-TWIG, ['printer_id' => $printer->getID()]);
+                        <div id="viewcartridge"></div>
+                        <script>
+                            function viewEditCartridge(cart_id) {
+                                $('#viewcartridge').load(
+                                    '{{ path('ajax/viewsubitem.php') }}',
+                                    {
+                                        type: 'Cartridge',
+                                        parenttype: 'Printer',
+                                        printers_id: {{ printer_id }},
+                                        id: cart_id
+                                    }
+                                );
+                            }
+                            $('tr[data-itemtype="Cartridge"]').on('click', function() {
+                                viewEditCartridge($(this).data('id'));
+                            });
+                        </script>
+            TWIG, ['printer_id' => $printer->getID()]);
 
         $pages = $printer->fields['init_pages_counter'];
         if (!$old) {

@@ -43,7 +43,7 @@ use Glpi\DBAL\QueryExpression;
  **/
 class Document_Item extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1    = 'Document';
     public static $items_id_1    = 'documents_id';
     public static $take_entity_1 = true;
@@ -175,7 +175,7 @@ class Document_Item extends CommonDBRelation
             );
 
             if (isset($tt->mandatory['_documents_id'])) {
-                 // refuse delete if only one document
+                // refuse delete if only one document
                 if (
                     countElementsInTable(
                         static::getTable(),
@@ -357,24 +357,24 @@ class Document_Item extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-                {% set rand = random() %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Document_Item'|itemtype_form_path }}">
-                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
-                        {{ inputs.hidden('documents_id', doc.fields['id']) }}
-                        {{ fields.dropdownItemsFromItemtypes('', add_item_msg, {
-                            'itemtypes': doc.getItemtypesThatCanHave(),
-                            'entity_restrict': entity_restrict,
-                            'checkright': true
-                        }) }}
-                        <div class="d-flex px-3 flex-row-reverse">
-                            {{ inputs.submit('add', add_btn_msg, 1) }}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                                {% set rand = random() %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Document_Item'|itemtype_form_path }}">
+                                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
+                                        {{ inputs.hidden('documents_id', doc.fields['id']) }}
+                                        {{ fields.dropdownItemsFromItemtypes('', add_item_msg, {
+                                            'itemtypes': doc.getItemtypesThatCanHave(),
+                                            'entity_restrict': entity_restrict,
+                                            'checkright': true
+                                        }) }}
+                                        <div class="d-flex px-3 flex-row-reverse">
+                                            {{ inputs.submit('add', add_btn_msg, 1) }}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];
@@ -401,7 +401,7 @@ TWIG, $twig_params);
                         $item->getFromDB($data['items_id']);
                         $data['id'] = $item->fields['id'];
                         $data['entity'] = $item->fields['entities_id'];
-                    } else if (
+                    } elseif (
                         $item instanceof CommonITILTask
                         || $item instanceof CommonITILValidation
                     ) {
@@ -575,7 +575,7 @@ TWIG, $twig_params);
             $item->canAddItem('Document')
             && $withtemplate < 2
         ) {
-           // Restrict entity for knowbase
+            // Restrict entity for knowbase
             $entities = "";
             $entity   = $_SESSION["glpiactive_entity"];
 
@@ -798,13 +798,13 @@ TWIG, $twig_params);
         if ($itemtype !== KnowbaseItem::class) {
             $params = parent::getTypeItemsQueryParams($items_id, $itemtype, $noent, $commonwhere);
         } else {
-           //KnowbaseItem case: no entity restriction, we'll manage it here
+            //KnowbaseItem case: no entity restriction, we'll manage it here
             $params = parent::getTypeItemsQueryParams($items_id, $itemtype, true, $commonwhere);
             $params['SELECT'][] = new QueryExpression('-1 AS entity');
             $kb_params = KnowbaseItem::getVisibilityCriteria();
 
             if (!Session::getLoginUserID()) {
-               // Anonymous access
+                // Anonymous access
                 $kb_params['WHERE'] = [
                     'glpi_entities_knowbaseitems.entities_id'    => 0,
                     'glpi_entities_knowbaseitems.is_recursive'   => 1
@@ -877,12 +877,12 @@ TWIG, $twig_params);
      */
     public function isFromSupportAgent()
     {
-       // If not a CommonITILObject
+        // If not a CommonITILObject
         if (!is_a($this->fields['itemtype'], 'CommonITILObject', true)) {
             return true;
         }
 
-       // Get parent item
+        // Get parent item
         $commonITILObject = new $this->fields['itemtype']();
         $commonITILObject->getFromDB($this->fields['items_id']);
 
@@ -891,17 +891,17 @@ TWIG, $twig_params);
         $roles = $actors[$user_id] ?? [];
 
         if (in_array(CommonITILActor::ASSIGN, $roles)) {
-           // The author is assigned -> support agent
+            // The author is assigned -> support agent
             return true;
-        } else if (
+        } elseif (
             in_array(CommonITILActor::OBSERVER, $roles)
             || in_array(CommonITILActor::REQUESTER, $roles)
         ) {
-           // The author is an observer or a requester -> not a support agent
+            // The author is an observer or a requester -> not a support agent
             return false;
         } else {
-           // The author is not an actor of the ticket -> he was most likely a
-           // support agent that is no longer assigned to the ticket
+            // The author is not an actor of the ticket -> he was most likely a
+            // support agent that is no longer assigned to the ticket
             return true;
         }
     }

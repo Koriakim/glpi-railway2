@@ -44,7 +44,7 @@ class Supplier extends CommonDBTM
 {
     use AssetImage;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory           = true;
 
     public static $rightname           = 'contact_enterprise';
@@ -360,7 +360,7 @@ class Supplier extends CommonDBTM
             'datatype'           => 'bool'
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
 
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
@@ -460,7 +460,7 @@ class Supplier extends CommonDBTM
                     ]
                 ];
 
-               // Set $linktype for entity restriction AND link to search engine
+                // Set $linktype for entity restriction AND link to search engine
                 if ($itemtype == 'Cartridge') {
                     $criteria['INNER JOIN']['glpi_cartridgeitems'] = [
                         'ON' => [
@@ -544,7 +544,7 @@ class Supplier extends CommonDBTM
                      Toolbox::append_params($opt) . "'>" . __s('Device list') . "</a></td>";
 
                     echo "<td class='center'>-</td><td class='center'>-</td></tr>";
-                } else if ($nb) {
+                } elseif ($nb) {
                     $prem = true;
                     foreach ($iterator as $data) {
                         $name = $data[$linktype::getNameField()];

@@ -51,7 +51,7 @@ class StatDataTicketAverageTime extends StatDataAlwaysDisplay
         $avgclosed     = $this->getDataByType($params, "inter_avgclosedtime");
         $avgactiontime = $this->getDataByType($params, "inter_avgactiontime");
 
-       // Convert to hours
+        // Convert to hours
         foreach ($avgsolved as &$val) {
             $val = round($val / HOUR_TIMESTAMP, 2);
         }
@@ -82,6 +82,6 @@ class StatDataTicketAverageTime extends StatDataAlwaysDisplay
 
     public function getTitle(): string
     {
-        return __('Average time') . " - " .  _n('Hour', 'Hours', Session::getPluralNumber());
+        return __('Average time') . " - " . _n('Hour', 'Hours', Session::getPluralNumber());
     }
 }

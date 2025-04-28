@@ -54,13 +54,13 @@ class BooleanType extends AbstractType
         ];
         // language=Twig
         return TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {% if field_options.display_as_slider %}
-                {{ fields.sliderField(name, value, label, field_options) }}
-            {% else %}
-                {{ fields.dropdownYesNo(name, value, label, field_options) }}
-            {% endif %}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% if field_options.display_as_slider %}
+                            {{ fields.sliderField(name, value, label, field_options) }}
+                        {% else %}
+                            {{ fields.dropdownYesNo(name, value, label, field_options) }}
+                        {% endif %}
+            TWIG, $twig_params);
     }
 
     public function normalizeValue(mixed $value): ?bool

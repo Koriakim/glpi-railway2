@@ -189,25 +189,25 @@ class Itil_Project extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                    {% import 'components/form/fields_macros.html.twig' as fields %}
-                    <div class="mb-3">
-                        <form method="post" action="{{ 'Itil_Project'|itemtype_form_path }}">
-                            <input type="hidden" name="projects_id" value="{{ ID }}"/>
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"/>
-                            <div class="d-flex">
-                                {{ fields.dropdownItemsFromItemtypes('items_id', null, {
-                                    add_field_class: 'd-inline',
-                                    no_label: true,
-                                    itemtypes: config('itil_types'),
-                                    used: used,
-                                }) }}
-                                <div>
-                                    <button class="btn btn-primary ms-3" type="submit" name="add" value="">{{ btn_msg }}</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-TWIG, $twig_params);
+                                    {% import 'components/form/fields_macros.html.twig' as fields %}
+                                    <div class="mb-3">
+                                        <form method="post" action="{{ 'Itil_Project'|itemtype_form_path }}">
+                                            <input type="hidden" name="projects_id" value="{{ ID }}"/>
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"/>
+                                            <div class="d-flex">
+                                                {{ fields.dropdownItemsFromItemtypes('items_id', null, {
+                                                    add_field_class: 'd-inline',
+                                                    no_label: true,
+                                                    itemtypes: config('itil_types'),
+                                                    used: used,
+                                                }) }}
+                                                <div>
+                                                    <button class="btn btn-primary ms-3" type="submit" name="add" value="">{{ btn_msg }}</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                TWIG, $twig_params);
         }
 
         $cols = CommonITILObject::getCommonDatatableColumns();
@@ -307,26 +307,26 @@ TWIG, $twig_params);
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                    {% import 'components/form/fields_macros.html.twig' as fields %}
-                    <div class="mb-3">
-                        <form method="post" action="{{ 'Itil_Project'|itemtype_form_path }}">
-                            <input type="hidden" name="itemtype" value="{{ itemtype }}"/>
-                            <input type="hidden" name="items_id" value="{{ items_id }}"/>
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"/>
-                            <div class="d-flex">
-                                {{ fields.dropdownField('Project', 'projects_id', '', null, {
-                                    add_field_class: 'd-inline',
-                                    no_label: true,
-                                    used: used,
-                                    entity: entities_id,
-                                }) }}
-                            </div>
-                            <div>
-                                <button class="btn btn-primary ms-3" type="submit" name="add" value="">{{ btn_msg }}</button>
-                            </div>
-                        </form>
-                    </div>
-TWIG, $twig_params);
+                                    {% import 'components/form/fields_macros.html.twig' as fields %}
+                                    <div class="mb-3">
+                                        <form method="post" action="{{ 'Itil_Project'|itemtype_form_path }}">
+                                            <input type="hidden" name="itemtype" value="{{ itemtype }}"/>
+                                            <input type="hidden" name="items_id" value="{{ items_id }}"/>
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}"/>
+                                            <div class="d-flex">
+                                                {{ fields.dropdownField('Project', 'projects_id', '', null, {
+                                                    add_field_class: 'd-inline',
+                                                    no_label: true,
+                                                    used: used,
+                                                    entity: entities_id,
+                                                }) }}
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary ms-3" type="submit" name="add" value="">{{ btn_msg }}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                TWIG, $twig_params);
         }
 
         $entries_to_fetch = [];

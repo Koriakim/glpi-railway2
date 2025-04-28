@@ -85,29 +85,29 @@ trait TreeBrowse
         $no_cat_found  = __s("No category found");
 
         $JS = <<<JAVASCRIPT
-        const loadingindicator  = $(`<span class="spinner-border spinner-border position-absolute m-5 start-50" role="status" aria-hidden="true"></span>`);
-        $('#items_list').html(loadingindicator);
-        window.loadNode = function(cat_id) {
-            $('#items_list').html(loadingindicator);
-            $('#items_list').load('$ajax_url', {
-                'action': 'getItemslist',
-                'cat_id': cat_id,
-                'itemtype': '$itemtype',
-                'start': $start,
-                'browse': $browse,
-                'is_deleted': $is_deleted,
-                'unpublished': $unpublished,
-                'criteria': $criteria,
-                'sort': $sort,
-                'order': $order,
-            });
-        };
-JAVASCRIPT;
+                    const loadingindicator  = $(`<span class="spinner-border spinner-border position-absolute m-5 start-50" role="status" aria-hidden="true"></span>`);
+                    $('#items_list').html(loadingindicator);
+                    window.loadNode = function(cat_id) {
+                        $('#items_list').html(loadingindicator);
+                        $('#items_list').load('$ajax_url', {
+                            'action': 'getItemslist',
+                            'cat_id': cat_id,
+                            'itemtype': '$itemtype',
+                            'start': $start,
+                            'browse': $browse,
+                            'is_deleted': $is_deleted,
+                            'unpublished': $unpublished,
+                            'criteria': $criteria,
+                            'sort': $sort,
+                            'order': $order,
+                        });
+                    };
+            JAVASCRIPT;
 
         if ($update) {
             $JS .= <<<JAVASCRIPT
-            $('#tree_category').fancytree('option', 'source', {$category_list});
-JAVASCRIPT;
+                            $('#tree_category').fancytree('option', 'source', {$category_list});
+                JAVASCRIPT;
 
             $params['criteria'][] = $_SESSION['treebrowse'][$itemtype];
             $results = Search::getDatas($itemtype, $params);
@@ -115,58 +115,58 @@ JAVASCRIPT;
             Search::displayData($results);
         } else {
             $JS .= <<<JAVASCRIPT
-            $(function() {
-                $('#tree_category').fancytree({
-                    // load plugins
-                    extensions: ['filter', 'glyph', 'persist'],
+                            $(function() {
+                                $('#tree_category').fancytree({
+                                    // load plugins
+                                    extensions: ['filter', 'glyph', 'persist'],
 
-                    // Scroll node into visible area, when focused by keyboard
-                    autoScroll: true,
+                                    // Scroll node into visible area, when focused by keyboard
+                                    autoScroll: true,
 
-                    // enable font-awesome icons
-                    glyph: {
-                        preset: "awesome5",
-                        map: {}
-                    },
+                                    // enable font-awesome icons
+                                    glyph: {
+                                        preset: "awesome5",
+                                        map: {}
+                                    },
 
-                    persist: {
-                        cookiePrefix: '$itemtype',
-                        expandLazy: true,
-                        overrideSource: true,
-                        store: "auto"
-                    },
+                                    persist: {
+                                        cookiePrefix: '$itemtype',
+                                        expandLazy: true,
+                                        overrideSource: true,
+                                        store: "auto"
+                                    },
 
-                    // load json data
-                    source: {$category_list},
+                                    // load json data
+                                    source: {$category_list},
 
-                    // filter plugin options
-                    filter: {
-                        mode: "hide", // remove unmatched nodes
-                        autoExpand: true, // if results found in children, auto-expand parent
-                        nodata: '{$no_cat_found}', // message when no data found
-                    },
+                                    // filter plugin options
+                                    filter: {
+                                        mode: "hide", // remove unmatched nodes
+                                        autoExpand: true, // if results found in children, auto-expand parent
+                                        nodata: '{$no_cat_found}', // message when no data found
+                                    },
 
-                    // events
-                    activate: function(event, data) {
-                        var node = data.node;
-                        var key  = node.key;
+                                    // events
+                                    activate: function(event, data) {
+                                        var node = data.node;
+                                        var key  = node.key;
 
-                        window.loadNode(key);
-                    },
+                                        window.loadNode(key);
+                                    },
 
-                });
+                                });
 
-                var tree = $.ui.fancytree.getTree("#tree_category")
-                if (tree.activeNode === null) {
-                    tree.activateKey(-1);
-                }
-                $(document).on('keyup', '#browser_tree_search', function() {
-                    var search_text = $(this).val();
-                    $.ui.fancytree.getTree("#tree_category").filterNodes(search_text);
-                });
-            });
+                                var tree = $.ui.fancytree.getTree("#tree_category")
+                                if (tree.activeNode === null) {
+                                    tree.activateKey(-1);
+                                }
+                                $(document).on('keyup', '#browser_tree_search', function() {
+                                    var search_text = $(this).val();
+                                    $.ui.fancytree.getTree("#tree_category").filterNodes(search_text);
+                                });
+                            });
 
-JAVASCRIPT;
+                JAVASCRIPT;
             echo "<div id='tree_browse'>
             <div class='browser_tree d-flex flex-column'>
                 <input type='text' class='browser_tree_search' placeholder='" . __s("Search…") . "' id='browser_tree_search'>

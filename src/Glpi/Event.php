@@ -39,7 +39,6 @@ use Ajax;
 use CommonDBTM;
 use CommonGLPI;
 use CronTask;
-use DBConnection;
 use Document;
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\QueryExpression;
@@ -89,7 +88,7 @@ class Event extends CommonDBTM
 
     public function post_addItem()
     {
-       //only log in file, important events (connections and critical events; TODO : we need to add a general option to filter this in 9.1)
+        //only log in file, important events (connections and critical events; TODO : we need to add a general option to filter this in 9.1)
         if (isset($this->fields['level']) && $this->fields['level'] <= 3) {
             $message_type = "";
             if (isset($this->fields['type']) && $this->fields['type'] != 'system') {
@@ -269,16 +268,16 @@ class Event extends CommonDBTM
          */
         global $CFG_GLPI, $DB;
 
-       // Show events from $result in table form
-        list($logItemtype, $logService) = self::logArray();
+        // Show events from $result in table form
+        [$logItemtype, $logService] = self::logArray();
 
-       // define default sorting
+        // define default sorting
         $usersearch = "";
         if (!empty($user)) {
             $usersearch = $user . " ";
         }
 
-       // Query Database
+        // Query Database
         $iterator = $DB->request([
             'FROM'   => 'glpi_events',
             'WHERE'  => ['message' => ['LIKE', $usersearch . '%']],
@@ -286,10 +285,10 @@ class Event extends CommonDBTM
             'LIMIT'  => (int)$_SESSION['glpilist_limit']
         ]);
 
-       // Number of results
+        // Number of results
         $number = count($iterator);
 
-       // No Events in database
+        // No Events in database
         if ($number < 1) {
             $twig_params = [
                 'class'        => 'table table-hover table-bordered',
@@ -353,7 +352,7 @@ class Event extends CommonDBTM
                 }
             }
 
-           // Capture the 'echo' output of the function
+            // Capture the 'echo' output of the function
             ob_start();
             self::displayItemLogID($type, $items_id);
             $item_log_id = ob_get_clean();
@@ -520,7 +519,7 @@ class Event extends CommonDBTM
                 'display' => false,
                 'display_emptychoice' => true
             ]);
-        } else if ($field === 'type') {
+        } elseif ($field === 'type') {
             $value = $values['type'];
             if (empty($value)) {
                 $value = 0;
@@ -543,7 +542,7 @@ class Event extends CommonDBTM
             }
             $services = self::logArray()[1];
             return $services[$value] ?? $value;
-        } else if ($field === 'items_id') {
+        } elseif ($field === 'items_id') {
             $type = $values['type'] ?? null;
             if (
                 ((int) $values['items_id']) > 0
@@ -558,7 +557,7 @@ class Event extends CommonDBTM
             }
             // Show the ID at least if it is valid (There may be a plugin that is disabled)
             return ((int) $values['items_id']) > 0 ? $values['items_id'] : NOT_AVAILABLE;
-        } else if ($field === 'type') {
+        } elseif ($field === 'type') {
             $value = $values['type'];
             if (empty($value)) {
                 return NOT_AVAILABLE;

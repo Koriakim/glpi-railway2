@@ -133,25 +133,25 @@ class Contract_User extends CommonDBRelation
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'Contract_Item'|itemtype_form_path }}">
-                        <input type="hidden" name="itemtype" value="{{ get_class(user) }}">
-                        <input type="hidden" name="items_id" value="{{ user.getID() }}">
-                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                        <div class="d-flex">
-                            {{ fields.dropdownField('Contract', 'contracts_id', 0, null, {
-                                used: used,
-                                expired: false,
-                            }) }}
-                            {% set btn %}
-                                <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
-                            {% endset %}
-                            {{ fields.htmlField('', btn, null) }}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'Contract_Item'|itemtype_form_path }}">
+                                        <input type="hidden" name="itemtype" value="{{ get_class(user) }}">
+                                        <input type="hidden" name="items_id" value="{{ user.getID() }}">
+                                        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                        <div class="d-flex">
+                                            {{ fields.dropdownField('Contract', 'contracts_id', 0, null, {
+                                                used: used,
+                                                expired: false,
+                                            }) }}
+                                            {% set btn %}
+                                                <button type="submit" name="add" class="btn btn-primary">{{ btn_label }}</button>
+                                            {% endset %}
+                                            {{ fields.htmlField('', btn, null) }}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $entries = [];

@@ -461,7 +461,7 @@ class FormMigration extends AbstractPluginMigration
                 'default_value'               => $default_value,
                 'extra_data'                  => $extra_data,
                 'uuid'                        => $raw_question['uuid']
-            ], fn ($value) => $value !== null);
+            ], fn($value) => $value !== null);
 
             $question = $this->importItem(
                 Question::class,
@@ -943,7 +943,7 @@ class FormMigration extends AbstractPluginMigration
             $configurable_fields = (new $destinationClass())->getConfigurableFields();
             $configurable_fields = array_filter(
                 $configurable_fields,
-                fn ($field) => $field instanceof ITILActorField
+                fn($field) => $field instanceof ITILActorField
             );
 
             foreach ($configurable_fields as $configurable_field) {

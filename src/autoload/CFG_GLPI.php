@@ -48,16 +48,16 @@ $CFG_GLPI['app_name'] = 'GLPI';
 
 // dictionnaries
 $CFG_GLPI['languages'] = [
-   //Code       Name in native lang          LANG FILE      jquery tinymce english name            standard plural number
+    //Code       Name in native lang          LANG FILE      jquery tinymce english name            standard plural number
     'ar_SA'  => ['العَرَبِيَّةُ',                   'ar_SA.mo',    'ar',    'ar', 'arabic',               103],
-   //'az_AZ'  => ['Azerbaijani',               'az_AZ.mo',    'az',    'az', 'azeri',                2], //asked on transifex, not present
+    //'az_AZ'  => ['Azerbaijani',               'az_AZ.mo',    'az',    'az', 'azeri',                2], //asked on transifex, not present
     'bg_BG'  => ['Български',                 'bg_BG.mo',    'bg',    'bg', 'bulgarian',            2],
     'id_ID'  => ['Bahasa Indonesia',          'id_ID.mo',    'id',    'id', 'indonesian',           2],
     'ms_MY'  => ['Bahasa Melayu',             'ms_MY.mo',    'ms',    'ms', 'malay',                2],
     'ca_ES'  => ['Català',                    'ca_ES.mo',    'ca',    'ca', 'catalan',              2], // ca_CA
     'cs_CZ'  => ['Čeština',                   'cs_CZ.mo',    'cs',    'cs', 'czech',                10],
     'de_DE'  => ['Deutsch',                   'de_DE.mo',    'de',    'de', 'german',               2],
-    'da_DK'  => ['Dansk',                     'da_DK.mo',    'da',    'da', 'danish',               2]     , // dk_DK
+    'da_DK'  => ['Dansk',                     'da_DK.mo',    'da',    'da', 'danish',               2], // dk_DK
     'et_EE'  => ['Eesti',                     'et_EE.mo',    'et',    'et', 'estonian',             2], // ee_ET
     'en_GB'  => ['English',                   'en_GB.mo',    'en-GB', 'en', 'english',              2],
     'en_US'  => ['English (US)',              'en_US.mo',    'en-GB', 'en', 'english',              2],
@@ -75,7 +75,7 @@ $CFG_GLPI['languages'] = [
     'gl_ES'  => ['Galego',                    'gl_ES.mo',    'gl',    'gl', 'galician',             2],
     'el_GR'  => ['Ελληνικά',                  'el_GR.mo',    'el',    'el', 'greek',                2], // el_EL
     'he_IL'  => ['עברית',                     'he_IL.mo',    'he',    'he', 'hebrew',               2], // he_HE
-    'hi_IN'  => ['हिन्दी',                     'hi_IN.mo',    'hi',    'hi_IN', 'hindi' ,            2],
+    'hi_IN'  => ['हिन्दी',                     'hi_IN.mo',    'hi',    'hi_IN', 'hindi',            2],
     'hr_HR'  => ['Hrvatski',                  'hr_HR.mo',    'hr',    'hr', 'croatian',             2],
     'hu_HU'  => ['Magyar',                    'hu_HU.mo',    'hu',    'hu', 'hungarian',            2],
     'it_IT'  => ['Italiano',                  'it_IT.mo',    'it',    'it', 'italian',              2],
@@ -266,7 +266,7 @@ $CFG_GLPI["networkport_types"]            = ['Computer', 'Monitor', 'NetworkEqui
 ];
 
 // Warning : the order is used for displaying different NetworkPort types ! Keep it !
-$CFG_GLPI['networkport_instantiations']   = ['NetworkPortEthernet', 'NetworkPortWifi' ,
+$CFG_GLPI['networkport_instantiations']   = ['NetworkPortEthernet', 'NetworkPortWifi',
     'NetworkPortAggregate', 'NetworkPortAlias',
     'NetworkPortDialup',   'NetworkPortLocal',
     'NetworkPortFiberchannel'

@@ -57,41 +57,41 @@ abstract class AbstractQuestionTypeShortAnswer extends AbstractQuestionType impl
     public function getFormEditorJsOptions(): string
     {
         return <<<JS
-            {
-                "extractDefaultValue": function (question) {
-                    const GlpiFormEditorConvertedExtractedDefaultValue = $("[data-glpi-form-editor-container]")
-                        .data('EditorConvertedExtractedDefaultValue')
-                    ;
+                {
+                    "extractDefaultValue": function (question) {
+                        const GlpiFormEditorConvertedExtractedDefaultValue = $("[data-glpi-form-editor-container]")
+                            .data('EditorConvertedExtractedDefaultValue')
+                        ;
 
-                    const input = question.find('[data-glpi-form-editor-question-type-specific]')
-                        .find('[name="default_value"], [data-glpi-form-editor-original-name="default_value"]');
+                        const input = question.find('[data-glpi-form-editor-question-type-specific]')
+                            .find('[name="default_value"], [data-glpi-form-editor-original-name="default_value"]');
 
-                    return new GlpiFormEditorConvertedExtractedDefaultValue(
-                        GlpiFormEditorConvertedExtractedDefaultValue.DATATYPE.STRING,
-                        input.val()
-                    );
-                },
-                "convertDefaultValue": function (question, value) {
-                    const GlpiFormEditorConvertedExtractedDefaultValue = $("[data-glpi-form-editor-container]")
-                        .data('EditorConvertedExtractedDefaultValue')
-                    ;
+                        return new GlpiFormEditorConvertedExtractedDefaultValue(
+                            GlpiFormEditorConvertedExtractedDefaultValue.DATATYPE.STRING,
+                            input.val()
+                        );
+                    },
+                    "convertDefaultValue": function (question, value) {
+                        const GlpiFormEditorConvertedExtractedDefaultValue = $("[data-glpi-form-editor-container]")
+                            .data('EditorConvertedExtractedDefaultValue')
+                        ;
 
-                    if (value == null) {
-                        return '';
+                        if (value == null) {
+                            return '';
+                        }
+
+                        // Only accept string values
+                        if (value.getDatatype() !== GlpiFormEditorConvertedExtractedDefaultValue.DATATYPE.STRING) {
+                            return '';
+                        }
+
+                        const input = question.find('[data-glpi-form-editor-question-type-specific]')
+                            .find('[name="default_value"], [data-glpi-form-editor-original-name="default_value"]');
+
+                        return input.val(value.getDefaultValue()).val();
                     }
-
-                    // Only accept string values
-                    if (value.getDatatype() !== GlpiFormEditorConvertedExtractedDefaultValue.DATATYPE.STRING) {
-                        return '';
-                    }
-
-                    const input = question.find('[data-glpi-form-editor-question-type-specific]')
-                        .find('[name="default_value"], [data-glpi-form-editor-original-name="default_value"]');
-
-                    return input.val(value.getDefaultValue()).val();
                 }
-            }
-        JS;
+            JS;
     }
 
     /**
@@ -108,18 +108,18 @@ abstract class AbstractQuestionTypeShortAnswer extends AbstractQuestionType impl
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            <input
-                class="form-control"
-                type="{{ input_type }}"
-                name="default_value"
-                placeholder="{{ input_placeholder }}"
-                value="{{ question is not null ? question.fields.default_value : '' }}"
-                aria-label="{{ aria_label }}"
-                {% for key, value in attributes %}
-                    {{ key }}="{{ value|e('html_attr') }}"
-                {% endfor %}
-            />
-TWIG;
+                        <input
+                            class="form-control"
+                            type="{{ input_type }}"
+                            name="default_value"
+                            placeholder="{{ input_placeholder }}"
+                            value="{{ question is not null ? question.fields.default_value : '' }}"
+                            aria-label="{{ aria_label }}"
+                            {% for key, value in attributes %}
+                                {{ key }}="{{ value|e('html_attr') }}"
+                            {% endfor %}
+                        />
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -145,18 +145,18 @@ TWIG;
         }
 
         $template = <<<TWIG
-            <input
-                type="{{ input_type }}"
-                class="form-control"
-                name="{{ question.getEndUserInputName() }}"
-                value="{{ default_value }}"
-                aria-label="{{ label }}"
-                {{ question.fields.is_mandatory ? 'required' : '' }}
-                {% for key, value in attributes %}
-                    {{ key }}="{{ value|e('html_attr') }}"
-                {% endfor %}
-            >
-TWIG;
+                        <input
+                            type="{{ input_type }}"
+                            class="form-control"
+                            name="{{ question.getEndUserInputName() }}"
+                            value="{{ default_value }}"
+                            aria-label="{{ label }}"
+                            {{ question.fields.is_mandatory ? 'required' : '' }}
+                            {% for key, value in attributes %}
+                                {{ key }}="{{ value|e('html_attr') }}"
+                            {% endfor %}
+                        >
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

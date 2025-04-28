@@ -42,7 +42,7 @@ use Glpi\DBAL\QueryFunction;
  **/
 class ReservationItem extends CommonDBChild
 {
-   /// From CommonDBChild
+    /// From CommonDBChild
     public static $itemtype          = 'itemtype';
     public static $items_id          = 'items_id';
 
@@ -50,7 +50,7 @@ class ReservationItem extends CommonDBChild
 
     public static $rightname                = 'reservation';
 
-    const RESERVEANITEM              = 1024;
+    public const RESERVEANITEM              = 1024;
 
     public $get_item_to_display_tab  = false;
     public $showdebug                = false;
@@ -183,7 +183,7 @@ class ReservationItem extends CommonDBChild
         ];
 
         $loc = Location::rawSearchOptionsToAdd();
-       // Force massive actions to false
+        // Force massive actions to false
         foreach ($loc as &$val) {
             $val['massiveaction'] = false;
         }
@@ -293,7 +293,7 @@ class ReservationItem extends CommonDBChild
             return false;
         }
         if ($item->getID()) {
-           // Recursive type case => need entity right
+            // Recursive type case => need entity right
             if ($item->isRecursive()) {
                 if (!Session::haveAccessToEntity($item->fields["entities_id"])) {
                     return false;
@@ -323,29 +323,29 @@ class ReservationItem extends CommonDBChild
 
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            <form id="reservation_actions" class="d-flex justify-content-center mt-3" action="{{ 'ReservationItem'|itemtype_form_path }}" method="post">
-                <input type="hidden" name="items_id" value="{{ item.getID() }}">
-                <input type="hidden" name="itemtype" value="{{ get_class(item) }}">
-                <input type="hidden" name="entities_id" value="{{ item.getEntityID() }}">
-                <input type="hidden" name="is_recursive" value="{{ item.isRecursive() }}">
-                <input type="hidden" name="is_active" value="{{ reservable ? (toggle_state ? 0 : 1) : 1 }}">
-                {% if reservable %}
-                    <button name="update" class="btn btn-{{ toggle_state ? 'danger' : 'primary' }} mx-1">
-                        <i class="{{ toggle_state ? 'ti ti-toggle-right' : 'ti ti-toggle-left' }} me-2"></i>
-                        {{ toggle_state_label }}
-                    </button>
-                    <input type="hidden" name="id" value="{{ id }}">
-                    <script>
-                        $(() => $('#reservation_actions button[name="purge"]').on('click', () => confirm('{{ purge_warning }}')));
-                    </script>
-                {% endif %}
-                <button name="{{ toggle_reservable ? 'purge' : 'add' }}" class="btn btn-{{ toggle_reservable ? 'danger' : 'primary' }} mx-1">
-                    <i class="{{ toggle_reservable ? 'ti ti-ban' : 'ti ti-check' }} me-2"></i>
-                    {{ toggle_reservable_label }}
-                </button>
-                <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-            </form>
-TWIG, $twig_params);
+                        <form id="reservation_actions" class="d-flex justify-content-center mt-3" action="{{ 'ReservationItem'|itemtype_form_path }}" method="post">
+                            <input type="hidden" name="items_id" value="{{ item.getID() }}">
+                            <input type="hidden" name="itemtype" value="{{ get_class(item) }}">
+                            <input type="hidden" name="entities_id" value="{{ item.getEntityID() }}">
+                            <input type="hidden" name="is_recursive" value="{{ item.isRecursive() }}">
+                            <input type="hidden" name="is_active" value="{{ reservable ? (toggle_state ? 0 : 1) : 1 }}">
+                            {% if reservable %}
+                                <button name="update" class="btn btn-{{ toggle_state ? 'danger' : 'primary' }} mx-1">
+                                    <i class="{{ toggle_state ? 'ti ti-toggle-right' : 'ti ti-toggle-left' }} me-2"></i>
+                                    {{ toggle_state_label }}
+                                </button>
+                                <input type="hidden" name="id" value="{{ id }}">
+                                <script>
+                                    $(() => $('#reservation_actions button[name="purge"]').on('click', () => confirm('{{ purge_warning }}')));
+                                </script>
+                            {% endif %}
+                            <button name="{{ toggle_reservable ? 'purge' : 'add' }}" class="btn btn-{{ toggle_reservable ? 'danger' : 'primary' }} mx-1">
+                                <i class="{{ toggle_reservable ? 'ti ti-ban' : 'ti ti-check' }} me-2"></i>
+                                {{ toggle_reservable_label }}
+                            </button>
+                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                        </form>
+            TWIG, $twig_params);
     }
 
     public function showForm($ID, array $options = [])
@@ -415,18 +415,18 @@ TWIG, $twig_params);
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% if not reserve %}
-                <div id="makesearch" class="text-center mb-3">
-                    <a class="btn btn-secondary" href="{{ path('front/reservation.php?reservationitems_id=0') }}">
-                        <i class="{{ 'Planning'|itemtype_icon }} me-2"></i>{{ view_calendar_label }}
-                    </a>
-                    <a class="btn btn-secondary mw-100 d-inline-block text-truncate" onClick="$('#viewresasearch').toggleClass('d-none');$('#makesearch').toggleClass('d-none')">
-                        <i class="ti ti-search me-2"></i>{{ find_free_item_label }}
-                    </a>
-                </div>
-                <div id="viewresasearch" class="d-none text-center">
-            {% endif %}
-TWIG, $twig_params);
+                        {% if not reserve %}
+                            <div id="makesearch" class="text-center mb-3">
+                                <a class="btn btn-secondary" href="{{ path('front/reservation.php?reservationitems_id=0') }}">
+                                    <i class="{{ 'Planning'|itemtype_icon }} me-2"></i>{{ view_calendar_label }}
+                                </a>
+                                <a class="btn btn-secondary mw-100 d-inline-block text-truncate" onClick="$('#viewresasearch').toggleClass('d-none');$('#makesearch').toggleClass('d-none')">
+                                    <i class="ti ti-search me-2"></i>{{ find_free_item_label }}
+                                </a>
+                            </div>
+                            <div id="viewresasearch" class="d-none text-center">
+                        {% endif %}
+            TWIG, $twig_params);
 
         $iterator = $DB->request([
             'SELECT'          => 'itemtype',
@@ -597,7 +597,7 @@ TWIG, $twig_params);
 
                 $typename = $item::getTypeName();
                 if ($itemtype === Peripheral::class) {
-                     $item->getFromDB($row['items_id']);
+                    $item->getFromDB($row['items_id']);
                     if (
                         isset($item->fields["peripheraltypes_id"])
                          && ((int) $item->fields["peripheraltypes_id"] !== 0)
@@ -724,7 +724,7 @@ TWIG, $twig_params);
         foreach (Entity::getEntitiesToNotify('use_reservations_alert') as $entity => $value) {
             $secs = $value * HOUR_TIMESTAMP;
 
-           // Reservation already begin and reservation ended in $value hours
+            // Reservation already begin and reservation ended in $value hours
             $criteria = [
                 'SELECT' => [
                     'glpi_reservationitems.*',
@@ -804,7 +804,7 @@ TWIG, $twig_params);
                         $message
                     ));
                 } else {
-                   //TRANS: %1$s is a name, %2$s is text of message
+                    //TRANS: %1$s is a name, %2$s is text of message
                     Session::addMessageAfterRedirect(htmlescape(sprintf(
                         __('%1$s: %2$s'),
                         Dropdown::getDropdownName(
@@ -825,7 +825,7 @@ TWIG, $twig_params);
                 }
             } else {
                 $entityname = Dropdown::getDropdownName('glpi_entities', $entity);
-               //TRANS: %s is entity name
+                //TRANS: %s is entity name
                 $msg = sprintf(__('%1$s: %2$s'), $entityname, __('Send reservation alert failed'));
                 if ($task) {
                     $task->log($msg);
@@ -917,7 +917,7 @@ TWIG, $twig_params);
             $result = self::getAvailableItems($post['idtable']);
 
             if ($result->count() === 0) {
-                 echo __s('No reservable item!');
+                echo __s('No reservable item!');
             } else {
                 $items = [];
                 foreach ($result as $row) {

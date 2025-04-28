@@ -75,13 +75,13 @@ class ManualLink extends CommonDBChild
                 ]
             );
             if (Link::canView()) {
-                 $count += countElementsInTable(
-                     ['glpi_links_itemtypes', 'glpi_links'],
-                     [
-                         'glpi_links_itemtypes.links_id'  => new QueryExpression(DBmysql::quoteName('glpi_links.id')),
-                         'glpi_links_itemtypes.itemtype'  => $item->getType()
-                     ] + getEntitiesRestrictCriteria('glpi_links', '', '', false)
-                 );
+                $count += countElementsInTable(
+                    ['glpi_links_itemtypes', 'glpi_links'],
+                    [
+                        'glpi_links_itemtypes.links_id'  => new QueryExpression(DBmysql::quoteName('glpi_links.id')),
+                        'glpi_links_itemtypes.itemtype'  => $item->getType()
+                    ] + getEntitiesRestrictCriteria('glpi_links', '', '', false)
+                );
             }
         }
         return self::createTabEntry(_n('Link', 'Links', Session::getPluralNumber()), $count, $item::getType());
@@ -228,7 +228,7 @@ class ManualLink extends CommonDBChild
             // Forces font family values to fallback on ".fab" family font if char is not available in ".fas" family.
             $html .= '<i class="fs-2 fa ' . htmlescape($fields['icon']) . '"'
             . ' style="font-family:\'Font Awesome 6 Free\', \'Font Awesome 6 Brands\';"></i>&nbsp;';
-        } else if (str_starts_with($fields['icon'] ?? '', 'ti-')) {
+        } elseif (str_starts_with($fields['icon'] ?? '', 'ti-')) {
             $html .= '<i class="fs-2 ti ' . htmlescape($fields['icon']) . '"></i>&nbsp;';
         }
         $html .= htmlescape(!empty($fields['name']) ? $fields['name'] : $fields['url']);

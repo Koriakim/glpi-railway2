@@ -286,12 +286,12 @@ final class RichText
 
         if ($p['text_maxsize'] > 0 && $content_size > $p['text_maxsize']) {
             $content = <<<HTML
-<div class="long_text">$content
-    <p class='read_more'>
-        <span class='read_more_button'>...</span>
-    </p>
-</div>
-HTML;
+                <div class="long_text">$content
+                    <p class='read_more'>
+                        <span class='read_more_button'>...</span>
+                    </p>
+                </div>
+                HTML;
             $content .= Html::scriptBlock('$(function() { read_more(); });');
         }
 
@@ -470,47 +470,47 @@ HTML;
         $zoom_title     = json_encode(__('Zoom in/out'));
 
         $js = <<<JAVASCRIPT
-      (function($) {
-         $('.pswp-img{$p['rand']}').on('click', 'figure', function(event) {
-            event.preventDefault();
+                  (function($) {
+                     $('.pswp-img{$p['rand']}').on('click', 'figure', function(event) {
+                        event.preventDefault();
 
-            const options = {
-                index: $(this).index(),
-                bgOpacity: 0.7,
-                dataSource: {$items_json},
-                index: $(this).closest('figure').parent().index(),
+                        const options = {
+                            index: $(this).index(),
+                            bgOpacity: 0.7,
+                            dataSource: {$items_json},
+                            index: $(this).closest('figure').parent().index(),
 
-                close: {$close_json},
-                zoom: {$zoom_json},
+                            close: {$close_json},
+                            zoom: {$zoom_json},
 
-                arrowNextTitle: {$next_title},
-                arrowPrevTitle: {$prev_title},
-                closeTitle: {$close_title},
-                downloadTitle: {$download_title},
-                zoomTitle: {$zoom_title},
-            };
-            const gallery = new PhotoSwipe(options);
-            gallery.on(
-               'uiRegister',
-               function () {
-                  this.ui.registerElement({
-                     name: 'download',
-                     isButton: true,
-                     html: '<a class="text-white" target="_blank" download=""><i class="fa-solid fa-download"></i></a>',
-                     order: 8,
-                     onInit: (el, pswp) => {
-                        pswp.on('change', () => {
-                           el.getElementsByTagName('a')[0].href = pswp.currSlide.data.src;
-                        });
-                     }
-                  });
-               }
-            );
-            gallery.init();
-        });
-      })(jQuery);
+                            arrowNextTitle: {$next_title},
+                            arrowPrevTitle: {$prev_title},
+                            closeTitle: {$close_title},
+                            downloadTitle: {$download_title},
+                            zoomTitle: {$zoom_title},
+                        };
+                        const gallery = new PhotoSwipe(options);
+                        gallery.on(
+                           'uiRegister',
+                           function () {
+                              this.ui.registerElement({
+                                 name: 'download',
+                                 isButton: true,
+                                 html: '<a class="text-white" target="_blank" download=""><i class="fa-solid fa-download"></i></a>',
+                                 order: 8,
+                                 onInit: (el, pswp) => {
+                                    pswp.on('change', () => {
+                                       el.getElementsByTagName('a')[0].href = pswp.currSlide.data.src;
+                                    });
+                                 }
+                              });
+                           }
+                        );
+                        gallery.init();
+                    });
+                  })(jQuery);
 
-JAVASCRIPT;
+            JAVASCRIPT;
 
         $out .= Html::scriptBlock($js);
 

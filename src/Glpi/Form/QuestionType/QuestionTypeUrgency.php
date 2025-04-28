@@ -81,13 +81,13 @@ final class QuestionTypeUrgency extends AbstractQuestionType implements UsedAsCr
         // Get the urgency levels
         $urgency_levels = array_combine(
             range(1, 5),
-            array_map(fn ($urgency) => CommonITILObject::getUrgencyName($urgency), range(1, 5))
+            array_map(fn($urgency) => CommonITILObject::getUrgencyName($urgency), range(1, 5))
         );
 
         // Filter out the urgency levels that are not enabled
         $urgency_levels = array_filter(
             $urgency_levels,
-            fn ($key) => (($CFG_GLPI['urgency_mask'] & (1 << $key)) > 0),
+            fn($key) => (($CFG_GLPI['urgency_mask'] & (1 << $key)) > 0),
             ARRAY_FILTER_USE_KEY
         );
 
@@ -98,21 +98,21 @@ final class QuestionTypeUrgency extends AbstractQuestionType implements UsedAsCr
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.dropdownArrayField(
-                'default_value',
-                value,
-                urgency_levels,
-                '',
-                {
-                    'init'                : init,
-                    'no_label'            : true,
-                    'display_emptychoice' : true,
-                    'mb'                  : '',
-                }
-            ) }}
-TWIG;
+                        {{ fields.dropdownArrayField(
+                            'default_value',
+                            value,
+                            urgency_levels,
+                            '',
+                            {
+                                'init'                : init,
+                                'no_label'            : true,
+                                'display_emptychoice' : true,
+                                'mb'                  : '',
+                            }
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -126,21 +126,21 @@ TWIG;
     public function renderEndUserTemplate(Question $question): string
     {
         $template = <<<TWIG
-        {% import 'components/form/fields_macros.html.twig' as fields %}
+                    {% import 'components/form/fields_macros.html.twig' as fields %}
 
-        {{ fields.dropdownArrayField(
-            question.getEndUserInputName(),
-            value,
-            urgency_levels,
-            '',
-            {
-                'no_label'            : true,
-                'display_emptychoice' : true,
-                'aria_label'          : label,
-                'mb'                  : '',
-            }
-        ) }}
-TWIG;
+                    {{ fields.dropdownArrayField(
+                        question.getEndUserInputName(),
+                        value,
+                        urgency_levels,
+                        '',
+                        {
+                            'no_label'            : true,
+                            'display_emptychoice' : true,
+                            'aria_label'          : label,
+                            'mb'                  : '',
+                        }
+                    ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

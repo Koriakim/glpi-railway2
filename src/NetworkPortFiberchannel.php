@@ -34,7 +34,6 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
-use Glpi\Socket;
 
 /**
  * NetworkPortFiberchannel class : Fiberchannel instantiation of NetworkPort
@@ -109,23 +108,23 @@ class NetworkPortFiberchannel extends NetworkPortInstantiation
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
-            {{ fields.textField('wwn', item.fields['wwn'], wwn_label) }}
-            {{ fields.dropdownArrayField('speed', item.fields['speed'], standard_speeds, speed_label, {
-                other: speed
-            }) }}
-            {% do call([item, 'showMacField'], [netport, params]) %}
-            {% set connection_field %}
-                {% do call([item, 'showConnection'], [netport, true]) %}
-            {% endset %}
-            {{ fields.htmlField('', connection_field, connection_label) }}
-            {{ fields.dropdownField(
-                'NetworkPortFiberchannelType',
-                'networkportfiberchanneltypes_id',
-                item.fields['networkportfiberchanneltypes_id'],
-                'NetworkPortFiberchannelType'|itemtype_name
-            ) }}
-TWIG, $twig_params);
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {{ fields.textField('wwn', item.fields['wwn'], wwn_label) }}
+                        {{ fields.dropdownArrayField('speed', item.fields['speed'], standard_speeds, speed_label, {
+                            other: speed
+                        }) }}
+                        {% do call([item, 'showMacField'], [netport, params]) %}
+                        {% set connection_field %}
+                            {% do call([item, 'showConnection'], [netport, true]) %}
+                        {% endset %}
+                        {{ fields.htmlField('', connection_field, connection_label) }}
+                        {{ fields.dropdownField(
+                            'NetworkPortFiberchannelType',
+                            'networkportfiberchanneltypes_id',
+                            item.fields['networkportfiberchanneltypes_id'],
+                            'NetworkPortFiberchannelType'|itemtype_name
+                        ) }}
+            TWIG, $twig_params);
     }
 
     public function rawSearchOptions()
@@ -228,10 +227,10 @@ TWIG, $twig_params);
     {
         $tmp = [
             0     => '',
-                   //TRANS: %d is the speed
+            //TRANS: %d is the speed
             10    => sprintf(__('%d Mbit/s'), 10),
             100   => sprintf(__('%d Mbit/s'), 100),
-                   //TRANS: %d is the speed
+            //TRANS: %d is the speed
             1000  => sprintf(__('%d Gbit/s'), 1),
             10000 => sprintf(__('%d Gbit/s'), 10)
         ];

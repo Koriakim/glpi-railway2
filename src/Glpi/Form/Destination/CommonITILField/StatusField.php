@@ -76,20 +76,20 @@ final class StatusField extends AbstractConfigField
         ];
 
         $template = <<<TWIG
-            {% import 'components/form/fields_macros.html.twig' as fields %}
+                        {% import 'components/form/fields_macros.html.twig' as fields %}
 
-            {{ fields.dropdownArrayField(
-                input_name,
-                value,
-                possible_values,
-                '',
-                options|merge({
-                    'field_class'      : '',
-                    'no_label'         : true,
-                    'mb'               : '',
-                })
-            ) }}
-TWIG;
+                        {{ fields.dropdownArrayField(
+                            input_name,
+                            value,
+                            possible_values,
+                            '',
+                            options|merge({
+                                'field_class'      : '',
+                                'no_label'         : true,
+                                'mb'               : '',
+                            })
+                        ) }}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

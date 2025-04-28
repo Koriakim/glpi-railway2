@@ -42,7 +42,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class Notepad extends CommonDBChild
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype        = 'itemtype';
     public static $items_id        = 'items_id';
     public $dohistory              = false;
@@ -52,7 +52,7 @@ class Notepad extends CommonDBChild
 
     public static function getTypeName($nb = 0)
     {
-       //TRANS: Always plural
+        //TRANS: Always plural
         return _n('Note', 'Notes', $nb);
     }
 

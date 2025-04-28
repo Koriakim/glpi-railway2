@@ -34,7 +34,6 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
-use Glpi\Search\SearchOption;
 use Glpi\RichText\RichText;
 
 /**
@@ -319,7 +318,7 @@ class DropdownTranslation extends CommonDBChild
             }
         } else {
             if ($completename !== $item->fields['completename']) {
-                 $translation->add($tmp);
+                $translation->add($tmp);
             }
         }
 
@@ -363,32 +362,32 @@ class DropdownTranslation extends CommonDBChild
             ];
             // language=twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div id="viewtranslation{{ rand }}"></div>
-                <script>
-                    function viewEditTranslation{{ rand }}(translations_id = -1) {
-                        $('button[name="new_translation"]').toggleClass('d-none', translations_id <= 0);
-                        $('#viewtranslation{{ rand }}').load(
-                            CFG_GLPI['root_doc'] + '/ajax/viewsubitem.php',
-                            {
-                                type: 'DropdownTranslation',
-                                parenttype: '{{ itemtype|e('js') }}',
-                                {{ item_fk }}: {{ items_id }},
-                                id: translations_id
-                            }
-                        );
-                    }
-                    $(() => {
-                        $('#datatable_translations{{ rand }}').on('click', 'tr.cursor-pointer', function() {
-                            viewEditTranslation{{ rand }}($(this).data('id'));
-                        });
-                    });
-                </script>
-                <div class="text-center mb-3">
-                    <button name="new_translation" class="btn btn-primary" type="button" onclick="viewEditTranslation{{ rand }}()">
-                        {{ btn_msg }}
-                    </button>
-                </div>
-TWIG, $twig_params);
+                                <div id="viewtranslation{{ rand }}"></div>
+                                <script>
+                                    function viewEditTranslation{{ rand }}(translations_id = -1) {
+                                        $('button[name="new_translation"]').toggleClass('d-none', translations_id <= 0);
+                                        $('#viewtranslation{{ rand }}').load(
+                                            CFG_GLPI['root_doc'] + '/ajax/viewsubitem.php',
+                                            {
+                                                type: 'DropdownTranslation',
+                                                parenttype: '{{ itemtype|e('js') }}',
+                                                {{ item_fk }}: {{ items_id }},
+                                                id: translations_id
+                                            }
+                                        );
+                                    }
+                                    $(() => {
+                                        $('#datatable_translations{{ rand }}').on('click', 'tr.cursor-pointer', function() {
+                                            viewEditTranslation{{ rand }}($(this).data('id'));
+                                        });
+                                    });
+                                </script>
+                                <div class="text-center mb-3">
+                                    <button name="new_translation" class="btn btn-primary" type="button" onclick="viewEditTranslation{{ rand }}()">
+                                        {{ btn_msg }}
+                                    </button>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $iterator = $DB->request([
@@ -584,8 +583,8 @@ TWIG, $twig_params);
                 ]);
                 // The field is already translated in this language
                 if (count($iterator)) {
-                     $current = $iterator->current();
-                     return $current['value'];
+                    $current = $iterator->current();
+                    return $current['value'];
                 }
             }
             // Get the value coming from the dropdown table

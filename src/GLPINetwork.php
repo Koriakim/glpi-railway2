@@ -158,7 +158,7 @@ class GLPINetwork extends CommonGLPI
             return $informations;
         }
 
-       // Verify registration from registration API
+        // Verify registration from registration API
         $error_message = null;
         $registration_response = Toolbox::callCurl(
             rtrim(GLPI_NETWORK_REGISTRATION_API_URL, '/') . '/info',
@@ -203,9 +203,9 @@ class GLPINetwork extends CommonGLPI
         $informations['is_valid']           = $registration_data['is_valid'];
         if (array_key_exists('validation_message', $registration_data)) {
             $informations['validation_message'] = $registration_data['validation_message'];
-        } else if (!$registration_data['is_valid']) {
+        } elseif (!$registration_data['is_valid']) {
             $informations['validation_message'] = __('The registration key is invalid.');
-        } else if (!$registration_data['subscription']['is_running']) {
+        } elseif (!$registration_data['subscription']['is_running']) {
             $informations['validation_message'] = __('The registration key refers to a terminated subscription.');
         } else {
             $informations['validation_message'] = __('The registration key is valid.');

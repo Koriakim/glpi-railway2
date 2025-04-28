@@ -194,8 +194,8 @@ class Fieldblacklist extends CommonDropdown
                 ) {
                     if ($item = getItemForItemtype($values['itemtype'])) {
                         if (isset($values['field']) && !empty($values['field'])) {
-                             $searchOption = $item->getSearchOptionByField('field', $values['field']);
-                             return $item->getValueToSelect($searchOption, $name, $values[$field], $options);
+                            $searchOption = $item->getSearchOptionByField('field', $values['field']);
+                            return $item->getValueToSelect($searchOption, $name, $values[$field], $options);
                         }
                     }
                 }
@@ -350,12 +350,12 @@ class Fieldblacklist extends CommonDropdown
             foreach ($DB->listFields($target->getTable()) as $field) {
                 $searchOption = $target->getSearchOptionByField('field', $field['Field']);
 
-               // MoYo : do not know why  this part ?
-               // if (empty($searchOption)) {
-               //    if ($table = getTableNameForForeignKeyField($field['Field'])) {
-               //       $searchOption = $target->getSearchOptionByField('field', 'name', $table);
-               //    }
-               // }
+                // MoYo : do not know why  this part ?
+                // if (empty($searchOption)) {
+                //    if ($table = getTableNameForForeignKeyField($field['Field'])) {
+                //       $searchOption = $target->getSearchOptionByField('field', 'name', $table);
+                //    }
+                // }
 
                 if (
                     !empty($searchOption)

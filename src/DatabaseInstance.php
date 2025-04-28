@@ -45,7 +45,7 @@ class DatabaseInstance extends CommonDBTM
         prepareInputForAdd as prepareInputForAddAssignableItem;
     }
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory                   = true;
     public static $rightname            = 'database';
     protected $usenotepad               = true;

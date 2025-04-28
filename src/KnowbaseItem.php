@@ -52,15 +52,15 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria, S
 
     public static $browse_default = true;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory    = true;
 
     protected $items     = [];
 
-    const KNOWBASEADMIN = 1024;
-    const READFAQ       = 2048;
-    const PUBLISHFAQ    = 4096;
-    const COMMENTS      = 8192;
+    public const KNOWBASEADMIN = 1024;
+    public const READFAQ       = 2048;
+    public const PUBLISHFAQ    = 4096;
+    public const COMMENTS      = 8192;
 
     public static $rightname   = 'knowbase';
 
@@ -456,7 +456,7 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria, S
             return false;
         }
 
-       // KB Admin
+        // KB Admin
         if (Session::haveRight(self::$rightname, self::KNOWBASEADMIN)) {
             return true;
         }
@@ -812,12 +812,12 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria, S
                             'items_id'     => $item->getID()
                         ]);
                         $this->fields['answer'] = $fup->getField('content');
-                    } else if (isset($options['_task_to_kb'])) {
+                    } elseif (isset($options['_task_to_kb'])) {
                         $tasktype = $item::class . 'Task';
                         $task = new $tasktype();
                         $task->getFromDB($options['_task_to_kb']);
                         $this->fields['answer'] = $task->getField('content');
-                    } else if (isset($options['_sol_to_kb'])) {
+                    } elseif (isset($options['_sol_to_kb'])) {
                         $solution = new ITILSolution();
                         $solution->getFromDBByCrit([
                             'itemtype'     => $item::class,
@@ -1018,17 +1018,17 @@ class KnowbaseItem extends CommonDBVisible implements ExtraVisibilityCriteria, S
         ];
         // language=Twig
         echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-            {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-            <form method="get" action="{{ 'KnowbaseItem'|itemtype_search_path }}" class="d-flex justify-content-center">
-                {{ inputs.text('contains', contains, {additional_attributes: {size: 50}, input_addclass: 'me-1'}) }}
-                {{ inputs.submit('search', btn_msg, 1) }}
-                {% if options.item_itemtype is defined and options.item_items_id is defined %}
-                    {{ inputs.hidden('item_itemtype', options.item_itemtype) }}
-                    {{ inputs.hidden('item_items_id', options.item_items_id) }}
-                {% endif %}
-                {{ inputs.hidden('glpi_csrf_token', csrf_token()) }}
-            </form>
-TWIG, $twig_params);
+                        {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                        <form method="get" action="{{ 'KnowbaseItem'|itemtype_search_path }}" class="d-flex justify-content-center">
+                            {{ inputs.text('contains', contains, {additional_attributes: {size: 50}, input_addclass: 'me-1'}) }}
+                            {{ inputs.submit('search', btn_msg, 1) }}
+                            {% if options.item_itemtype is defined and options.item_items_id is defined %}
+                                {{ inputs.hidden('item_itemtype', options.item_itemtype) }}
+                                {{ inputs.hidden('item_items_id', options.item_items_id) }}
+                            {% endif %}
+                            {{ inputs.hidden('glpi_csrf_token', csrf_token()) }}
+                        </form>
+            TWIG, $twig_params);
     }
 
     /**
@@ -1069,7 +1069,7 @@ TWIG, $twig_params);
             'GROUPBY'   => ['glpi_knowbaseitems.id']
         ];
 
-       // Lists kb Items
+        // Lists kb Items
         $restrict = self::getVisibilityCriteria(true);
         $restrict_where = $restrict['WHERE'];
         unset($restrict['WHERE'], $restrict['SELECT']);
@@ -1082,14 +1082,14 @@ TWIG, $twig_params);
                 break;
 
             default:
-               // Build query
+                // Build query
                 if (Session::getLoginUserID()) {
                     $criteria['WHERE'] = array_merge(
                         $criteria['WHERE'],
                         $restrict_where
                     );
                 } else {
-                   // Anonymous access
+                    // Anonymous access
                     if (Session::isMultiEntitiesMode()) {
                         $criteria['WHERE']['glpi_entities_knowbaseitems.entities_id'] = 0;
                         $criteria['WHERE']['glpi_entities_knowbaseitems.is_recursive'] = 1;
@@ -1136,7 +1136,7 @@ TWIG, $twig_params);
             $criteria['SELECT'][] = 'glpi_knowbaseitemtranslations.answer AS transanswer';
         }
 
-       // a search with $contains
+        // a search with $contains
         switch ($type) {
             case 'allmy':
                 $criteria['WHERE']['glpi_knowbaseitems.users_id'] = Session::getLoginUserID();
@@ -1151,7 +1151,7 @@ TWIG, $twig_params);
                 break;
 
             case 'allunpublished':
-               // Only published
+                // Only published
                 $criteria['WHERE']['glpi_entities_knowbaseitems.entities_id'] = null;
                 $criteria['WHERE']['glpi_knowbaseitems_profiles.profiles_id'] = null;
                 $criteria['WHERE']['glpi_groups_knowbaseitems.groups_id'] = null;
@@ -1211,7 +1211,7 @@ TWIG, $twig_params);
 
                     $search_where[] = ['OR' => $ors];
 
-                   // Add visibility date
+                    // Add visibility date
                     $visibility_crit = [
                         [
                             'OR'  => [
@@ -1229,7 +1229,7 @@ TWIG, $twig_params);
 
                     $criteria['ORDERBY'] = ['SCORE DESC'];
 
-                   // preliminar query to allow alternate search if no result with fulltext
+                    // preliminar query to allow alternate search if no result with fulltext
                     $search_criteria = [
                         'COUNT'     => 'cpt',
                         'LEFT JOIN' => $criteria['LEFT JOIN'],
@@ -1260,7 +1260,7 @@ TWIG, $twig_params);
                             $ors[] = ["glpi_knowbaseitemtranslations.answer" => ['LIKE', Search::makeTextSearchValue($contains)]];
                         }
                         $criteria['WHERE'][] = ['OR' => $ors];
-                       // Add visibility date
+                        // Add visibility date
                         $criteria['WHERE'][] = $visibility_crit;
                     } else {
                         $criteria['WHERE'] = $search_where;
@@ -1270,7 +1270,7 @@ TWIG, $twig_params);
 
             case 'browse':
                 if (!Session::haveRight(self::$rightname, self::KNOWBASEADMIN)) {
-                   // Add visibility date
+                    // Add visibility date
                     $criteria['WHERE'][] = [
                         'OR'  => [
                             ['glpi_knowbaseitems.begin_date' => null],
@@ -1552,7 +1552,7 @@ TWIG, $twig_params);
                     ) {
                         $icon_class = "ti-help faq";
                         $fa_title = __s("This item is part of the FAQ");
-                    } else if (
+                    } elseif (
                         isset($data['visibility_count'])
                         && $data['visibility_count'] <= 0
                     ) {
@@ -1692,7 +1692,7 @@ TWIG, $twig_params);
         if ($type === "recent") {
             $criteria['ORDERBY'] = self::getTable() . '.date_creation DESC';
             $title   = __('Recent entries');
-        } else if ($type === 'lastupdate') {
+        } elseif ($type === 'lastupdate') {
             $criteria['ORDERBY'] = self::getTable() . '.date_mod DESC';
             $title   = __('Last updated entries');
         } else {
@@ -1700,7 +1700,7 @@ TWIG, $twig_params);
             $title   = __('Most popular questions');
         }
 
-       // Force all joins for not published to verify no visibility set
+        // Force all joins for not published to verify no visibility set
         $restrict = self::getVisibilityCriteria(true);
         unset($restrict['WHERE'], $restrict['SELECT']);
         $criteria = array_merge($criteria, $restrict);
@@ -1709,14 +1709,14 @@ TWIG, $twig_params);
             $restrict = self::getVisibilityCriteria();
             $criteria['WHERE'] = array_merge($criteria['WHERE'], $restrict['WHERE']);
         } else {
-           // Anonymous access
+            // Anonymous access
             if (Session::isMultiEntitiesMode()) {
                 $criteria['WHERE']['glpi_entities_knowbaseitems.entities_id'] = 0;
                 $criteria['WHERE']['glpi_entities_knowbaseitems.is_recursive'] = 1;
             }
         }
 
-       // Only published
+        // Only published
         $criteria['WHERE'][] = [
             'NOT'  => [
                 'glpi_entities_knowbaseitems.entities_id' => null,
@@ -1726,7 +1726,7 @@ TWIG, $twig_params);
             ]
         ];
 
-       // Add visibility date
+        // Add visibility date
         $criteria['WHERE'][] = [
             'OR'  => [
                 ['glpi_knowbaseitems.begin_date' => null],
@@ -1770,26 +1770,26 @@ TWIG, $twig_params);
             ];
             // language=Twig
             $output .= TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                <div class="col-12 col-lg-4 px-2">
-                    <table class="table table-sm">
-                        <tr><th>{{ title }}</th></tr>
-                        {% for data in iterator %}
-                            {% set name = data['transname'] is not empty ? data['transname'] : data['name'] %}
-                            <tr>
-                                <td class="text-start">
-                                    <div class="kb">
-                                        {% if data['is_faq'] %}
-                                            <i class="ti ti-help faq" title="{{ faq_tooltip }}"></i>
-                                        {% endif %}
-                                        <a href="{{ 'KnowbaseItem'|itemtype_form_path(data['id']) }}" class="{{ data['is_faq'] ? 'faq' : 'knowbase' }}"
-                                           title="{{ name }}">{{ name|u.truncate(80, '(...)') }}</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-TWIG, $twig_params);
+                                <div class="col-12 col-lg-4 px-2">
+                                    <table class="table table-sm">
+                                        <tr><th>{{ title }}</th></tr>
+                                        {% for data in iterator %}
+                                            {% set name = data['transname'] is not empty ? data['transname'] : data['name'] %}
+                                            <tr>
+                                                <td class="text-start">
+                                                    <div class="kb">
+                                                        {% if data['is_faq'] %}
+                                                            <i class="ti ti-help faq" title="{{ faq_tooltip }}"></i>
+                                                        {% endif %}
+                                                        <a href="{{ 'KnowbaseItem'|itemtype_form_path(data['id']) }}" class="{{ data['is_faq'] ? 'faq' : 'knowbase' }}"
+                                                           title="{{ name }}">{{ name|u.truncate(80, '(...)') }}</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                TWIG, $twig_params);
         }
 
         if ($display) {
@@ -2017,7 +2017,7 @@ TWIG, $twig_params);
             ]
         ];
 
-       // add objectlock search options
+        // add objectlock search options
         $tab = array_merge($tab, ObjectLock::rawSearchOptionsToAdd(get_class($this)));
 
         return $tab;
@@ -2158,7 +2158,7 @@ TWIG, $twig_params);
         ]);
 
         // Get array of ids
-        $ids = array_map(static fn ($row) => $row['id'], iterator_to_array($ids, false));
+        $ids = array_map(static fn($row) => $row['id'], iterator_to_array($ids, false));
 
         // Filter on canViewItem
         $ids = array_filter($ids, static function ($id) use ($kbi) {

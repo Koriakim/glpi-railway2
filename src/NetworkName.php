@@ -49,7 +49,7 @@ use Glpi\Application\View\TemplateRenderer;
  **/
 class NetworkName extends FQDNLabel
 {
-   // From CommonDBChild
+    // From CommonDBChild
     public static $itemtype              = 'itemtype';
     public static $items_id              = 'items_id';
     public $dohistory                    = true;
@@ -396,13 +396,13 @@ class NetworkName extends FQDNLabel
             if ($numrows > 1) {
                 // language=Twig
                 echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                    {% import 'components/form/fields_macros.html.twig' as fields %}
-                    {% set alert %}
-                        <div class="alert alert-warning">{{ alert }}</div>
-                    {% endset %}
-                    {{ field.htmlField('', alert, 'NetworkName'|itemtype_name) }}
-TWIG, ['alert' => __("Several network names available! Go to the tab 'Network Name' to manage them.")]);
-            } else if ($numrows === 1) {
+                                        {% import 'components/form/fields_macros.html.twig' as fields %}
+                                        {% set alert %}
+                                            <div class="alert alert-warning">{{ alert }}</div>
+                                        {% endset %}
+                                        {{ field.htmlField('', alert, 'NetworkName'|itemtype_name) }}
+                    TWIG, ['alert' => __("Several network names available! Go to the tab 'Network Name' to manage them.")]);
+            } elseif ($numrows === 1) {
                 $result = $iterator->current();
                 $name->getFromDB($result['id']);
             }
@@ -688,31 +688,31 @@ TWIG, ['alert' => __("Several network names available! Go to the tab 'Network Na
             ];
             // language=Twig
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                <div class="mb-3">
-                    <form method="post" action="{{ 'NetworkName'|itemtype_form_path }}">
-                        <div class="d-flex">
-                            <input type="hidden" name="items_id" value="{{ item.getID() }}">
-                            <input type="hidden" name="itemtype" value="{{ get_class(item) }}">
-                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-                            {{ fields.dropdownField('NetworkName', 'addressID', 0, null, {
-                                no_label: true,
-                                condition: {
-                                    items_id: 0
-                                }
-                            }) }}
-                        </div>
-                        <div class="d-flex flex-row-reverse">
-                            <button type="submit" name="assign_address" class="btn btn-primary mx-1">{{ btn_label }}</button>
-                            {% if can_create %}
-                                <a class="btn btn-outline-secondary mx-1" role="button" href="{{ 'NetworkName'|itemtype_form_path }}?items_id={{ item.getID() }}&amp;itemtype={{ get_class(item) }}">
-                                    {{ create_label }}
-                                </a>
-                            {% endif %}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                <div class="mb-3">
+                                    <form method="post" action="{{ 'NetworkName'|itemtype_form_path }}">
+                                        <div class="d-flex">
+                                            <input type="hidden" name="items_id" value="{{ item.getID() }}">
+                                            <input type="hidden" name="itemtype" value="{{ get_class(item) }}">
+                                            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
+                                            {{ fields.dropdownField('NetworkName', 'addressID', 0, null, {
+                                                no_label: true,
+                                                condition: {
+                                                    items_id: 0
+                                                }
+                                            }) }}
+                                        </div>
+                                        <div class="d-flex flex-row-reverse">
+                                            <button type="submit" name="assign_address" class="btn btn-primary mx-1">{{ btn_label }}</button>
+                                            {% if can_create %}
+                                                <a class="btn btn-outline-secondary mx-1" role="button" href="{{ 'NetworkName'|itemtype_form_path }}?items_id={{ item.getID() }}&amp;itemtype={{ get_class(item) }}">
+                                                    {{ create_label }}
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $table_options = ['createRow' => true];
@@ -772,20 +772,20 @@ TWIG, $twig_params);
             Session::initNavigateListItems(
                 __CLASS__,
                 //TRANS : %1$s is the itemtype name,
-                                 //        %2$s is the name of the item (used for headings of a list)
-                                        sprintf(
-                                            __('%1$s = %2$s'),
-                                            $item::getTypeName(1),
-                                            $item->getName()
-                                        )
+                //        %2$s is the name of the item (used for headings of a list)
+                sprintf(
+                    __('%1$s = %2$s'),
+                    $item::getTypeName(1),
+                    $item->getName()
+                )
             );
             if ($canedit && $number) {
-                 Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
-                 $massiveactionparams = [
-                     'num_displayed'    => min($_SESSION['glpilist_limit'], $number),
-                     'container'        => 'mass' . __CLASS__ . $rand
-                 ];
-                 Html::showMassiveActions($massiveactionparams);
+                Html::openMassiveActionsForm('mass' . __CLASS__ . $rand);
+                $massiveactionparams = [
+                    'num_displayed'    => min($_SESSION['glpilist_limit'], $number),
+                    'container'        => 'mass' . __CLASS__ . $rand
+                ];
+                Html::showMassiveActions($massiveactionparams);
             }
 
             $table->display([
@@ -796,9 +796,9 @@ TWIG, $twig_params);
             ]);
 
             if ($canedit && $number) {
-                 $massiveactionparams['ontop'] = false;
-                 Html::showMassiveActions($massiveactionparams);
-                 Html::closeForm();
+                $massiveactionparams['ontop'] = false;
+                Html::showMassiveActions($massiveactionparams);
+                Html::closeForm();
             }
 
             Html::printAjaxPager(self::getTypeName(Session::getPluralNumber()), $start, self::countForItem($item));
@@ -848,28 +848,28 @@ TWIG, $twig_params);
                 );
 
             case NetworkEquipment::class:
-                 $result = $DB->request([
-                     'SELECT'          => ['COUNT DISTINCT' => 'glpi_networknames.id AS cpt'],
-                     'FROM'            => 'glpi_networknames',
-                     'INNER JOIN'       => [
-                         'glpi_networkports'  => [
-                             'ON' => [
-                                 'glpi_networknames'  => 'items_id',
-                                 'glpi_networkports'  => 'id', [
-                                     'AND' => [
-                                         'glpi_networknames.itemtype' => 'NetworkPort'
-                                     ]
-                                 ]
-                             ]
-                         ]
-                     ],
-                     'WHERE'           => [
-                         'glpi_networkports.itemtype'     => $item->getType(),
-                         'glpi_networkports.items_id'     => $item->getID(),
-                         'glpi_networkports.is_deleted'   => 0,
-                         'glpi_networknames.is_deleted'   => 0
-                     ]
-                 ])->current();
+                $result = $DB->request([
+                    'SELECT'          => ['COUNT DISTINCT' => 'glpi_networknames.id AS cpt'],
+                    'FROM'            => 'glpi_networknames',
+                    'INNER JOIN'       => [
+                        'glpi_networkports'  => [
+                            'ON' => [
+                                'glpi_networknames'  => 'items_id',
+                                'glpi_networkports'  => 'id', [
+                                    'AND' => [
+                                        'glpi_networknames.itemtype' => 'NetworkPort'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'WHERE'           => [
+                        'glpi_networkports.itemtype'     => $item->getType(),
+                        'glpi_networkports.items_id'     => $item->getID(),
+                        'glpi_networkports.is_deleted'   => 0,
+                        'glpi_networknames.is_deleted'   => 0
+                    ]
+                ])->current();
 
                 return (int)$result['cpt'];
         }

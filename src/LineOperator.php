@@ -101,7 +101,7 @@ class LineOperator extends CommonDropdown
             $input['mnc'] = 0;
         }
 
-       //check for mcc/mnc unicity
+        //check for mcc/mnc unicity
         $result = $DB->request([
             'COUNT'  => 'cpt',
             'FROM'   => self::getTable(),

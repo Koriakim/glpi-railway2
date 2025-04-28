@@ -167,10 +167,10 @@ class Ajax
                 }
             }
         }
-        $url .= (strstr($url, '?') ? '&' :  '?') . '_in_modal=1';
+        $url .= (strstr($url, '?') ? '&' : '?') . '_in_modal=1';
 
         if (isset($options['extradata'])) {
-            $url .= (strstr($url, '?') ? '&' :  '?') . Toolbox::append_params($options['extradata'], '&');
+            $url .= (strstr($url, '?') ? '&' : '?') . Toolbox::append_params($options['extradata'], '&');
         }
 
         $rand = mt_rand();
@@ -182,67 +182,67 @@ class Ajax
         $width  = (int) $param['width'];
 
         $html = <<<HTML
-         <div id="$domid" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog {$class}">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                     <h3>{$title}</h3>
-                  </div>
-                  <div class="modal-body">
-                     <iframe id='iframe$domid' class="iframe hidden"
-                        width="100%" height="400" frameborder="0">
-                     </iframe>
-                  </div>
-               </div>
-            </div>
-         </div>
-HTML;
+                     <div id="$domid" class="modal fade" tabindex="-1" role="dialog">
+                        <div class="modal-dialog {$class}">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                 <h3>{$title}</h3>
+                              </div>
+                              <div class="modal-body">
+                                 <iframe id='iframe$domid' class="iframe hidden"
+                                    width="100%" height="400" frameborder="0">
+                                 </iframe>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+            HTML;
 
         $reloadonclose = $param['reloadonclose'] ? "true" : "false";
         $autoopen      = $param['autoopen'] ? "true" : "false";
         $url           = json_encode($url);
         $js = <<<JAVASCRIPT
-      $(function() {
-         myModalEl{$rand} = document.getElementById('{$domid}');
-         myModal{$rand}   = new bootstrap.Modal(myModalEl{$rand});
+                  $(function() {
+                     myModalEl{$rand} = document.getElementById('{$domid}');
+                     myModal{$rand}   = new bootstrap.Modal(myModalEl{$rand});
 
-         // move modal to body
-         $(myModalEl{$rand}).appendTo($("body"));
+                     // move modal to body
+                     $(myModalEl{$rand}).appendTo($("body"));
 
-         myModalEl{$rand}.addEventListener('show.bs.modal', function () {
-            $('#iframe{$domid}').attr('src', {$url}).removeClass('hidden');
-         });
-         myModalEl{$rand}.addEventListener('hide.bs.modal', function () {
-            if ({$reloadonclose}) {
-               window.location.reload()
-            }
-         });
+                     myModalEl{$rand}.addEventListener('show.bs.modal', function () {
+                        $('#iframe{$domid}').attr('src', {$url}).removeClass('hidden');
+                     });
+                     myModalEl{$rand}.addEventListener('hide.bs.modal', function () {
+                        if ({$reloadonclose}) {
+                           window.location.reload()
+                        }
+                     });
 
-         if ({$autoopen}) {
-            myModal{$rand}.show();
-         }
+                     if ({$autoopen}) {
+                        myModal{$rand}.show();
+                     }
 
-         document.getElementById('iframe$domid').onload = function() {
-            var h = {$height};
-            var w = {$width};
+                     document.getElementById('iframe$domid').onload = function() {
+                        var h = {$height};
+                        var w = {$width};
 
-            $('#iframe{$domid}')
-               .height(h);
+                        $('#iframe{$domid}')
+                           .height(h);
 
-            if (w >= 700) {
-               $('#{$domid} .modal-dialog').addClass('modal-xl');
-            } else if (w >= 500) {
-               $('#{$domid} .modal-dialog').addClass('modal-lg');
-            } else if (w <= 300) {
-               $('#{$domid} .modal-dialog').addClass('modal-sm');
-            }
+                        if (w >= 700) {
+                           $('#{$domid} .modal-dialog').addClass('modal-xl');
+                        } else if (w >= 500) {
+                           $('#{$domid} .modal-dialog').addClass('modal-lg');
+                        } else if (w <= 300) {
+                           $('#{$domid} .modal-dialog').addClass('modal-sm');
+                        }
 
-            // reajust height to content
-            myModal{$rand}.handleUpdate()
-         };
-      });
-JAVASCRIPT;
+                        // reajust height to content
+                        myModal{$rand}.handleUpdate()
+                     };
+                  });
+            JAVASCRIPT;
 
         $out = Html::scriptBlock($js) . trim($html);
 
@@ -288,7 +288,7 @@ JAVASCRIPT;
 
         $active_tab = Session::getActiveTab($type);
 
-       // Compute tabs ids.
+        // Compute tabs ids.
         $active_id = null;
         foreach ($tabs as $key => $val) {
             $id = sprintf('tab-%s-%s', str_replace('$', '_', $key), mt_rand());
@@ -301,7 +301,7 @@ JAVASCRIPT;
         }
         $active_id = str_replace('\\', '_', $active_id);
 
-       // Display tabs
+        // Display tabs
         if (count($tabs) > 0) {
             if (count($tabs) == 1) {
                 $orientation = "horizontal";
@@ -363,26 +363,26 @@ JAVASCRIPT;
 
                 if ($tab_key !== -1) {
                     $html_tabs .= <<<HTML
-                        <li class='nav-item $navitemml'>
-                            <a
-                                class='nav-link justify-content-between $navlinkp $display_class'
-                                data-bs-toggle='tab'
-                                title='{$title_clean}'
-                                data-glpi-ajax-content='{$tab_content_url}'
-                                href='{$direct_link_url}'
-                                data-bs-target='#{$target}'
-                            >{$title}</a>
-                        </li>
-HTML;
+                                                <li class='nav-item $navitemml'>
+                                                    <a
+                                                        class='nav-link justify-content-between $navlinkp $display_class'
+                                                        data-bs-toggle='tab'
+                                                        title='{$title_clean}'
+                                                        data-glpi-ajax-content='{$tab_content_url}'
+                                                        href='{$direct_link_url}'
+                                                        data-bs-target='#{$target}'
+                                                    >{$title}</a>
+                                                </li>
+                        HTML;
                     $html_sele .= "<option value='$i' {$selected}>{$val['title']}</option>";
                 } else {
                     // All tabs
                     $html_tabs .= <<<HTML
-                        <li class='nav-item $navitemml'>
-                            <a class='nav-link justify-content-between $navlinkp $display_class' data-bs-toggle='tab'
-                                title='{$title_clean}' href='#' data-show-all-tabs="true">{$title}</a>
-                        </li>
-HTML;
+                                                <li class='nav-item $navitemml'>
+                                                    <a class='nav-link justify-content-between $navlinkp $display_class' data-bs-toggle='tab'
+                                                        title='{$title_clean}' href='#' data-show-all-tabs="true">{$title}</a>
+                                                </li>
+                        HTML;
                     $html_sele .= "<option value='$i' {$selected}>{$val['title']}</option>";
                 }
                 $i++;
@@ -402,110 +402,110 @@ HTML;
             $json_type = json_encode($type);
             $withtemplate = (int)($_GET['withtemplate'] ?? 0);
             $js = <<<JS
-         var url_hash = window.location.hash;
-         var loadTabContents = function (tablink, force_reload = false, update_session_tab = true) {
-            var url = tablink.data('glpi-ajax-content');
-            var base_url = CFG_GLPI.url_base;
-            if (base_url === '') {
-                // If base URL is not configured, fallback to current URL domain + GLPI base dir.
-                base_url = window.location.origin + '/' + CFG_GLPI.root_doc;
-            }
-            const href_url_params = new URL(url, base_url).searchParams;
-            var target = tablink.attr('data-bs-target');
+                         var url_hash = window.location.hash;
+                         var loadTabContents = function (tablink, force_reload = false, update_session_tab = true) {
+                            var url = tablink.data('glpi-ajax-content');
+                            var base_url = CFG_GLPI.url_base;
+                            if (base_url === '') {
+                                // If base URL is not configured, fallback to current URL domain + GLPI base dir.
+                                base_url = window.location.origin + '/' + CFG_GLPI.root_doc;
+                            }
+                            const href_url_params = new URL(url, base_url).searchParams;
+                            var target = tablink.attr('data-bs-target');
 
-            const updateCurrentTab = () => {
-                $.get(
-                  '{$CFG_GLPI['root_doc']}/ajax/updatecurrenttab.php',
-                  {
-                     itemtype: $json_type,
-                     id: '$ID',
-                     tab_key: href_url_params.get('_glpi_tab'),
-                     withtemplate: $withtemplate
-                  }
-               );
-            }
-            if ($(target).html() && !force_reload) {
-                updateCurrentTab();
-                return;
-            }
-            $(target).html(`<div class="d-flex justify-content-center"><span class="spinner-border spinner-border position-absolute m-5" role="status" aria-hidden="true"></span></div>`);
+                            const updateCurrentTab = () => {
+                                $.get(
+                                  '{$CFG_GLPI['root_doc']}/ajax/updatecurrenttab.php',
+                                  {
+                                     itemtype: $json_type,
+                                     id: '$ID',
+                                     tab_key: href_url_params.get('_glpi_tab'),
+                                     withtemplate: $withtemplate
+                                  }
+                               );
+                            }
+                            if ($(target).html() && !force_reload) {
+                                updateCurrentTab();
+                                return;
+                            }
+                            $(target).html(`<div class="d-flex justify-content-center"><span class="spinner-border spinner-border position-absolute m-5" role="status" aria-hidden="true"></span></div>`);
 
-            $.get(url, function(data) {
-               $(target).html(data);
+                            $.get(url, function(data) {
+                               $(target).html(data);
 
-               $(target).closest('main').trigger('glpi.tab.loaded');
+                               $(target).closest('main').trigger('glpi.tab.loaded');
 
-               if (update_session_tab) {
-                   updateCurrentTab();
-               }
-            }).done(function() {
-                // try to restore the scroll on a specific anchor
-                if (url_hash.length > 0) {
-                    // as we load content by ajax, when full page was ready, the anchor was not present
-                    // se we recall it to force the scroll.
-                    window.location.href = url_hash;
+                               if (update_session_tab) {
+                                   updateCurrentTab();
+                               }
+                            }).done(function() {
+                                // try to restore the scroll on a specific anchor
+                                if (url_hash.length > 0) {
+                                    // as we load content by ajax, when full page was ready, the anchor was not present
+                                    // se we recall it to force the scroll.
+                                    window.location.href = url_hash;
 
-                    // animate item with a flash
-                    $(url_hash).addClass('animate__animated animate__shakeX animate__slower');
+                                    // animate item with a flash
+                                    $(url_hash).addClass('animate__animated animate__shakeX animate__slower');
 
-                    // unset hash (to avoid scrolling when changing tabs)
-                    url_hash   = '';
-                }
-            }).fail(function(data) {
-               $(target).html(data.responseText);
-            });
-         };
+                                    // unset hash (to avoid scrolling when changing tabs)
+                                    url_hash   = '';
+                                }
+                            }).fail(function(data) {
+                               $(target).html(data.responseText);
+                            });
+                         };
 
-         var reloadTab = function (add) {
-            var active_link = $('main #tabspanel .nav-item .nav-link.active');
+                         var reloadTab = function (add) {
+                            var active_link = $('main #tabspanel .nav-item .nav-link.active');
 
-            // Update target AJAX endpoint URL and load tab contents
-            var current_url = active_link.data('glpi-ajax-content');
-            active_link.data('glpi-ajax-content', current_url + '&' + add);
-            loadTabContents(active_link, true);
+                            // Update target AJAX endpoint URL and load tab contents
+                            var current_url = active_link.data('glpi-ajax-content');
+                            active_link.data('glpi-ajax-content', current_url + '&' + add);
+                            loadTabContents(active_link, true);
 
-            // Restore URL
-            active_link.data('glpi-ajax-content', current_url);
-         };
+                            // Restore URL
+                            active_link.data('glpi-ajax-content', current_url);
+                         };
 
-         var loadAllTabs = () => {
-             const tabs = $('#$tabdiv_id a[data-bs-toggle=\"tab\"]');
-             tabs.each((index, tab) => {
-                loadTabContents($(tab));
-             });
-         }
+                         var loadAllTabs = () => {
+                             const tabs = $('#$tabdiv_id a[data-bs-toggle=\"tab\"]');
+                             tabs.each((index, tab) => {
+                                loadTabContents($(tab));
+                             });
+                         }
 
-         $(function() {
-            // Keep track of the first load which will be the tab stored in the
-            // session.
-            // In this case, it is useless to send a request to the
-            // updatecurrenttab endpoint as we already are on this tab
-            let first_load = true;
+                         $(function() {
+                            // Keep track of the first load which will be the tab stored in the
+                            // session.
+                            // In this case, it is useless to send a request to the
+                            // updatecurrenttab endpoint as we already are on this tab
+                            let first_load = true;
 
-            $('a[data-bs-toggle=\"tab\"]').on('shown.bs.tab', function(e) {
-               e.preventDefault();
-               if ($(this).attr('data-show-all-tabs') === 'true') {
-                  loadAllTabs();
-                  // show all tabs by adding active and show classes to all tabs
-                  $('#$tabdiv_id').parent().find('.tab-pane').addClass('active show').removeClass('fade');
-               } else {
-                  // Remove active and show classes from all tabs except the one that is clicked
-                  let clicked_tab = $(this).attr('data-bs-target');
-                  $('#$tabdiv_id').parent().find('.tab-pane:not(' + clicked_tab + ')').removeClass('active show');
-                  loadTabContents($(this), false, !first_load);
-               }
-            });
+                            $('a[data-bs-toggle=\"tab\"]').on('shown.bs.tab', function(e) {
+                               e.preventDefault();
+                               if ($(this).attr('data-show-all-tabs') === 'true') {
+                                  loadAllTabs();
+                                  // show all tabs by adding active and show classes to all tabs
+                                  $('#$tabdiv_id').parent().find('.tab-pane').addClass('active show').removeClass('fade');
+                               } else {
+                                  // Remove active and show classes from all tabs except the one that is clicked
+                                  let clicked_tab = $(this).attr('data-bs-target');
+                                  $('#$tabdiv_id').parent().find('.tab-pane:not(' + clicked_tab + ')').removeClass('active show');
+                                  loadTabContents($(this), false, !first_load);
+                               }
+                            });
 
-            // load initial tab
-            $('a[data-bs-target=\"#{$active_id}\"]').tab('show');
-            first_load = false;
+                            // load initial tab
+                            $('a[data-bs-target=\"#{$active_id}\"]').tab('show');
+                            first_load = false;
 
-            // select events in responsive mode
-            $('#$tabdiv_id-select').on('change', function (e) {
-               $('#$tabdiv_id li a').eq($(this).val()).tab('show');
-            });
-         });
-JS;
+                            // select events in responsive mode
+                            $('#$tabdiv_id-select').on('change', function (e) {
+                               $('#$tabdiv_id li a').eq($(this).val()).tab('show');
+                            });
+                         });
+                JS;
 
             echo Html::scriptBlock($js);
         }
@@ -622,7 +622,7 @@ JS;
         if (count($forceloadfor) == 0) {
             $forceloadfor = ['*'];
         }
-       // Need to define min size for text search
+        // Need to define min size for text search
         if ($minsize < 0) {
             $minsize = 0;
         }
@@ -693,7 +693,7 @@ JS;
                 if (count($forceloadfor)) {
                     foreach ($forceloadfor as $value) {
                         if (!empty($condition)) {
-                             $condition .= " || ";
+                            $condition .= " || ";
                         }
                         $condition .= "$('#$zone_id').val() == '$value'";
                     }
@@ -735,14 +735,14 @@ JS;
         $field     = '';
 
         $output    = '';
-       // Old scheme
+        // Old scheme
         if (
             isset($options["update_item"])
             && (is_array($options["update_item"]) || (strlen($options["update_item"]) > 0))
         ) {
             $field     = "update_item";
         }
-       // New scheme
+        // New scheme
         if (
             isset($options["toupdate"])
             && (is_array($options["toupdate"]) || (strlen($options["toupdate"]) > 0))
@@ -753,7 +753,7 @@ JS;
         if (!empty($field)) {
             $datas = $options[$field];
             if (is_array($datas) && count($datas)) {
-               // Put it in array
+                // Put it in array
                 if (isset($datas['to_update'])) {
                     $datas = [$datas];
                 }
@@ -817,7 +817,7 @@ JS;
             $out .= ",{";
             $first = true;
             foreach ($parameters as $key => $val) {
-               // prevent xss attacks
+                // prevent xss attacks
                 if (!preg_match('/^[a-zA-Z_$][0-9a-zA-Z_$]*$/', $key)) {
                     continue;
                 }
@@ -832,7 +832,7 @@ JS;
                 $regs = [];
                 if (is_string($val) && preg_match('/^__VALUE(\d+)__$/', $val, $regs)) {
                     $out .= sprintf('$("#%s").val()', htmlescape(Html::cleanId($toobserve[$regs[1]])));
-                } else if (is_string($val) && $val === "__VALUE__") {
+                } elseif (is_string($val) && $val === "__VALUE__") {
                     $out .= sprintf('$("#%s").val()', htmlescape(Html::cleanId($toobserve)));
                 } else {
                     $out .=  json_encode($val);

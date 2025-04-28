@@ -42,7 +42,7 @@ class SlaLevel extends LevelAgreementLevel
     protected $ruleactionclass    = 'SlaLevelAction';
     protected static $parentclass = 'SLA';
     protected static $fkparent    = 'slas_id';
-   // No criteria
+    // No criteria
     protected $rulecriteriaclass = 'SlaLevelCriteria';
 
     public static function getTable($classname = null)
@@ -155,7 +155,7 @@ class SlaLevel extends LevelAgreementLevel
             ]);
 
             if ($result = $lvl_iterator->current()) {
-                 return $result['id'];
+                return $result['id'];
             }
         }
         return 0;

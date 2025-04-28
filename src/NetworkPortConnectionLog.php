@@ -149,7 +149,7 @@ class NetworkPortConnectionLog extends CommonDBChild
                         $citem->getLink()
                     )
                 ];
-            } else if ($row['connected'] === 1) {
+            } elseif ($row['connected'] === 1) {
                 $entries[] = [
                     'status' => __s('No longer exists in database'),
                     'date' => $row['date'],

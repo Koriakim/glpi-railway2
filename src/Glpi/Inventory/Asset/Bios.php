@@ -36,10 +36,6 @@
 
 namespace Glpi\Inventory\Asset;
 
-use CommonDBTM;
-use DeviceFirmwareType;
-use Glpi\Inventory\Conf;
-
 class Bios extends Device
 {
     public function prepare(): array

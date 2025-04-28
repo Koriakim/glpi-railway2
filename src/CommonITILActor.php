@@ -207,7 +207,7 @@ abstract class CommonITILActor extends CommonDBRelation
 
         if (!isset($input['alternative_email']) || is_null($input['alternative_email'])) {
             $input['alternative_email'] = '';
-        } else if ($input['alternative_email'] != '' && !NotificationMailing::isUserAddressValid($input['alternative_email'])) {
+        } elseif ($input['alternative_email'] != '' && !NotificationMailing::isUserAddressValid($input['alternative_email'])) {
             Session::addMessageAfterRedirect(
                 __s('Invalid email address'),
                 false,
@@ -256,13 +256,13 @@ abstract class CommonITILActor extends CommonDBRelation
 
         $no_stat_computation = true;
         if ($this->input['type'] == CommonITILActor::ASSIGN) {
-           // Compute "take into account delay" unless "do not compute" flag was set by business rules
+            // Compute "take into account delay" unless "do not compute" flag was set by business rules
             $no_stat_computation = $item->isTakeIntoAccountComputationBlocked($this->input);
         }
         $item->updateDateMod($this->fields[static::getItilObjectForeignKey()], $no_stat_computation);
 
         if ($item->getFromDB($this->fields[static::getItilObjectForeignKey()])) {
-           // Check object status and update it if needed
+            // Check object status and update it if needed
             if (
                 $this->input['type'] == CommonITILActor::ASSIGN
                 && !isset($this->input['_from_object'])
@@ -275,7 +275,7 @@ abstract class CommonITILActor extends CommonDBRelation
                 ]);
             }
 
-           // raise notification for this actor addition
+            // raise notification for this actor addition
             if (!isset($this->input['_disablenotif'])) {
                 $string_type = match ($this->input['type']) {
                     self::REQUESTER => 'requester',
@@ -283,7 +283,7 @@ abstract class CommonITILActor extends CommonDBRelation
                     self::ASSIGN    => 'assign',
                     default         => '',
                 };
-               // example for event: assign_group
+                // example for event: assign_group
                 $event = $string_type . "_" . strtolower($this::$itemtype_2);
                 NotificationEvent::raiseEvent($event, $item);
             }

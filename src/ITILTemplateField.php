@@ -51,7 +51,7 @@ abstract class ITILTemplateField extends CommonDBChild
 
     private $all_fields;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory = true;
 
 
@@ -233,29 +233,29 @@ abstract class ITILTemplateField extends CommonDBChild
                 'show_submit' => !is_subclass_of(static::class, ITILTemplatePredefinedField::class)
             ];
             echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
-                {% import 'components/form/fields_macros.html.twig' as fields %}
-                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
-                <div>
-                    <form name="itiltemplatehidden_form{{ rand }}" method="post" action="{{ form_url }}" data-submit-once>
-                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
-                        {{ inputs.hidden(items_id_field, id) }}
-                        <div class="d-flex justify-content-center flex-wrap">
-                            {{ fields.dropdownArrayField('num', 0, fields, null, {
-                                no_label: true,
-                                used: used,
-                                add_field_attribs: {
-                                    'aria-label': itemtype_name
-                                },
-                                rand: rand
-                            }) }}
-                            {{ extra_form_html|raw }}
-                            {% if show_submit %}
-                                <div class="ms-2">{{ inputs.submit('add', _x('button', 'Add')) }}</div>
-                            {% endif %}
-                        </div>
-                    </form>
-                </div>
-TWIG, $twig_params);
+                                {% import 'components/form/fields_macros.html.twig' as fields %}
+                                {% import 'components/form/basic_inputs_macros.html.twig' as inputs %}
+                                <div>
+                                    <form name="itiltemplatehidden_form{{ rand }}" method="post" action="{{ form_url }}" data-submit-once>
+                                        {{ inputs.hidden('_glpi_csrf_token', csrf_token()) }}
+                                        {{ inputs.hidden(items_id_field, id) }}
+                                        <div class="d-flex justify-content-center flex-wrap">
+                                            {{ fields.dropdownArrayField('num', 0, fields, null, {
+                                                no_label: true,
+                                                used: used,
+                                                add_field_attribs: {
+                                                    'aria-label': itemtype_name
+                                                },
+                                                rand: rand
+                                            }) }}
+                                            {{ extra_form_html|raw }}
+                                            {% if show_submit %}
+                                                <div class="ms-2">{{ inputs.submit('add', _x('button', 'Add')) }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                </div>
+                TWIG, $twig_params);
         }
 
         $columns = [

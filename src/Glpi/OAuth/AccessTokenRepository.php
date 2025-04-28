@@ -35,12 +35,9 @@
 
 namespace Glpi\OAuth;
 
-use Glpi\DBAL\QueryExpression;
-use Glpi\DBAL\QueryFunction;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use Ramsey\Uuid\Uuid;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {

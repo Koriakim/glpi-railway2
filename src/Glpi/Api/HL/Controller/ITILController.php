@@ -51,7 +51,6 @@ use Glpi\Http\Request;
 use Glpi\Http\Response;
 use Glpi\Team\Team;
 use Group;
-use Html;
 use PlanningEventCategory;
 use PlanningExternalEventTemplate;
 use Problem;
@@ -815,9 +814,9 @@ final class ITILController extends AbstractController
     {
         if ($subitem_type === 'Document') {
             $schema = (new ManagementController())->getKnownSchema('Document_Item', $api_version);
-        } else if ($subitem_type === 'Task') {
+        } elseif ($subitem_type === 'Task') {
             $schema = $this->getKnownSchema($item::getTaskClass(), $api_version);
-        } else if ($subitem_type === 'Validation' && class_exists($item::getType() . 'Validation')) {
+        } elseif ($subitem_type === 'Validation' && class_exists($item::getType() . 'Validation')) {
             $schema = $this->getKnownSchema($item::getType() . 'Validation', $api_version);
         } else {
             $schema = $this->getKnownSchema($subitem_type, $api_version);
@@ -867,7 +866,7 @@ final class ITILController extends AbstractController
         $single_result = $request->hasParameter('filter') && str_contains($request->getParameter('filter'), 'id==');
         if ($single_result && count($results) > 0) {
             $results = $results[0]['item'];
-        } else if ($single_result && count($results) === 0) {
+        } elseif ($single_result && count($results) === 0) {
             $results = null;
         }
         return $results;

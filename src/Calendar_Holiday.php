@@ -39,7 +39,7 @@ class Calendar_Holiday extends CommonDBRelation
 {
     public $auto_message_on_action = false;
 
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1 = 'Calendar';
     public static $items_id_1 = 'calendars_id';
     public static $itemtype_2 = 'Holiday';

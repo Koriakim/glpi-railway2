@@ -44,14 +44,14 @@ use Glpi\Application\View\TemplateRenderer;
  */
 class KnowbaseItem_Item extends CommonDBRelation
 {
-   // From CommonDBRelation
+    // From CommonDBRelation
     public static $itemtype_1          = 'KnowbaseItem';
     public static $items_id_1          = 'knowbaseitems_id';
     public static $itemtype_2          = 'itemtype';
     public static $items_id_2          = 'items_id';
     public static $checkItem_2_Rights  = self::HAVE_VIEW_RIGHT_ON_ITEM;
 
-   // From CommonDBTM
+    // From CommonDBTM
     public $dohistory          = true;
 
     public static function getTypeName($nb = 0)

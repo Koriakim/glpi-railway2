@@ -71,7 +71,7 @@ abstract class MainAsset extends InventoryAsset
     ];
     /** @var mixed */
     protected $raw_data;
-   /* @var array */
+    /* @var array */
     protected $hardware;
     /** @var integer */
     protected $states_id_default;
@@ -221,12 +221,12 @@ abstract class MainAsset extends InventoryAsset
                     && !empty($hardware->chassis_type)
                 ) {
                     $val->$types_id = $hardware->chassis_type;
-                } else if (
+                } elseif (
                     property_exists($bios, 'type')
                     && !empty($bios->type)
                 ) {
                     $val->$types_id = $bios->type;
-                } else if (
+                } elseif (
                     property_exists($bios, 'mmodel')
                     && !empty($bios->mmodel)
                 ) {
@@ -298,7 +298,7 @@ abstract class MainAsset extends InventoryAsset
 
                 if ($cnt == 0) {
                     if (property_exists($a_users, 'login')) {
-                       // Search on domain
+                        // Search on domain
                         $where_add = [];
                         if (
                             property_exists($a_users, 'domain')
@@ -326,7 +326,7 @@ abstract class MainAsset extends InventoryAsset
                             'LIMIT'  => 1
                         ]);
                         if ($row = $iterator->current()) {
-                              $val->users_id = $row['id'];
+                            $val->users_id = $row['id'];
                         }
                     }
                 }
@@ -334,7 +334,7 @@ abstract class MainAsset extends InventoryAsset
                 if ($user != '') {
                     if (property_exists($val, 'contact')) {
                         if ($val->contact == '') {
-                             $val->contact = $user;
+                            $val->contact = $user;
                         } else {
                             $val->contact .= "/" . $user;
                         }
@@ -364,10 +364,10 @@ abstract class MainAsset extends InventoryAsset
 
         if (property_exists($bios, 'smanufacturer') && !empty($bios->smanufacturer)) {
             $val->manufacturers_id = $bios->smanufacturer;
-        } else if (property_exists($bios, 'mmanufacturer') && !empty($bios->mmanufacturer)) {
+        } elseif (property_exists($bios, 'mmanufacturer') && !empty($bios->mmanufacturer)) {
             $val->manufacturers_id = $bios->mmanufacturer;
             $val->mmanufacturer = $bios->mmanufacturer;
-        } else if (property_exists($bios, 'bmanufacturer') && !empty($bios->bmanufacturer)) {
+        } elseif (property_exists($bios, 'bmanufacturer') && !empty($bios->bmanufacturer)) {
             $val->manufacturers_id = $bios->bmanufacturer;
             $val->bmanufacturer = $bios->bmanufacturer;
         }
@@ -375,7 +375,7 @@ abstract class MainAsset extends InventoryAsset
         $models_id = $this->getModelsFieldName();
         if (property_exists($bios, 'smodel') && $bios->smodel != '') {
             $val->$models_id = $bios->smodel;
-        } else if (property_exists($bios, 'mmodel') && $bios->mmodel != '') {
+        } elseif (property_exists($bios, 'mmodel') && $bios->mmodel != '') {
             $val->$models_id = $bios->mmodel;
             $val->model = $bios->mmodel;
         }
@@ -471,7 +471,7 @@ abstract class MainAsset extends InventoryAsset
                             }
                         }
                         if (property_exists($network, 'subnet') && !empty($network->subnet)) {
-                                $input['subnet'][] = $network->subnet;
+                            $input['subnet'][] = $network->subnet;
                         }
                     }
                 }
@@ -483,7 +483,7 @@ abstract class MainAsset extends InventoryAsset
                 ) {
                     foreach ($netports as $network) {
                         if (property_exists($network, 'mac') && !empty($network->mac)) {
-                             $input['mac'][] = $network->mac;
+                            $input['mac'][] = $network->mac;
                         }
                         foreach ($network->ipaddress as $ip) {
                             if ($ip != '127.0.0.1' && $ip != '::1') {
@@ -601,7 +601,7 @@ abstract class MainAsset extends InventoryAsset
             if (isset($datarules['_no_rule_matches']) and ($datarules['_no_rule_matches'] == '1')) {
                 //no rule matched, this is a new one
                 $this->rulepassed(0, $this->item->getType(), null);
-            } else if (!isset($datarules['found_inventories'])) {
+            } elseif (!isset($datarules['found_inventories'])) {
                 if ($this->isAccessPoint($data)) {
                     //Only main item is stored as refused, not all APs
                     unset($this->data[$key]);
@@ -866,7 +866,7 @@ abstract class MainAsset extends InventoryAsset
                 $itemtype == NetworkEquipment::getType()
                 ||
                 (
-                $itemtype == Printer::getType()
+                    $itemtype == Printer::getType()
                 && !MainAssetPrinter::needToBeUpdatedFromDiscovery($this->item, $val)
                 )
             ) {

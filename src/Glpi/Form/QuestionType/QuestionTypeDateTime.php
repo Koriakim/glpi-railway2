@@ -38,7 +38,6 @@ namespace Glpi\Form\QuestionType;
 use DateTime;
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\DBAL\JsonFieldInterface;
-use Glpi\Form\Condition\ConditionHandler\ConditionHandlerInterface;
 use Glpi\Form\Condition\ConditionHandler\DateAndTimeConditionHandler;
 use Glpi\Form\Condition\ConditionHandler\DateConditionHandler;
 use Glpi\Form\Condition\ConditionHandler\TimeConditionHandler;
@@ -215,41 +214,41 @@ class QuestionTypeDateTime extends AbstractQuestionType implements FormQuestionD
     public function renderAdministrationTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% set rand = random() %}
+                        {% set rand = random() %}
 
-            <div class="row g-2">
-                <div class="col-6">
-                    <input
-                        class="form-control"
-                        type="{{ input_type }}"
-                        id="date_input_{{ rand }}"
-                        name="default_value"
-                        placeholder="{{ placeholders.input[input_type_ignore_text] }}"
-                        value="{{ default_value }}"
-                        aria-label="{{ aria_label }}"
-                        {{ is_default_value_current_time ? 'disabled' : '' }}
-                    />
-                </div>
-                <div data-glpi-form-editor-question-extra-details class="col-auto d-flex align-items-center ms-1 mt-0">
-                    <label class="form-check form-switch m-0 d-flex align-items-center gap-2">
-                        <input type="hidden" name="is_default_value_current_time" value="0"
-                            data-glpi-form-editor-specific-question-extra-data>
-                        <input id="is_default_value_current_time_{{ rand }}" name="is_default_value_current_time" class="form-check-input"
-                            type="checkbox" value="1" {{ is_default_value_current_time ? 'checked' : '' }}
-                            data-glpi-form-editor-specific-question-extra-data>
-                        <span>{{ placeholders.default_value[input_type_ignore_text] }}</span>
-                    </label>
-                </div>
-            </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input
+                                    class="form-control"
+                                    type="{{ input_type }}"
+                                    id="date_input_{{ rand }}"
+                                    name="default_value"
+                                    placeholder="{{ placeholders.input[input_type_ignore_text] }}"
+                                    value="{{ default_value }}"
+                                    aria-label="{{ aria_label }}"
+                                    {{ is_default_value_current_time ? 'disabled' : '' }}
+                                />
+                            </div>
+                            <div data-glpi-form-editor-question-extra-details class="col-auto d-flex align-items-center ms-1 mt-0">
+                                <label class="form-check form-switch m-0 d-flex align-items-center gap-2">
+                                    <input type="hidden" name="is_default_value_current_time" value="0"
+                                        data-glpi-form-editor-specific-question-extra-data>
+                                    <input id="is_default_value_current_time_{{ rand }}" name="is_default_value_current_time" class="form-check-input"
+                                        type="checkbox" value="1" {{ is_default_value_current_time ? 'checked' : '' }}
+                                        data-glpi-form-editor-specific-question-extra-data>
+                                    <span>{{ placeholders.default_value[input_type_ignore_text] }}</span>
+                                </label>
+                            </div>
+                        </div>
 
-            {% if question == null %}
-                <script>
-                    import("{{ js_path('js/modules/Forms/QuestionDateTime.js') }}").then((m) => {
-                        new m.GlpiFormQuestionTypeDateTime({{ placeholders|json_encode|raw }});
-                    });
-                </script>
-            {% endif %}
-TWIG;
+                        {% if question == null %}
+                            <script>
+                                import("{{ js_path('js/modules/Forms/QuestionDateTime.js') }}").then((m) => {
+                                    new m.GlpiFormQuestionTypeDateTime({{ placeholders|json_encode|raw }});
+                                });
+                            </script>
+                        {% endif %}
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -269,29 +268,29 @@ TWIG;
     public function renderAdministrationOptionsTemplate(?Question $question): string
     {
         $template = <<<TWIG
-            {% set rand = random() %}
+                        {% set rand = random() %}
 
-            <div class="d-flex gap-2">
-                <label class="form-check form-switch mb-0">
-                    <input type="hidden" name="is_date_enabled" value="0"
-                    data-glpi-form-editor-specific-question-extra-data>
-                    <input class="form-check-input" type="checkbox" name="is_date_enabled"
-                        id="is_date_enabled_{{ rand }}"
-                        value="1" {{ is_date_enabled ? 'checked' : '' }}
-                        data-glpi-form-editor-specific-question-extra-data>
-                    <span class="form-check-label">{{ labels.date }}</span>
-                </label>
-                <label class="form-check form-switch mb-0">
-                    <input type="hidden" name="is_time_enabled" value="0"
-                    data-glpi-form-editor-specific-question-extra-data>
-                    <input class="form-check-input" type="checkbox" name="is_time_enabled"
-                        id="is_time_enabled_{{ rand }}"
-                        value="1" {{ is_time_enabled ? 'checked' : '' }}
-                        data-glpi-form-editor-specific-question-extra-data>
-                    <span class="form-check-label">{{ labels.time }}</span>
-                </label>
-            </div>
-TWIG;
+                        <div class="d-flex gap-2">
+                            <label class="form-check form-switch mb-0">
+                                <input type="hidden" name="is_date_enabled" value="0"
+                                data-glpi-form-editor-specific-question-extra-data>
+                                <input class="form-check-input" type="checkbox" name="is_date_enabled"
+                                    id="is_date_enabled_{{ rand }}"
+                                    value="1" {{ is_date_enabled ? 'checked' : '' }}
+                                    data-glpi-form-editor-specific-question-extra-data>
+                                <span class="form-check-label">{{ labels.date }}</span>
+                            </label>
+                            <label class="form-check form-switch mb-0">
+                                <input type="hidden" name="is_time_enabled" value="0"
+                                data-glpi-form-editor-specific-question-extra-data>
+                                <input class="form-check-input" type="checkbox" name="is_time_enabled"
+                                    id="is_time_enabled_{{ rand }}"
+                                    value="1" {{ is_time_enabled ? 'checked' : '' }}
+                                    data-glpi-form-editor-specific-question-extra-data>
+                                <span class="form-check-label">{{ labels.time }}</span>
+                            </label>
+                        </div>
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [
@@ -310,14 +309,14 @@ TWIG;
         Question $question,
     ): string {
         $template = <<<TWIG
-            <input
-                type="{{ input_type }}"
-                class="form-control w-50"
-                name="{{ question.getEndUserInputName() }}"
-                value="{{ default_value }}"
-                {{ question.fields.is_mandatory ? 'required' : '' }}
-            >
-TWIG;
+                        <input
+                            type="{{ input_type }}"
+                            class="form-control w-50"
+                            name="{{ question.getEndUserInputName() }}"
+                            value="{{ default_value }}"
+                            {{ question.fields.is_mandatory ? 'required' : '' }}
+                        >
+            TWIG;
 
         $twig = TemplateRenderer::getInstance();
         return $twig->renderFromStringTemplate($template, [

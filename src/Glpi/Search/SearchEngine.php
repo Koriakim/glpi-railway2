@@ -436,9 +436,9 @@ final class SearchEngine
                                     || !$criterion['meta'])
                             ) {
                                 array_push($data['toview'], $criterion['field']);
-                            } else if ($criterion['field'] == 'all') {
+                            } elseif ($criterion['field'] == 'all') {
                                 $data['search']['all_search'] = true;
-                            } else if ($criterion['field'] == 'view') {
+                            } elseif ($criterion['field'] == 'view') {
                                 $data['search']['view_search'] = true;
                             }
                             if (isset($criterion['virtual']) && $criterion['virtual']) {

@@ -62,15 +62,15 @@ class NotificationTargetReservation extends NotificationTarget
             $this->addTarget(Notification::ITEM_USER, __('Hardware user'));
             $this->addTarget(Notification::AUTHOR, _n('Requester', 'Requesters', 1));
         }
-       // else if ($event == 'alert') {
-       //   $this->addTarget(Notification::ITEM_USER, __('User reserving equipment'));
-       //}
+        // else if ($event == 'alert') {
+        //   $this->addTarget(Notification::ITEM_USER, __('User reserving equipment'));
+        //}
     }
 
 
     public function addDataForTemplate($event, $options = [])
     {
-       //----------- Reservation infos -------------- //
+        //----------- Reservation infos -------------- //
         $events                                  = $this->getAllEvents();
 
         $this->data['##reservation.action##']   = $events[$event];
@@ -104,11 +104,11 @@ class NotificationTargetReservation extends NotificationTarget
                                  );
 
                 if ($item->isField('users_id_tech')) {
-                     $this->data['##reservation.item.tech##']
-                                 = Dropdown::getDropdownName(
-                                     'glpi_users',
-                                     $item->getField('users_id_tech')
-                                 );
+                    $this->data['##reservation.item.tech##']
+                                = Dropdown::getDropdownName(
+                                    'glpi_users',
+                                    $item->getField('users_id_tech')
+                                );
                 }
 
                 $this->data['##reservation.itemurl##']

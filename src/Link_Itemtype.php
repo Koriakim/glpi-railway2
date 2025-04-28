@@ -35,7 +35,7 @@
 
 class Link_Itemtype extends CommonDBChild
 {
-   // From CommonDbChild
+    // From CommonDbChild
     public static $itemtype = 'Link';
     public static $items_id = 'links_id';
 
