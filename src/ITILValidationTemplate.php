@@ -54,6 +54,20 @@ class ITILValidationTemplate extends AbstractITILChildTemplate
         return _n('Approval template', 'Approval templates', $nb);
     }
 
+    public function prepareInputForUpdate($input)
+    {
+        if(!isset($input['validationsteps_id']) || !(new ValidationStep())->getFromDB($input['validationsteps_id'])) {
+            Session::addMessageAfterRedirect(
+                htmlescape(__('Invalid Validation step')),
+                false,
+                ERROR
+            );
+            return [];
+        }
+
+        return parent::prepareInputForUpdate($input);
+    }
+
     public function getAdditionalFields()
     {
         return [
@@ -61,7 +75,6 @@ class ITILValidationTemplate extends AbstractITILChildTemplate
                 'name' => 'validationsteps_id',
                 'label' => ValidationStep::getTypeName(1),
                 'type' => 'dropdownValue',
-                'required' => true,
             ],
             [
                 'name'  => 'approver',
