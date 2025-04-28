@@ -106,6 +106,8 @@ abstract class RuleCommonITILObject extends Rule
     public function getTitleAction()
     {
         parent::getTitleAction();
+
+        // Recompute warning
         $has_impact_urgency = false;
         $has_priority_recompute = false;
         if (isset($this->actions)) {
@@ -127,6 +129,29 @@ abstract class RuleCommonITILObject extends Rule
                 </div>
 TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority: recompute action if needed.')]);
         }
+
+        // Validation step assignation (validation step or threshold) without validation creation
+        $action_keys = [];
+        $actions_fields = array_column($this->actions, 'fields');
+        foreach ($actions_fields as $field) {
+            $action_keys[] = $field['field'];
+        }
+
+        $fields_related_to_validation_but_not_triggering_validation = ['validationsteps_id', 'validationsteps_threshold'];
+        $fields_trigerring_validation = ['users_id_validate', 'responsible_id_validate', 'groups_id_validate', 'groups_id_validate_any', 'users_id_validate_requester_supervisor', 'users_id_validate_assign_supervisor'];
+        if (
+            array_intersect($fields_related_to_validation_but_not_triggering_validation, $action_keys)
+            && empty(array_intersect($action_keys, $fields_trigerring_validation))
+        ) {
+            // language=Twig
+            echo TemplateRenderer::getInstance()->renderFromStringTemplate(<<<TWIG
+                <div class="alert alert-warning">
+                    {{ message }}
+                </div>
+TWIG, ['message' => __('Actions related to validation are set, but no validation creation action is set.')]);
+        }
+
+        return;
     }
 
     public function addSpecificParamsForPreview($params)
@@ -955,10 +980,12 @@ TWIG, ['message' => __('Urgency or impact used in actions, think to add Priority
             $actions['groups_id_validate_any']['permitseveral']             = ['add_validation'];
 
             // Approval request to requester group manager
+            // @todoseb bug a ajouter : ne doit rien faire, à tester
             $actions['users_id_validate_requester_supervisor']['name']  = __('Approval request to requester group manager');
             $actions['users_id_validate_requester_supervisor']['type']  = 'yesno';
             $actions['users_id_validate_requester_supervisor']['force_actions'] = ['add_validation'];
 
+            // @todoseb bug a ajouter : ne doit rien faire, à tester
             $actions['users_id_validate_assign_supervisor']['name']     = __('Approval request to technician group manager');
             $actions['users_id_validate_assign_supervisor']['type']     = 'yesno';
             $actions['users_id_validate_assign_supervisor']['force_actions'] = ['add_validation'];
